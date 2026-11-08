@@ -18,3 +18,28 @@ Ohne Schlüssel meldet die Quelle im Status `kein Schlüssel` und liefert nichts
 
 Sobald der Schlüssel da ist, hier eintragen: Anzahl Termine im Radius 75 km um 01855, davon in Bautzen / Görlitz / Zittau.
 Sind es 0 Termine, in `sources.json` `"enabled": false` setzen und hier vermerken.
+
+## Abnahme der Anzeige-Phase (Task 12), 08.11.2026
+
+Vollständiger lokaler Lauf (`npm run build`, ohne Ticketmaster-Schlüssel), danach Rauchtest Görlitz/Augusto nach der Ortskorrektur.
+
+| Quelle | Termine | Bemerkung |
+|---|---|---|
+| aust (Sebnitz) | 130 | |
+| satourn | 545 | |
+| kamenz | 69 | |
+| bischofswerda | 47 | |
+| goerlitz | 280 | offene Bedingungen, Anfrage in `docs/anfragen/` |
+| augusto | 485 | offene Bedingungen, Anfrage in `docs/anfragen/` |
+| goout (Tschechien) | 20 | siehe oben |
+| ticketmaster | 0 | „kein Schlüssel“, Probe steht aus |
+| gefluegel | 49 | 35 davon ohne Ort (Detailseiten nur begrenzt abgerufen, 10 s Abstand) |
+| maerkte | 45 | |
+| neustadthalle | 16 | |
+| stolpen | 13 | |
+
+Insgesamt 1595 Termine. Abnahmekriterien lokal erfüllt: mindestens 5 Quellen liefern, Termine mit Telefon, tschechische Termine, „ausverkauft“-Termine vorhanden.
+
+Gefunden und behoben: CultureBase (Görlitz, Augusto) nennt nur die Spielstätte ohne Stadt; 245 Termine hatten dadurch keine Entfernung und umgingen Radius und km-Schieber. Jetzt ordnet `fallbackPlace` (Görlitz bzw. Bautzen) sie der Region zu und hängt „, Raum <Region>“ an den Ortsnamen. Rauchtest danach: 703 Termine im Radius, 0 ohne Entfernung. Grenze: Die Entfernung dieser Termine ist die der Regionsmitte, nicht der Spielstätte.
+
+Offen und nur durch dich möglich: der erste Lauf bei GitHub (Syntax von `daily.yml` lässt sich lokal nicht prüfen), der Ticketmaster-Schlüssel, der Versand der Anfragen.
