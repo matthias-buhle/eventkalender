@@ -50,3 +50,9 @@ export function parseGermanDate(text) {
 export function todayBerlin(now) {
   return dayFmt.format(now);
 }
+
+/** Zeitpunkt (ms seit 1970) als Berliner ISO-Zeit mit Offset. */
+export function berlinIsoAt(instantMs) {
+  const lokal = berlinLocal(instantMs);
+  return berlinIso(lokal.slice(0, 10), lokal.slice(11, 16));
+}
