@@ -66,6 +66,7 @@ h1 { font-size: 1.35rem; margin: 0; }
 .zaehler[hidden] { display: none; }
 .feld { display: flex; flex-direction: column; gap: 14px; padding: 8px 0 4px; max-height: 60vh; overflow-y: auto; }
 .gruppe { display: flex; flex-direction: column; gap: 8px; }
+.gruppe[hidden] { display: none; }
 .gruppentitel { margin: 0; font-size: 0.85rem; color: var(--muted); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .genre { color: var(--muted); }

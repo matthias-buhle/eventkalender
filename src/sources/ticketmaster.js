@@ -18,6 +18,7 @@ function zuEvent(e) {
   const venue = e._embedded?.venues?.[0];
   const klasse = e.classifications?.[0];
   const artText = [klasse?.genre?.name, klasse?.subGenre?.name].filter(Boolean).join(' ');
+  const istMusik = /music|musik/i.test(klasse?.segment?.name ?? '');
   const lat = Number(venue?.location?.latitude);
   const lon = Number(venue?.location?.longitude);
   return makeEvent({
@@ -25,8 +26,8 @@ function zuEvent(e) {
     sourceId: e.id,
     sourceUrl: e.url,
     title: cleanText(e.name),
-    genre: detectGenre(artText.replace(/alternative/i, 'Rock')),
-    art: /music|musik/i.test(klasse?.segment?.name ?? '') ? 'konzert' : normalizeArt(artText, e.name),
+    genre: istMusik ? detectGenre(artText.replace(/alternative/i, 'Rock')) : null,
+    art: istMusik ? 'konzert' : normalizeArt(artText, e.name),
     start: berlinIso(start.localDate, mitZeit ? start.localTime.slice(0, 5) : null),
     hasTime: mitZeit,
     placeName: [venue?.name, venue?.city?.name].filter(Boolean).join(', '),

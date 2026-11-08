@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeArt, detectStatus, normalizePhone, cleanText, detectGenre } from '../src/normalize.js';
+import { normalizeArt, detectStatus, normalizePhone, cleanText, detectGenre, detectSorte, passendeSorte } from '../src/normalize.js';
 
 test('detectStatus erkennt Ausverkauft in Plus-Klammern', () => {
   assert.equal(detectStatus('+++Ausverkauft+++'), 'ausverkauft');
@@ -106,4 +106,56 @@ test('detectGenre: Wortteile täuschen nicht ("Höhepunkt" ist kein Punk), Blaso
   assert.equal(detectGenre('Weihnachtskonzert', 'der Jahreshöhepunkt mit Wunderpunkt'), null);
   assert.equal(detectGenre('Post Punk Convention'), 'metal-punk');
   assert.equal(detectGenre('Frühjahrskonzert', 'Das Blasorchester der Lessingstadt'), 'schlager-folk');
+});
+
+test('detectSorte(markt): Weihnachtsmarkt, Flohmarkt & Trödel, Handwerk & Kunst, Bauern- & Wochenmarkt; sonst null', () => {
+  const m = (...t) => detectSorte('markt', ...t);
+  assert.equal(m('Meißner Weihnachtsmarkt'), 'weihnachtsmarkt');
+  assert.equal(m('Freitaler Schlossadvent'), 'weihnachtsmarkt');
+  assert.equal(m('LABAs NIKOLAUSMARKT'), 'weihnachtsmarkt');
+  assert.equal(m('Weihnachtsmarkt Gohrischer Lichteln mit Kunstmarkt'), 'weihnachtsmarkt', 'Weihnachten geht vor Kunstmarkt');
+  assert.equal(m('Trödelmarkt Bad Muskau'), 'troedel');
+  assert.equal(m('Elbeflohmarkt Dresden an der Albertbrücke'), 'troedel');
+  assert.equal(m('Floh-& Antikmarkt ehemaliger Adlermarkt Görlitz'), 'troedel');
+  assert.equal(m('Modellbahn und Modellauto BÖRSE in Görlitz'), 'troedel');
+  assert.equal(m('Der große LAUSITZ-MARKT für Handgemachtes in Löbau'), 'handwerk');
+  assert.equal(m('designmarket dresden'), 'handwerk');
+  assert.equal(m('Herbstmarkt mit historischem Handwerkermarkt und Biermeile'), 'handwerk');
+  assert.equal(m('Wochenmarkt Pirna'), 'bauern');
+  assert.equal(m('Bauernmarkt am Schloss'), 'bauern');
+  assert.equal(m('Mittelaltermarkt'), null);
+  assert.equal(m('Markt', 'Großer Trödel in der Halle'), 'troedel', 'ein späterer Text hilft, wenn der Titel nichts sagt');
+});
+
+test('detectSorte(schau): Tier- & Zuchtschau, Kunst & Foto, Museum & Geschichte, Messe & Hobby; sonst null', () => {
+  const s = (...t) => detectSorte('schau', ...t);
+  for (const titel of ['Kleintierschau Hainewalde', 'Lokalschau Bautzen', '101. Rassegeflügelschau in Reichenbach O.L.', '46. Farben- & Tommeltaubenschau', 'Bezirksjugendschau 2026', '7. Grenzlandschau', 'Kreisschau KV Löbau']) {
+    assert.equal(s(titel), 'tiere', titel);
+  }
+  assert.equal(s('Modellbahnausstellung Eisenbahnclub Oberland Crostau e.V.'), 'hobby');
+  assert.equal(s('Hochschulmesse im BiZ - Studiengänge'), 'hobby');
+  assert.equal(s('Hubertusmesse'), null, 'eine Messe im kirchlichen Sinn ist keine Messe-Veranstaltung');
+  assert.equal(s('Double Agent - Collagen von Sam Melser'), 'kunst');
+  assert.equal(s('Fotoausstellung 430 Jahre Bibliothek'), 'kunst');
+  assert.equal(s('»TRAUMZEIT. Zeichenkunst der Romantik«'), 'kunst');
+  assert.equal(s('Geologische Sonderausstellung „GRANIT.massiv“'), 'museum');
+  assert.equal(s('Öffentliche Führung durch das Museum Bautzen'), 'museum');
+  assert.equal(s('Kürbishausen'), null);
+});
+
+test('detectSorte: Konzerte bekommen ein Genre, alle anderen Arten (Party, Fest, Sonstiges) nie', () => {
+  assert.equal(detectSorte('konzert', 'Jazzabend'), 'jazz');
+  assert.equal(detectSorte('sonstiges', 'Comedy-Show Live'), null);
+  assert.equal(detectSorte('party', 'Rock-Party'), null);
+  assert.equal(detectSorte('fest', 'Jazzfest'), null);
+});
+
+test('passendeSorte: ein Schlüssel zählt nur bei der Art, zu der er gehört', () => {
+  assert.equal(passendeSorte('konzert', 'jazz'), 'jazz');
+  assert.equal(passendeSorte('markt', 'troedel'), 'troedel');
+  assert.equal(passendeSorte('schau', 'tiere'), 'tiere');
+  assert.equal(passendeSorte('sonstiges', 'comedy'), null);
+  assert.equal(passendeSorte('markt', 'jazz'), null);
+  assert.equal(passendeSorte('konzert', null), null);
+  assert.equal(passendeSorte('konzert', 'toString'), null);
 });

@@ -146,3 +146,63 @@ export function detectGenre(...texte) {
   }
   return null;
 }
+
+export const MARKT_SORTEN = {
+  weihnachtsmarkt: 'Weihnachtsmarkt',
+  troedel: 'Flohmarkt & Trödel',
+  handwerk: 'Handwerk & Kunst',
+  bauern: 'Bauern- & Wochenmarkt',
+};
+
+export const SCHAU_SORTEN = {
+  tiere: 'Tier- & Zuchtschau',
+  hobby: 'Messe & Hobby',
+  kunst: 'Kunst & Foto',
+  museum: 'Museum & Geschichte',
+};
+
+/** Unterarten je Art: Genres bei Konzerten, Sorten bei Märkten und Schauen. Andere Arten haben keine. */
+export const SORTEN = { konzert: GENRES, markt: MARKT_SORTEN, schau: SCHAU_SORTEN };
+
+const MARKT_REGELN = /** @type {[string, RegExp][]} */ ([
+  ['weihnachtsmarkt', /weihnacht|advent|christkind|nikolaus|winterzauber|winterlicht|wintermarkt|lichtelfest|jolka/],
+  ['troedel', /tr[oö]del|flohmarkt|floh-|antik|b[oö]rse|sammler|second.?hand|basar|bazar|kleidermarkt/],
+  ['handwerk', /handwerk|handgemacht|kunstmarkt|k[uü]nstlermarkt|design.?market|designmarkt|manufaktur|t[oö]pfer|keramik|kreativmarkt|handarbeit/],
+  ['bauern', /bauern|wochenmarkt|hofmarkt|erntemarkt|regionalmarkt|biomarkt|g[aä]rtner|pflanzenmarkt|blumenmarkt/],
+]);
+
+const SCHAU_REGELN = /** @type {[string, RegExp][]} */ ([
+  ['tiere', /kleintier|gefl[uü]gel|tauben?schau|taube|kaninchen|z[uü]chter|tierschau|hundeschau|katzenschau|(?:lokal|orts|kreis|vereins|jugend|gemeinschafts|grenzland|territorial)schau|hauptsonderschau|lipsia|\bvdt\b/],
+  ['hobby', /(?<!hubertus)messe\b|modellbahn|modellbau|modellauto|b[oö]rse|sammler|hobby|briefmarken|spielzeug/],
+  ['kunst', /kunst|galerie|malerei|gem[aä]lde|foto|collage|vernissage|ausstellungser[oö]ffnung|zeichn|skulptur|grafik|k[uü]nstler|finissage|bildhauer|\bmale\b/],
+  ['museum', /museum|sonderausstellung|f[uü]hrung|geschicht|geologisch|heimat|kabinettausstellung|synagog|j[uü]disch|bibliothek|archiv/],
+]);
+
+function ratenAus(regeln, texte) {
+  for (const roh of texte) {
+    const t = String(roh ?? '').toLowerCase();
+    if (!t) continue;
+    for (const [sorte, regel] of regeln) if (regel.test(t)) return sorte;
+  }
+  return null;
+}
+
+/**
+ * Rät die Unterart zu einer Art: Genre bei Konzerten, Sorte bei Märkten und Schauen, bei allen anderen Arten null.
+ * Der erste Text, in dem etwas passt, entscheidet.
+ * @param {string} art
+ * @param {...(string|null|undefined)} texte
+ * @returns {string|null}
+ */
+export function detectSorte(art, ...texte) {
+  if (art === 'konzert') return detectGenre(...texte);
+  if (art === 'markt') return ratenAus(MARKT_REGELN, texte);
+  if (art === 'schau') return ratenAus(SCHAU_REGELN, texte);
+  return null;
+}
+
+/** Gibt den Schlüssel zurück, wenn er zu dieser Art gehört (z. B. "jazz" bei "konzert"), sonst null. */
+export function passendeSorte(art, schluessel) {
+  const liste = Object.hasOwn(SORTEN, art) ? SORTEN[art] : null;
+  return liste && typeof schluessel === 'string' && Object.hasOwn(liste, schluessel) ? schluessel : null;
+}

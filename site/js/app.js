@@ -1,6 +1,7 @@
 // Seitenlogik: Daten laden, Filterleiste aufbauen, Liste zeichnen, Einstellungen am Gerät merken.
 import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, DEFAULT_PREFS } from './filter.js';
-import { renderEventCard, renderStatusFooter, dayLabel, artName, GENRES, SONSTIGE_KONZERTE } from './render.js';
+import { renderEventCard, renderStatusFooter, dayLabel, artName } from './render.js';
+import { SORTEN } from './arten.js';
 
 const ARTEN = ['konzert', 'party', 'markt', 'fest', 'schau', 'sonstiges'];
 const ZEIT_CHIPS = [
@@ -135,6 +136,7 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   const artGruppe = neu('div', 'gruppe');
   artGruppe.append(neu('p', 'gruppentitel', 'Arten anzeigen'));
   const chips = neu('div', 'chips');
+  const sortenGruppen = new Map(); // Art -> Gruppe der Unterarten; nur sichtbar, solange die Art angezeigt wird
   for (const art of ARTEN) {
     const chip = neu('button', 'chip', artName(art));
     chip.setAttribute('type', 'button');
@@ -143,6 +145,7 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
       const aus = prefs.hiddenArt.includes(art);
       prefs.hiddenArt = aus ? prefs.hiddenArt.filter((a) => a !== art) : [...prefs.hiddenArt, art];
       chip.setAttribute('aria-pressed', String(aus));
+      if (sortenGruppen.has(art)) sortenGruppen.get(art).hidden = !aus;
       aktualisiereZaehler();
       beiAenderung();
     });
@@ -150,23 +153,30 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   }
   artGruppe.append(chips);
 
-  const genreGruppe = neu('div', 'gruppe');
-  genreGruppe.append(neu('p', 'gruppentitel', 'Genres anzeigen (Konzerte, Comedy …)'));
-  const genreChips = neu('div', 'chips');
-  for (const [genre, text] of [...Object.entries(GENRES), ['sonstige', SONSTIGE_KONZERTE]]) {
-    const chip = neu('button', 'chip', text);
-    chip.setAttribute('type', 'button');
-    chip.setAttribute('aria-pressed', String(!prefs.hiddenGenres.includes(genre)));
-    chip.addEventListener('click', () => {
-      const aus = prefs.hiddenGenres.includes(genre);
-      prefs.hiddenGenres = aus ? prefs.hiddenGenres.filter((g) => g !== genre) : [...prefs.hiddenGenres, genre];
-      chip.setAttribute('aria-pressed', String(aus));
-      aktualisiereZaehler();
-      beiAenderung();
-    });
-    genreChips.append(chip);
+  // Unterarten (Genres, Sorten) gibt es nur bei Konzerten, Märkten und Schauen und nur, solange die Art angezeigt wird.
+  const sortenFelder = [];
+  for (const [art, def] of Object.entries(SORTEN)) {
+    const gruppe = neu('div', 'gruppe');
+    gruppe.hidden = prefs.hiddenArt.includes(art);
+    gruppe.append(neu('p', 'gruppentitel', def.titel));
+    const sortenChips = neu('div', 'chips');
+    for (const [schluessel, text] of [...Object.entries(def.liste), [def.sonstige, def.sonstigeText]]) {
+      const chip = neu('button', 'chip', text);
+      chip.setAttribute('type', 'button');
+      chip.setAttribute('aria-pressed', String(!prefs.hiddenGenres.includes(schluessel)));
+      chip.addEventListener('click', () => {
+        const aus = prefs.hiddenGenres.includes(schluessel);
+        prefs.hiddenGenres = aus ? prefs.hiddenGenres.filter((g) => g !== schluessel) : [...prefs.hiddenGenres, schluessel];
+        chip.setAttribute('aria-pressed', String(aus));
+        aktualisiereZaehler();
+        beiAenderung();
+      });
+      sortenChips.append(chip);
+    }
+    gruppe.append(sortenChips);
+    sortenGruppen.set(art, gruppe);
+    sortenFelder.push(gruppe);
   }
-  genreGruppe.append(genreChips);
 
   const schalter = neu('label', 'schalter');
   const haken = neu('input');
@@ -179,7 +189,7 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   });
   schalter.append(haken, neu('span', null, 'Tschechien'));
 
-  feld.append(ortGruppe, artGruppe, genreGruppe, schalter);
+  feld.append(ortGruppe, artGruppe, ...sortenFelder, schalter);
   mehr.append(feld);
   aktualisiereZaehler();
   leiste.append(mehr);

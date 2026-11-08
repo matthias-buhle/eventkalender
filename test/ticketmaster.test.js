@@ -105,6 +105,7 @@ test('ticketmaster: Genre aus der Klassifizierung (Musik und Bühne), unbekannte
   assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Alternative' } }), 'rock-pop');
   assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Klassik' } }), 'klassik');
   assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Pop' }, subGenre: { name: 'Schlager' } }), 'schlager-folk');
-  assert.equal(await genreVon({ segment: { name: 'Kunst & Theater' }, genre: { name: 'Comedy' } }), 'comedy');
+  assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Comedy' } }), 'comedy');
+  assert.equal(await genreVon({ segment: { name: 'Kunst & Theater' }, genre: { name: 'Comedy' } }), null, 'Genres gibt es nur bei Konzerten');
   assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Undefined' } }), null);
 });

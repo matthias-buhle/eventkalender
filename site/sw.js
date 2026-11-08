@@ -2,7 +2,7 @@
 const CACHE = 'eventkalender-v1';
 const GRUNDSTOCK = [
   './', 'index.html', 'style.css', 'manifest.webmanifest',
-  'js/app.js', 'js/filter.js', 'js/render.js',
+  'js/app.js', 'js/arten.js', 'js/filter.js', 'js/render.js',
   'icons/icon-192.png', 'icons/icon-512.png',
   'data/events.json', 'data/status.json', 'data/places.json',
 ];

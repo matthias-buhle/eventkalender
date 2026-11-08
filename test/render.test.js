@@ -139,10 +139,15 @@ test('Fußzeile setzt Quellennamen als Text, nicht als HTML', () => {
   assert.ok(fuss.textContent.includes('<b>x</b>'));
 });
 
-test('Karte nennt das Genre hinter der Art; ohne (oder mit unbekanntem) Genre kein Zusatz', () => {
-  assert.equal(renderEventCard(document, ev({ genre: 'rock-pop' })).querySelector('.genre').textContent, 'Rock & Pop');
-  assert.equal(renderEventCard(document, ev({ genre: 'comedy', art: 'sonstiges' })).querySelector('.genre').textContent, 'Comedy & Kabarett');
-  assert.equal(renderEventCard(document, ev({ genre: null })).querySelector('.genre'), null);
-  assert.equal(renderEventCard(document, ev({ genre: '<b>x</b>' })).querySelector('.genre'), null);
-  assert.equal(renderEventCard(document, ev()).querySelector('.genre'), null, 'ältere Daten ohne genre');
+test('Karte nennt Genre bzw. Sorte hinter der Art, aber nur bei Konzert, Markt und Schau; sonst kein Zusatz', () => {
+  const label = (extra) => renderEventCard(document, ev(extra)).querySelector('.genre')?.textContent ?? null;
+  assert.equal(label({ genre: 'rock-pop' }), 'Rock & Pop');
+  assert.equal(label({ art: 'markt', genre: 'weihnachtsmarkt' }), 'Weihnachtsmarkt');
+  assert.equal(label({ art: 'markt', genre: 'troedel' }), 'Flohmarkt & Trödel');
+  assert.equal(label({ art: 'schau', genre: 'tiere' }), 'Tier- & Zuchtschau');
+  assert.equal(label({ art: 'sonstiges', genre: 'comedy' }), null, 'Genres nur bei Konzerten');
+  assert.equal(label({ art: 'markt', genre: 'jazz' }), null, 'Genre einer anderen Art');
+  assert.equal(label({ genre: null }), null);
+  assert.equal(label({ genre: '<b>x</b>' }), null);
+  assert.equal(label({}), null, 'ältere Daten ohne genre');
 });

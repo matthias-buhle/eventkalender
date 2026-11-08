@@ -1,8 +1,10 @@
 // Reine Funktionen für Filter, Gruppierung und gespeicherte Einstellungen. Kein Zugriff auf window oder document.
+import { sorteFilter } from './arten.js';
 
 /**
  * ort: Mitte des Umkreises (Name aus dem Ortsverzeichnis) oder null für Sebnitz.
  * zeit: 'alle' | 'heute' | 'wochenende' | '7' | '30' | '60' (Tage ab heute).
+ * hiddenGenres: ausgeblendete Unterarten (Genres der Konzerte, Sorten der Märkte und Schauen), siehe arten.js.
  * suche: Suchtext (wird nicht gespeichert).
  * @typedef {{hiddenArt:string[], hiddenGenres:string[], hiddenTags:string[], maxKm:number, showCZ:boolean, ort:string|null, zeit:string, suche:string}} Prefs
  */
@@ -86,11 +88,6 @@ function passtZurSuche(e, woerter) {
   return woerter.every((w) => heu.includes(w));
 }
 
-/** Das Genre, nach dem gefiltert wird: Konzerte ohne bekanntes Genre heißen 'sonstige', andere Arten ohne Genre haben keins. */
-function genreFilter(e) {
-  return e.genre ?? (e.art === 'konzert' ? 'sonstige' : null);
-}
-
 /**
  * Filtert nach Einstellungen und entfernt Vergangenes. Ein Termin von heute bleibt bis Tagesende (Berliner Zeit).
  * @param {any[]} events
@@ -108,7 +105,7 @@ export function applyFilters(events, prefs, nowIso, orte = {}) {
     if (fenster.bis && e.start.slice(0, 10) > fenster.bis) return false;
     if (!passtZurSuche(e, woerter)) return false;
     if (prefs.hiddenArt.includes(e.art)) return false;
-    if (prefs.hiddenGenres.includes(genreFilter(e))) return false;
+    if (prefs.hiddenGenres.includes(sorteFilter(e))) return false;
     if ((e.tags ?? []).some((t) => prefs.hiddenTags.includes(t))) return false;
     if (mitte) {
       if (Number.isFinite(e.lat) && Number.isFinite(e.lon) && luftlinieKm(mitte, e) > prefs.maxKm) return false;
