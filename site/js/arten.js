@@ -15,11 +15,26 @@ export const SORTEN = {
       'schlager-folk': 'Schlager & Folk', 'hiphop-elektro': 'Hip-Hop & Elektro', comedy: 'Comedy & Kabarett', musical: 'Musical',
     },
   },
+  party: {
+    titel: 'Partys: Sorte',
+    sonstige: 'sonstige-party',
+    sonstigeText: 'Sonstige Partys',
+    liste: { disco: 'Disco & Tanz', club: 'Club & DJ', silvester: 'Silvester & Ball', fasching: 'Fasching & Karneval' },
+  },
   markt: {
     titel: 'Märkte: Sorte',
     sonstige: 'sonstige-markt',
     sonstigeText: 'Sonstige Märkte',
     liste: { weihnachtsmarkt: 'Weihnachtsmarkt', troedel: 'Flohmarkt & Trödel', handwerk: 'Handwerk & Kunst', bauern: 'Bauern- & Wochenmarkt' },
+  },
+  fest: {
+    titel: 'Feste: Sorte',
+    sonstige: 'sonstige-fest',
+    sonstigeText: 'Sonstige Feste',
+    liste: {
+      familie: 'Familie & Kinder', stadtfest: 'Stadt- & Dorffest', weihnachten: 'Weihnachten & Lichter',
+      essen: 'Essen & Trinken', festival: 'Festival',
+    },
   },
   schau: {
     titel: 'Schauen: Sorte',
