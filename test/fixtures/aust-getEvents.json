@@ -1,0 +1,102 @@
+{
+ "events": {
+  "others": [
+   {
+    "id": 4398,
+    "datum": "So, 08.11.2026",
+    "titel": "Bodo Wartke",
+    "teaser": "<p>+++Ausverkauft+++<br /><br />Wunderpunkt (Klavierkabarett)</p>",
+    "modrewrite": "Bodo-Wartke",
+    "stadt": "Dresden",
+    "ort": "Alter Schlachthof",
+    "tickets_url": "https://bodowartke.online-ticket.de/index.php?view=seatplan&id=555",
+    "einlass": "18:00",
+    "beginn": "19:00",
+    "preis": "",
+    "img": "/imagefly/w650-h650-c/img/events/Bodo-Wartke-ausverkauft.png",
+    "img_title": "Bodo Wartke",
+    "facebook": ""
+   },
+   {
+    "id": 4410,
+    "datum": "Di, 10.11.2026",
+    "titel": "RAMMSTEIN SYMPHONIC TRIBUTE – HERZFEUER",
+    "teaser": "",
+    "modrewrite": "RAMMSTEIN-SYMPHONIC-TRIBUTE-HERZFEUER",
+    "stadt": "Dresden",
+    "ort": "Alter Schlachthof",
+    "tickets_url": "https://www.eventim.de/event/rammstein-symphonic-tribute-herzfeuer-alter-schlachthof-dresden-21583829/",
+    "einlass": "19:00",
+    "beginn": "20:00",
+    "preis": "",
+    "img": "/imagefly/w650-h650-c/img/events/Bildschirmfoto-2026-04-27-um-13_01_58.png",
+    "img_title": "RAMMSTEIN SYMPHONIC TRIBUTE – HERZFEUER",
+    "facebook": ""
+   },
+   {
+    "id": 4351,
+    "datum": "Mi, 11.11.2026",
+    "titel": "Schlager & Spaß mit Andy Borg",
+    "teaser": "",
+    "modrewrite": "Schlager-&-Spass-mit-Andy-Borg",
+    "stadt": "Dresden",
+    "ort": "Alter Schlachthof",
+    "tickets_url": "https://www.eventim.de/event/schlager-spass-mit-andy-borg-und-gaesten-alter-schlachthof-dresden-20975095/",
+    "einlass": "17:00",
+    "beginn": "18:00",
+    "preis": "",
+    "img": "/imagefly/w650-h650-c/img/events/Bildschirmfoto-2026-02-26-um-09_47_52.png",
+    "img_title": "Schlager & Spaß mit Andy Borg",
+    "facebook": ""
+   },
+   {
+    "id": 4502,
+    "datum": "Fr, 13.11.2026",
+    "titel": "Milow",
+    "teaser": "",
+    "modrewrite": "Milow",
+    "stadt": "Dresden",
+    "ort": "Alter Schlachthof",
+    "tickets_url": "https://www.eventim.de/event/milow-boy-made-out-of-stars-unplugged-alter-schlachthof-dresden-22025507/",
+    "einlass": "19:00",
+    "beginn": "20:00",
+    "preis": "",
+    "img": "/imagefly/w650-h650-c/img/events/Milow.png",
+    "img_title": "Milow",
+    "facebook": "https://www.facebook.com/events/2474144506324383"
+   },
+   {
+    "id": 4224,
+    "datum": "Sa, 14.11.2026",
+    "titel": "Cold Hearted Festival",
+    "teaser": "<p>International Cold Wave | Post Punk Convention&nbsp;</p>",
+    "modrewrite": "Cold-Hearted-Festival",
+    "stadt": "Dresden",
+    "ort": "Alter Schlachthof",
+    "tickets_url": "https://konzertkasse-dresden.de/?search=Cold+Hearted+Festiva,Dresden,14.11.2026&amp;sort=d&amp;dd=a&amp;menu=events",
+    "einlass": "16:00",
+    "beginn": "17:00",
+    "preis": "",
+    "img": "/imagefly/w650-h650-c/img/events/ColdHeartedFestival_1080x1080px.png",
+    "img_title": "Cold Hearted Festival",
+    "facebook": "https://www.facebook.com/events/2597096327316063"
+   },
+   {
+    "id": 4289,
+    "datum": "Mo, 16.11.2026",
+    "titel": "Robert Marc Lehmann",
+    "teaser": "<p>Mission Erde</p>",
+    "modrewrite": "Robert-Marc-Lehmann",
+    "stadt": "Dresden",
+    "ort": "Alter Schlachthof",
+    "tickets_url": "https://www.eventim.de/event/robert-marc-lehmann-mission-erde-live-die-welt-ist-es-wert-um-sie-zu-kaempfen-alter-schlachthof-dresden-21003778/#tab=",
+    "einlass": "19:00",
+    "beginn": "20:00",
+    "preis": "",
+    "img": "/imagefly/w650-h650-c/img/events/Ausverkauft_RobertMarcLehma.png",
+    "img_title": "Robert Marc Lehmann",
+    "facebook": ""
+   }
+  ]
+ }
+}
