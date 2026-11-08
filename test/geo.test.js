@@ -48,3 +48,14 @@ test('Groß-/Kleinschreibung und Umlautschreibweise werden ignoriert', () => {
 test('Zusätze wie "Dresden, Alter Schlachthof" werden auf den Ort zurückgeführt', () => {
   assert.equal(at('Dresden, Alter Schlachthof').name, at('Dresden').name);
 });
+
+test('resolvePlace: Dörfer der Oberlausitz aus den Quellen werden aufgelöst, ferne Messen liegen außerhalb des Radius', () => {
+  for (const name of ['Turnhalle, Hainewalde', 'Ausstellungshalle, Kubschütz / Kreckwitz', 'Vereinsheim "Goldene Gans", Bertsdorf-Hörnitz', 'Turnhalle, Großharthau/Bühlau', 'VIA-Regia Haus, Reichenbach', 'Mehrzweckhalle, Schönau-Berzdorf a.d. Eigen / Schönau']) {
+    const ort = resolvePlace(name);
+    assert.ok(ort, name);
+    assert.ok(distanceKm(CENTER, ort) <= RADIUS_KM, `${name}: ${distanceKm(CENTER, ort)} km`);
+  }
+  for (const name of ['Messe Leipzig', 'Messe Ulm', 'Wittenbergplatz, Berlin']) {
+    assert.ok(distanceKm(CENTER, resolvePlace(name)) > RADIUS_KM, name);
+  }
+});
