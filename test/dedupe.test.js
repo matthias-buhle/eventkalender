@@ -64,3 +64,16 @@ test('Ergebnis ist nach Start sortiert', () => {
   const frueh = ev({ title: 'Früh', sourceId: '3', start: '2026-11-10T10:00:00+01:00' });
   assert.deepEqual(dedupe([spaet, frueh]).map((e) => e.title), ['Früh', 'Spät']);
 });
+
+test('zwei Termine derselben Quelle mit gleichem Titel und Tag an verschiedenen Spielstätten derselben Stadt bleiben getrennt', () => {
+  const a = ev({ title: 'Flohmarkt', sourceId: '1', sourceUrl: 'https://a.example/1', placeName: 'Messe Dresden, Dresden' });
+  const b = ev({ title: 'Flohmarkt', sourceId: '2', sourceUrl: 'https://a.example/2', placeName: 'Elbepark, Dresden' });
+  const out = dedupe([a, b]);
+  assert.equal(out.length, 2);
+  assert.deepEqual(out.map((e) => e.sources[0].url).sort(), ['https://a.example/1', 'https://a.example/2']);
+});
+
+test('derselbe Termin (gleiche Quelle, gleicher Link) zweimal geliefert wird zu einem', () => {
+  const a = ev({ sourceId: '7' });
+  assert.equal(dedupe([a, { ...a }]).length, 1);
+});
