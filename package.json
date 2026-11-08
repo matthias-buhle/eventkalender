@@ -7,5 +7,8 @@
   "scripts": {
     "test": "node --test",
     "build": "node src/build.js"
+  },
+  "dependencies": {
+    "robots-parser": "^3.0.1"
   }
 }
