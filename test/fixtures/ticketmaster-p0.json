@@ -1,0 +1,31 @@
+{
+  "_embedded": {
+    "events": [
+      {
+        "name": "Beispielband – Tour 2026",
+        "type": "event",
+        "id": "Z7r9jZ1A7abcd",
+        "url": "https://www.ticketmaster.de/event/beispielband-tour-2026/123456",
+        "dates": {
+          "start": { "localDate": "2026-11-14", "localTime": "20:00:00", "dateTime": "2026-11-14T19:00:00Z", "dateTBD": false, "timeTBA": false, "noSpecificTime": false },
+          "timezone": "Europe/Berlin",
+          "status": { "code": "onsale" }
+        },
+        "classifications": [
+          { "primary": true, "segment": { "id": "KZFzniwnSyZfZ7v7nJ", "name": "Musik" }, "genre": { "id": "KnvZfZ7vAeA", "name": "Rock" } }
+        ],
+        "_embedded": {
+          "venues": [
+            {
+              "name": "Messe Dresden",
+              "city": { "name": "Dresden" },
+              "address": { "line1": "Messering 6" },
+              "location": { "longitude": "13.7085", "latitude": "51.0663" }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "page": { "size": 200, "totalElements": 1, "totalPages": 1, "number": 0 }
+}

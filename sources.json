@@ -58,5 +58,27 @@
     ],
     "days": 60,
     "maxPages": 80
+  },
+  "goout": {
+    "enabled": true,
+    "sitemapUrl": "https://goout.net/sitemaps/city-CS-0.xml",
+    "cities": [
+      "decin",
+      "usti-nad-labem",
+      "liberec",
+      "ceska-lipa"
+    ],
+    "categories": [
+      "koncerty",
+      "parties",
+      "jine-akce"
+    ]
+  },
+  "ticketmaster": {
+    "enabled": true,
+    "note": "Braucht Geheimnis TICKETMASTER_API_KEY; ohne Schlüssel meldet der Status \"kein Schlüssel\". Probe siehe docs/quellen-probe.md",
+    "url": "https://app.ticketmaster.com/discovery/v2/events.json",
+    "radiusKm": 75,
+    "maxPages": 5
   }
 }

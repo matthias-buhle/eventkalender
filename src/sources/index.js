@@ -6,5 +6,7 @@ import * as kamenz from './kamenz.js';
 import * as bischofswerda from './bischofswerda.js';
 import * as goerlitz from './goerlitz.js';
 import * as augusto from './augusto.js';
+import * as goout from './goout.js';
+import * as ticketmaster from './ticketmaster.js';
 
-export const adapters = [aust, satourn, kamenz, bischofswerda, goerlitz, augusto];
+export const adapters = [aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster];

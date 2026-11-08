@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { berlinIso, parseGermanDate, todayBerlin } from '../src/time.js';
+import { berlinIso, berlinIsoAt, parseGermanDate, todayBerlin } from '../src/time.js';
 
 test('berlinIso im Sommer hat Offset +02:00', () => {
   assert.equal(berlinIso('2026-07-01', '20:00'), '2026-07-01T20:00:00+02:00');
@@ -33,4 +33,10 @@ test('parseGermanDate liefert null bei Unsinn', () => {
 
 test('todayBerlin rechnet UTC-Abend in den nächsten Berliner Tag um', () => {
   assert.equal(todayBerlin(new Date('2026-11-14T23:30:00Z')), '2026-11-15');
+});
+
+test('berlinIsoAt rechnet einen UTC-Zeitpunkt in Berliner Zeit mit passendem Offset um', () => {
+  assert.equal(berlinIsoAt(Date.UTC(2026, 10, 14, 19, 0)), '2026-11-14T20:00:00+01:00');
+  assert.equal(berlinIsoAt(Date.UTC(2026, 6, 4, 18, 0)), '2026-07-04T20:00:00+02:00');
+  assert.equal(berlinIsoAt(Date.UTC(2026, 11, 31, 23, 30)), '2027-01-01T00:30:00+01:00');
 });
