@@ -479,5 +479,341 @@
   "lat": 50.6407,
   "lon": 13.8244,
   "country": "CZ"
+ },
+ {
+  "name": "Neusalza-Spremberg",
+  "aliases": [
+   "Neusalza-Spremberg"
+  ],
+  "lat": 51.0337,
+  "lon": 14.5445,
+  "country": "DE"
+ },
+ {
+  "name": "Hainewalde",
+  "aliases": [
+   "Hainewalde"
+  ],
+  "lat": 50.9101,
+  "lon": 14.7041,
+  "country": "DE"
+ },
+ {
+  "name": "Lawalde",
+  "aliases": [
+   "Lawalde",
+   "Lauba"
+  ],
+  "lat": 51.0787,
+  "lon": 14.6025,
+  "country": "DE"
+ },
+ {
+  "name": "Kubschütz",
+  "aliases": [
+   "Kubschütz",
+   "Kreckwitz"
+  ],
+  "lat": 51.1696,
+  "lon": 14.5061,
+  "country": "DE"
+ },
+ {
+  "name": "Reichenbach",
+  "aliases": [
+   "Reichenbach",
+   "Sohland a. Rotstein"
+  ],
+  "lat": 51.1351,
+  "lon": 14.7827,
+  "country": "DE"
+ },
+ {
+  "name": "Bertsdorf-Hörnitz",
+  "aliases": [
+   "Bertsdorf-Hörnitz"
+  ],
+  "lat": 50.8846,
+  "lon": 14.7188,
+  "country": "DE"
+ },
+ {
+  "name": "Leutersdorf",
+  "aliases": [
+   "Leutersdorf"
+  ],
+  "lat": 50.9542,
+  "lon": 14.6506,
+  "country": "DE"
+ },
+ {
+  "name": "Horka",
+  "aliases": [
+   "Horka"
+  ],
+  "lat": 51.2627,
+  "lon": 14.2544,
+  "country": "DE"
+ },
+ {
+  "name": "Schönbach",
+  "aliases": [
+   "Schönbach"
+  ],
+  "lat": 50.9834,
+  "lon": 14.2283,
+  "country": "DE"
+ },
+ {
+  "name": "Sohland a.d. Spree",
+  "aliases": [
+   "Sohland a.d. Spree"
+  ],
+  "lat": 51.0481,
+  "lon": 14.428,
+  "country": "DE"
+ },
+ {
+  "name": "Königswartha",
+  "aliases": [
+   "Königswartha"
+  ],
+  "lat": 51.3113,
+  "lon": 14.3278,
+  "country": "DE"
+ },
+ {
+  "name": "Kottmar",
+  "aliases": [
+   "Kottmar",
+   "Obercunnersdorf",
+   "Niedercunnersdorf"
+  ],
+  "lat": 51.0191,
+  "lon": 14.6617,
+  "country": "DE"
+ },
+ {
+  "name": "Hohendubrau",
+  "aliases": [
+   "Hohendubrau",
+   "Gebelzig"
+  ],
+  "lat": 51.2444,
+  "lon": 14.6713,
+  "country": "DE"
+ },
+ {
+  "name": "Frankenthal",
+  "aliases": [
+   "Frankenthal"
+  ],
+  "lat": 51.131,
+  "lon": 14.1061,
+  "country": "DE"
+ },
+ {
+  "name": "Großpostwitz",
+  "aliases": [
+   "Großpostwitz"
+  ],
+  "lat": 51.1196,
+  "lon": 14.441,
+  "country": "DE"
+ },
+ {
+  "name": "Rosenbach",
+  "aliases": [
+   "Rosenbach",
+   "Herwigsdorf"
+  ],
+  "lat": 51.087,
+  "lon": 14.7385,
+  "country": "DE"
+ },
+ {
+  "name": "Großharthau",
+  "aliases": [
+   "Großharthau",
+   "Bühlau"
+  ],
+  "lat": 51.1038,
+  "lon": 14.0949,
+  "country": "DE"
+ },
+ {
+  "name": "Weißenberg",
+  "aliases": [
+   "Weißenberg"
+  ],
+  "lat": 51.1968,
+  "lon": 14.6587,
+  "country": "DE"
+ },
+ {
+  "name": "Schönau-Berzdorf a.d. Eigen",
+  "aliases": [
+   "Schönau-Berzdorf a.d. Eigen",
+   "Schönau"
+  ],
+  "lat": 51.0529,
+  "lon": 14.8946,
+  "country": "DE"
+ },
+ {
+  "name": "Schmölln-Putzkau",
+  "aliases": [
+   "Schmölln-Putzkau",
+   "Putzkau"
+  ],
+  "lat": 51.1124,
+  "lon": 14.2255,
+  "country": "DE"
+ },
+ {
+  "name": "Seifhennersdorf",
+  "aliases": [
+   "Seifhennersdorf"
+  ],
+  "lat": 50.9347,
+  "lon": 14.6092,
+  "country": "DE"
+ },
+ {
+  "name": "Wehrsdorf",
+  "aliases": [
+   "Wehrsdorf"
+  ],
+  "lat": 51.0552,
+  "lon": 14.3896,
+  "country": "DE"
+ },
+ {
+  "name": "Hochkirch",
+  "aliases": [
+   "Hochkirch"
+  ],
+  "lat": 51.149,
+  "lon": 14.569,
+  "country": "DE"
+ },
+ {
+  "name": "Leipzig",
+  "aliases": [
+   "Leipzig",
+   "Messe Leipzig"
+  ],
+  "lat": 51.3319,
+  "lon": 12.7,
+  "country": "DE"
+ },
+ {
+  "name": "Ostritz",
+  "aliases": [
+   "Ostritz"
+  ],
+  "lat": 51.0174,
+  "lon": 14.9159,
+  "country": "DE"
+ },
+ {
+  "name": "Dürrhennersdorf",
+  "aliases": [
+   "Dürrhennersdorf"
+  ],
+  "lat": 51.0508,
+  "lon": 14.6084,
+  "country": "DE"
+ },
+ {
+  "name": "Ulm",
+  "aliases": [
+   "Ulm",
+   "Messe Ulm"
+  ],
+  "lat": 48.3985,
+  "lon": 9.9912,
+  "country": "DE"
+ },
+ {
+  "name": "Mittelherwigsdorf",
+  "aliases": [
+   "Mittelherwigsdorf"
+  ],
+  "lat": 50.9171,
+  "lon": 14.7632,
+  "country": "DE"
+ },
+ {
+  "name": "Burkau",
+  "aliases": [
+   "Burkau"
+  ],
+  "lat": 51.1776,
+  "lon": 14.1793,
+  "country": "DE"
+ },
+ {
+  "name": "Bad Gottleuba",
+  "aliases": [
+   "Bad Gottleuba"
+  ],
+  "lat": 50.8514,
+  "lon": 13.9445,
+  "country": "DE"
+ },
+ {
+  "name": "Schwarzheide",
+  "aliases": [
+   "Schwarzheide"
+  ],
+  "lat": 51.4858,
+  "lon": 13.8307,
+  "country": "DE"
+ },
+ {
+  "name": "Glashütte",
+  "aliases": [
+   "Glashütte"
+  ],
+  "lat": 50.8502,
+  "lon": 13.7767,
+  "country": "DE"
+ },
+ {
+  "name": "Senftenberg",
+  "aliases": [
+   "Senftenberg"
+  ],
+  "lat": 51.5192,
+  "lon": 14.0047,
+  "country": "DE"
+ },
+ {
+  "name": "Weinböhla",
+  "aliases": [
+   "Weinböhla"
+  ],
+  "lat": 51.1619,
+  "lon": 13.5644,
+  "country": "DE"
+ },
+ {
+  "name": "Thumitz",
+  "aliases": [
+   "Thumitz"
+  ],
+  "lat": 51.1433,
+  "lon": 14.2452,
+  "country": "DE"
+ },
+ {
+  "name": "Berlin",
+  "aliases": [
+   "Berlin"
+  ],
+  "lat": 52.5174,
+  "lon": 13.3951,
+  "country": "DE"
  }
 ]

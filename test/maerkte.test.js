@@ -91,7 +91,7 @@ test('maerkte: wöchentliche Märkte desselben Orts bleiben getrennte Termine', 
 test('maerkte: Orte außerhalb des Ortsverzeichnisses und der Postleitzahl-Sperre fallen weg', async () => {
   const events = await holen({ [MFT01]: seite([
     { url: 'https://meine-flohmarkt-termine.de/a/1/details', name: 'In Pirna' },
-    { url: 'https://meine-flohmarkt-termine.de/a/2/details', name: 'In Leipzig', location: { name: 'Westbad', address: { addressLocality: 'Leipzig', postalCode: '01477' } } },
+    { url: 'https://meine-flohmarkt-termine.de/a/2/details', name: 'In Niemandsdorf', location: { name: 'Westbad', address: { addressLocality: 'Niemandsdorf', postalCode: '01477' } } },
     { url: 'https://meine-flohmarkt-termine.de/a/3/details', name: 'In Riesa', location: { name: 'Halle', address: { addressLocality: 'Dresden', postalCode: '01587' } } },
   ]) });
   assert.deepEqual(events.map((e) => e.title), ['In Pirna']);
@@ -127,8 +127,8 @@ test('maerkte: eine ausgefallene Seite stoppt die anderen nicht; fallen alle aus
 test('maerkte: Termine an unbekannten Orten werden verworfen, ihre Ortsnamen stehen in verworfeneOrte (Postleitzahl-Sperre ausgenommen)', async () => {
   const events = await holen({ [MFT01]: seite([
     { url: 'https://meine-flohmarkt-termine.de/a/1/details', name: 'In Pirna' },
-    { url: 'https://meine-flohmarkt-termine.de/a/2/details', name: 'In Leipzig', location: { name: 'Westbad', address: { addressLocality: 'Leipzig', postalCode: '01477' } } },
+    { url: 'https://meine-flohmarkt-termine.de/a/2/details', name: 'In Niemandsdorf', location: { name: 'Westbad', address: { addressLocality: 'Niemandsdorf', postalCode: '01477' } } },
     { url: 'https://meine-flohmarkt-termine.de/a/3/details', name: 'In Riesa', location: { name: 'Halle', address: { addressLocality: 'Dresden', postalCode: '01587' } } },
   ]) });
-  assert.deepEqual(events.verworfeneOrte, ['Westbad, Leipzig']);
+  assert.deepEqual(events.verworfeneOrte, ['Westbad, Niemandsdorf']);
 });
