@@ -54,3 +54,11 @@ test('cleanText entfernt Tags, Skripte und Entitäten', () => {
   assert.equal(cleanText('Tom &amp; Jerry &#8211; live'), 'Tom & Jerry – live');
   assert.equal(cleanText('  viel \n\n Leerraum\t'), 'viel Leerraum');
 });
+
+test('shorten kürzt an Wortgrenze mit Auslassungszeichen und lässt Kurzes unverändert', async () => {
+  const { shorten } = await import('../src/normalize.js');
+  assert.equal(shorten('kurz', 10), 'kurz');
+  assert.equal(shorten('eins zwei drei vier', 12), 'eins zwei…');
+  assert.equal(shorten('', 5), '');
+  assert.equal(shorten(null, 5), '');
+});

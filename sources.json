@@ -5,13 +5,37 @@
       {
         "name": "Alter Schlachthof",
         "baseUrl": "https://www.alter-schlachthof.de",
-        "contact": { "phone": "+49351431310", "url": "https://www.alter-schlachthof.de", "email": "info@aust-konzerte.com" }
+        "contact": {
+          "phone": "+49351431310",
+          "url": "https://www.alter-schlachthof.de",
+          "email": "info@aust-konzerte.com"
+        }
       },
       {
         "name": "Junge Garde",
         "baseUrl": "https://www.junge-garde.com",
-        "contact": { "phone": "+49351431310", "url": "https://www.junge-garde.com", "email": "info@aust-konzerte.com" }
+        "contact": {
+          "phone": "+49351431310",
+          "url": "https://www.junge-garde.com",
+          "email": "info@aust-konzerte.com"
+        }
       }
     ]
+  },
+  "satourn": {
+    "enabled": true,
+    "sebnitzUrl": "https://www.sebnitz.org/Veranstaltungskalender/",
+    "sitemapIndexUrl": "https://www.saechsische-schweiz.de/sitemap.xml",
+    "maxDetailPages": 150,
+    "horizonDays": 90
+  },
+  "kamenz": {
+    "enabled": true,
+    "url": "https://www.kamenz.de/veranstaltungskalender.html",
+    "contact": {
+      "phone": "035783790",
+      "url": "https://www.kamenz.de/veranstaltungskalender.html",
+      "email": null
+    }
   }
 }
