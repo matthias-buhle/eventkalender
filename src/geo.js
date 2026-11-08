@@ -16,7 +16,7 @@ export function distanceKm(a, b) {
 }
 
 /** Kleinschreibung, Umlaute ausgeschrieben, Akzente weg, Satzzeichen zu Leerzeichen. */
-function fold(text) {
+export function fold(text) {
   return String(text)
     .toLowerCase()
     .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')

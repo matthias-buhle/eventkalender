@@ -1,0 +1,3 @@
+// Liste aller Quellen-Adapter. Jeder Adapter exportiert `name` und `fetchEvents({http, today, config})`.
+// Spätere Tasks tragen ihren Adapter hier ein.
+export const adapters = [];
