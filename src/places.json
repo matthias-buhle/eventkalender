@@ -1,0 +1,483 @@
+[
+ {
+  "name": "Sebnitz",
+  "aliases": [
+   "Sebnitz"
+  ],
+  "lat": 50.9408,
+  "lon": 14.2677,
+  "country": "DE"
+ },
+ {
+  "name": "Neustadt in Sachsen",
+  "aliases": [
+   "Neustadt in Sachsen",
+   "Neustadt i. Sa.",
+   "Neustadt/Sa.",
+   "Neustadt Sachsen",
+   "Neustadt Sa"
+  ],
+  "lat": 51.025,
+  "lon": 14.2141,
+  "country": "DE"
+ },
+ {
+  "name": "Polenz",
+  "aliases": [
+   "Polenz"
+  ],
+  "lat": 51.0242,
+  "lon": 14.184,
+  "country": "DE"
+ },
+ {
+  "name": "Oberottendorf",
+  "aliases": [
+   "Oberottendorf"
+  ],
+  "lat": 51.0686,
+  "lon": 14.207,
+  "country": "DE"
+ },
+ {
+  "name": "Stolpen",
+  "aliases": [
+   "Stolpen"
+  ],
+  "lat": 51.0492,
+  "lon": 14.083,
+  "country": "DE"
+ },
+ {
+  "name": "Hohnstein",
+  "aliases": [
+   "Hohnstein"
+  ],
+  "lat": 50.9798,
+  "lon": 14.1111,
+  "country": "DE"
+ },
+ {
+  "name": "Bad Schandau",
+  "aliases": [
+   "Bad Schandau"
+  ],
+  "lat": 50.9247,
+  "lon": 14.2153,
+  "country": "DE"
+ },
+ {
+  "name": "Hinterhermsdorf",
+  "aliases": [
+   "Hinterhermsdorf"
+  ],
+  "lat": 50.9241,
+  "lon": 14.3588,
+  "country": "DE"
+ },
+ {
+  "name": "Königstein",
+  "aliases": [
+   "Königstein",
+   "Koenigstein"
+  ],
+  "lat": 50.9185,
+  "lon": 14.0732,
+  "country": "DE"
+ },
+ {
+  "name": "Rathen",
+  "aliases": [
+   "Rathen",
+   "Kurort Rathen"
+  ],
+  "lat": 50.9582,
+  "lon": 14.0825,
+  "country": "DE"
+ },
+ {
+  "name": "Stadt Wehlen",
+  "aliases": [
+   "Stadt Wehlen",
+   "Wehlen"
+  ],
+  "lat": 50.9571,
+  "lon": 14.0308,
+  "country": "DE"
+ },
+ {
+  "name": "Bischofswerda",
+  "aliases": [
+   "Bischofswerda"
+  ],
+  "lat": 51.1187,
+  "lon": 14.1737,
+  "country": "DE"
+ },
+ {
+  "name": "Steinigtwolmsdorf",
+  "aliases": [
+   "Steinigtwolmsdorf"
+  ],
+  "lat": 51.0666,
+  "lon": 14.3469,
+  "country": "DE"
+ },
+ {
+  "name": "Neukirch",
+  "aliases": [
+   "Neukirch",
+   "Neukirch/Lausitz"
+  ],
+  "lat": 51.0974,
+  "lon": 14.2976,
+  "country": "DE"
+ },
+ {
+  "name": "Pulsnitz",
+  "aliases": [
+   "Pulsnitz"
+  ],
+  "lat": 51.2027,
+  "lon": 13.9999,
+  "country": "DE"
+ },
+ {
+  "name": "Pirna",
+  "aliases": [
+   "Pirna"
+  ],
+  "lat": 50.9603,
+  "lon": 13.9379,
+  "country": "DE"
+ },
+ {
+  "name": "Heidenau",
+  "aliases": [
+   "Heidenau"
+  ],
+  "lat": 50.9736,
+  "lon": 13.8754,
+  "country": "DE"
+ },
+ {
+  "name": "Dohna",
+  "aliases": [
+   "Dohna"
+  ],
+  "lat": 50.9473,
+  "lon": 13.8219,
+  "country": "DE"
+ },
+ {
+  "name": "Bautzen",
+  "aliases": [
+   "Bautzen",
+   "Budyšin"
+  ],
+  "lat": 51.1809,
+  "lon": 14.4276,
+  "country": "DE"
+ },
+ {
+  "name": "Dresden",
+  "aliases": [
+   "Dresden"
+  ],
+  "lat": 51.0493,
+  "lon": 13.7381,
+  "country": "DE"
+ },
+ {
+  "name": "Radeberg",
+  "aliases": [
+   "Radeberg"
+  ],
+  "lat": 51.1151,
+  "lon": 13.9175,
+  "country": "DE"
+ },
+ {
+  "name": "Radebeul",
+  "aliases": [
+   "Radebeul"
+  ],
+  "lat": 51.1,
+  "lon": 13.6768,
+  "country": "DE"
+ },
+ {
+  "name": "Meißen",
+  "aliases": [
+   "Meißen",
+   "Meissen"
+  ],
+  "lat": 51.1631,
+  "lon": 13.4705,
+  "country": "DE"
+ },
+ {
+  "name": "Freital",
+  "aliases": [
+   "Freital"
+  ],
+  "lat": 51.0163,
+  "lon": 13.653,
+  "country": "DE"
+ },
+ {
+  "name": "Großenhain",
+  "aliases": [
+   "Großenhain",
+   "Grossenhain"
+  ],
+  "lat": 51.2912,
+  "lon": 13.5317,
+  "country": "DE"
+ },
+ {
+  "name": "Kamenz",
+  "aliases": [
+   "Kamenz"
+  ],
+  "lat": 51.2701,
+  "lon": 14.0949,
+  "country": "DE"
+ },
+ {
+  "name": "Königsbrück",
+  "aliases": [
+   "Königsbrück",
+   "Koenigsbrueck"
+  ],
+  "lat": 51.3071,
+  "lon": 13.8557,
+  "country": "DE"
+ },
+ {
+  "name": "Neschwitz",
+  "aliases": [
+   "Neschwitz"
+  ],
+  "lat": 51.2601,
+  "lon": 14.3392,
+  "country": "DE"
+ },
+ {
+  "name": "Hoyerswerda",
+  "aliases": [
+   "Hoyerswerda"
+  ],
+  "lat": 51.4333,
+  "lon": 14.2501,
+  "country": "DE"
+ },
+ {
+  "name": "Löbau",
+  "aliases": [
+   "Löbau",
+   "Loebau"
+  ],
+  "lat": 51.0947,
+  "lon": 14.6692,
+  "country": "DE"
+ },
+ {
+  "name": "Görlitz",
+  "aliases": [
+   "Görlitz",
+   "Goerlitz"
+  ],
+  "lat": 51.1563,
+  "lon": 14.991,
+  "country": "DE"
+ },
+ {
+  "name": "Kodersdorf",
+  "aliases": [
+   "Kodersdorf"
+  ],
+  "lat": 51.2441,
+  "lon": 14.8969,
+  "country": "DE"
+ },
+ {
+  "name": "Niesky",
+  "aliases": [
+   "Niesky"
+  ],
+  "lat": 51.3183,
+  "lon": 14.7926,
+  "country": "DE"
+ },
+ {
+  "name": "Weißwasser",
+  "aliases": [
+   "Weißwasser",
+   "Weisswasser"
+  ],
+  "lat": 51.5029,
+  "lon": 14.6373,
+  "country": "DE"
+ },
+ {
+  "name": "Bad Muskau",
+  "aliases": [
+   "Bad Muskau"
+  ],
+  "lat": 51.5631,
+  "lon": 14.7014,
+  "country": "DE"
+ },
+ {
+  "name": "Zittau",
+  "aliases": [
+   "Zittau"
+  ],
+  "lat": 50.9098,
+  "lon": 14.8009,
+  "country": "DE"
+ },
+ {
+  "name": "Hirschfelde",
+  "aliases": [
+   "Hirschfelde"
+  ],
+  "lat": 50.9458,
+  "lon": 14.8886,
+  "country": "DE"
+ },
+ {
+  "name": "Herrnhut",
+  "aliases": [
+   "Herrnhut"
+  ],
+  "lat": 51.0089,
+  "lon": 14.7537,
+  "country": "DE"
+ },
+ {
+  "name": "Ebersbach-Neugersdorf",
+  "aliases": [
+   "Ebersbach-Neugersdorf",
+   "Ebersbach",
+   "Neugersdorf"
+  ],
+  "lat": 51.0007,
+  "lon": 14.5987,
+  "country": "DE"
+ },
+ {
+  "name": "Cottbus",
+  "aliases": [
+   "Cottbus"
+  ],
+  "lat": 51.7567,
+  "lon": 14.3357,
+  "country": "DE"
+ },
+ {
+  "name": "Děčín",
+  "aliases": [
+   "Děčín",
+   "Decin",
+   "Tetschen"
+  ],
+  "lat": 50.7824,
+  "lon": 14.2147,
+  "country": "CZ"
+ },
+ {
+  "name": "Ústí nad Labem",
+  "aliases": [
+   "Ústí nad Labem",
+   "Usti nad Labem",
+   "Aussig"
+  ],
+  "lat": 50.6603,
+  "lon": 14.0381,
+  "country": "CZ"
+ },
+ {
+  "name": "Liberec",
+  "aliases": [
+   "Liberec",
+   "Reichenberg"
+  ],
+  "lat": 50.7703,
+  "lon": 15.0584,
+  "country": "CZ"
+ },
+ {
+  "name": "Česká Lípa",
+  "aliases": [
+   "Česká Lípa",
+   "Ceska Lipa",
+   "Böhmisch Leipa"
+  ],
+  "lat": 50.6865,
+  "lon": 14.5373,
+  "country": "CZ"
+ },
+ {
+  "name": "Varnsdorf",
+  "aliases": [
+   "Varnsdorf"
+  ],
+  "lat": 50.9124,
+  "lon": 14.6194,
+  "country": "CZ"
+ },
+ {
+  "name": "Rumburk",
+  "aliases": [
+   "Rumburk",
+   "Rumburg"
+  ],
+  "lat": 50.9518,
+  "lon": 14.5569,
+  "country": "CZ"
+ },
+ {
+  "name": "Šluknov",
+  "aliases": [
+   "Šluknov",
+   "Sluknov",
+   "Schluckenau"
+  ],
+  "lat": 51.0032,
+  "lon": 14.453,
+  "country": "CZ"
+ },
+ {
+  "name": "Krásná Lípa",
+  "aliases": [
+   "Krásná Lípa",
+   "Krasna Lipa",
+   "Schönlinde"
+  ],
+  "lat": 50.9146,
+  "lon": 14.5063,
+  "country": "CZ"
+ },
+ {
+  "name": "Česká Kamenice",
+  "aliases": [
+   "Česká Kamenice",
+   "Ceska Kamenice",
+   "Böhmisch Kamnitz"
+  ],
+  "lat": 50.7994,
+  "lon": 14.4166,
+  "country": "CZ"
+ },
+ {
+  "name": "Teplice",
+  "aliases": [
+   "Teplice"
+  ],
+  "lat": 50.6407,
+  "lon": 13.8244,
+  "country": "CZ"
+ }
+]
