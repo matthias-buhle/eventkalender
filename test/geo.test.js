@@ -59,3 +59,12 @@ test('resolvePlace: Dörfer der Oberlausitz aus den Quellen werden aufgelöst, f
     assert.ok(distanceKm(CENTER, resolvePlace(name)) > RADIUS_KM, name);
   }
 });
+
+test('Städte ab 9.000 Einwohnern im Umkreis sind im Ortsverzeichnis (auch tschechische mit deutschem Namen)', () => {
+  for (const [text, name, land] of [['Coswig', 'Coswig', 'DE'], ['Freiberg', 'Freiberg', 'DE'], ['Großröhrsdorf', 'Großröhrsdorf', 'DE'], ['Litoměřice', 'Litoměřice', 'CZ'], ['Leitmeritz', 'Litoměřice', 'CZ'], ['Jablonec nad Nisou', 'Jablonec nad Nisou', 'CZ']]) {
+    const ort = resolvePlace(text);
+    assert.equal(ort?.name, name, text);
+    assert.equal(ort.country, land, text);
+    assert.ok(distanceKm(CENTER, ort) <= RADIUS_KM, `${text} liegt im Umkreis`);
+  }
+});

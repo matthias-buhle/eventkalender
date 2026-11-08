@@ -6,7 +6,8 @@
   ],
   "lat": 50.9408,
   "lon": 14.2677,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 9356
  },
  {
   "name": "Neustadt in Sachsen",
@@ -19,7 +20,8 @@
   ],
   "lat": 51.025,
   "lon": 14.2141,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 11740
  },
  {
   "name": "Polenz",
@@ -46,7 +48,8 @@
   ],
   "lat": 51.0492,
   "lon": 14.083,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 5405
  },
  {
   "name": "Hohnstein",
@@ -55,7 +58,8 @@
   ],
   "lat": 50.9798,
   "lon": 14.1111,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 3076
  },
  {
   "name": "Bad Schandau",
@@ -64,7 +68,8 @@
   ],
   "lat": 50.9247,
   "lon": 14.2153,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 3259
  },
  {
   "name": "Hinterhermsdorf",
@@ -112,7 +117,8 @@
   ],
   "lat": 51.1187,
   "lon": 14.1737,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 10519
  },
  {
   "name": "Steinigtwolmsdorf",
@@ -140,7 +146,8 @@
   ],
   "lat": 51.2027,
   "lon": 13.9999,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 7250
  },
  {
   "name": "Pirna",
@@ -149,7 +156,8 @@
   ],
   "lat": 50.9603,
   "lon": 13.9379,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 40039
  },
  {
   "name": "Heidenau",
@@ -158,7 +166,8 @@
   ],
   "lat": 50.9736,
   "lon": 13.8754,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 16597
  },
  {
   "name": "Dohna",
@@ -167,7 +176,8 @@
   ],
   "lat": 50.9473,
   "lon": 13.8219,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 6029
  },
  {
   "name": "Bautzen",
@@ -177,7 +187,8 @@
   ],
   "lat": 51.1809,
   "lon": 14.4276,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 37306
  },
  {
   "name": "Dresden",
@@ -186,7 +197,8 @@
   ],
   "lat": 51.0493,
   "lon": 13.7381,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 562764
  },
  {
   "name": "Radeberg",
@@ -195,7 +207,8 @@
   ],
   "lat": 51.1151,
   "lon": 13.9175,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 18667
  },
  {
   "name": "Radebeul",
@@ -204,7 +217,8 @@
   ],
   "lat": 51.1,
   "lon": 13.6768,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 33081
  },
  {
   "name": "Meißen",
@@ -214,7 +228,8 @@
   ],
   "lat": 51.1631,
   "lon": 13.4705,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 28863
  },
  {
   "name": "Freital",
@@ -223,7 +238,8 @@
   ],
   "lat": 51.0163,
   "lon": 13.653,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 39174
  },
  {
   "name": "Großenhain",
@@ -233,7 +249,8 @@
   ],
   "lat": 51.2912,
   "lon": 13.5317,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 17974
  },
  {
   "name": "Kamenz",
@@ -242,7 +259,8 @@
   ],
   "lat": 51.2701,
   "lon": 14.0949,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 16878
  },
  {
   "name": "Königsbrück",
@@ -252,7 +270,8 @@
   ],
   "lat": 51.3071,
   "lon": 13.8557,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 4642
  },
  {
   "name": "Neschwitz",
@@ -270,7 +289,8 @@
   ],
   "lat": 51.4333,
   "lon": 14.2501,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 30458
  },
  {
   "name": "Löbau",
@@ -280,7 +300,8 @@
   ],
   "lat": 51.0947,
   "lon": 14.6692,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 14469
  },
  {
   "name": "Görlitz",
@@ -290,7 +311,8 @@
   ],
   "lat": 51.1563,
   "lon": 14.991,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 55065
  },
  {
   "name": "Kodersdorf",
@@ -308,7 +330,8 @@
   ],
   "lat": 51.3183,
   "lon": 14.7926,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 8870
  },
  {
   "name": "Weißwasser",
@@ -318,7 +341,8 @@
   ],
   "lat": 51.5029,
   "lon": 14.6373,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 14887
  },
  {
   "name": "Bad Muskau",
@@ -327,7 +351,8 @@
   ],
   "lat": 51.5631,
   "lon": 14.7014,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 3508
  },
  {
   "name": "Zittau",
@@ -336,7 +361,8 @@
   ],
   "lat": 50.9098,
   "lon": 14.8009,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 24958
  },
  {
   "name": "Hirschfelde",
@@ -354,7 +380,8 @@
   ],
   "lat": 51.0089,
   "lon": 14.7537,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 5654
  },
  {
   "name": "Ebersbach-Neugersdorf",
@@ -365,7 +392,8 @@
   ],
   "lat": 51.0007,
   "lon": 14.5987,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 10749
  },
  {
   "name": "Cottbus",
@@ -385,7 +413,8 @@
   ],
   "lat": 50.7824,
   "lon": 14.2147,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 46376
  },
  {
   "name": "Ústí nad Labem",
@@ -396,7 +425,8 @@
   ],
   "lat": 50.6603,
   "lon": 14.0381,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 90866
  },
  {
   "name": "Liberec",
@@ -406,7 +436,8 @@
   ],
   "lat": 50.7703,
   "lon": 15.0584,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 108090
  },
  {
   "name": "Česká Lípa",
@@ -417,7 +448,8 @@
   ],
   "lat": 50.6865,
   "lon": 14.5373,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 36815
  },
  {
   "name": "Varnsdorf",
@@ -426,7 +458,8 @@
   ],
   "lat": 50.9124,
   "lon": 14.6194,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 23220
  },
  {
   "name": "Rumburk",
@@ -436,7 +469,8 @@
   ],
   "lat": 50.9518,
   "lon": 14.5569,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 10815
  },
  {
   "name": "Šluknov",
@@ -447,7 +481,8 @@
   ],
   "lat": 51.0032,
   "lon": 14.453,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 5629
  },
  {
   "name": "Krásná Lípa",
@@ -458,7 +493,8 @@
   ],
   "lat": 50.9146,
   "lon": 14.5063,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 6930
  },
  {
   "name": "Česká Kamenice",
@@ -469,7 +505,8 @@
   ],
   "lat": 50.7994,
   "lon": 14.4166,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 5037
  },
  {
   "name": "Teplice",
@@ -478,7 +515,8 @@
   ],
   "lat": 50.6407,
   "lon": 13.8244,
-  "country": "CZ"
+  "country": "CZ",
+  "einwohner": 50912
  },
  {
   "name": "Neusalza-Spremberg",
@@ -487,7 +525,8 @@
   ],
   "lat": 51.0337,
   "lon": 14.5445,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 3031
  },
  {
   "name": "Hainewalde",
@@ -526,7 +565,8 @@
   ],
   "lat": 51.1351,
   "lon": 14.7827,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 4520
  },
  {
   "name": "Bertsdorf-Hörnitz",
@@ -648,7 +688,8 @@
   ],
   "lat": 51.1968,
   "lon": 14.6587,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 3004
  },
  {
   "name": "Schönau-Berzdorf a.d. Eigen",
@@ -677,7 +718,8 @@
   ],
   "lat": 50.9347,
   "lon": 14.6092,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 3516
  },
  {
   "name": "Wehrsdorf",
@@ -760,7 +802,8 @@
   ],
   "lat": 50.8514,
   "lon": 13.9445,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 5315
  },
  {
   "name": "Schwarzheide",
@@ -769,7 +812,8 @@
   ],
   "lat": 51.4858,
   "lon": 13.8307,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 5675
  },
  {
   "name": "Glashütte",
@@ -778,7 +822,8 @@
   ],
   "lat": 50.8502,
   "lon": 13.7767,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 6304
  },
  {
   "name": "Senftenberg",
@@ -787,7 +832,8 @@
   ],
   "lat": 51.5192,
   "lon": 14.0047,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 23147
  },
  {
   "name": "Weinböhla",
@@ -796,7 +842,8 @@
   ],
   "lat": 51.1619,
   "lon": 13.5644,
-  "country": "DE"
+  "country": "DE",
+  "einwohner": 10300
  },
  {
   "name": "Thumitz",
@@ -815,5 +862,259 @@
   "lat": 52.5174,
   "lon": 13.3951,
   "country": "DE"
+ },
+ {
+  "name": "Coswig",
+  "aliases": [
+   "Coswig"
+  ],
+  "lat": 51.1333,
+  "lon": 13.5833,
+  "country": "DE",
+  "einwohner": 20479
+ },
+ {
+  "name": "Freiberg",
+  "aliases": [
+   "Freiberg"
+  ],
+  "lat": 50.9119,
+  "lon": 13.3428,
+  "country": "DE",
+  "einwohner": 41205
+ },
+ {
+  "name": "Dippoldiswalde",
+  "aliases": [
+   "Dippoldiswalde"
+  ],
+  "lat": 50.8933,
+  "lon": 13.6667,
+  "country": "DE",
+  "einwohner": 13880
+ },
+ {
+  "name": "Wilsdruff",
+  "aliases": [
+   "Wilsdruff"
+  ],
+  "lat": 51.0522,
+  "lon": 13.5383,
+  "country": "DE",
+  "einwohner": 14525
+ },
+ {
+  "name": "Großröhrsdorf",
+  "aliases": [
+   "Großröhrsdorf",
+   "Grossroehrsdorf"
+  ],
+  "lat": 51.1419,
+  "lon": 14.0139,
+  "country": "DE",
+  "einwohner": 9480
+ },
+ {
+  "name": "Spremberg",
+  "aliases": [
+   "Spremberg"
+  ],
+  "lat": 51.5717,
+  "lon": 14.3794,
+  "country": "DE",
+  "einwohner": 20900
+ },
+ {
+  "name": "Lauchhammer",
+  "aliases": [
+   "Lauchhammer"
+  ],
+  "lat": 51.4693,
+  "lon": 13.7632,
+  "country": "DE",
+  "einwohner": 13801
+ },
+ {
+  "name": "Nossen",
+  "aliases": [
+   "Nossen"
+  ],
+  "lat": 51.05,
+  "lon": 13.3,
+  "country": "DE",
+  "einwohner": 10370
+ },
+ {
+  "name": "Bannewitz",
+  "aliases": [
+   "Bannewitz"
+  ],
+  "lat": 50.9931,
+  "lon": 13.7167,
+  "country": "DE",
+  "einwohner": 11013
+ },
+ {
+  "name": "Olbernhau",
+  "aliases": [
+   "Olbernhau"
+  ],
+  "lat": 50.6564,
+  "lon": 13.3452,
+  "country": "DE",
+  "einwohner": 9800
+ },
+ {
+  "name": "Litoměřice",
+  "aliases": [
+   "Litoměřice",
+   "Leitmeritz"
+  ],
+  "lat": 50.5336,
+  "lon": 14.1319,
+  "country": "CZ",
+  "einwohner": 22767
+ },
+ {
+  "name": "Most",
+  "aliases": [
+   "Most",
+   "Brüx"
+  ],
+  "lat": 50.5031,
+  "lon": 13.6367,
+  "country": "CZ",
+  "einwohner": 68867
+ },
+ {
+  "name": "Litvínov",
+  "aliases": [
+   "Litvínov",
+   "Oberleutensdorf"
+  ],
+  "lat": 50.6008,
+  "lon": 13.6112,
+  "country": "CZ",
+  "einwohner": 22387
+ },
+ {
+  "name": "Mělník",
+  "aliases": [
+   "Mělník",
+   "Melnik"
+  ],
+  "lat": 50.3506,
+  "lon": 14.4742,
+  "country": "CZ",
+  "einwohner": 20278
+ },
+ {
+  "name": "Jablonec nad Nisou",
+  "aliases": [
+   "Jablonec nad Nisou",
+   "Gablonz"
+  ],
+  "lat": 50.7278,
+  "lon": 15.17,
+  "country": "CZ",
+  "einwohner": 46209
+ },
+ {
+  "name": "Turnov",
+  "aliases": [
+   "Turnov",
+   "Turnau"
+  ],
+  "lat": 50.5873,
+  "lon": 15.1569,
+  "country": "CZ",
+  "einwohner": 14577
+ },
+ {
+  "name": "Mladá Boleslav",
+  "aliases": [
+   "Mladá Boleslav",
+   "Jungbunzlau"
+  ],
+  "lat": 50.4125,
+  "lon": 14.9064,
+  "country": "CZ",
+  "einwohner": 47346
+ },
+ {
+  "name": "Louny",
+  "aliases": [
+   "Louny",
+   "Laun"
+  ],
+  "lat": 50.3571,
+  "lon": 13.7968,
+  "country": "CZ",
+  "einwohner": 20636
+ },
+ {
+  "name": "Bílina",
+  "aliases": [
+   "Bílina",
+   "Bilin"
+  ],
+  "lat": 50.5486,
+  "lon": 13.7754,
+  "country": "CZ",
+  "einwohner": 14497
+ },
+ {
+  "name": "Roudnice nad Labem",
+  "aliases": [
+   "Roudnice nad Labem",
+   "Raudnitz"
+  ],
+  "lat": 50.4254,
+  "lon": 14.2618,
+  "country": "CZ",
+  "einwohner": 13244
+ },
+ {
+  "name": "Krupka",
+  "aliases": [
+   "Krupka",
+   "Graupen"
+  ],
+  "lat": 50.6846,
+  "lon": 13.8583,
+  "country": "CZ",
+  "einwohner": 12793
+ },
+ {
+  "name": "Nový Bor",
+  "aliases": [
+   "Nový Bor",
+   "Haida"
+  ],
+  "lat": 50.7577,
+  "lon": 14.5557,
+  "country": "CZ",
+  "einwohner": 11318
+ },
+ {
+  "name": "Lom",
+  "aliases": [
+   "Lom u Mostu"
+  ],
+  "lat": 50.5934,
+  "lon": 13.6574,
+  "country": "CZ",
+  "einwohner": 9190
+ },
+ {
+  "name": "Mnichovo Hradiště",
+  "aliases": [
+   "Mnichovo Hradiště",
+   "Münchengrätz"
+  ],
+  "lat": 50.5273,
+  "lon": 14.9714,
+  "country": "CZ",
+  "einwohner": 9048
  }
 ]

@@ -4,7 +4,7 @@ import { renderEventCard, renderStatusFooter, dayLabel, artName, GENRES, SONSTIG
 
 const ARTEN = ['konzert', 'party', 'markt', 'fest', 'schau', 'sonstiges'];
 const ZEIT_CHIPS = [
-  ['alle', 'Alle'], ['heute', 'Heute'], ['wochenende', 'Wochenende'], ['7', '7 Tage'], ['30', '30 Tage'], ['bereich', 'Zeitraum …'],
+  ['alle', 'Alle'], ['heute', 'Heute'], ['wochenende', 'Wochenende'], ['7', '7 Tage'], ['30', '30 Tage'], ['60', '60 Tage'],
 ];
 const STANDARD_ORT = 'Sebnitz';
 
@@ -44,27 +44,27 @@ function aktiveFilter(prefs) {
     + (prefs.showCZ ? 0 : 1);
 }
 
-function datumsfeld(beschriftung, wert, beiAenderung) {
-  const label = neu('label', 'datum');
-  label.append(neu('span', null, beschriftung));
-  const feld = neu('input');
-  feld.setAttribute('type', 'date');
-  if (wert) feld.value = wert;
-  feld.addEventListener('change', () => beiAenderung(feld.value || null));
-  label.append(feld);
-  return label;
-}
-
 function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   leiste.replaceChildren();
 
-  // --- Zeitraum: immer sichtbar ---
+  // --- Suche und Zeitraum: immer sichtbar ---
+  const suchfeld = neu('input', 'suche');
+  suchfeld.setAttribute('type', 'search');
+  suchfeld.setAttribute('placeholder', 'Suchen: Künstler, Veranstaltung, Ort …');
+  suchfeld.setAttribute('aria-label', 'Suchen');
+  suchfeld.setAttribute('autocomplete', 'off');
+  suchfeld.setAttribute('enterkeyhint', 'search');
+  suchfeld.value = prefs.suche;
+  let suchTimer = null;
+  suchfeld.addEventListener('input', () => {
+    prefs.suche = suchfeld.value;
+    clearTimeout(suchTimer);
+    suchTimer = setTimeout(beiAenderung, 150); // nicht bei jedem Buchstaben die ganze Liste neu zeichnen
+  });
   const zeitReihe = neu('div', 'zeit');
   zeitReihe.setAttribute('role', 'group');
   zeitReihe.setAttribute('aria-label', 'Zeitraum');
   const zeitChips = new Map();
-  const bereich = neu('div', 'bereich');
-  const zeigeBereich = () => { bereich.hidden = prefs.zeit !== 'bereich'; };
   for (const [wert, text] of ZEIT_CHIPS) {
     const chip = neu('button', 'chip', text);
     chip.setAttribute('type', 'button');
@@ -72,18 +72,12 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
     chip.addEventListener('click', () => {
       prefs.zeit = wert;
       for (const [w, c] of zeitChips) c.setAttribute('aria-pressed', String(w === wert));
-      zeigeBereich();
       beiAenderung();
     });
     zeitChips.set(wert, chip);
     zeitReihe.append(chip);
   }
-  bereich.append(
-    datumsfeld('von', prefs.von, (v) => { prefs.von = v; beiAenderung(); }),
-    datumsfeld('bis', prefs.bis, (v) => { prefs.bis = v; beiAenderung(); }),
-  );
-  zeigeBereich();
-  leiste.append(zeitReihe, bereich);
+  leiste.append(suchfeld, zeitReihe);
 
   // --- Mehr Filter: Ort + Umkreis, Art, Tschechien ---
   const mehr = neu('details', 'mehr');
