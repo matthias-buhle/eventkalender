@@ -132,3 +132,19 @@ test('goerlitz: Spielstätte ohne Ortsangabe bekommt Koordinaten und Namen der R
   const [ungesetzt] = await holen([seiteMit(rows.slice(0, 1))]);
   assert.equal(ungesetzt.lat, null, 'ohne fallbackPlace ändert sich nichts');
 });
+
+test('goerlitz: ein vierwöchiger Weihnachtsmarkt bleibt ein Termin, mit und ohne Uhrzeit (Review Focus 2)', async () => {
+  const tage = (uhr) => Array.from({ length: 27 }, (_, i) => {
+    const d = new Date(Date.UTC(2026, 10, 27 + i));
+    return zeile({
+      Title: 'Wenzelsmarkt', FormalCategoryName: 'Markt', LocationName: 'Marktplatz Löbau',
+      Production1: { DateFromTo: '27. November - 23. Dezember 2026' }, DateTime: `${d.toISOString().slice(0, 10)}T${uhr}:00+0100`,
+    });
+  });
+  for (const uhr of ['11:00', '00:00']) {
+    const events = await holen([seiteMit(tage(uhr))]);
+    assert.equal(events.length, 1, `Uhrzeit ${uhr}`);
+    assert.equal(events[0].art, 'markt');
+    assert.ok(events[0].end > events[0].start);
+  }
+});
