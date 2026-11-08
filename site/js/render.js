@@ -1,17 +1,11 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
+import { sorteName } from './arten.js';
 
 const ARTEN = { markt: 'Markt', konzert: 'Konzert', party: 'Party', fest: 'Fest', schau: 'Schau', sonstiges: 'Sonstiges' };
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
 const WOCHENTAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
-/** Genres in der Reihenfolge der Filter; 'sonstige' gilt nur für Konzerte ohne bekanntes Genre. */
-export const GENRES = {
-  'rock-pop': 'Rock & Pop', 'metal-punk': 'Metal & Punk', klassik: 'Klassik & Chor', jazz: 'Jazz & Blues',
-  'schlager-folk': 'Schlager & Folk', 'hiphop-elektro': 'Hip-Hop & Elektro', comedy: 'Comedy & Kabarett', musical: 'Musical',
-};
-export const SONSTIGE_KONZERTE = 'Sonstige Konzerte';
-export const genreName = (genre) => (Object.hasOwn(GENRES, genre) ? GENRES[genre] : null);
 export const artName = (art) => ARTEN[art] ?? ARTEN.sonstiges;
 
 /** Gibt die Adresse nur zurück, wenn sie mit https://, http://, tel: oder mailto: beginnt. */
@@ -90,8 +84,8 @@ export function renderEventCard(doc, ev) {
   karte.append(el(doc, 'h3', 'title', ev.title));
   const meta = el(doc, 'p', 'meta');
   meta.append(el(doc, 'span', 'art', artName(ev.art)));
-  const genre = genreName(ev.genre);
-  if (genre) meta.append(' · ', el(doc, 'span', 'genre', genre));
+  const sorte = sorteName(ev);
+  if (sorte) meta.append(' · ', el(doc, 'span', 'genre', sorte));
   if (ev.ticketStatus && STATUS[ev.ticketStatus]) meta.append(' ', el(doc, 'span', `status status-${ev.ticketStatus}`, STATUS[ev.ticketStatus]));
   karte.append(meta);
   karte.append(el(doc, 'p', 'when', wannText(ev)));

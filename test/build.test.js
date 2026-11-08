@@ -172,3 +172,28 @@ test('ortsliste: genau 8 feste Mittelpunkte (Sebnitz als Standard), mit Name, Ko
   assert.deepEqual(Object.keys(liste[0]).sort(), ['country', 'lat', 'lon', 'name']);
   assert.equal(liste.find((o) => o.name === 'Děčín').country, 'CZ');
 });
+
+test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre Sorte, alle anderen Arten keins; unpassende Vorgaben fallen weg', async () => {
+  const { events } = await runAll({
+    now: NOW, http: {},
+    sources: [quelle('q', async () => [
+      ev({ title: 'Jazzabend im Club', art: 'konzert' }),
+      ev({ title: 'Comedy-Show Live', art: 'sonstiges' }),
+      ev({ title: 'Pirnaer Weihnachtsmarkt', art: 'markt' }),
+      ev({ title: 'Kleintierschau Hainewalde', art: 'schau' }),
+      ev({ title: 'Rock-Party', art: 'party' }),
+      ev({ title: 'Stand-up-Abend', art: 'sonstiges', genre: 'comedy' }),
+      ev({ title: 'Flohmarkt am Ring', art: 'markt', genre: 'jazz' }),
+      ev({ title: 'Ohne Hinweis', art: 'konzert', genre: 'tiere' }),
+    ])],
+  });
+  const von = (titel) => events.find((e) => e.title === titel).genre;
+  assert.equal(von('Jazzabend im Club'), 'jazz');
+  assert.equal(von('Comedy-Show Live'), null);
+  assert.equal(von('Pirnaer Weihnachtsmarkt'), 'weihnachtsmarkt');
+  assert.equal(von('Kleintierschau Hainewalde'), 'tiere');
+  assert.equal(von('Rock-Party'), null);
+  assert.equal(von('Stand-up-Abend'), null, 'Comedy gibt es nur als Konzert-Genre');
+  assert.equal(von('Flohmarkt am Ring'), 'troedel', 'ein Konzert-Genre bei einem Markt wird verworfen und neu bestimmt');
+  assert.equal(von('Ohne Hinweis'), null);
+});

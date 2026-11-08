@@ -82,7 +82,7 @@ test('loadPrefs: Ort, Zeitraum und Daten werden geprüft; ältere Einstellungen 
 
 // --- Genre ---
 
-test('Genre: ausgeblendete Genres verschwinden; Konzerte ohne Genre zählen als "sonstige", andere Arten ohne Genre bleiben', () => {
+test('Genre: ausgeblendete Genres verschwinden; Konzerte ohne Genre zählen als "sonstige"; Genres wirken nur auf Konzerte', () => {
   const liste = [
     ev({ id: 'rock', genre: 'rock-pop' }),
     ev({ id: 'jazz', genre: 'jazz' }),
@@ -90,11 +90,32 @@ test('Genre: ausgeblendete Genres verschwinden; Konzerte ohne Genre zählen als 
     ev({ id: 'alt', genre: undefined }),
     ev({ id: 'comedy', art: 'sonstiges', genre: 'comedy' }),
     ev({ id: 'markt', art: 'markt', genre: null }),
+    ev({ id: 'party', art: 'party', genre: 'rock-pop' }),
   ];
   const ids = (hiddenGenres) => applyFilters(liste, prefs({ hiddenGenres }), NOW).map((e) => e.id);
-  assert.deepEqual(ids([]), ['rock', 'jazz', 'ohne', 'alt', 'comedy', 'markt']);
-  assert.deepEqual(ids(['jazz', 'comedy']), ['rock', 'ohne', 'alt', 'markt']);
-  assert.deepEqual(ids(['sonstige']), ['rock', 'jazz', 'comedy', 'markt']);
+  assert.deepEqual(ids([]), ['rock', 'jazz', 'ohne', 'alt', 'comedy', 'markt', 'party']);
+  assert.deepEqual(ids(['jazz', 'comedy', 'rock-pop']), ['ohne', 'alt', 'comedy', 'markt', 'party'], 'Nicht-Konzerte bleiben, auch mit Konzert-Genre');
+  assert.deepEqual(ids(['sonstige']), ['rock', 'jazz', 'comedy', 'markt', 'party']);
+});
+
+test('Sorte: Märkte und Schauen lassen sich nach ihrer Sorte ausblenden; ohne bekannte Sorte gelten sie als "sonstige-markt" bzw. "sonstige-schau"', () => {
+  const liste = [
+    ev({ id: 'weih', art: 'markt', genre: 'weihnachtsmarkt' }),
+    ev({ id: 'trodel', art: 'markt', genre: 'troedel' }),
+    ev({ id: 'm-ohne', art: 'markt', genre: null }),
+    ev({ id: 'm-alt', art: 'markt' }),
+    ev({ id: 'm-falsch', art: 'markt', genre: 'jazz' }),
+    ev({ id: 'tiere', art: 'schau', genre: 'tiere' }),
+    ev({ id: 'kunst', art: 'schau', genre: 'kunst' }),
+    ev({ id: 's-ohne', art: 'schau', genre: null }),
+    ev({ id: 'konzert', genre: 'jazz' }),
+    ev({ id: 'fest', art: 'fest', genre: null }),
+  ];
+  const ids = (hiddenGenres) => applyFilters(liste, prefs({ hiddenGenres }), NOW).map((e) => e.id);
+  assert.deepEqual(ids(['weihnachtsmarkt', 'tiere']), ['trodel', 'm-ohne', 'm-alt', 'm-falsch', 'kunst', 's-ohne', 'konzert', 'fest']);
+  assert.deepEqual(ids(['sonstige-markt']), ['weih', 'trodel', 'tiere', 'kunst', 's-ohne', 'konzert', 'fest']);
+  assert.deepEqual(ids(['sonstige-schau']), ['weih', 'trodel', 'm-ohne', 'm-alt', 'm-falsch', 'tiere', 'kunst', 'konzert', 'fest']);
+  assert.deepEqual(ids(['sonstige']), liste.map((e) => e.id), 'Konzert-"sonstige" trifft keine Märkte und Schauen');
 });
 
 test('loadPrefs: hiddenGenres wird als Textliste geprüft, ältere Einstellungen haben keine', () => {
