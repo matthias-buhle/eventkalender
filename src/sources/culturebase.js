@@ -1,6 +1,7 @@
 // Gemeinsame Logik für Kalender im CultureBase-Format (Görlitz, Augusto):
 // Seitenweise JSON mit einer Zeile je Termin ("EventDates"), Zeitraum des ganzen Laufs in DateFromTo.
 import { makeEvent } from '../model.js';
+import { resolvePlace } from '../geo.js';
 import { berlinIso } from '../time.js';
 import { cleanText, detectStatus, normalizeArt, normalizePhone, shorten } from '../normalize.js';
 
@@ -81,9 +82,10 @@ export async function holeZeilen({ http, urlFuerSeite, maxPages }) {
  * Wandelt Zeilen in Events. Mehrtägige Märkte/Feste/Schauen (2–14 Tage, gleiche Uhrzeit) werden ein Termin
  * von der ersten bis zur letzten Zeile; alle anderen Zeilen bleiben einzelne Termine.
  * @param {object[]} zeilen
- * @param {{quelle:string, linkFuer:(row:object)=>string}} opt
+ * @param {{quelle:string, linkFuer:(row:object)=>string, fallbackPlace?:string}} opt
+ * `fallbackPlace`: Region der Quelle; die Zeilen nennen nur die Spielstätte, nicht die Stadt.
  */
-export function zuEvents(zeilen, { quelle, linkFuer }) {
+export function zuEvents(zeilen, { quelle, linkFuer, fallbackPlace }) {
   const gruppen = new Map();
   const einzeln = [];
   for (const row of zeilen.filter(behalten)) {
@@ -97,10 +99,18 @@ export function zuEvents(zeilen, { quelle, linkFuer }) {
       einzeln.push([row]);
     }
   }
-  return [...einzeln, ...gruppen.values()].map((rows) => zuEvent(rows, { quelle, linkFuer }));
+  return [...einzeln, ...gruppen.values()].map((rows) => zuEvent(rows, { quelle, linkFuer, fallbackPlace }));
 }
 
-function zuEvent(rows, { quelle, linkFuer }) {
+/** Spielstätte und, wenn sie sich nicht selbst einem Ort zuordnen lässt, Koordinaten der Region der Quelle. */
+function ortVon(row, fallbackPlace) {
+  const spielstaette = cleanText(row.LocationName);
+  const region = fallbackPlace && !resolvePlace(spielstaette) ? resolvePlace(fallbackPlace) : null;
+  if (!region) return { placeName: spielstaette };
+  return { placeName: spielstaette ? `${spielstaette}, Raum ${region.name}` : `Raum ${region.name}`, lat: region.lat, lon: region.lon, country: region.country };
+}
+
+function zuEvent(rows, { quelle, linkFuer, fallbackPlace }) {
   rows.sort((a, b) => a.DateTime.localeCompare(b.DateTime));
   const erste = rows[0];
   const letzte = rows[rows.length - 1];
@@ -118,7 +128,7 @@ function zuEvent(rows, { quelle, linkFuer }) {
     start: berlinIso(a.tag, mitZeit ? a.zeit : null),
     end: rows.length > 1 ? berlinIso(b.tag, b.zeit === '00:00' ? null : b.zeit) : null,
     hasTime: mitZeit,
-    placeName: cleanText(erste.LocationName),
+    ...ortVon(erste, fallbackPlace),
     contact: { phone: normalizePhone(text), url: veranstalter || null },
     ticketStatus: detectStatus(`${erste.Title} ${text}`),
     description: shorten(text, 300) || null,
