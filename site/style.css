@@ -58,6 +58,7 @@ h1 { font-size: 1.35rem; margin: 0; }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 .zeit .chip[aria-pressed="false"] { color: var(--text); }
 .feld .chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
+.feld .chip.wahl[aria-pressed="false"] { text-decoration: none; }
 .suche, .ort select { font: inherit; font-size: 1rem; min-height: 40px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); width: 100%; }
 .suche { margin-bottom: 8px; }
 .mehr { margin-top: 8px; }

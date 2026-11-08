@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyFilters, loadPrefs, zeitfenster, DEFAULT_PREFS } from '../site/js/filter.js';
+import { applyFilters, loadPrefs, zeitfenster, einzelneArt, artWaehlen, wirksameSorten, DEFAULT_PREFS } from '../site/js/filter.js';
+import { ARTEN } from '../site/js/arten.js';
 
 const NOW = '2026-11-08T19:30:00Z'; // Sonntag, 20:30 Uhr in Berlin
 const ev = (extra = {}) => ({
@@ -82,40 +83,73 @@ test('loadPrefs: Ort, Zeitraum und Daten werden geprüft; ältere Einstellungen 
 
 // --- Genre ---
 
-test('Genre: ausgeblendete Genres verschwinden; Konzerte ohne Genre zählen als "sonstige"; Genres wirken nur auf Konzerte', () => {
+const nur = (art) => ARTEN.filter((x) => x !== art);
+
+test('einzelneArt: nur wenn genau eine Art angezeigt wird, sonst null', () => {
+  assert.equal(einzelneArt([]), null, 'alle Arten');
+  assert.equal(einzelneArt(nur('konzert')), 'konzert');
+  assert.equal(einzelneArt(['party', 'fest']), null, 'vier Arten');
+  assert.equal(einzelneArt(ARTEN), null, 'keine Art angezeigt');
+});
+
+test('artWaehlen: aus "alle" wird die angetippte Art allein; weitere dazu, abwählen, und leer oder voll heißt wieder alle', () => {
+  assert.deepEqual(artWaehlen([], 'markt'), nur('markt'));
+  assert.deepEqual(artWaehlen(nur('markt'), 'konzert'), ARTEN.filter((x) => x !== 'markt' && x !== 'konzert'));
+  assert.deepEqual(artWaehlen(ARTEN.filter((x) => x !== 'markt' && x !== 'konzert'), 'markt'), nur('konzert'));
+  assert.deepEqual(artWaehlen(nur('markt'), 'markt'), [], 'die letzte Art abwählen zeigt wieder alle');
+  assert.deepEqual(artWaehlen(['party'], 'party'), [], 'alle fünf anderen plus die sechste: wieder alle');
+});
+
+test('Genre: bei Konzert allein verschwinden ausgeblendete Genres; Konzerte ohne Genre zählen als "sonstige"', () => {
   const liste = [
     ev({ id: 'rock', genre: 'rock-pop' }),
     ev({ id: 'jazz', genre: 'jazz' }),
     ev({ id: 'ohne', genre: null }),
     ev({ id: 'alt', genre: undefined }),
-    ev({ id: 'comedy', art: 'sonstiges', genre: 'comedy' }),
     ev({ id: 'markt', art: 'markt', genre: null }),
-    ev({ id: 'party', art: 'party', genre: 'rock-pop' }),
   ];
-  const ids = (hiddenGenres) => applyFilters(liste, prefs({ hiddenGenres }), NOW).map((e) => e.id);
-  assert.deepEqual(ids([]), ['rock', 'jazz', 'ohne', 'alt', 'comedy', 'markt', 'party']);
-  assert.deepEqual(ids(['jazz', 'comedy', 'rock-pop']), ['ohne', 'alt', 'comedy', 'markt', 'party'], 'Nicht-Konzerte bleiben, auch mit Konzert-Genre');
-  assert.deepEqual(ids(['sonstige']), ['rock', 'jazz', 'comedy', 'markt', 'party']);
+  const ids = (hiddenGenres) => applyFilters(liste, prefs({ hiddenGenres, hiddenArt: nur('konzert') }), NOW).map((e) => e.id);
+  assert.deepEqual(ids([]), ['rock', 'jazz', 'ohne', 'alt']);
+  assert.deepEqual(ids(['jazz', 'comedy']), ['rock', 'ohne', 'alt']);
+  assert.deepEqual(ids(['sonstige']), ['rock', 'jazz']);
 });
 
-test('Sorte: Märkte und Schauen lassen sich nach ihrer Sorte ausblenden; ohne bekannte Sorte gelten sie als "sonstige-markt" bzw. "sonstige-schau"', () => {
-  const liste = [
+test('Sorte: bei Markt allein oder Schau allein lassen sich Sorten ausblenden; ohne bekannte Sorte gilt "sonstige-markt" bzw. "sonstige-schau"', () => {
+  const markt = [
     ev({ id: 'weih', art: 'markt', genre: 'weihnachtsmarkt' }),
     ev({ id: 'trodel', art: 'markt', genre: 'troedel' }),
     ev({ id: 'm-ohne', art: 'markt', genre: null }),
-    ev({ id: 'm-alt', art: 'markt' }),
     ev({ id: 'm-falsch', art: 'markt', genre: 'jazz' }),
-    ev({ id: 'tiere', art: 'schau', genre: 'tiere' }),
-    ev({ id: 'kunst', art: 'schau', genre: 'kunst' }),
-    ev({ id: 's-ohne', art: 'schau', genre: null }),
-    ev({ id: 'konzert', genre: 'jazz' }),
-    ev({ id: 'fest', art: 'fest', genre: null }),
   ];
-  const ids = (hiddenGenres) => applyFilters(liste, prefs({ hiddenGenres }), NOW).map((e) => e.id);
-  assert.deepEqual(ids(['weihnachtsmarkt', 'tiere']), ['trodel', 'm-ohne', 'm-alt', 'm-falsch', 'kunst', 's-ohne', 'konzert', 'fest']);
-  assert.deepEqual(ids(['sonstige-markt']), ['weih', 'trodel', 'tiere', 'kunst', 's-ohne', 'konzert', 'fest']);
-  assert.deepEqual(ids(['sonstige-schau']), ['weih', 'trodel', 'm-ohne', 'm-alt', 'm-falsch', 'tiere', 'kunst', 'konzert', 'fest']);
-  assert.deepEqual(ids(['sonstige']), liste.map((e) => e.id), 'Konzert-"sonstige" trifft keine Märkte und Schauen');
+  const mids = (hiddenGenres) => applyFilters(markt, prefs({ hiddenGenres, hiddenArt: nur('markt') }), NOW).map((e) => e.id);
+  assert.deepEqual(mids(['weihnachtsmarkt']), ['trodel', 'm-ohne', 'm-falsch']);
+  assert.deepEqual(mids(['sonstige-markt']), ['weih', 'trodel']);
+  assert.deepEqual(mids(['sonstige']), ['weih', 'trodel', 'm-ohne', 'm-falsch'], 'Konzert-Schlüssel trifft keine Märkte');
+  const schau = [ev({ id: 'tiere', art: 'schau', genre: 'tiere' }), ev({ id: 'kunst', art: 'schau', genre: 'kunst' }), ev({ id: 's-ohne', art: 'schau', genre: null })];
+  const sids = (hiddenGenres) => applyFilters(schau, prefs({ hiddenGenres, hiddenArt: nur('schau') }), NOW).map((e) => e.id);
+  assert.deepEqual(sids(['tiere', 'sonstige-schau']), ['kunst']);
+});
+
+test('Unterfilter wirken nur bei genau einer Art; bei mehreren Arten (oder allen) wird alles gezeigt', () => {
+  const liste = [
+    ev({ id: 'jazz', genre: 'jazz' }),
+    ev({ id: 'weih', art: 'markt', genre: 'weihnachtsmarkt' }),
+    ev({ id: 'tiere', art: 'schau', genre: 'tiere' }),
+  ];
+  const hidden = ['jazz', 'weihnachtsmarkt', 'tiere'];
+  const ids = (hiddenArt) => applyFilters(liste, prefs({ hiddenGenres: hidden, hiddenArt }), NOW).map((e) => e.id);
+  assert.deepEqual(ids([]), ['jazz', 'weih', 'tiere'], 'alle Arten');
+  assert.deepEqual(ids(ARTEN.filter((x) => x !== 'konzert' && x !== 'markt')), ['jazz', 'weih'], 'zwei Arten');
+  assert.deepEqual(ids(nur('konzert')), [], 'Konzert allein: Jazz ist aus');
+  assert.deepEqual(ids(nur('markt')), [], 'Markt allein: Weihnachtsmarkt ist aus');
+});
+
+test('wirksameSorten: nur die Schlüssel der einzeln gewählten Art zählen', () => {
+  const p = (hiddenArt, hiddenGenres) => prefs({ hiddenArt, hiddenGenres });
+  assert.deepEqual(wirksameSorten(p(nur('konzert'), ['jazz', 'troedel', 'sonstige'])), ['jazz', 'sonstige']);
+  assert.deepEqual(wirksameSorten(p(nur('markt'), ['jazz', 'troedel'])), ['troedel']);
+  assert.deepEqual(wirksameSorten(p([], ['jazz'])), []);
+  assert.deepEqual(wirksameSorten(p(nur('party'), ['jazz'])), []);
 });
 
 test('loadPrefs: hiddenGenres wird als Textliste geprüft, ältere Einstellungen haben keine', () => {
