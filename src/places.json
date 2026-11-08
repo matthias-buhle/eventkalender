@@ -7,7 +7,8 @@
   "lat": 50.9408,
   "lon": 14.2677,
   "country": "DE",
-  "einwohner": 9356
+  "einwohner": 9356,
+  "auswahl": true
  },
  {
   "name": "Neustadt in Sachsen",
@@ -157,7 +158,8 @@
   "lat": 50.9603,
   "lon": 13.9379,
   "country": "DE",
-  "einwohner": 40039
+  "einwohner": 40039,
+  "auswahl": true
  },
  {
   "name": "Heidenau",
@@ -188,7 +190,8 @@
   "lat": 51.1809,
   "lon": 14.4276,
   "country": "DE",
-  "einwohner": 37306
+  "einwohner": 37306,
+  "auswahl": true
  },
  {
   "name": "Dresden",
@@ -198,7 +201,8 @@
   "lat": 51.0493,
   "lon": 13.7381,
   "country": "DE",
-  "einwohner": 562764
+  "einwohner": 562764,
+  "auswahl": true
  },
  {
   "name": "Radeberg",
@@ -260,7 +264,8 @@
   "lat": 51.2701,
   "lon": 14.0949,
   "country": "DE",
-  "einwohner": 16878
+  "einwohner": 16878,
+  "auswahl": true
  },
  {
   "name": "Königsbrück",
@@ -312,7 +317,8 @@
   "lat": 51.1563,
   "lon": 14.991,
   "country": "DE",
-  "einwohner": 55065
+  "einwohner": 55065,
+  "auswahl": true
  },
  {
   "name": "Kodersdorf",
@@ -362,7 +368,8 @@
   "lat": 50.9098,
   "lon": 14.8009,
   "country": "DE",
-  "einwohner": 24958
+  "einwohner": 24958,
+  "auswahl": true
  },
  {
   "name": "Hirschfelde",
@@ -414,7 +421,8 @@
   "lat": 50.7824,
   "lon": 14.2147,
   "country": "CZ",
-  "einwohner": 46376
+  "einwohner": 46376,
+  "auswahl": true
  },
  {
   "name": "Ústí nad Labem",
