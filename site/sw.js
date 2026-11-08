@@ -1,9 +1,12 @@
 // Service Worker: Seite und Termindaten werden zwischengespeichert. Erst das Netz, bei Ausfall der letzte Stand.
-const CACHE = 'eventkalender-v1';
+const CACHE = 'eventkalender-v2';
 const GRUNDSTOCK = [
   './', 'index.html', 'style.css', 'manifest.webmanifest',
-  'js/app.js', 'js/arten.js', 'js/filter.js', 'js/render.js',
+  'js/app.js', 'js/arten.js', 'js/filter.js', 'js/render.js', 'js/theme.js',
   'icons/icon-192.png', 'icons/icon-512.png',
+  'fonts/barlow-condensed-600-latin.woff2', 'fonts/barlow-condensed-600-latin-ext.woff2',
+  'fonts/barlow-condensed-700-latin.woff2', 'fonts/barlow-condensed-700-latin-ext.woff2',
+  'fonts/inter-latin.woff2', 'fonts/inter-latin-ext.woff2',
   'data/events.json', 'data/status.json', 'data/places.json',
 ];
 
