@@ -1,0 +1,89 @@
+/* Schlicht und handyzuerst; der Feinschliff folgt später. */
+:root {
+  --bg: #f6f5f1;
+  --card: #ffffff;
+  --text: #1c2321;
+  --muted: #5b6662;
+  --line: #dcdad2;
+  --accent: #2d6a4f;
+  --accent-text: #ffffff;
+  --warn: #8a4b00;
+  --warn-bg: #fff1d6;
+  --bad: #9b1c1c;
+  --bad-bg: #fde4e4;
+  --good: #1d5a36;
+  --good-bg: #dff3e6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181a;
+    --card: #1e2427;
+    --text: #e9ecea;
+    --muted: #a3aeaa;
+    --line: #33403c;
+    --accent: #5fb88a;
+    --accent-text: #0b1a12;
+    --warn: #ffd18a;
+    --warn-bg: #3a2c12;
+    --bad: #ffb4b4;
+    --bad-bg: #3c1c1c;
+    --good: #a6e3bf;
+    --good-bg: #17301f;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14181a; --card: #1e2427; --text: #e9ecea; --muted: #a3aeaa; --line: #33403c;
+  --accent: #5fb88a; --accent-text: #0b1a12; --warn: #ffd18a; --warn-bg: #3a2c12;
+  --bad: #ffb4b4; --bad-bg: #3c1c1c; --good: #a6e3bf; --good-bg: #17301f;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.top, .filters, main, footer { padding-left: 16px; padding-right: 16px; max-width: 720px; margin-left: auto; margin-right: auto; }
+.top { padding-top: 16px; }
+h1 { font-size: 1.35rem; margin: 0; }
+.stand { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 12px; padding-bottom: 12px; position: sticky; top: 0; background: var(--bg); z-index: 2; border-bottom: 1px solid var(--line); }
+.chip { font: inherit; font-size: 0.9rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; min-height: 40px; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
+.regler { display: flex; align-items: center; gap: 8px; flex: 1 1 100%; font-size: 0.9rem; }
+.regler input[type="range"] { flex: 1; min-height: 32px; accent-color: var(--accent); }
+.schalter { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; min-height: 40px; }
+.schalter input { width: 20px; height: 20px; accent-color: var(--accent); }
+
+main { padding-top: 8px; padding-bottom: 24px; }
+.tag h2 { font-size: 1.05rem; margin: 20px 0 8px; }
+.card { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 0 0 10px; }
+.card.art-konzert { border-left-color: #b5651d; }
+.card.art-party { border-left-color: #a23b72; }
+.card.art-markt { border-left-color: #2d6a4f; }
+.card.art-fest { border-left-color: #c8a400; }
+.card.art-schau { border-left-color: #3a6ea5; }
+.card.art-sonstiges { border-left-color: #6b7280; }
+.card .title { margin: 0 0 4px; font-size: 1.05rem; overflow-wrap: anywhere; }
+.card p { margin: 2px 0; }
+.meta { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.status { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; text-transform: none; letter-spacing: 0; font-size: 0.8rem; }
+.status-verfuegbar { background: var(--good-bg); color: var(--good); }
+.status-ausverkauft, .status-abgesagt { background: var(--bad-bg); color: var(--bad); }
+.status-verlegt { background: var(--warn-bg); color: var(--warn); }
+.when { font-weight: 600; }
+.where { color: var(--muted); }
+.review { background: var(--warn-bg); color: var(--warn); padding: 4px 8px; border-radius: 6px; font-size: 0.9rem; }
+.desc { font-size: 0.92rem; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px !important; }
+.btn { display: inline-block; padding: 10px 14px; min-height: 44px; border-radius: 8px; background: var(--accent); color: var(--accent-text); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+.sources { font-size: 0.82rem; color: var(--muted); margin-top: 8px !important; }
+.sources a { color: inherit; }
+.leer { color: var(--muted); padding: 24px 0; text-align: center; }
+
+footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(--muted); }
+.source-warning { margin: 4px 0; }

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2d6a4f">
+<title>Eventkalender Ostsachsen</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Eventkalender Ostsachsen</h1>
+  <p class="stand" id="stand"></p>
+</header>
+<nav class="filters" id="filters" aria-label="Filter"></nav>
+<main id="liste" aria-live="polite">
+  <p class="leer">Termine werden geladen …</p>
+</main>
+<footer id="fuss"></footer>
+<noscript><p class="leer">Für den Kalender wird JavaScript benötigt.</p></noscript>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
