@@ -150,3 +150,16 @@ test('pruefeLauf: ohne eine einzige gelieferte Quelle oder ohne Termine bricht d
   assert.throws(() => pruefeLauf({ events: [], status: [ok] }), /keine Termine/);
   assert.doesNotThrow(() => pruefeLauf({ events: [{}], status: [ok, fehl] }));
 });
+
+test('status nennt Orte, die das Ortsverzeichnis nicht kennt (gelieferte Termine und vom Adapter verworfene), ohne Dubletten', async () => {
+  const liefert = async () => {
+    const liste = [ev({ title: 'Eins', placeName: 'Halle, Niemandsdorf' }), ev({ title: 'Zwei', placeName: 'Halle, Niemandsdorf' }), ev({ title: 'Drei', placeName: 'Sebnitz' })];
+    liste.verworfeneOrte = ['Nirgendwo', 'Halle, Niemandsdorf'];
+    return liste;
+  };
+  const { events, status } = await runAll({ now: NOW, http: {}, sources: [quelle('q', liefert)] });
+  assert.equal(events.length, 3, 'Termine mit unbekanntem Ort bleiben sichtbar');
+  assert.deepEqual(status[0].unbekannteOrte, ['Halle, Niemandsdorf', 'Nirgendwo']);
+  const sauber = await runAll({ now: NOW, http: {}, sources: [quelle('r', async () => [ev({})])] });
+  assert.deepEqual(sauber.status[0].unbekannteOrte, []);
+});

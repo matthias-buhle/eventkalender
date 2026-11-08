@@ -8,7 +8,7 @@ import { createPoliteClient } from './http.js';
 const MIN_ERGIEBIG = 5;
 
 /**
- * @typedef {{name:string, ok:boolean, count:number, error:string|null, lastOkAt:string|null}} SourceStatus
+ * @typedef {{name:string, ok:boolean, count:number, error:string|null, lastOkAt:string|null, unbekannteOrte?:string[]}} SourceStatus
  */
 
 function anreichern(e) {
@@ -19,6 +19,12 @@ function anreichern(e) {
   }
   const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
   return { ...e, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
+}
+
+/** Ortsnamen, die das Ortsverzeichnis nicht kennt: aus gelieferten Terminen und aus dem, was der Adapter verworfen hat. */
+function unbekannteOrte(geliefert) {
+  const namen = [...geliefert.map((e) => e.placeName), ...(geliefert.verworfeneOrte ?? [])];
+  return [...new Set(namen.filter((n) => n && !resolvePlace(n)))].sort((a, b) => a.localeCompare(b, 'de'));
 }
 
 function nochAktuell(e, heute) {
@@ -49,7 +55,7 @@ export async function runAll({ sources, http, now, previousStatus = [] }) {
         .filter((e) => nochAktuell(e, heute))
         .filter((e) => e.distanceKm == null || e.distanceKm <= RADIUS_KM);
       alle.push(...brauchbar);
-      status.push({ name: source.name, ok: true, count: geliefert.length, error: null, lastOkAt: now.toISOString() });
+      status.push({ name: source.name, ok: true, count: geliefert.length, error: null, lastOkAt: now.toISOString(), unbekannteOrte: unbekannteOrte(geliefert) });
     } catch (err) {
       status.push({ name: source.name, ok: false, count: 0, error: err?.message ?? String(err), lastOkAt: lastOkAlt });
     }
