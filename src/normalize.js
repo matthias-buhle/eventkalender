@@ -3,17 +3,23 @@
 /** @typedef {'konzert'|'party'|'markt'|'fest'|'schau'|'sonstiges'} Art */
 
 const ART_REGELN = /** @type {[Art, RegExp][]} */ ([
-  ['konzert', /konzert|\brock\b|\bpop\b|metal|punk|jazz|liedermacher|hip.?hop|singer|songwriter|\blive\b|\bband\b|chor\b|orchester/],
-  ['party', /party|disco|diskothek|clubnacht|feiern|tanzabend|tanznacht|\bdj\b/],
+  ['konzert', /konzert|\brock\b|\bpop\b|metal|punk|jazz|liedermacher|hip.?hop|singer|songwriter|\blive\b|\bband\b|chor\b|orchester|oratorium|kantate|orgelmusik|orgelkonzert/],
+  ['party', /party|disco|diskothek|clubnacht|feiern|tanzabend|tanznacht|\bdj\b|silvester|jahreswechsel/],
   ['markt', /markt\b|m[aä]rkte\b|tr[oö]del|flohmarkt|basar|bazar/],
   ['schau', /schau\b|ausstellung|messe\b/],
-  ['fest', /fest|feier\b|kirmes|kirchweih|jubil|umzug/],
+  ['fest', /\bfest(?!ung|tag)|fest\b|feste\b|festival|feier\b|kirmes|kirchweih|jubil|umzug/],
 ]);
 
-function artAusText(text) {
+// Lesungen, Führungen, Theaterdinner usw. sind weder Fest noch Party, auch wenn das Wort vorkommt ("Babettes Fest").
+const KEIN_FEST = /lesung|f[uü]hrung|vortrag|theaterdinner|verkostung|workshop/;
+
+function artAusText(text, ohneFestUndParty = false) {
   const t = String(text ?? '').toLowerCase();
   if (!t) return null;
-  for (const [art, regel] of ART_REGELN) if (regel.test(t)) return art;
+  for (const [art, regel] of ART_REGELN) {
+    if (ohneFestUndParty && (art === 'fest' || art === 'party')) continue;
+    if (regel.test(t)) return art;
+  }
   return null;
 }
 
@@ -24,7 +30,11 @@ function artAusText(text) {
  * @returns {Art}
  */
 export function normalizeArt(categoryText, title) {
-  return /** @type {Art} */ (artAusText(categoryText) ?? artAusText(title) ?? 'sonstiges');
+  const art = artAusText(categoryText) ?? artAusText(title) ?? 'sonstiges';
+  if ((art === 'fest' || art === 'party') && KEIN_FEST.test(String(title ?? '').toLowerCase())) {
+    return /** @type {Art} */ (artAusText(title, true) ?? 'sonstiges');
+  }
+  return /** @type {Art} */ (art);
 }
 
 const STATUS_REGELN = /** @type {[string, RegExp][]} */ ([
@@ -161,8 +171,23 @@ export const SCHAU_SORTEN = {
   museum: 'Museum & Geschichte',
 };
 
-/** Unterarten je Art: Genres bei Konzerten, Sorten bei Märkten und Schauen. Andere Arten haben keine. */
-export const SORTEN = { konzert: GENRES, markt: MARKT_SORTEN, schau: SCHAU_SORTEN };
+export const PARTY_SORTEN = {
+  disco: 'Disco & Tanz',
+  club: 'Club & DJ',
+  silvester: 'Silvester & Ball',
+  fasching: 'Fasching & Karneval',
+};
+
+export const FEST_SORTEN = {
+  familie: 'Familie & Kinder',
+  stadtfest: 'Stadt- & Dorffest',
+  weihnachten: 'Weihnachten & Lichter',
+  essen: 'Essen & Trinken',
+  festival: 'Festival',
+};
+
+/** Unterarten je Art: Genres bei Konzerten, Sorten bei Märkten, Schauen, Partys und Festen. Andere Arten haben keine. */
+export const SORTEN = { konzert: GENRES, party: PARTY_SORTEN, markt: MARKT_SORTEN, fest: FEST_SORTEN, schau: SCHAU_SORTEN };
 
 const MARKT_REGELN = /** @type {[string, RegExp][]} */ ([
   ['weihnachtsmarkt', /weihnacht|advent|christkind|nikolaus|winterzauber|winterlicht|wintermarkt|lichtelfest|jolka/],
@@ -176,6 +201,22 @@ const SCHAU_REGELN = /** @type {[string, RegExp][]} */ ([
   ['hobby', /(?<!hubertus)messe\b|modellbahn|modellbau|modellauto|b[oö]rse|sammler|hobby|briefmarken|spielzeug/],
   ['kunst', /kunst|galerie|malerei|gem[aä]lde|foto|collage|vernissage|ausstellungser[oö]ffnung|zeichn|skulptur|grafik|k[uü]nstler|finissage|bildhauer|\bmale\b/],
   ['museum', /museum|sonderausstellung|f[uü]hrung|geschicht|geologisch|heimat|kabinettausstellung|synagog|j[uü]disch|bibliothek|archiv/],
+]);
+
+// Reihenfolge = Vorrang: Fasching vor Ball, Silvester vor Club ("Silvester Party mit DJ" ist Silvester).
+const PARTY_REGELN = /** @type {[string, RegExp][]} */ ([
+  ['fasching', /fasching|karneval|prunksitzung|fastnacht|fasnacht|\bbkc\b|narren/],
+  ['silvester', /silvester|jahreswechsel|neujahr|\bball\b|(?:weihnachts|abschluss|tanz|fest|ernte|k[oö]nigs|sommer|herbst)ball\b/],
+  ['club', /\bdj\b|club|aftershow|after.?party|techno|elektro|electro|\bhouse\b|takeover|\brave\b/],
+  ['disco', /disco|disko|80er|90er|2000er|\b[89]0.?s\b|tanz|retro/],
+]);
+
+const FEST_REGELN = /** @type {[string, RegExp][]} */ ([
+  ['festival', /festival|open.?air/],
+  ['weihnachten', /weihnacht|advent|lichterfest|nikolaus|pyramide/],
+  ['familie', /familie|kinder|m[aä]rchen|martin|laterne|kasper|puppen|oster/],
+  ['essen', /suppe|\bwein|bier|schlemm|kulinar|gourmet|ernte|kartoffel|k[aä]se|\bbrot|fisch|grill|wurst|genuss|apfel|pilz/],
+  ['stadtfest', /stadt|dorf|festumzug|jubil|kirmes|kirchweih|heimat|volksfest|umzug|sommerfest|herbstfest|schlossfest|burgfest|hoffest|gartenfest|vereinsfest|sch[uü]tzenfest/],
 ]);
 
 function ratenAus(regeln, texte) {
@@ -198,6 +239,8 @@ export function detectSorte(art, ...texte) {
   if (art === 'konzert') return detectGenre(...texte);
   if (art === 'markt') return ratenAus(MARKT_REGELN, texte);
   if (art === 'schau') return ratenAus(SCHAU_REGELN, texte);
+  if (art === 'party') return ratenAus(PARTY_REGELN, texte);
+  if (art === 'fest') return ratenAus(FEST_REGELN, texte);
   return null;
 }
 

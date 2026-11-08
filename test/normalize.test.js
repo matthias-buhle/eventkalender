@@ -159,3 +159,69 @@ test('passendeSorte: ein Schlüssel zählt nur bei der Art, zu der er gehört', 
   assert.equal(passendeSorte('konzert', null), null);
   assert.equal(passendeSorte('konzert', 'toString'), null);
 });
+
+test('normalizeArt: "fest" nur als Fest, nicht in Befestigung, Festung, Festtage; Lesung, Führung, Theaterdinner sind kein Fest oder Party', () => {
+  assert.equal(normalizeArt('', '8. Lauterbacher Suppenfest'), 'fest');
+  assert.equal(normalizeArt('', 'Pyramidenfest'), 'fest');
+  assert.equal(normalizeArt('', 'Festumzug zum Stadtjubiläum'), 'fest');
+  assert.equal(normalizeArt('', 'Märchenfest Zittau'), 'fest');
+  assert.equal(normalizeArt('', 'Führung durch die Stadtbefestigung'), 'sonstiges');
+  assert.equal(normalizeArt('Stadtfest', 'Führung: Türme, Tore und Rondelle'), 'sonstiges', 'der Titel entscheidet gegen eine ungenaue Kategorie');
+  assert.equal(normalizeArt('', 'Lesung: Verflixte Festtage'), 'sonstiges');
+  assert.equal(normalizeArt('', 'Szenische Lesung "Babettes Fest"'), 'sonstiges');
+  assert.equal(normalizeArt('', 'Theaterdinner "Die Schneekönigin"'), 'sonstiges');
+  assert.equal(normalizeArt('', 'Weinverkostung mit begleitendem Menü'), 'sonstiges');
+});
+
+test('normalizeArt: Oratorium, Kantate und Orgelmusik sind Konzerte; Silvester und Jahreswechsel sind Party', () => {
+  assert.equal(normalizeArt('', 'J. S. Bach: Weihnachtsoratorium I-III'), 'konzert');
+  assert.equal(normalizeArt('', 'Weihnachtliche Orgelmusik an der Silbermann-Orgel'), 'konzert');
+  assert.equal(normalizeArt('', 'Silvesterfeier im Panoramarestaurant'), 'party');
+  assert.equal(normalizeArt('', 'Jahreswechsel im Bildungsgut'), 'party');
+});
+
+test('detectSorte(party): Disco & Tanz, Club & DJ, Silvester & Ball, Fasching & Karneval; sonst null', () => {
+  const p = (...t) => detectSorte('party', ...t);
+  assert.equal(p('80er 90er Party'), 'disco');
+  assert.equal(p('Kirmestanz in Radibor mit der Band SerBeat'), 'disco');
+  assert.equal(p('Discofox & Schlager XXL – Nikolaus Edition'), 'disco');
+  assert.equal(p("Párty bez puberťáků 30+ : best of 80’s a 90’s"), 'disco');
+  assert.equal(p('QUERBEET PARTY mit DJ Basti'), 'club');
+  assert.equal(p('CSD Aftershowparty'), 'club');
+  assert.equal(p('FMLTHRPY Papír Takeover'), 'club');
+  assert.equal(p('Silvester Party 2026'), 'silvester');
+  assert.equal(p('Jahreswechsel im Bildungsgut Schmochtitz'), 'silvester');
+  assert.equal(p('Weihnachtsball'), 'silvester');
+  assert.equal(p('Prunksitzung des BKC'), 'fasching');
+  assert.equal(p('Faschingsball der Narren'), 'fasching', 'Fasching geht vor Ball');
+  assert.equal(p('Auftakt - Ein märchenhafter Abend mit dem BKC (P18+)'), 'fasching');
+  assert.equal(p('After- Work im "Hirsch"'), null);
+  assert.equal(p('Fußballparty zum Finale'), null, 'Ball im Wort ist kein Ball');
+});
+
+test('detectSorte(fest): Familie & Kinder, Stadt- & Dorffest, Weihnachten & Lichter, Essen & Trinken, Festival; sonst null', () => {
+  const f = (...t) => detectSorte('fest', ...t);
+  assert.equal(f('Märchenfest Zittau'), 'familie');
+  assert.equal(f('Martinsumzug in Königstein'), 'familie');
+  assert.equal(f('Familienfest im Naturkundemuseum'), 'familie');
+  assert.equal(f('Festumzug zum Stadtjubiläum'), 'stadtfest');
+  assert.equal(f('Kirmes in Radibor'), 'stadtfest');
+  assert.equal(f('Lichterzauber - Herbstfest im Waldschulheim'), 'stadtfest');
+  assert.equal(f('Pyramidenfest'), 'weihnachten');
+  assert.equal(f('Weihnachtszeit: Lichterfest am Sächsischen Haus'), 'weihnachten');
+  assert.equal(f('Seniorenweihnachtsfeier Sebnitz'), 'weihnachten');
+  assert.equal(f('8. Lauterbacher Suppenfest'), 'essen');
+  assert.equal(f('Weinfest am Schloss'), 'essen');
+  assert.equal(f('17. Europäisches Filmfestival der Generationen'), 'festival');
+  assert.equal(f('Open-Air am See'), 'festival');
+  assert.equal(f('Zärtlichkeiten mit Freunden'), null);
+});
+
+test('Unterarten stehen in Erkennung (src) und Seite (site/js/arten.js) mit denselben Schlüsseln und Namen', async () => {
+  const { SORTEN: site } = await import('../site/js/arten.js');
+  const { SORTEN: src } = await import('../src/normalize.js');
+  assert.deepEqual(Object.keys(site), Object.keys(src));
+  for (const art of Object.keys(src)) assert.deepEqual(site[art].liste, src[art], art);
+  const alle = Object.entries(site).flatMap(([, d]) => [...Object.keys(d.liste), d.sonstige]);
+  assert.equal(new Set(alle).size, alle.length, 'Schlüssel sind über alle Arten eindeutig');
+});
