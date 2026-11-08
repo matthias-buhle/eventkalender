@@ -55,6 +55,10 @@ test('cleanText entfernt Tags, Skripte und Entitäten', () => {
   assert.equal(cleanText('  viel \n\n Leerraum\t'), 'viel Leerraum');
 });
 
+test('cleanText löst auch Mittelpunkt, Malzeichen, Aufzählungspunkt und Gradzeichen auf', () => {
+  assert.equal(cleanText('10&ndash;18 Uhr &middot; 2&times; im Monat &bull; 20&deg;'), '10–18 Uhr · 2× im Monat • 20°');
+});
+
 test('shorten kürzt an Wortgrenze mit Auslassungszeichen und lässt Kurzes unverändert', async () => {
   const { shorten } = await import('../src/normalize.js');
   assert.equal(shorten('kurz', 10), 'kurz');

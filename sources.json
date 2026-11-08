@@ -80,5 +80,46 @@
     "url": "https://app.ticketmaster.com/discovery/v2/events.json",
     "radiusKm": 75,
     "maxPages": 5
+  },
+  "gefluegel": {
+    "enabled": true,
+    "listUrl": "https://www.rassegefluegel-oberlausitz.de/veranstaltungen/rubrik.php?nummer=5551",
+    "minDelayMs": 10000,
+    "horizonDays": 60,
+    "maxDetailPages": 60
+  },
+  "maerkte": {
+    "enabled": true,
+    "urls": [
+      "https://meine-flohmarkt-termine.de/de/plz-gebiet/01",
+      "https://meine-flohmarkt-termine.de/de/plz-gebiet/02",
+      "https://meine-kunsthandwerker-termine.de/de/plz-gebiet/01",
+      "https://meine-kunsthandwerker-termine.de/de/plz-gebiet/02"
+    ],
+    "horizonDays": 60,
+    "maxPages": 8,
+    "ausserhalbPlz": [
+      "0158",
+      "0159",
+      "0160",
+      "0161",
+      "0162"
+    ]
+  },
+  "neustadthalle": {
+    "enabled": true,
+    "url": "https://www.neustadthalle.de/veranstaltungen.html",
+    "horizonDays": 60,
+    "contact": {
+      "phone": "+493596587555",
+      "url": "https://www.neustadthalle.de",
+      "email": null
+    }
+  },
+  "stolpen": {
+    "enabled": true,
+    "listUrl": "https://www.stolpen.de/liste-aller-veranstaltungen",
+    "horizonDays": 90,
+    "maxDetailPages": 40
   }
 }

@@ -60,12 +60,12 @@ export function createPoliteClient({
     return run;
   }
 
-  async function get(url, { as = 'text' } = {}) {
+  async function get(url, { as = 'text', minDelayMs = 0 } = {}) {
     const u = new URL(url);
     const robots = await robotsFor(u.origin);
     if (robots && robots.isAllowed(url, token) === false) throw new RobotsDisallowedError(url);
     const crawlDelay = robots?.getCrawlDelay(token);
-    const delayMs = Math.max(perHostDelayMs, (crawlDelay ?? 0) * 1000);
+    const delayMs = Math.max(perHostDelayMs, (crawlDelay ?? 0) * 1000, minDelayMs);
 
     return schedule(u.host, delayMs, async () => {
       let res = await request(url);

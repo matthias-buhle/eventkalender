@@ -67,6 +67,7 @@ const ENTITAETEN = {
   auml: 'ä', ouml: 'ö', uuml: 'ü', Auml: 'Ä', Ouml: 'Ö', Uuml: 'Ü', szlig: 'ß',
   ndash: '–', mdash: '—', hellip: '…', euro: '€', laquo: '«', raquo: '»',
   bdquo: '„', ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’',
+  middot: '·', times: '×', bull: '•', deg: '°', copy: '©', reg: '®', sect: '§', eacute: 'é', egrave: 'è',
 };
 
 function decodeEntities(text) {

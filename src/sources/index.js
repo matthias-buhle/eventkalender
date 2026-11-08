@@ -8,5 +8,12 @@ import * as goerlitz from './goerlitz.js';
 import * as augusto from './augusto.js';
 import * as goout from './goout.js';
 import * as ticketmaster from './ticketmaster.js';
+import * as gefluegel from './gefluegel.js';
+import * as maerkte from './maerkte.js';
+import * as neustadthalle from './neustadthalle.js';
+import * as stolpen from './stolpen.js';
 
-export const adapters = [aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster];
+export const adapters = [
+  aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster,
+  gefluegel, maerkte, neustadthalle, stolpen,
+];

@@ -94,3 +94,13 @@ test('sendet den eigenen User-Agent', async () => {
   await c.get('http://example.invalid/x').catch(() => {});
   assert.match(seen, /^eventkalender-ostsachsen\/1\.0/);
 });
+
+test('minDelayMs eines Abrufs verlängert den Abstand über perHostDelayMs hinaus', async () => {
+  robotsBody = 'User-agent: *\nDisallow: /private\n';
+  const clock = fakeClock();
+  const c = newClient({ ...clock, perHostDelayMs: 2000 });
+  await c.get(`${base}/a`, { minDelayMs: 10000 });
+  await c.get(`${base}/b`, { minDelayMs: 10000 });
+  assert.ok(clock.sleeps.some((ms) => ms >= 10000), `Wartezeiten: ${clock.sleeps}`);
+  robotsBody = 'User-agent: *\nDisallow: /private\nCrawl-delay: 1\n';
+});
