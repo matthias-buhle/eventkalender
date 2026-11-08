@@ -81,15 +81,12 @@ export function pruefeLauf({ events, status }) {
   if (events.length === 0) throw new Error('Lauf abgebrochen: keine Termine entstanden');
 }
 
-/** Ab so vielen Einwohnern erscheint ein Ort in der Auswahl; Sebnitz (Standard, rund 9.000) immer. */
-const MIN_EINWOHNER_AUSWAHL = 9000;
-
-/** Die Orte für die Auswahl "Ort + Umkreis" auf der Seite: größere Orte im Radius, nach Namen sortiert. */
+/** Die Orte für die Auswahl "Ort + Umkreis" auf der Seite: die in places.json mit "auswahl" markierten Mittelpunkte, nach Namen sortiert. */
 export function ortsliste() {
   const orte = JSON.parse(readFileSync(new URL('./places.json', import.meta.url), 'utf8'));
   return orte
     .filter((o) => distanceKm(CENTER, o) <= RADIUS_KM)
-    .filter((o) => o.name === 'Sebnitz' || (o.einwohner ?? 0) >= MIN_EINWOHNER_AUSWAHL)
+    .filter((o) => o.auswahl === true)
     .map(({ name, lat, lon, country }) => ({ name, lat, lon, country }))
     .sort((a, b) => a.name.localeCompare(b.name, 'de'));
 }

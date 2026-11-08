@@ -164,13 +164,11 @@ test('status nennt Orte, die das Ortsverzeichnis nicht kennt (gelieferte Termine
   assert.deepEqual(sauber.status[0].unbekannteOrte, []);
 });
 
-test('ortsliste: nur größere Orte (ab 9.000 Einwohnern) und Sebnitz als Standard, mit Name, Koordinaten und Land, nach Namen sortiert', () => {
+test('ortsliste: genau 8 feste Mittelpunkte (Sebnitz als Standard), mit Name, Koordinaten und Land, nach Namen sortiert', () => {
   const liste = ortsliste();
   const namen = liste.map((o) => o.name);
-  assert.ok(namen.length >= 30 && namen.length <= 70, `Länge ${namen.length}`);
-  for (const gross of ['Dresden', 'Bautzen', 'Görlitz', 'Pirna', 'Coswig', 'Freiberg', 'Liberec', 'Děčín', 'Sebnitz']) assert.ok(namen.includes(gross), gross);
-  for (const klein of ['Hohnstein', 'Rathen', 'Stolpen', 'Bad Schandau', 'Pulsnitz']) assert.ok(!namen.includes(klein), klein);
-  assert.deepEqual(Object.keys(liste[0]).sort(), ['country', 'lat', 'lon', 'name']);
+  assert.deepEqual([...namen].sort(), ['Bautzen', 'Dresden', 'Děčín', 'Görlitz', 'Kamenz', 'Pirna', 'Sebnitz', 'Zittau'].sort());
   assert.deepEqual(namen, [...namen].sort((a, b) => a.localeCompare(b, 'de')));
-  assert.ok(!namen.includes('Ulm') && !namen.includes('Berlin'), 'ferne Orte sind keine Mitte zur Auswahl');
+  assert.deepEqual(Object.keys(liste[0]).sort(), ['country', 'lat', 'lon', 'name']);
+  assert.equal(liste.find((o) => o.name === 'Děčín').country, 'CZ');
 });

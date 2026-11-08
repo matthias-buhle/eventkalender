@@ -103,7 +103,8 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
     option.setAttribute('value', name);
     auswahl.append(option);
   }
-  // Ein gespeicherter Ort, den es nicht mehr gibt, zeigt Sebnitz (so rechnet auch der Filter).
+  // Ein gespeicherter Ort, der nicht (mehr) zur Auswahl gehört, gilt als Sebnitz; nur wenn die Liste geladen wurde.
+  if (prefs.ort && orteListe.length && !namen.includes(prefs.ort)) prefs.ort = null;
   auswahl.value = prefs.ort && namen.includes(prefs.ort) ? prefs.ort : STANDARD_ORT;
   ortLabel.append(auswahl);
 
