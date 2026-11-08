@@ -1,1 +1,17 @@
-{}
+{
+  "aust": {
+    "enabled": true,
+    "venues": [
+      {
+        "name": "Alter Schlachthof",
+        "baseUrl": "https://www.alter-schlachthof.de",
+        "contact": { "phone": "+49351431310", "url": "https://www.alter-schlachthof.de", "email": "info@aust-konzerte.com" }
+      },
+      {
+        "name": "Junge Garde",
+        "baseUrl": "https://www.junge-garde.com",
+        "contact": { "phone": "+49351431310", "url": "https://www.junge-garde.com", "email": "info@aust-konzerte.com" }
+      }
+    ]
+  }
+}
