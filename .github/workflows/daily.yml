@@ -1,4 +1,4 @@
-name: Täglich aktualisieren
+name: Taeglich aktualisieren
 
 on:
   schedule:
