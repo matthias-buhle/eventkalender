@@ -37,5 +37,26 @@
       "url": "https://www.kamenz.de/veranstaltungskalender.html",
       "email": null
     }
+  },
+  "bischofswerda": {
+    "enabled": true,
+    "url": "https://www.bischofswerda.de/veranstaltungen/rss"
+  },
+  "goerlitz": {
+    "enabled": true,
+    "note": "Nutzungsrecht angefragt, bei Nein abschalten",
+    "url": "https://www.goerlitz.de/termine/api",
+    "days": 60,
+    "maxPages": 150
+  },
+  "augusto": {
+    "enabled": true,
+    "note": "Nutzungsrecht angefragt, bei Nein abschalten",
+    "baseUrl": "https://augusto-sachsen.de/veranstaltungen/api/1.0/export",
+    "slugs": [
+      "stadt-bautzen"
+    ],
+    "days": 60,
+    "maxPages": 80
   }
 }
