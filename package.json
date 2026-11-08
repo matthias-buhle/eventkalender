@@ -9,6 +9,11 @@
     "build": "node src/build.js"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
+    "fast-xml-parser": "^5.12.0",
     "robots-parser": "^3.0.1"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.15"
   }
 }

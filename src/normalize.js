@@ -93,3 +93,17 @@ export function cleanText(htmlOrText) {
     .replace(/<[^>]*>/g, '');
   return decodeEntities(ohneTags).replace(/\s+/g, ' ').trim();
 }
+
+/**
+ * Kürzt Text auf höchstens n Zeichen an einer Wortgrenze und hängt "…" an.
+ * @param {string|undefined|null} text
+ * @param {number} n
+ * @returns {string}
+ */
+export function shorten(text, n) {
+  const t = String(text ?? '');
+  if (t.length <= n) return t;
+  const kopf = t.slice(0, n - 1);
+  const wortende = kopf.lastIndexOf(' ');
+  return `${(wortende > 0 ? kopf.slice(0, wortende) : kopf).trimEnd()}…`;
+}
