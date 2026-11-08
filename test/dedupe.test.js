@@ -77,3 +77,8 @@ test('derselbe Termin (gleiche Quelle, gleicher Link) zweimal geliefert wird zu 
   const a = ev({ sourceId: '7' });
   assert.equal(dedupe([a, { ...a }]).length, 1);
 });
+
+test('beim Zusammenführen bleibt ein bekanntes Genre erhalten', () => {
+  const [e] = dedupe([ev({ genre: null }), ev({ sourceName: 'B', sourceUrl: 'https://b.example/1', genre: 'comedy' })]);
+  assert.equal(e.genre, 'comedy');
+});

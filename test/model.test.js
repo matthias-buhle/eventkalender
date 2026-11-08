@@ -42,3 +42,8 @@ test('makeEvent setzt Standardwerte', () => {
   assert.equal(e.ticketStatus, null);
   assert.equal('sourceId' in e, false);
 });
+
+test('makeEvent: genre ist standardmäßig null und wird sonst übernommen', () => {
+  assert.equal(makeEvent(base).genre, null);
+  assert.equal(makeEvent({ ...base, genre: 'jazz' }).genre, 'jazz');
+});

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeArt, detectStatus, normalizePhone, cleanText } from '../src/normalize.js';
+import { normalizeArt, detectStatus, normalizePhone, cleanText, detectGenre } from '../src/normalize.js';
 
 test('detectStatus erkennt Ausverkauft in Plus-Klammern', () => {
   assert.equal(detectStatus('+++Ausverkauft+++'), 'ausverkauft');
@@ -65,4 +65,45 @@ test('shorten kürzt an Wortgrenze mit Auslassungszeichen und lässt Kurzes unve
   assert.equal(shorten('eins zwei drei vier', 12), 'eins zwei…');
   assert.equal(shorten('', 5), '');
   assert.equal(shorten(null, 5), '');
+});
+
+test('detectGenre: Genre aus Titel, Kategorie und Beschreibung (deutsch und englisch); unklar bleibt null', () => {
+  const g = (...t) => detectGenre(...t);
+  assert.equal(g('Danger Dan', '"Keine Angst"-Tour 2027'), null);
+  assert.equal(g('Weihnachtskonzert vom Frauenchor MELODIVEN'), 'klassik');
+  assert.equal(g('Elbland Philharmonie Sachsen „Bella Italia“'), 'klassik');
+  assert.equal(g('Fagottkonzert', 'Studierende der Hochschule für Musik'), 'klassik');
+  assert.equal(g('Weihnachtszauber am Klavier mit Mark Ehrenfried'), 'klassik');
+  assert.equal(g('Swingin‘ Santa Bigbandkonzerte 2026'), 'jazz');
+  assert.equal(g('Jazzabend im Keller'), 'jazz');
+  assert.equal(g('Bluesnight mit den Dirty Strings'), 'jazz');
+  assert.equal(g('Johann König', 'Heute ein König', 'Comedy'), 'comedy');
+  assert.equal(g('Kabarett: Die Dresdner Spitzen'), 'comedy');
+  assert.equal(g('Stand-up Night'), 'comedy');
+  assert.equal(g('Die Nacht der Musicals'), 'musical');
+  assert.equal(g('Heavy Metal Open Air'), 'metal-punk');
+  assert.equal(g('Punkrock im Hinterhof'), 'metal-punk');
+  assert.equal(g('Rockkonzert mit den Stones Revival'), 'rock-pop');
+  assert.equal(g('Popchor Dresden'), 'rock-pop');
+  assert.equal(g('Alive', 'Pop / Rock'), 'rock-pop');
+  assert.equal(g('Schlagerparty mit Andy Borg'), 'schlager-folk');
+  assert.equal(g('Volksmusikabend'), 'schlager-folk');
+  assert.equal(g('Hip-Hop Jam'), 'hiphop-elektro');
+  assert.equal(g('Techno Night'), 'hiphop-elektro');
+  assert.equal(g('Classical Music'), 'klassik');
+  assert.equal(g('Dance/Electronic'), 'hiphop-elektro');
+  assert.equal(g('', ''), null);
+  assert.equal(g(undefined), null);
+});
+
+test('detectGenre: ein früher genannter Text zählt vor späteren; "Konzert" allein sagt nichts über das Genre', () => {
+  assert.equal(detectGenre('Konzertabend "BESSER SPÄT ALS NIE"'), null);
+  assert.equal(detectGenre('Jazz', 'Ein Abend mit Orchester'), 'jazz');
+  assert.equal(detectGenre('Sinfoniekonzert', 'Rock-Klassiker für Orchester'), 'klassik');
+});
+
+test('detectGenre: Wortteile täuschen nicht ("Höhepunkt" ist kein Punk), Blasorchester sind Blasmusik', () => {
+  assert.equal(detectGenre('Weihnachtskonzert', 'der Jahreshöhepunkt mit Wunderpunkt'), null);
+  assert.equal(detectGenre('Post Punk Convention'), 'metal-punk');
+  assert.equal(detectGenre('Frühjahrskonzert', 'Das Blasorchester der Lessingstadt'), 'schlager-folk');
 });

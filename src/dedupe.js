@@ -28,6 +28,7 @@ function merge(a, b) {
     lat: erster(a.lat, b.lat),
     lon: erster(a.lon, b.lon),
     distanceKm: erster(a.distanceKm, b.distanceKm),
+    genre: erster(a.genre, b.genre),
     tags: [...new Set([...a.tags, ...b.tags])],
     contact: {
       phone: erster(a.contact.phone, b.contact.phone),

@@ -4,6 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { todayBerlin } from './time.js';
 import { CENTER, RADIUS_KM, distanceKm, resolvePlace } from './geo.js';
 import { dedupe } from './dedupe.js';
+import { detectGenre } from './normalize.js';
 import { createPoliteClient } from './http.js';
 
 const MIN_ERGIEBIG = 5;
@@ -12,6 +13,13 @@ const MIN_ERGIEBIG = 5;
  * @typedef {{name:string, ok:boolean, count:number, error:string|null, lastOkAt:string|null, unbekannteOrte?:string[]}} SourceStatus
  */
 
+/** Genre nur raten, wo es sinnvoll ist: bei Konzerten alle Genres, sonst nur Comedy und Musical. */
+function genreVon(e) {
+  const genre = detectGenre(e.title, e.description);
+  if (e.art === 'konzert') return genre;
+  return e.art === 'sonstiges' && (genre === 'comedy' || genre === 'musical') ? genre : null;
+}
+
 function anreichern(e) {
   let { lat, lon, country } = e;
   if (lat == null || lon == null) {
@@ -19,7 +27,7 @@ function anreichern(e) {
     if (ort) ({ lat, lon, country } = ort);
   }
   const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
-  return { ...e, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
+  return { ...e, genre: e.genre ?? genreVon(e), lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
 }
 
 /** Ortsnamen, die das Ortsverzeichnis nicht kennt: aus gelieferten Terminen und aus dem, was der Adapter verworfen hat. */

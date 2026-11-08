@@ -138,3 +138,11 @@ test('Fußzeile setzt Quellennamen als Text, nicht als HTML', () => {
   assert.equal(fuss.querySelectorAll('b').length, 0);
   assert.ok(fuss.textContent.includes('<b>x</b>'));
 });
+
+test('Karte nennt das Genre hinter der Art; ohne (oder mit unbekanntem) Genre kein Zusatz', () => {
+  assert.equal(renderEventCard(document, ev({ genre: 'rock-pop' })).querySelector('.genre').textContent, 'Rock & Pop');
+  assert.equal(renderEventCard(document, ev({ genre: 'comedy', art: 'sonstiges' })).querySelector('.genre').textContent, 'Comedy & Kabarett');
+  assert.equal(renderEventCard(document, ev({ genre: null })).querySelector('.genre'), null);
+  assert.equal(renderEventCard(document, ev({ genre: '<b>x</b>' })).querySelector('.genre'), null);
+  assert.equal(renderEventCard(document, ev()).querySelector('.genre'), null, 'ältere Daten ohne genre');
+});

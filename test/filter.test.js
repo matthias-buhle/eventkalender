@@ -91,12 +91,12 @@ test('loadPrefs liefert Standard ohne Speicher, bei werfendem Speicher und bei f
 });
 
 test('Standard blendet nichts aus: 75 km, Tschechien an', () => {
-  assert.deepEqual(DEFAULT_PREFS, { hiddenArt: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', von: null, bis: null });
+  assert.deepEqual(DEFAULT_PREFS, { hiddenArt: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', von: null, bis: null });
 });
 
 test('savePrefs und loadPrefs: Rundlauf; werfender Speicher löst keine Ausnahme aus', () => {
   const speicher = fakeStorage();
-  const eigene = { hiddenArt: ['markt'], hiddenTags: ['kinder'], maxKm: 30, showCZ: false, ort: 'Bautzen', zeit: 'bereich', von: '2026-12-01', bis: '2026-12-24' };
+  const eigene = { hiddenArt: ['markt'], hiddenGenres: ['jazz'], hiddenTags: ['kinder'], maxKm: 30, showCZ: false, ort: 'Bautzen', zeit: 'bereich', von: '2026-12-01', bis: '2026-12-24' };
   savePrefs(speicher, eigene);
   assert.deepEqual(loadPrefs(speicher), eigene);
   assert.doesNotThrow(() => savePrefs({ setItem() { throw new Error('voll'); } }, eigene));

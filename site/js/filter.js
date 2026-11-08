@@ -3,7 +3,7 @@
 /**
  * ort: Mitte des Umkreises (Name aus dem Ortsverzeichnis) oder null für Sebnitz.
  * zeit: 'alle' | 'heute' | 'wochenende' | '7' | '30' | 'bereich' (dann gelten von/bis, JJJJ-MM-TT).
- * @typedef {{hiddenArt:string[], hiddenTags:string[], maxKm:number, showCZ:boolean, ort:string|null, zeit:string, von:string|null, bis:string|null}} Prefs
+ * @typedef {{hiddenArt:string[], hiddenGenres:string[], hiddenTags:string[], maxKm:number, showCZ:boolean, ort:string|null, zeit:string, von:string|null, bis:string|null}} Prefs
  */
 
 const SCHLUESSEL = 'eventkalender.prefs';
@@ -11,7 +11,7 @@ export const ZEITEN = ['alle', 'heute', 'wochenende', '7', '30', 'bereich'];
 const TAG = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 
 /** @type {Prefs} */
-export const DEFAULT_PREFS = Object.freeze({ hiddenArt: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', von: null, bis: null });
+export const DEFAULT_PREFS = Object.freeze({ hiddenArt: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', von: null, bis: null });
 
 const R = 6371;
 const rad = (d) => (d * Math.PI) / 180;
@@ -75,6 +75,11 @@ export function lastDay(ev) {
   return mitternacht ? tagDavor(ende) : ende;
 }
 
+/** Das Genre, nach dem gefiltert wird: Konzerte ohne bekanntes Genre heißen 'sonstige', andere Arten ohne Genre haben keins. */
+function genreFilter(e) {
+  return e.genre ?? (e.art === 'konzert' ? 'sonstige' : null);
+}
+
 /**
  * Filtert nach Einstellungen und entfernt Vergangenes. Ein Termin von heute bleibt bis Tagesende (Berliner Zeit).
  * @param {any[]} events
@@ -90,6 +95,7 @@ export function applyFilters(events, prefs, nowIso, orte = {}) {
     if (lastDay(e) < fenster.von) return false;
     if (fenster.bis && e.start.slice(0, 10) > fenster.bis) return false;
     if (prefs.hiddenArt.includes(e.art)) return false;
+    if (prefs.hiddenGenres.includes(genreFilter(e))) return false;
     if ((e.tags ?? []).some((t) => prefs.hiddenTags.includes(t))) return false;
     if (mitte) {
       if (Number.isFinite(e.lat) && Number.isFinite(e.lon) && luftlinieKm(mitte, e) > prefs.maxKm) return false;
@@ -125,9 +131,10 @@ const stringListe = (wert) => (Array.isArray(wert) ? wert.filter((x) => typeof x
 export function loadPrefs(storage) {
   try {
     const roh = JSON.parse(storage?.getItem(SCHLUESSEL) ?? 'null');
-    if (!roh || typeof roh !== 'object' || Array.isArray(roh)) return { ...DEFAULT_PREFS, hiddenArt: [], hiddenTags: [] };
+    if (!roh || typeof roh !== 'object' || Array.isArray(roh)) return { ...DEFAULT_PREFS, hiddenArt: [], hiddenGenres: [], hiddenTags: [] };
     return {
       hiddenArt: stringListe(roh.hiddenArt),
+      hiddenGenres: stringListe(roh.hiddenGenres),
       hiddenTags: stringListe(roh.hiddenTags),
       maxKm: Number.isFinite(roh.maxKm) && roh.maxKm > 0 ? Math.min(roh.maxKm, DEFAULT_PREFS.maxKm) : DEFAULT_PREFS.maxKm,
       showCZ: typeof roh.showCZ === 'boolean' ? roh.showCZ : DEFAULT_PREFS.showCZ,
@@ -137,7 +144,7 @@ export function loadPrefs(storage) {
       bis: TAG.test(roh.bis) ? roh.bis : null,
     };
   } catch {
-    return { ...DEFAULT_PREFS, hiddenArt: [], hiddenTags: [] };
+    return { ...DEFAULT_PREFS, hiddenArt: [], hiddenGenres: [], hiddenTags: [] };
   }
 }
 

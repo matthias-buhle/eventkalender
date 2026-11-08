@@ -97,3 +97,14 @@ test('ticketmaster: ohne Schlüssel leer und Fehlertext im Status', async () => 
   assert.equal(status[0].error, 'kein Schlüssel');
   assert.equal(http.urls.length, 0, 'ohne Schlüssel wird nichts abgerufen');
 });
+
+test('ticketmaster: Genre aus der Klassifizierung (Musik und Bühne), unbekanntes Genre bleibt leer', async () => {
+  const mitKlasse = (klasse) => ({ ...seite0, _embedded: { events: [{ ...seite0._embedded.events[0], classifications: [klasse] }] } });
+  const genreVon = async (klasse) => (await fetchEvents({ http: fakeHttp([mitKlasse(klasse)]), today: '2026-11-08', config }))[0].genre;
+  assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Rock' } }), 'rock-pop');
+  assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Alternative' } }), 'rock-pop');
+  assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Klassik' } }), 'klassik');
+  assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Pop' }, subGenre: { name: 'Schlager' } }), 'schlager-folk');
+  assert.equal(await genreVon({ segment: { name: 'Kunst & Theater' }, genre: { name: 'Comedy' } }), 'comedy');
+  assert.equal(await genreVon({ segment: { name: 'Musik' }, genre: { name: 'Undefined' } }), null);
+});

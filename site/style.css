@@ -70,6 +70,7 @@ h1 { font-size: 1.35rem; margin: 0; }
 .gruppe { display: flex; flex-direction: column; gap: 8px; }
 .gruppentitel { margin: 0; font-size: 0.85rem; color: var(--muted); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.genre { color: var(--muted); }
 .ort { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; color: var(--muted); }
 .regler { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; }
 .regler input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--accent); }
