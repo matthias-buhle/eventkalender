@@ -1,5 +1,6 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { sorteName } from './arten.js';
+import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
 const ARTEN = { markt: 'Markt', konzert: 'Konzert', party: 'Party', fest: 'Fest', schau: 'Schau', sonstiges: 'Sonstiges' };
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
@@ -63,46 +64,97 @@ function link(doc, text, href, klasse) {
   return a;
 }
 
+/** Die Knöpfe in der Reihenfolge Webseite, Tickets, Anrufen, E-Mail; der erste Webknopf ist der Hauptknopf. */
 function kontaktKnoepfe(doc, ev) {
   const zeile = el(doc, 'p', 'actions');
   const c = ev.contact ?? {};
-  const ziffern = typeof c.phone === 'string' ? c.phone.replace(/[^\d+]/g, '') : '';
-  if (ziffern.replace(/\D/g, '').length >= 5) zeile.append(link(doc, 'Anrufen', `tel:${ziffern}`, 'btn'));
   const web = safeHref(c.url);
   if (web && /^https?:/i.test(web)) zeile.append(link(doc, 'Zur Webseite', web, 'btn'));
+  const ticket = safeHref(ev.ticketUrl);
+  if (ticket && /^https?:/i.test(ticket)) zeile.append(link(doc, 'Tickets', ticket, 'btn'));
+  zeile.firstElementChild?.setAttribute('class', 'btn primaer');
+  const ziffern = typeof c.phone === 'string' ? c.phone.replace(/[^\d+]/g, '') : '';
+  if (ziffern.replace(/\D/g, '').length >= 5) zeile.append(link(doc, 'Anrufen', `tel:${ziffern}`, 'btn'));
   if (typeof c.email === 'string' && /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/.test(c.email.trim())) {
     zeile.append(link(doc, 'E-Mail', `mailto:${c.email.trim()}`, 'btn'));
   }
-  const ticket = safeHref(ev.ticketUrl);
-  if (ticket && /^https?:/i.test(ticket)) zeile.append(link(doc, 'Tickets', ticket, 'btn'));
-  return zeile.childNodes.length ? zeile : null;
+  return zeile;
 }
 
-/** Eine Terminkarte. */
-export function renderEventCard(doc, ev) {
-  const karte = el(doc, 'article', `card art-${ARTEN[ev.art] ? ev.art : 'sonstiges'}`);
-  karte.append(el(doc, 'h3', 'title', ev.title));
-  const meta = el(doc, 'p', 'meta');
-  meta.append(el(doc, 'span', 'art', artName(ev.art)));
+/** Zeile 1: links Art, Sorte und Land, rechts die Gemeinde. */
+function kopfzeile(doc, ev, gemeinde) {
+  const kopf = el(doc, 'div', 'kartenkopf');
+  const art = el(doc, 'span', 'art-zeile');
+  art.append(el(doc, 'span', 'art', artName(ev.art)));
   const sorte = sorteName(ev);
-  if (sorte) meta.append(' · ', el(doc, 'span', 'genre', sorte));
-  if (ev.ticketStatus && STATUS[ev.ticketStatus]) meta.append(' ', el(doc, 'span', `status status-${ev.ticketStatus}`, STATUS[ev.ticketStatus]));
-  karte.append(meta);
-  karte.append(el(doc, 'p', 'when', wannText(ev)));
-  const ort = [ev.placeName, ev.distanceKm != null ? `${Math.round(ev.distanceKm)} km` : null, ev.country === 'CZ' ? 'Tschechien' : null].filter(Boolean);
-  if (ort.length) karte.append(el(doc, 'p', 'where', ort.join(' · ')));
-  if (ev.needsReview) karte.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
-  if (ev.description) karte.append(el(doc, 'p', 'desc', ev.description));
-  const knoepfe = kontaktKnoepfe(doc, ev);
-  if (knoepfe) karte.append(knoepfe);
+  if (sorte) art.append(' · ', el(doc, 'span', 'genre', sorte));
+  if (ev.country === 'CZ') art.append(' · ', el(doc, 'span', 'land', 'Tschechien'));
+  kopf.append(art);
+  if (gemeinde) kopf.append(el(doc, 'span', 'ort-rechts', gemeinde));
+  return kopf;
+}
+
+/** Datum und Uhrzeit, daneben der Ticketstatus. */
+function wannZeile(doc, ev) {
+  const wann = el(doc, 'p', 'when', wannText(ev));
+  if (ev.ticketStatus && STATUS[ev.ticketStatus]) wann.append(' ', el(doc, 'span', `status status-${ev.ticketStatus}`, STATUS[ev.ticketStatus]));
+  return wann;
+}
+
+const kmText = (ev) => (ev.distanceKm != null ? `${Math.round(ev.distanceKm)} km` : null);
+
+function quellenZeile(doc, ev) {
   const quellen = el(doc, 'p', 'sources', 'Quelle: ');
   (ev.sources ?? []).forEach((q, i) => {
     if (i) quellen.append(', ');
     const href = safeHref(q.url);
     quellen.append(href && /^https?:/i.test(href) ? link(doc, q.name, href) : String(q.name ?? ''));
   });
-  if ((ev.sources ?? []).length) karte.append(quellen);
+  return (ev.sources ?? []).length ? quellen : null;
+}
+
+/**
+ * Eine Terminkarte.
+ * @param {{orte?: string[]}} [optionen] orte: bekannte Ortsnamen, um die Gemeinde auch bei Namen ohne Komma zu erkennen
+ */
+export function renderEventCard(doc, ev, optionen = {}) {
+  const orte = optionen.orte ?? [];
+  const karte = el(doc, 'article', `card art-${ARTEN[ev.art] ? ev.art : 'sonstiges'}`);
+  karte.append(kopfzeile(doc, ev, gemeindeVon(ev.placeName, orte)));
+  karte.append(el(doc, 'h3', 'title', ev.title));
+  karte.append(wannZeile(doc, ev));
+  const ort = [spielstaetteVon(ev.placeName, orte), kmText(ev)].filter(Boolean);
+  if (ort.length) karte.append(el(doc, 'p', 'where', ort.join(' · ')));
+  if (ev.needsReview) karte.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
+  if (ev.description) karte.append(el(doc, 'p', 'desc', ev.description));
+  const knoepfe = kontaktKnoepfe(doc, ev);
+  if (knoepfe.childNodes.length) karte.append(knoepfe);
+  const quellen = quellenZeile(doc, ev);
+  if (quellen) karte.append(quellen);
   return karte;
+}
+
+/**
+ * Der Inhalt des Detailfensters: alles zum Termin, die ganze Beschreibung und, wenn Koordinaten da sind, ein Navigationsknopf.
+ * @param {{orte?: string[], userAgent?: string}} [optionen]
+ */
+export function renderDetail(doc, ev, optionen = {}) {
+  const orte = optionen.orte ?? [];
+  const gemeinde = gemeindeVon(ev.placeName, orte);
+  const detail = el(doc, 'div', `detail art-${ARTEN[ev.art] ? ev.art : 'sonstiges'}`);
+  const kopf = kopfzeile(doc, ev, null);
+  detail.append(kopf, el(doc, 'h2', 'title', ev.title), wannZeile(doc, ev));
+  const ort = [spielstaetteVon(ev.placeName, orte), gemeinde, kmText(ev)].filter(Boolean);
+  if (ort.length) detail.append(el(doc, 'p', 'where', ort.join(' · ')));
+  if (ev.needsReview) detail.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
+  if (ev.description) detail.append(el(doc, 'p', 'desc', ev.description));
+  const knoepfe = kontaktKnoepfe(doc, ev);
+  const nav = navigationsLink(ev, plattform(optionen.userAgent));
+  if (nav) knoepfe.append(link(doc, 'Navigation', nav, 'btn'));
+  if (knoepfe.childNodes.length) detail.append(knoepfe);
+  const quellen = quellenZeile(doc, ev);
+  if (quellen) detail.append(quellen);
+  return detail;
 }
 
 const deutschesDatum = (iso) => {

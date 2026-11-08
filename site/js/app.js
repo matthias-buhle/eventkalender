@@ -1,6 +1,6 @@
 // Seitenlogik: Daten laden, Filterleiste aufbauen, Liste zeichnen, Einstellungen am Gerät merken.
-import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, einzelneArt, artWaehlen, wirksameSorten, DEFAULT_PREFS } from './filter.js';
-import { renderEventCard, renderStatusFooter, dayLabel, artName } from './render.js';
+import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, einzelneArt, artWaehlen, wirksameSorten, anzeigeText, DEFAULT_PREFS } from './filter.js';
+import { renderEventCard, renderDetail, renderStatusFooter, dayLabel, artName } from './render.js';
 import { ARTEN, SORTEN } from './arten.js';
 
 const ZEIT_CHIPS = [
@@ -36,7 +36,43 @@ function standText(iso) {
   return `Stand: ${d.toLocaleString('de-DE', { timeZone: 'Europe/Berlin', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })} Uhr`;
 }
 
-/** Wie viele Filter im Bereich "Mehr Filter" vom Standard abweichen (der Zeitraum ist immer sichtbar). */
+/**
+ * Ein Fenster, das von unten hereinfährt (dialog). Schließen mit X, Tipp daneben, Escape und der Zurück-Taste des Geräts.
+ * Beim Öffnen kommt ein Eintrag in den Verlauf, damit "Zurück" das Fenster schließt und nicht die Seite verlässt.
+ */
+function neuesFenster(klasse, titelText) {
+  const dialog = neu('dialog', `sheet ${klasse}`);
+  dialog.setAttribute('aria-label', titelText);
+  const kopf = neu('div', 'sheet-kopf');
+  const zu = neu('button', 'schliessen', '×');
+  zu.setAttribute('type', 'button');
+  zu.setAttribute('aria-label', 'Schließen');
+  zu.addEventListener('click', () => dialog.close());
+  kopf.append(neu('h2', null, titelText), zu);
+  const koerper = neu('div', 'sheet-koerper');
+  dialog.append(kopf, koerper);
+  document.body.append(dialog);
+
+  let ueberZurueck = false;
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('close', () => {
+    if (!ueberZurueck && history.state?.fenster) history.back();
+    ueberZurueck = false;
+  });
+  window.addEventListener('popstate', () => {
+    if (!dialog.open) return;
+    ueberZurueck = true;
+    dialog.close();
+  });
+  const oeffnen = () => {
+    if (dialog.open) return;
+    dialog.showModal();
+    try { history.pushState({ fenster: true }, ''); } catch { /* ohne Verlauf schließt nur X oder Tipp daneben */ }
+  };
+  return { dialog, koerper, oeffnen, schliessen: () => dialog.close() };
+}
+
+/** Wie viele Filter im Filterfenster vom Standard abweichen (der Zeitraum ist immer sichtbar). */
 function aktiveFilter(prefs) {
   return (prefs.hiddenArt.length ? 1 : 0)
     + (wirksameSorten(prefs).length ? 1 : 0)
@@ -77,19 +113,23 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
     zeitChips.set(wert, chip);
     zeitReihe.append(chip);
   }
-  leiste.append(suchfeld, zeitReihe);
-
-  // --- Mehr Filter: Ort + Umkreis, Art, Tschechien ---
-  const mehr = neu('details', 'mehr');
-  const titel = neu('summary');
+  // --- Filter: Ort + Umkreis, Art, Tschechien in einem Fenster von unten ---
+  const fenster = neuesFenster('filterfenster', 'Filter');
+  const filterKnopf = neu('button', 'filterknopf');
+  filterKnopf.setAttribute('type', 'button');
+  filterKnopf.setAttribute('aria-haspopup', 'dialog');
   const zaehler = neu('span', 'zaehler');
   const aktualisiereZaehler = () => {
     const n = aktiveFilter(prefs);
     zaehler.textContent = n ? String(n) : '';
     zaehler.hidden = !n;
+    filterKnopf.setAttribute('aria-label', n ? `Filter, ${n} aktiv` : 'Filter');
   };
-  titel.append(neu('span', null, 'Mehr Filter'), zaehler);
-  mehr.append(titel);
+  filterKnopf.append(neu('span', null, 'Filter'), zaehler);
+  filterKnopf.addEventListener('click', fenster.oeffnen);
+  const zeitZeile = neu('div', 'zeitzeile');
+  zeitZeile.append(zeitReihe, filterKnopf);
+  leiste.append(suchfeld, zeitZeile);
   const feld = neu('div', 'feld');
 
   const ortGruppe = neu('div', 'gruppe');
@@ -204,26 +244,47 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   schalter.append(haken, neu('span', null, 'Tschechien'));
 
   feld.append(ortGruppe, artGruppe, ...sortenFelder, schalter);
-  mehr.append(feld);
+  const ergebnis = neu('button', 'btn primaer ergebnis');
+  ergebnis.setAttribute('type', 'button');
+  ergebnis.addEventListener('click', fenster.schliessen);
+  const fuss = neu('div', 'sheet-fuss');
+  fuss.append(ergebnis);
+  fenster.koerper.append(feld);
+  fenster.dialog.append(fuss);
   zeigeArten();
-  leiste.append(mehr);
+  return { zeigeAnzahl: (n) => { ergebnis.textContent = anzeigeText(n); } };
 }
 
-function zeichneListe(container, events, prefs, orte) {
+/** Zeichnet die Liste und gibt zurück, wie viele Termine sie zeigt. */
+function zeichneListe(container, events, prefs, orte, beiOeffnen) {
   const jetzt = new Date().toISOString();
   const heute = berlinDay(jetzt);
   const sichtbar = applyFilters(events, prefs, jetzt, orte);
+  const optionen = { orte: Object.keys(orte) };
   container.replaceChildren();
   if (!sichtbar.length) {
     container.append(neu('p', 'leer', 'Keine Termine mit diesen Filtern.'));
-    return;
+    return 0;
   }
   for (const gruppe of groupByDay(sichtbar, heute)) {
     const abschnitt = neu('section', 'tag');
     abschnitt.append(neu('h2', null, dayLabel(gruppe.day, heute)));
-    for (const ev of gruppe.events) abschnitt.append(renderEventCard(document, ev));
+    for (const ev of gruppe.events) {
+      const karte = renderEventCard(document, ev, optionen);
+      // Ein Tipp auf die Karte (nicht auf einen Knopf oder Link) öffnet die Einzelansicht.
+      karte.setAttribute('tabindex', '0');
+      karte.addEventListener('click', (e) => {
+        if (e.target.closest('a') || String(window.getSelection?.() ?? '')) return;
+        beiOeffnen(ev);
+      });
+      karte.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target === karte) beiOeffnen(ev);
+      });
+      abschnitt.append(karte);
+    }
     container.append(abschnitt);
   }
+  return sichtbar.length;
 }
 
 async function start() {
@@ -235,9 +296,17 @@ async function start() {
   let events = [];
   let orteListe = [];
   let orte = {};
+  let filterleiste = null;
+  const detail = neuesFenster('detailfenster', 'Einzelheiten');
+  const zeigeDetail = (ev) => {
+    detail.koerper.replaceChildren(renderDetail(document, ev, { orte: Object.keys(orte), userAgent: navigator.userAgent }));
+    detail.koerper.scrollTop = 0;
+    detail.oeffnen();
+  };
+  const zeichne = () => filterleiste?.zeigeAnzahl(zeichneListe(liste, events, prefs, orte, zeigeDetail));
   const beiAenderung = () => {
     savePrefs(speicher(), prefs);
-    zeichneListe(liste, events, prefs, orte);
+    zeichne();
   };
   // Ohne Ortsverzeichnis (Datei fehlt) bleibt der Umkreis um Sebnitz, die Seite funktioniert weiter.
   try {
@@ -247,12 +316,12 @@ async function start() {
       orte = Object.fromEntries(orteListe.map((o) => [o.name, { lat: o.lat, lon: o.lon }]));
     }
   } catch { /* siehe oben */ }
-  baueFilterleiste(leiste, prefs, orteListe, beiAenderung);
+  filterleiste = baueFilterleiste(leiste, prefs, orteListe, beiAenderung);
   try {
     const daten = await ladeJson('data/events.json');
     events = Array.isArray(daten.events) ? daten.events : [];
     stand.textContent = standText(daten.generatedAt);
-    zeichneListe(liste, events, prefs, orte);
+    zeichne();
   } catch {
     liste.replaceChildren(neu('p', 'leer', 'Die Termine konnten nicht geladen werden. Bitte später erneut versuchen.'));
   }
