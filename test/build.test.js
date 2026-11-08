@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
-import { runAll } from '../src/build.js';
+import { runAll, pruefeLauf } from '../src/build.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
 
@@ -140,4 +140,13 @@ test('Dubletten verschiedener Quellen werden zusammengeführt', async () => {
   });
   assert.equal(events.length, 1);
   assert.equal(events[0].sources.length, 2);
+});
+
+test('pruefeLauf: ohne eine einzige gelieferte Quelle oder ohne Termine bricht der Lauf ab, damit der letzte gute Stand stehen bleibt', () => {
+  const ok = { name: 'a', ok: true, count: 3, error: null, lastOkAt: 'x' };
+  const fehl = { name: 'b', ok: false, count: 0, error: 'HTTP 403', lastOkAt: null };
+  assert.throws(() => pruefeLauf({ events: [], status: [] }), /keine Quelle/);
+  assert.throws(() => pruefeLauf({ events: [{}], status: [fehl] }), /keine Quelle/);
+  assert.throws(() => pruefeLauf({ events: [], status: [ok] }), /keine Termine/);
+  assert.doesNotThrow(() => pruefeLauf({ events: [{}], status: [ok, fehl] }));
 });
