@@ -57,6 +57,15 @@ export async function runAll({ sources, http, now, previousStatus = [] }) {
   return { events: dedupe(alle), status };
 }
 
+/**
+ * Bricht ab, wenn der Lauf nichts Brauchbares ergeben hat; dann bleibt der zuletzt veröffentlichte Stand stehen,
+ * statt von einer leeren Seite ersetzt zu werden.
+ */
+export function pruefeLauf({ events, status }) {
+  if (!status.some((s) => s.ok)) throw new Error('Lauf abgebrochen: keine Quelle hat Daten geliefert');
+  if (events.length === 0) throw new Error('Lauf abgebrochen: keine Termine entstanden');
+}
+
 async function readJson(path, fallback) {
   try {
     return JSON.parse(await readFile(path, 'utf8'));
@@ -67,7 +76,8 @@ async function readJson(path, fallback) {
 
 async function main() {
   const { adapters } = await import('./sources/index.js');
-  const config = await readJson(new URL('../sources.json', import.meta.url), {});
+  // sources.json muss lesbar sein: ein Tippfehler dort darf nicht alle Quellen stillschweigend abschalten.
+  const config = JSON.parse(await readFile(new URL('../sources.json', import.meta.url), 'utf8'));
   const outDir = new URL('../site/data/', import.meta.url);
   const previous = (await readJson(new URL('status.json', outDir), { sources: [] })).sources;
   const kontakt = process.env.EVENTKALENDER_CONTACT;
@@ -78,11 +88,12 @@ async function main() {
   const sources = adapters.map((a) => ({ name: a.name, fetchEvents: a.fetchEvents, config: config[a.name] ?? { enabled: false } }));
   const now = new Date();
   const { events, status } = await runAll({ sources, http, now, previousStatus: previous });
+  for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error})` : ''}`);
+  pruefeLauf({ events, status });
   await mkdir(outDir, { recursive: true });
   const generatedAt = now.toISOString();
   await writeFile(new URL('events.json', outDir), JSON.stringify({ generatedAt, events }, null, 1));
   await writeFile(new URL('status.json', outDir), JSON.stringify({ generatedAt, sources: status }, null, 1));
-  for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error})` : ''}`);
   console.log(`${events.length} Termine geschrieben`);
 }
 
