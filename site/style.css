@@ -86,7 +86,8 @@ h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-tr
 .suche, .ort select { font: inherit; font-size: 1rem; min-height: 40px; padding: 4px 12px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card); color: var(--text); width: 100%; }
 .suche { margin-bottom: 4px; }
 .suche::placeholder { color: var(--muted); }
-.zeit { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; }
+.zeitzeile { display: flex; align-items: center; gap: 8px; }
+.zeit { flex: 1 1 auto; min-width: 0; display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; }
 .zeit::-webkit-scrollbar { display: none; }
 .zeit .chip { flex: 0 0 auto; padding: 8px 0 6px; min-height: 40px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: var(--muted); font: 600 1rem/1.2 var(--anzeige); letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; }
 .zeit .chip[aria-pressed="true"] { background: transparent; color: var(--accent); border-bottom-color: var(--accent); }
@@ -95,13 +96,10 @@ h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-tr
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 .feld .chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
 .feld .chip.wahl[aria-pressed="false"] { text-decoration: none; }
-.mehr summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--muted); list-style: none; }
-.mehr summary::-webkit-details-marker { display: none; }
-.mehr summary::before { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); margin-right: 2px; }
-.mehr[open] summary::before { transform: rotate(-135deg) translateY(-1px); }
+.filterknopf { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 12px; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; color: var(--text); font: inherit; font-size: 0.85rem; cursor: pointer; }
 .zaehler { background: var(--accent); color: var(--accent-text); border-radius: 999px; min-width: 20px; height: 20px; padding: 0 6px; font-size: 0.75rem; display: inline-flex; align-items: center; justify-content: center; }
 .zaehler[hidden] { display: none; }
-.feld { display: flex; flex-direction: column; gap: 14px; padding: 12px 0 14px; max-height: 50vh; overflow-y: auto; }
+.feld { display: flex; flex-direction: column; gap: 16px; }
 .gruppe { display: flex; flex-direction: column; gap: 8px; }
 .gruppe[hidden] { display: none; }
 .gruppentitel { margin: 0; font: 600 0.9rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
@@ -111,6 +109,33 @@ h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-tr
 .regler input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--accent); }
 .schalter { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; min-height: 40px; }
 .schalter input { width: 20px; height: 20px; accent-color: var(--accent); }
+
+/* Fenster von unten: Filter und Einzelansicht */
+.sheet { position: fixed; inset: auto 0 0 0; margin: 0 auto; width: 100%; max-width: 720px; max-height: 88vh; max-height: 88dvh; padding: 0; border: 0; border-radius: 16px 16px 0 0; background: var(--bg); color: var(--text); box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35); overflow: hidden; }
+.sheet[open] { display: flex; flex-direction: column; }
+.sheet::backdrop { background: rgba(8, 10, 18, 0.55); }
+body:has(dialog[open]) { overflow: hidden; }
+.sheet-kopf { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 6px 8px 0 16px; }
+.sheet-kopf h2 { margin: 0; font: 600 1.15rem/1.2 var(--anzeige); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.schliessen { width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--text); font-size: 1.8rem; line-height: 1; cursor: pointer; }
+.sheet-koerper { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 4px 16px 16px; overscroll-behavior: contain; }
+.sheet-fuss { flex: 0 0 auto; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--bg); }
+.ergebnis { width: 100%; justify-content: center; min-height: 48px; font-size: 1rem; cursor: pointer; }
+.detail .title { margin: 4px 0 0; font: 600 1.9rem/1.15 var(--anzeige); overflow-wrap: anywhere; }
+.detail p { margin: 0; }
+.detail .when { margin-top: 8px; font-weight: 500; font-size: 0.95rem; color: var(--accent); }
+.detail .where { margin-top: 4px; font-size: 0.9rem; color: var(--muted); }
+.detail .review { margin-top: 10px; background: var(--warn-bg); color: var(--warn); padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; }
+.detail .desc { margin-top: 12px; font-size: 0.95rem; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-line; }
+.detail .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.detail .sources { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--muted); }
+.detail .kartenkopf { --art-text: var(--accent); }
+.detail.art-konzert .kartenkopf { --art-text: var(--art-konzert-text); }
+.detail.art-party .kartenkopf { --art-text: var(--art-party-text); }
+.detail.art-markt .kartenkopf { --art-text: var(--art-markt-text); }
+.detail.art-fest .kartenkopf { --art-text: var(--art-fest-text); }
+.detail.art-schau .kartenkopf { --art-text: var(--art-schau-text); }
+.detail.art-sonstiges .kartenkopf { --art-text: var(--art-sonstiges-text); }
 
 /* Terminliste */
 main { padding-top: 4px; padding-bottom: 24px; }
@@ -123,9 +148,12 @@ main { padding-top: 4px; padding-bottom: 24px; }
 .card.art-schau { --art: var(--art-schau); --art-text: var(--art-schau-text); }
 .card.art-sonstiges { --art: var(--art-sonstiges); --art-text: var(--art-sonstiges-text); }
 .card p { margin: 0; }
-.card .meta { order: -1; font: 700 0.9rem/1.3 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--art-text); }
+.card { cursor: pointer; }
+.kartenkopf { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.art-zeile { font: 700 0.9rem/1.3 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--art-text); }
+.ort-rechts { flex: 0 1 auto; min-width: 0; max-width: 50%; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: 400 0.8rem/1.3 "Inter", system-ui, sans-serif; color: var(--muted); }
 .card .title { margin: 4px 0 0; font: 600 1.65rem/1.15 var(--anzeige); overflow-wrap: anywhere; }
-.status { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font: 400 0.75rem/1.4 "Inter", system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
+.status { display: inline-block; margin-left: 4px; padding: 1px 8px; border-radius: 999px; font: 400 0.75rem/1.4 "Inter", system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 .status-verfuegbar { background: var(--good-bg); color: var(--good); }
 .status-ausverkauft, .status-abgesagt { background: var(--bad-bg); color: var(--bad); }
 .status-verlegt { background: var(--warn-bg); color: var(--warn); }
@@ -135,11 +163,8 @@ main { padding-top: 4px; padding-bottom: 24px; }
 .card .desc { margin-top: 8px; font-size: 0.9rem; line-height: 1.45; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.85rem; }
-/* Reihenfolge: Zur Webseite, Tickets, Anrufen, E-Mail; der erste Webknopf ist gefüllt */
-.btn[href^="http"] { order: 1; }
-.btn[href^="tel:"] { order: 2; }
-.btn[href^="mailto:"] { order: 3; }
-.btn[href^="http"]:not(.btn[href^="http"] ~ .btn[href^="http"]) { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+/* Die Reihenfolge (Webseite, Tickets, Anrufen, E-Mail, Navigation) kommt aus render.js; der erste Web- oder Ticketknopf ist gefüllt */
+.btn.primaer { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
 .card .sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--muted); }
 .sources a { color: inherit; text-underline-offset: 2px; }
 .leer { color: var(--muted); padding: 24px 0; text-align: center; }

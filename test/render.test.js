@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHTML } from 'linkedom';
-import { renderEventCard, renderStatusFooter, dayLabel, safeHref } from '../site/js/render.js';
+import { renderEventCard, renderDetail, renderStatusFooter, dayLabel, safeHref } from '../site/js/render.js';
 
 const { document } = parseHTML('<!doctype html><html><body></body></html>');
 const ev = (extra = {}) => ({
@@ -86,12 +86,81 @@ test('Karte zeigt Art, Datum mit Uhrzeit, Ort mit Entfernung und Quellenlink', (
   assert.equal(hrefVon(karte, 'Alter Schlachthof'), 'https://example.org/e/1');
 });
 
-test('Ort ohne Entfernung: kein "null km"; tschechische Termine sind gekennzeichnet', () => {
+test('Ort ohne Entfernung: kein "null km"; tschechische Termine sind in der ersten Zeile bei der Art gekennzeichnet', () => {
   const karte = renderEventCard(document, ev({ distanceKm: null, placeName: 'Děčín', country: 'CZ' }));
   const ort = karte.querySelector('.where').textContent;
   assert.ok(!/null|NaN/.test(ort), ort);
   assert.ok(ort.startsWith('Děčín'));
-  assert.match(ort, /Tschechien/);
+  assert.ok(!/Tschechien/.test(ort), 'Land steht oben, nicht in der Ortszeile');
+  assert.equal(karte.querySelector('.kartenkopf .art-zeile .land').textContent, 'Tschechien');
+  assert.equal(renderEventCard(document, ev()).querySelector('.land'), null);
+});
+
+test('Kopfzeile: links Art und Sorte, rechts nur die Gemeinde; unten Spielstätte und Entfernung', () => {
+  const orte = ['Pirna', 'Sebnitz'];
+  const karte = renderEventCard(document, ev({ placeName: 'Turnhalle, Neustadt in Sachsen', distanceKm: 12.4, genre: 'jazz' }), { orte });
+  const kopf = karte.querySelector('.kartenkopf');
+  assert.equal(kopf, karte.firstElementChild, 'Kopfzeile steht zuerst');
+  assert.equal(kopf.querySelector('.art-zeile').textContent, 'Konzert · Jazz & Blues');
+  assert.equal(kopf.querySelector('.ort-rechts').textContent, 'Neustadt in Sachsen');
+  assert.equal(karte.querySelector('.where').textContent, 'Turnhalle · 12 km');
+  const museum = renderEventCard(document, ev({ placeName: 'Museum Pirna', distanceKm: 20 }), { orte });
+  assert.equal(museum.querySelector('.ort-rechts').textContent, 'Pirna');
+  assert.equal(museum.querySelector('.where').textContent, 'Museum Pirna · 20 km');
+  const unbekannt = renderEventCard(document, ev({ placeName: 'RABRYKA Werk I' }), { orte });
+  assert.equal(unbekannt.querySelector('.ort-rechts'), null, 'ohne erkennbare Gemeinde rechts leer');
+  const gleich = renderEventCard(document, ev({ placeName: 'Kamenz, Kamenz', distanceKm: 25 }), { orte });
+  assert.equal(gleich.querySelector('.where').textContent, '25 km', 'Spielstätte nicht doppelt zur Gemeinde');
+});
+
+test('Ticketstatus steht neben der Uhrzeit, nicht in der Kopfzeile', () => {
+  const karte = renderEventCard(document, ev({ ticketStatus: 'ausverkauft' }));
+  assert.equal(karte.querySelector('.when .status').textContent, 'ausverkauft');
+  assert.equal(karte.querySelector('.kartenkopf .status'), null);
+});
+
+test('Knöpfe stehen in der Reihenfolge Webseite, Tickets, Anrufen, E-Mail; der erste Webknopf ist der Hauptknopf', () => {
+  const alle = renderEventCard(document, ev({ ticketUrl: 'https://tickets.example/', contact: { phone: '03591 12345', url: 'https://veranstalter.example/', email: 'a@b.de' } }));
+  assert.deepEqual(knoepfe(alle).filter((t) => t !== 'Alter Schlachthof'), ['Zur Webseite', 'Tickets', 'Anrufen', 'E-Mail']);
+  assert.ok(alle.querySelector('.btn.primaer').textContent.includes('Zur Webseite'));
+  assert.equal(alle.querySelectorAll('.btn.primaer').length, 1);
+  const nurTickets = renderEventCard(document, ev({ ticketUrl: 'https://tickets.example/', contact: { phone: '03591 12345', url: null, email: null } }));
+  assert.equal(nurTickets.querySelector('.btn.primaer').textContent, 'Tickets');
+  const nurTelefon = renderEventCard(document, ev({ contact: { phone: '03591 12345', url: null, email: null } }));
+  assert.equal(nurTelefon.querySelector('.btn.primaer'), null);
+});
+
+test('Detailansicht: voller Titel, Zeit, Ort, ganze Beschreibung, Knöpfe, Quelle', () => {
+  const lang = 'Ein sehr langer Text. '.repeat(40).trim();
+  const d = renderDetail(document, ev({ title: 'Großes Konzert', placeName: 'Turnhalle, Pirna', distanceKm: 20.4, description: lang, ticketStatus: 'verfuegbar', genre: 'jazz', country: 'CZ', ticketUrl: 'https://tickets.example/' }), { orte: ['Pirna'], userAgent: '' });
+  assert.equal(d.querySelector('.title').textContent, 'Großes Konzert');
+  assert.equal(d.querySelector('.art-zeile').textContent, 'Konzert · Jazz & Blues · Tschechien');
+  assert.match(d.querySelector('.when').textContent, /Sa, 14\. Nov\.?.*19:00/);
+  assert.equal(d.querySelector('.when .status').textContent, 'Karten verfügbar');
+  assert.equal(d.querySelector('.where').textContent, 'Turnhalle · Pirna · 20 km');
+  assert.equal(d.querySelector('.desc').textContent, lang, 'Beschreibung ungekürzt');
+  assert.equal(hrefVon(d, 'Tickets'), 'https://tickets.example/');
+  assert.equal(hrefVon(d, 'Alter Schlachthof'), 'https://example.org/e/1');
+});
+
+test('Navigationsknopf nur im Detailfenster und nur mit Koordinaten, je nach Gerät', () => {
+  const mit = ev({ lat: 51.2701, lon: 14.0949 });
+  assert.ok(!knoepfe(renderEventCard(document, mit)).includes('Navigation'), 'nicht auf der Karte');
+  const ios = renderDetail(document, mit, { orte: [], userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)' });
+  assert.equal(hrefVon(ios, 'Navigation'), 'https://maps.apple.com/?daddr=51.2701,14.0949');
+  const android = renderDetail(document, mit, { orte: [], userAgent: 'Mozilla/5.0 (Linux; Android 14)' });
+  assert.equal(hrefVon(android, 'Navigation'), 'geo:51.2701,14.0949?q=51.2701,14.0949');
+  const pc = renderDetail(document, mit, { orte: [], userAgent: 'Mozilla/5.0 (Windows NT 10.0)' });
+  assert.equal(hrefVon(pc, 'Navigation'), 'https://www.google.com/maps/dir/?api=1&destination=51.2701,14.0949');
+  const ohne = renderDetail(document, ev({ lat: null, lon: null }), { orte: [], userAgent: '' });
+  assert.ok(!knoepfe(ohne).includes('Navigation'));
+});
+
+test('Detailansicht setzt Fremdtexte nur als Text', () => {
+  const boese = '<img src=x onerror=alert(1)>';
+  const d = renderDetail(document, ev({ title: boese, description: boese, placeName: `${boese}, ${boese}`, sources: [{ name: boese, url: 'https://example.org/' }] }), { orte: [], userAgent: '' });
+  assert.equal(d.querySelectorAll('img').length, 0);
+  assert.ok(d.textContent.includes(boese));
 });
 
 test('Termin ohne Uhrzeit zeigt keine 00:00; mehrtägiger Termin zeigt Start und Ende', () => {

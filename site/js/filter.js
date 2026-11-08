@@ -109,6 +109,12 @@ export function artWaehlen(hiddenArt, art) {
   return neu.length === 0 || neu.length === ARTEN.length ? [] : ARTEN.filter((a) => !neu.includes(a));
 }
 
+/** Text des Knopfes im Filterfenster: wie viele Termine die Filter gerade zeigen. */
+export function anzeigeText(anzahl) {
+  if (anzahl === 0) return 'Keine Termine gefunden';
+  return anzahl === 1 ? '1 Termin anzeigen' : `${anzahl} Termine anzeigen`;
+}
+
 /** Die ausgeblendeten Unterarten, die gerade wirken: nur bei genau einer Art, und nur deren eigene Schlüssel. */
 export function wirksameSorten(prefs) {
   const art = einzelneArt(prefs.hiddenArt);
