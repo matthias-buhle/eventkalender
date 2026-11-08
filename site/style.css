@@ -50,12 +50,29 @@ body {
 h1 { font-size: 1.35rem; margin: 0; }
 .stand { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
 
-.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 12px; padding-bottom: 12px; position: sticky; top: 0; background: var(--bg); z-index: 2; border-bottom: 1px solid var(--line); }
+.filters { padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; background: var(--bg); z-index: 2; border-bottom: 1px solid var(--line); }
+.zeit { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.zeit::-webkit-scrollbar { display: none; }
+.zeit .chip { flex: 0 0 auto; }
 .chip { font: inherit; font-size: 0.9rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; min-height: 40px; }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-.chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
-.regler { display: flex; align-items: center; gap: 8px; flex: 1 1 100%; font-size: 0.9rem; }
-.regler input[type="range"] { flex: 1; min-height: 32px; accent-color: var(--accent); }
+.zeit .chip[aria-pressed="false"] { color: var(--text); }
+.feld .chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
+.bereich { display: flex; gap: 12px; margin-top: 8px; }
+.bereich[hidden] { display: none; }
+.datum { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; color: var(--muted); flex: 1; }
+.datum input, .ort select { font: inherit; font-size: 1rem; min-height: 40px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); width: 100%; }
+.mehr { margin-top: 8px; }
+.mehr summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+.zaehler { background: var(--accent); color: var(--accent-text); border-radius: 999px; min-width: 22px; height: 22px; padding: 0 6px; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; }
+.zaehler[hidden] { display: none; }
+.feld { display: flex; flex-direction: column; gap: 14px; padding: 8px 0 4px; max-height: 60vh; overflow-y: auto; }
+.gruppe { display: flex; flex-direction: column; gap: 8px; }
+.gruppentitel { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ort { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; color: var(--muted); }
+.regler { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; }
+.regler input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--accent); }
 .schalter { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; min-height: 40px; }
 .schalter input { width: 20px; height: 20px; accent-color: var(--accent); }
 

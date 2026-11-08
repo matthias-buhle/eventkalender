@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { todayBerlin } from './time.js';
@@ -72,6 +73,15 @@ export function pruefeLauf({ events, status }) {
   if (events.length === 0) throw new Error('Lauf abgebrochen: keine Termine entstanden');
 }
 
+/** Die Orte für die Auswahl "Ort + Umkreis" auf der Seite: nur Orte im Radius, nach Namen sortiert. */
+export function ortsliste() {
+  const orte = JSON.parse(readFileSync(new URL('./places.json', import.meta.url), 'utf8'));
+  return orte
+    .filter((o) => distanceKm(CENTER, o) <= RADIUS_KM)
+    .map(({ name, lat, lon, country }) => ({ name, lat, lon, country }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'de'));
+}
+
 async function readJson(path, fallback) {
   try {
     return JSON.parse(await readFile(path, 'utf8'));
@@ -100,6 +110,7 @@ async function main() {
   const generatedAt = now.toISOString();
   await writeFile(new URL('events.json', outDir), JSON.stringify({ generatedAt, events }, null, 1));
   await writeFile(new URL('status.json', outDir), JSON.stringify({ generatedAt, sources: status }, null, 1));
+  await writeFile(new URL('places.json', outDir), JSON.stringify(ortsliste()));
   console.log(`${events.length} Termine geschrieben`);
 }
 
