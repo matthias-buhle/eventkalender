@@ -21,7 +21,7 @@ function entschluesseln(text) {
 }
 
 /** Ein Termin des Portals als flache Zeile; null, wenn Ort oder Datum unbrauchbar sind. */
-function zuZeile(e, ausserhalbPlz) {
+function zuZeile(e, ausserhalbPlz, verworfen) {
   const titel = entschluesseln(e.name);
   const startTag = tag(e.startDate);
   if (!titel || !startTag || !e.url) return null;
@@ -29,7 +29,10 @@ function zuZeile(e, ausserhalbPlz) {
   if (ort?.postalCode && ausserhalbPlz.some((p) => ort.postalCode.startsWith(p))) return null;
   const placeName = [entschluesseln(ort?.name), entschluesseln(ort?.locality)].filter(Boolean).join(', ');
   // Nur Orte, die wir kennen: die Portale führen auch weit entfernte Märkte unter derselben Postleitzahl-Zone.
-  if (!resolvePlace(entschluesseln(ort?.locality)) && !resolvePlace(placeName)) return null;
+  if (!resolvePlace(entschluesseln(ort?.locality)) && !resolvePlace(placeName)) {
+    verworfen?.add(placeName);
+    return null;
+  }
   const beschreibung = entschluesseln(e.description);
   return {
     titel, startTag, endTag: tag(e.endDate) || startTag, url: e.url, placeName,
@@ -80,7 +83,7 @@ function zuEvent(z) {
 }
 
 /** Liest eine Portalseite für Postleitzahl-Zone und folgt `?page=N`, solange Termine im Zeitraum kommen. */
-async function leseUrl(http, url, { today, letzterTag, maxPages, ausserhalbPlz }) {
+async function leseUrl(http, url, { today, letzterTag, maxPages, ausserhalbPlz, verworfen }) {
   const zeilen = [];
   for (let seite = 1; seite <= maxPages; seite++) {
     let body;
@@ -93,7 +96,7 @@ async function leseUrl(http, url, { today, letzterTag, maxPages, ausserhalbPlz }
     const roh = extractSchemaEvents(body);
     if (!roh.length) break;
     for (const e of roh) {
-      const z = zuZeile(e, ausserhalbPlz);
+      const z = zuZeile(e, ausserhalbPlz, verworfen);
       if (z && z.endTag >= today && z.startTag <= letzterTag) zeilen.push(z);
     }
     const spaetester = roh.map((e) => tag(e.startDate)).filter(Boolean).sort().at(-1);
@@ -112,6 +115,7 @@ export async function fetchEvents({ http, today, config }) {
     letzterTag: plusTage(today, config.horizonDays ?? 60),
     maxPages: config.maxPages ?? 8,
     ausserhalbPlz: config.ausserhalbPlz ?? [],
+    verworfen: new Set(),
   };
   const zeilen = [];
   let letzterFehler = null;
@@ -125,5 +129,8 @@ export async function fetchEvents({ http, today, config }) {
     }
   }
   if (!geklappt && letzterFehler) throw letzterFehler;
-  return fasseTageZusammen(zeilen).map(zuEvent);
+  const events = fasseTageZusammen(zeilen).map(zuEvent);
+  // Für den Status: Orte, die das Ortsverzeichnis nicht kennt und deren Termine deshalb fehlen.
+  events.verworfeneOrte = [...optionen.verworfen];
+  return events;
 }
