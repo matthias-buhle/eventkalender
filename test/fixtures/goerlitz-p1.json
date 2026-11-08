@@ -1,0 +1,178 @@
+{
+ "Pager": {
+  "NbResults": 1234,
+  "FirstIndex": 1,
+  "LastIndex": 10,
+  "IsFirstPage": true,
+  "IsLastPage": false,
+  "Links": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ]
+ },
+ "EventDates": [
+  {
+   "Id": 18036497,
+   "Production1": {
+    "DateFromTo": "11. September - 15. November 2026"
+   },
+   "Title": "Sonderausstellung: \"KNIPS! Kleine Geschichte der Fotografie in Löbau\"",
+   "Slug": "sonderausstellung-knips-kleine-geschichte",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Ausstellung",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Stadtmuseum Löbau",
+   "DescriptionTruncated": "Vor genau 200 Jahren wurde die erste Fotographie der Welt dauerhaft festgehalten. Seitdem fasziniert diese Kunst Menschen auf der ganzen Welt. Auch in ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 17903838,
+   "Production1": {
+    "DateFromTo": "06. November - 08. Januar 2027"
+   },
+   "Title": "Kunst zum Sammeln und Verschenken",
+   "Slug": "kunst-zum-sammeln-und-verschenken",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Bildende Kunst",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Bautzener Kunstverein e.V. - GALERIE BUDISSIN",
+   "DescriptionTruncated": "Gruppenausstellung",
+   "DescriptionMore": false,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18031126,
+   "Production1": {
+    "DateFromTo": "21. August - 31. Dezember 2026"
+   },
+   "Title": "Sabine Wagner Kleiderkunst aus Görlitz",
+   "Slug": "sabine-wagner-kleiderkunst-aus-goerlitz",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Aufführung",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Elisabethplatz",
+   "DescriptionTruncated": "Kleider für Frauen, die sich trauen.\n\nSabine Wagner – aus Worpswede, nun in Görlitz am Elisabethplatz.\n\nHandgearbeitete Kleider, Schalkragen und Accessoires ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18031700,
+   "Production1": {
+    "DateFromTo": "18. September - 14. März 2027"
+   },
+   "Title": "Flügelschlag -  Zwischen Landschaft und Lebensraum | SONDERAUSSTELLUNG",
+   "Slug": "fluegelschlag-zwischen-landschaft-und-lebe",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Ausstellung",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Senckenberg Museum für Naturkunde Görlitz",
+   "DescriptionTruncated": "Landschaften werden zu Schmetterlingen, Insekten versammeln sich im Raum.\n\nMit »Flügelschlag. Zwischen Landschaft und Lebensraum« treffen zwei künstlerische ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18042972,
+   "Production1": {
+    "DateFromTo": "16. Oktober - 20. Dezember 2026"
+   },
+   "Title": "Ausstellungseröffnung am 16.10. 2026 \"Gedanken, Gewebe, Zeitspuren\" - textile Collagen von Rosemarie Köster",
+   "Slug": "ausstellungseroeffnung-am-16-10-2026-gedan",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Bildende Kunst",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Galerie Kunstlade",
+   "DescriptionTruncated": "Die textilen Collagen von Rosemarie Köster sind nicht nur aus verschiedenen Materialien kombiniert, wie Seide, Leinen, Baumwolle oder Papier, sondern ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 17933857,
+   "Production1": {
+    "DateFromTo": "01. April - 20. Dezember 2026"
+   },
+   "Title": "Aufstieg auf den Rathausturm",
+   "Slug": "aufstieg-auf-den-rathausturm",
+   "ContentCategoryName": "Architektur",
+   "FormalCategoryName": "Führung",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Görlitz-Information und Tourist-Service",
+   "DescriptionTruncated": "Erleben Sie den wunderschönen Blick auf die Europastadt Görlitz/Zgorzelec und bewundern Sie die zweigeteilte Stadt von oben.\n\nTreffpunkt: Rathaustreppe ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18109007,
+   "Production1": {
+    "DateFromTo": "08. November - 07. Februar 2027"
+   },
+   "Title": "Sonderausstellung \"Träum dich mal weg\"",
+   "Slug": "sonderausstellung-traeum-dich-mal-weg",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Malerei",
+   "DateTime": "2026-11-08T00:00:00+0100",
+   "LocationName": "Museum Niesky Johann-Raschke-Haus",
+   "DescriptionTruncated": "„Träum dich mal weg!“ – Kunstausstellung mit Gabriele Beinlich und Helmtraud Schönrich\n\nDie Nieskyerinnen Gabriele Beinlich und Helmtraud Schönrich laden ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18037574,
+   "Production1": {
+    "DateFromTo": "08. November - 08. November 2026"
+   },
+   "Title": "Hackday4all Görlitz 2026",
+   "Slug": "hackday4all-goerlitz-2026",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Kinder/Jugend",
+   "DateTime": "2026-11-08T10:00:00+0100",
+   "LocationName": "RABRYKA Werk I",
+   "DescriptionTruncated": "\n\nEs geht in die zweite Runde des Hackday4all in Görlitz!\n\nAm 8. November von 10 bis 20 Uhr treffen sich in der Rabryka in Görlitz Jugendliche zwischen ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18008204,
+   "Production1": {
+    "DateFromTo": "31. Mai - 14. Februar 2027"
+   },
+   "Title": "SONDERAUSSTELLUNG Wir sind Schönhof! - 500 Jahre Schönhof, 20 Jahre Schlesisches Museum",
+   "Slug": "sonderausstellung-wir-sind-schoenhof-500-j",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Kunst",
+   "DateTime": "2026-11-08T10:00:00+0100",
+   "LocationName": "Schlesisches Museum zu Görlitz",
+   "DescriptionTruncated": "Das Schlesische Museum zu Görlitz feiert ein Jubiläumsjahr\n\nIm Jahr 2026 hat das Schlesische Museum zu Görlitz zwei wichtige Anlässe, um zu feiern, über ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  },
+  {
+   "Id": 18041382,
+   "Production1": {
+    "DateFromTo": "16. Oktober - 31. März 2027"
+   },
+   "Title": "»AUS LEDER, SAMT UND PERGAMENT. Historische Bucheinbände aus Görlitz« Sonderausstellung",
+   "Slug": "aus-leder-samt-und-pergament-historische",
+   "ContentCategoryName": "",
+   "FormalCategoryName": "Geschichte",
+   "DateTime": "2026-11-08T10:00:00+0100",
+   "LocationName": "Görlitzer Sammlungen für Geschichte und Kultur, Kulturhistorisches Museum Görlitz, Barockhaus Neißstraße 30",
+   "DescriptionTruncated": "Sonderausstellung in der Schatzkammer des Barockhauses: Bücher sind nicht nur wegen ihres Inhalts kostbar. Auch ihre Einbände erzählen Geschichten – von ...",
+   "DescriptionMore": true,
+   "IsHighlight": false,
+   "Url": ""
+  }
+ ]
+}

@@ -1,0 +1,161 @@
+{
+ "Pager": {
+  "NbResults": 485,
+  "FirstIndex": 1,
+  "LastIndex": 10,
+  "IsFirstPage": true,
+  "IsLastPage": false
+ },
+ "EventDates": [
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_hubertusmesse",
+   "ContentCategoryName": "Familie & Freizeit",
+   "FormalCategoryName": "Kirche, Brauchtum",
+   "DateTime": "2026-11-08T10:00:00+0100",
+   "LocationName": "Kirche Cunewalde",
+   "DescriptionTruncated": "Wenn Jagdhörner in der größten Evangelischen Dorfkirche Deutschlands erschallen, dann ist dies etwas ganz Besonderes. Am 8.11. um 10 Uhr wird wieder eine...",
+   "DescriptionMore": true,
+   "Url": "",
+   "Id": 4799051,
+   "Title": "Hubertusmesse"
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_gottesdienstmusik-zum-drittletzten-sonntag-des-kirchenjahrs",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Singen, Kirche, Klassik",
+   "DateTime": "2026-11-08T10:30:00+0100",
+   "LocationName": "Dom St. Petri Bautzen",
+   "DescriptionTruncated": "„Seligpreisungen“   Chor am Vormittag   Michael Vetter - Orgel",
+   "DescriptionMore": false,
+   "Url": "",
+   "Id": 4799953,
+   "Title": "Gottesdienstmusik zum Drittletzten Sonntag des Kirchenjahrs"
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_manege-frei-in-sohland-an-der-spree",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Kleinkunst, Kinder, Kabarett/Comedy",
+   "DateTime": "2026-11-08T14:00:00+0100",
+   "LocationName": "Platz an der Iakowa Firma",
+   "DescriptionTruncated": "Der Circus Gebrüder Köllner lädt Groß und Klein zu einer unvergesslichen Reise in die Welt des Circus ein. Freuen Sie sich auf beeindruckende Artistik,...",
+   "DescriptionMore": true,
+   "Url": "",
+   "Id": 4809746,
+   "Title": "Manege frei in Sohland an der Spree"
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_peer-gynt",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Theater",
+   "DateTime": "2026-11-08T15:00:00+0100",
+   "LocationName": "Burgtheater Bautzen",
+   "DescriptionTruncated": "von Henrik Ibsen   Ein Geistertanz mit Puppen      ab 16 Jahre",
+   "DescriptionMore": false,
+   "Url": "",
+   "Id": 4794599,
+   "Title": "Peer Gynt"
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_herbstkonzert-mit-dem-sorbischem-maennerchor-delany",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Klassik",
+   "DateTime": "2026-11-08T16:00:00+0100",
+   "LocationName": "Konzert- und Ballhaus Hochkirch",
+   "DescriptionTruncated": "Ab 15 Uhr werden Kuchen und Kaffee angeboten.    Bereits 1876 wurde in Schönau/Šunow ein Männergesangsverein mit dem Namen „Róža“ – Die Rose...",
+   "DescriptionMore": true,
+   "Url": "",
+   "Id": 4812636,
+   "Title": "Herbstkonzert mit dem sorbischem Männerchor \"Delany\""
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_die-geschichte-vom-kleinen-muck",
+   "ContentCategoryName": "Familie & Freizeit",
+   "FormalCategoryName": "Theater, Kinder",
+   "DateTime": "2026-11-08T17:00:00+0100",
+   "LocationName": "Deutsch-Sorbisches Volkstheater",
+   "DescriptionTruncated": "Märchen von Wilhelm Hauff   Bühnenfassung: Carolin Eschenbrenner ab 6 J.",
+   "DescriptionMore": false,
+   "Url": "",
+   "Id": 4807337,
+   "Title": "Die Geschichte vom kleinen Muck"
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_wenn-das-kirchenschiff-zum-wald-wird",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Kirche, Chor-Konzerte",
+   "DateTime": "2026-11-08T18:00:00+0100",
+   "LocationName": "Kirche Baruth",
+   "DescriptionTruncated": "Der Lausitzer Hörnergruß und die Kirchgemeinde laden ganz herzlich zum Hubertuskonzert ein. Hubertus gilt als Schutzpatron der Jäger, Jagdhunde und Schützen...",
+   "DescriptionMore": true,
+   "Url": "",
+   "Id": 4800259,
+   "Title": "Wenn das Kirchenschiff zum Wald wird..."
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_gottesdienstmusik-zum-drittletzten-sonntag-des-kirchenjahrs",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Singen, Kirche, Klassik",
+   "DateTime": "2026-11-08T18:00:00+0100",
+   "LocationName": "Maria-und-Martha-Kirche Bautzen",
+   "DescriptionTruncated": "„Dona nobis pacem“   Instrumentalisten aus dem Kirchspiel laden zum Mitsingen ein Evelyn Fiebiger - Leitung",
+   "DescriptionMore": false,
+   "Url": "",
+   "Id": 4799954,
+   "Title": "Gottesdienstmusik zum Drittletzten Sonntag des Kirchenjahrs"
+  },
+  {
+   "Production": {
+    "DateFromTo": "08. November 2026"
+   },
+   "Slug": "08.11.2026_floeten-orgel-im-konzert-zum-kirchweihfest",
+   "ContentCategoryName": "Bühne & Kunst",
+   "FormalCategoryName": "Kirche, Klassik",
+   "DateTime": "2026-11-08T19:00:00+0100",
+   "LocationName": "Kirche Kleinbautzen",
+   "DescriptionTruncated": "Maria-Barbara Salewski - Flöten  Erika Haufe - Orgel  Mit besinnlichen und auch beschwingten Melodien möchten die beiden Musikerinnen den Abend des...",
+   "DescriptionMore": true,
+   "Url": "",
+   "Id": 4800262,
+   "Title": "Flöten & Orgel im Konzert zum Kirchweihfest"
+  },
+  {
+   "Production": {
+    "DateFromTo": "09. November 2026"
+   },
+   "Slug": "09.11.2026_roll-up-ausstellung-%C2%BBauf-den-spuren-juedischen-lebens-in-bautzen%C2%AB-beitrag-zu-%C2%BBgegen-das-vergessen%C2%AB",
+   "ContentCategoryName": "Familie & Freizeit",
+   "FormalCategoryName": "Ausstellung, Museum, Bildung",
+   "DateTime": "2026-11-09T15:15:00+0100",
+   "LocationName": "Museum Bautzen",
+   "DescriptionTruncated": "Im Rahmen der regionalen Gedenkveranstaltung »Gegen das Vergessen – Lesung, Performance, Ausstellung, Andacht« präsentiert das Museum am Kornmarkt einen...",
+   "DescriptionMore": true,
+   "Url": "",
+   "Id": 4806425,
+   "Title": "Roll-Up-Ausstellung »Auf den Spuren jüdischen Lebens in Bautzen« – Beitrag zu »Gegen das Vergessen«"
+  }
+ ]
+}

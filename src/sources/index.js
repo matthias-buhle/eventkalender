@@ -3,5 +3,8 @@
 import * as aust from './aust.js';
 import * as satourn from './satourn.js';
 import * as kamenz from './kamenz.js';
+import * as bischofswerda from './bischofswerda.js';
+import * as goerlitz from './goerlitz.js';
+import * as augusto from './augusto.js';
 
-export const adapters = [aust, satourn, kamenz];
+export const adapters = [aust, satourn, kamenz, bischofswerda, goerlitz, augusto];
