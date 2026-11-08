@@ -1,12 +1,32 @@
-/* Schlicht und handyzuerst; der Feinschliff folgt später. */
+/* Bühnenlicht: Nachtblau mit Bernstein (dunkel) und warmes Papier (hell). Schriften liegen lokal in fonts/. */
+@font-face { font-family: "Barlow Condensed"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/barlow-condensed-600-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Barlow Condensed"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/barlow-condensed-600-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Barlow Condensed"; font-weight: 700; font-style: normal; font-display: swap; src: url("fonts/barlow-condensed-700-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Barlow Condensed"; font-weight: 700; font-style: normal; font-display: swap; src: url("fonts/barlow-condensed-700-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-weight: 400 600; font-style: normal; font-display: swap; src: url("fonts/inter-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Inter"; font-weight: 400 600; font-style: normal; font-display: swap; src: url("fonts/inter-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* Hell (Standard) */
 :root {
-  --bg: #f6f5f1;
-  --card: #ffffff;
-  --text: #1c2321;
-  --muted: #5b6662;
-  --line: #dcdad2;
-  --accent: #2d6a4f;
+  --kopf: 56px;
+  --anzeige: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --bg: #f6f2ea;
+  --card: #e8e6e1;
+  --text: #1a2033;
+  --muted: #55596b;
+  --line: #d8d4cb;
+  --line-strong: #b9b5aa;
+  --accent: #9a5700;
   --accent-text: #ffffff;
+  --sonne: #f2a93b;
+  --berg-hinten: #eae2d0;
+  --berg-vorn: #e1d7c1;
+  --art-konzert: #d9531e;   --art-konzert-text: #a93b0b;
+  --art-party: #d6336c;     --art-party-text: #a81c4c;
+  --art-markt: #1e9e6a;     --art-markt-text: #12724c;
+  --art-fest: #b88a00;      --art-fest-text: #7a5c00;
+  --art-schau: #3a6fd8;     --art-schau-text: #2a56b0;
+  --art-sonstiges: #6b7388; --art-sonstiges-text: #55596b;
   --warn: #8a4b00;
   --warn-bg: #fff1d6;
   --bad: #9b1c1c;
@@ -14,27 +34,24 @@
   --good: #1d5a36;
   --good-bg: #dff3e6;
 }
+/* Dunkel: nach Handy-Einstellung, solange nicht von Hand auf hell gestellt */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #14181a;
-    --card: #1e2427;
-    --text: #e9ecea;
-    --muted: #a3aeaa;
-    --line: #33403c;
-    --accent: #5fb88a;
-    --accent-text: #0b1a12;
-    --warn: #ffd18a;
-    --warn-bg: #3a2c12;
-    --bad: #ffb4b4;
-    --bad-bg: #3c1c1c;
-    --good: #a6e3bf;
-    --good-bg: #17301f;
+    --bg: #0f1420; --card: #181f31; --text: #eef0f6; --muted: #98a1b8; --line: #232c42; --line-strong: #33405e;
+    --accent: #ffb23e; --accent-text: #1a1200; --sonne: #ffb23e; --berg-hinten: #1a2236; --berg-vorn: #212b45;
+    --art-konzert: #ff7a45; --art-konzert-text: #ff7a45; --art-party: #ff4d8d; --art-party-text: #ff4d8d;
+    --art-markt: #5cd6a0; --art-markt-text: #5cd6a0; --art-fest: #ffc83d; --art-fest-text: #ffc83d;
+    --art-schau: #6fa8ff; --art-schau-text: #6fa8ff; --art-sonstiges: #9aa3b8; --art-sonstiges-text: #9aa3b8;
+    --warn: #ffd18a; --warn-bg: #3a2c12; --bad: #ffb4b4; --bad-bg: #3c1c1c; --good: #a6e3bf; --good-bg: #17301f;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #14181a; --card: #1e2427; --text: #e9ecea; --muted: #a3aeaa; --line: #33403c;
-  --accent: #5fb88a; --accent-text: #0b1a12; --warn: #ffd18a; --warn-bg: #3a2c12;
-  --bad: #ffb4b4; --bad-bg: #3c1c1c; --good: #a6e3bf; --good-bg: #17301f;
+  --bg: #0f1420; --card: #181f31; --text: #eef0f6; --muted: #98a1b8; --line: #232c42; --line-strong: #33405e;
+  --accent: #ffb23e; --accent-text: #1a1200; --sonne: #ffb23e; --berg-hinten: #1a2236; --berg-vorn: #212b45;
+  --art-konzert: #ff7a45; --art-konzert-text: #ff7a45; --art-party: #ff4d8d; --art-party-text: #ff4d8d;
+  --art-markt: #5cd6a0; --art-markt-text: #5cd6a0; --art-fest: #ffc83d; --art-fest-text: #ffc83d;
+  --art-schau: #6fa8ff; --art-schau-text: #6fa8ff; --art-sonstiges: #9aa3b8; --art-sonstiges-text: #9aa3b8;
+  --warn: #ffd18a; --warn-bg: #3a2c12; --bad: #ffb4b4; --bad-bg: #3c1c1c; --good: #a6e3bf; --good-bg: #17301f;
 }
 
 * { box-sizing: border-box; }
@@ -43,64 +60,88 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 16px/1.45 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
-.top, .filters, main, footer { padding-left: 16px; padding-right: 16px; max-width: 720px; margin-left: auto; margin-right: auto; }
-.top { padding-top: 16px; }
-h1 { font-size: 1.35rem; margin: 0; }
-.stand { margin: 2px 0 0; color: var(--muted); font-size: 0.85rem; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main, footer { padding-left: 16px; padding-right: 16px; max-width: 720px; margin-left: auto; margin-right: auto; }
 
-.filters { padding-top: 10px; padding-bottom: 10px; position: sticky; top: 0; background: var(--bg); z-index: 2; border-bottom: 1px solid var(--line); }
-.zeit { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+/* Kopf: bleibt beim Scrollen stehen; Bergkette und Stand rutschen weg */
+.top, .filters { padding-left: max(16px, calc((100% - 720px) / 2)); padding-right: max(16px, calc((100% - 720px) / 2)); }
+.top { position: sticky; top: 0; z-index: 4; height: var(--kopf); display: flex; align-items: center; justify-content: space-between; background: var(--bg); }
+h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
+.thema { width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line-strong); background: transparent; color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.ico-sonne { display: none; }
+:root[data-theme="dark"] .ico-mond { display: none; }
+:root[data-theme="dark"] .ico-sonne { display: block; }
+
+.landschaft { position: relative; height: 84px; overflow: hidden; }
+.berge { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+.berg-hinten { fill: var(--berg-hinten); }
+.berg-vorn { fill: var(--berg-vorn); }
+.sonne { position: absolute; top: 14px; right: max(40px, calc(50% - 310px)); width: 28px; height: 28px; border-radius: 50%; background: var(--sonne); z-index: 0; }
+.stand { position: relative; z-index: 2; margin: 0; padding: 2px max(16px, calc((100% - 720px) / 2)) 0; color: var(--muted); font-size: 0.8rem; }
+
+/* Filterleiste: klebt unter dem Namen, 4 px Luft dazwischen (vom Hintergrund überdeckt) */
+.filters { padding-top: 8px; padding-bottom: 0; position: sticky; top: calc(var(--kopf) + 4px); background: var(--bg); box-shadow: 0 -4px 0 var(--bg); z-index: 3; border-bottom: 1px solid var(--line); }
+.suche, .ort select { font: inherit; font-size: 1rem; min-height: 40px; padding: 4px 12px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--card); color: var(--text); width: 100%; }
+.suche { margin-bottom: 4px; }
+.suche::placeholder { color: var(--muted); }
+.zeit { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; }
 .zeit::-webkit-scrollbar { display: none; }
-.zeit .chip { flex: 0 0 auto; }
-.chip { font: inherit; font-size: 0.9rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--text); cursor: pointer; min-height: 40px; }
+.zeit .chip { flex: 0 0 auto; padding: 8px 0 6px; min-height: 40px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: var(--muted); font: 600 1rem/1.2 var(--anzeige); letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; }
+.zeit .chip[aria-pressed="true"] { background: transparent; color: var(--accent); border-bottom-color: var(--accent); }
+
+.chip { font: inherit; font-size: 0.85rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); cursor: pointer; min-height: 36px; }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-.zeit .chip[aria-pressed="false"] { color: var(--text); }
 .feld .chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
 .feld .chip.wahl[aria-pressed="false"] { text-decoration: none; }
-.suche, .ort select { font: inherit; font-size: 1rem; min-height: 40px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text); width: 100%; }
-.suche { margin-bottom: 8px; }
-.mehr { margin-top: 8px; }
-.mehr summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
-.zaehler { background: var(--accent); color: var(--accent-text); border-radius: 999px; min-width: 22px; height: 22px; padding: 0 6px; font-size: 0.8rem; display: inline-flex; align-items: center; justify-content: center; }
+.mehr summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--muted); list-style: none; }
+.mehr summary::-webkit-details-marker { display: none; }
+.mehr summary::before { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); margin-right: 2px; }
+.mehr[open] summary::before { transform: rotate(-135deg) translateY(-1px); }
+.zaehler { background: var(--accent); color: var(--accent-text); border-radius: 999px; min-width: 20px; height: 20px; padding: 0 6px; font-size: 0.75rem; display: inline-flex; align-items: center; justify-content: center; }
 .zaehler[hidden] { display: none; }
-.feld { display: flex; flex-direction: column; gap: 14px; padding: 8px 0 4px; max-height: 60vh; overflow-y: auto; }
+.feld { display: flex; flex-direction: column; gap: 14px; padding: 12px 0 14px; max-height: 50vh; overflow-y: auto; }
 .gruppe { display: flex; flex-direction: column; gap: 8px; }
 .gruppe[hidden] { display: none; }
-.gruppentitel { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.gruppentitel { margin: 0; font: 600 0.9rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.genre { color: var(--muted); }
 .ort { display: flex; flex-direction: column; gap: 2px; font-size: 0.85rem; color: var(--muted); }
 .regler { display: flex; flex-direction: column; gap: 2px; font-size: 0.9rem; }
 .regler input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--accent); }
 .schalter { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; min-height: 40px; }
 .schalter input { width: 20px; height: 20px; accent-color: var(--accent); }
 
-main { padding-top: 8px; padding-bottom: 24px; }
-.tag h2 { font-size: 1.05rem; margin: 20px 0 8px; }
-.card { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 0 0 10px; }
-.card.art-konzert { border-left-color: #b5651d; }
-.card.art-party { border-left-color: #a23b72; }
-.card.art-markt { border-left-color: #2d6a4f; }
-.card.art-fest { border-left-color: #c8a400; }
-.card.art-schau { border-left-color: #3a6ea5; }
-.card.art-sonstiges { border-left-color: #6b7280; }
-.card .title { margin: 0 0 4px; font-size: 1.05rem; overflow-wrap: anywhere; }
-.card p { margin: 2px 0; }
-.meta { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.status { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; text-transform: none; letter-spacing: 0; font-size: 0.8rem; }
+/* Terminliste */
+main { padding-top: 4px; padding-bottom: 24px; }
+.tag h2 { margin: 22px 0 8px; font: 600 1.15rem/1.2 var(--anzeige); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.card { --art: var(--accent); --art-text: var(--accent); display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--art); border-radius: 10px; padding: 12px 14px; margin: 0 0 10px; }
+.card.art-konzert { --art: var(--art-konzert); --art-text: var(--art-konzert-text); }
+.card.art-party { --art: var(--art-party); --art-text: var(--art-party-text); }
+.card.art-markt { --art: var(--art-markt); --art-text: var(--art-markt-text); }
+.card.art-fest { --art: var(--art-fest); --art-text: var(--art-fest-text); }
+.card.art-schau { --art: var(--art-schau); --art-text: var(--art-schau-text); }
+.card.art-sonstiges { --art: var(--art-sonstiges); --art-text: var(--art-sonstiges-text); }
+.card p { margin: 0; }
+.card .meta { order: -1; font: 700 0.9rem/1.3 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--art-text); }
+.card .title { margin: 4px 0 0; font: 600 1.65rem/1.15 var(--anzeige); overflow-wrap: anywhere; }
+.status { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font: 400 0.75rem/1.4 "Inter", system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 .status-verfuegbar { background: var(--good-bg); color: var(--good); }
 .status-ausverkauft, .status-abgesagt { background: var(--bad-bg); color: var(--bad); }
 .status-verlegt { background: var(--warn-bg); color: var(--warn); }
-.when { font-weight: 600; }
-.where { color: var(--muted); }
-.review { background: var(--warn-bg); color: var(--warn); padding: 4px 8px; border-radius: 6px; font-size: 0.9rem; }
-.desc { font-size: 0.92rem; overflow-wrap: anywhere; }
-.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px !important; }
-.btn { display: inline-block; padding: 10px 14px; min-height: 44px; border-radius: 8px; background: var(--accent); color: var(--accent-text); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-.sources { font-size: 0.82rem; color: var(--muted); margin-top: 8px !important; }
-.sources a { color: inherit; }
+.card .when { margin-top: 6px; font-weight: 500; font-size: 0.85rem; color: var(--accent); }
+.card .where { margin-top: 3px; font-size: 0.8rem; color: var(--muted); }
+.card .review { margin-top: 8px; background: var(--warn-bg); color: var(--warn); padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; }
+.card .desc { margin-top: 8px; font-size: 0.9rem; line-height: 1.45; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.85rem; }
+/* Reihenfolge: Zur Webseite, Tickets, Anrufen, E-Mail; der erste Webknopf ist gefüllt */
+.btn[href^="http"] { order: 1; }
+.btn[href^="tel:"] { order: 2; }
+.btn[href^="mailto:"] { order: 3; }
+.btn[href^="http"]:not(.btn[href^="http"] ~ .btn[href^="http"]) { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.card .sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--muted); }
+.sources a { color: inherit; text-underline-offset: 2px; }
 .leer { color: var(--muted); padding: 24px 0; text-align: center; }
 
 footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(--muted); }

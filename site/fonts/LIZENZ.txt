@@ -1,0 +1,4 @@
+Schriften in diesem Ordner (von Google Fonts, lokal eingebunden):
+- Barlow Condensed (Jeremy Tribby), SIL Open Font License 1.1
+- Inter (Rasmus Andersson), SIL Open Font License 1.1
+Lizenztext: https://openfontlicense.org
