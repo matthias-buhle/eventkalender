@@ -45,7 +45,7 @@ jobs:
         run: |
           mkdir -p site/data
           curl -fsS --max-time 30 \
-            "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${SITE_CODE}/data/status.json" \
+            "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/status.json" \
             -o site/data/status.json || rm -f site/data/status.json
 
       # Fällt nur eine Quelle aus, endet der Lauf trotzdem erfolgreich: der Fehler steht in status.json.
