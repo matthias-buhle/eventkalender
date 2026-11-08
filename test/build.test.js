@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
-import { runAll, pruefeLauf } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste } from '../src/build.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
 
@@ -162,4 +162,13 @@ test('status nennt Orte, die das Ortsverzeichnis nicht kennt (gelieferte Termine
   assert.deepEqual(status[0].unbekannteOrte, ['Halle, Niemandsdorf', 'Nirgendwo']);
   const sauber = await runAll({ now: NOW, http: {}, sources: [quelle('r', async () => [ev({})])] });
   assert.deepEqual(sauber.status[0].unbekannteOrte, []);
+});
+
+test('ortsliste: Name, Koordinaten und Land aller Orte im Umkreis, nach Namen sortiert, ohne Aliasse', () => {
+  const liste = ortsliste();
+  assert.ok(liste.length > 50);
+  const sebnitz = liste.find((o) => o.name === 'Sebnitz');
+  assert.deepEqual(Object.keys(sebnitz).sort(), ['country', 'lat', 'lon', 'name']);
+  assert.deepEqual(liste.map((o) => o.name), [...liste.map((o) => o.name)].sort((a, b) => a.localeCompare(b, 'de')));
+  assert.ok(!liste.some((o) => o.name === 'Ulm' || o.name === 'Berlin'), 'ferne Orte sind keine Mitte zur Auswahl');
 });

@@ -87,16 +87,16 @@ test('loadPrefs liefert Standard ohne Speicher, bei werfendem Speicher und bei f
   assert.deepEqual(loadPrefs({ getItem() { throw new Error('gesperrt'); } }), DEFAULT_PREFS);
   assert.deepEqual(loadPrefs(fakeStorage({ 'eventkalender.prefs': '"text"' })), DEFAULT_PREFS);
   const gemischt = loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify({ hiddenArt: 'markt', maxKm: 'viel', showCZ: false, hiddenTags: ['a', 3] }) }));
-  assert.deepEqual(gemischt, { hiddenArt: [], hiddenTags: ['a'], maxKm: 75, showCZ: false });
+  assert.deepEqual(gemischt, { ...DEFAULT_PREFS, hiddenTags: ['a'], showCZ: false });
 });
 
 test('Standard blendet nichts aus: 75 km, Tschechien an', () => {
-  assert.deepEqual(DEFAULT_PREFS, { hiddenArt: [], hiddenTags: [], maxKm: 75, showCZ: true });
+  assert.deepEqual(DEFAULT_PREFS, { hiddenArt: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', von: null, bis: null });
 });
 
 test('savePrefs und loadPrefs: Rundlauf; werfender Speicher löst keine Ausnahme aus', () => {
   const speicher = fakeStorage();
-  const eigene = { hiddenArt: ['markt'], hiddenTags: ['kinder'], maxKm: 30, showCZ: false };
+  const eigene = { hiddenArt: ['markt'], hiddenTags: ['kinder'], maxKm: 30, showCZ: false, ort: 'Bautzen', zeit: 'bereich', von: '2026-12-01', bis: '2026-12-24' };
   savePrefs(speicher, eigene);
   assert.deepEqual(loadPrefs(speicher), eigene);
   assert.doesNotThrow(() => savePrefs({ setItem() { throw new Error('voll'); } }, eigene));
