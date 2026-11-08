@@ -81,3 +81,27 @@ test('loadPrefs: Ort, Zeitraum und Daten werden geprüft; ältere Einstellungen 
   const gut = lade({ ort: 'Bautzen', zeit: 'bereich', von: '2026-12-01', bis: '2026-12-24' });
   assert.deepEqual([gut.ort, gut.zeit, gut.von, gut.bis], ['Bautzen', 'bereich', '2026-12-01', '2026-12-24']);
 });
+
+// --- Genre ---
+
+test('Genre: ausgeblendete Genres verschwinden; Konzerte ohne Genre zählen als "sonstige", andere Arten ohne Genre bleiben', () => {
+  const liste = [
+    ev({ id: 'rock', genre: 'rock-pop' }),
+    ev({ id: 'jazz', genre: 'jazz' }),
+    ev({ id: 'ohne', genre: null }),
+    ev({ id: 'alt', genre: undefined }),
+    ev({ id: 'comedy', art: 'sonstiges', genre: 'comedy' }),
+    ev({ id: 'markt', art: 'markt', genre: null }),
+  ];
+  const ids = (hiddenGenres) => applyFilters(liste, prefs({ hiddenGenres }), NOW).map((e) => e.id);
+  assert.deepEqual(ids([]), ['rock', 'jazz', 'ohne', 'alt', 'comedy', 'markt']);
+  assert.deepEqual(ids(['jazz', 'comedy']), ['rock', 'ohne', 'alt', 'markt']);
+  assert.deepEqual(ids(['sonstige']), ['rock', 'jazz', 'comedy', 'markt']);
+});
+
+test('loadPrefs: hiddenGenres wird als Textliste geprüft, ältere Einstellungen haben keine', () => {
+  const lade = (obj) => loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify(obj) }));
+  assert.deepEqual(lade({ maxKm: 30 }).hiddenGenres, []);
+  assert.deepEqual(lade({ hiddenGenres: ['jazz', 3, 'comedy'] }).hiddenGenres, ['jazz', 'comedy']);
+  assert.deepEqual(lade({ hiddenGenres: 'jazz' }).hiddenGenres, []);
+});

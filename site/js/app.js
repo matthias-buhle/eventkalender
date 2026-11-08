@@ -1,6 +1,6 @@
 // Seitenlogik: Daten laden, Filterleiste aufbauen, Liste zeichnen, Einstellungen am Gerät merken.
 import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, DEFAULT_PREFS } from './filter.js';
-import { renderEventCard, renderStatusFooter, dayLabel, artName } from './render.js';
+import { renderEventCard, renderStatusFooter, dayLabel, artName, GENRES, SONSTIGE_KONZERTE } from './render.js';
 
 const ARTEN = ['konzert', 'party', 'markt', 'fest', 'schau', 'sonstiges'];
 const ZEIT_CHIPS = [
@@ -39,6 +39,7 @@ function standText(iso) {
 /** Wie viele Filter im Bereich "Mehr Filter" vom Standard abweichen (der Zeitraum ist immer sichtbar). */
 function aktiveFilter(prefs) {
   return (prefs.hiddenArt.length ? 1 : 0)
+    + (prefs.hiddenGenres.length ? 1 : 0)
     + (prefs.ort || prefs.maxKm < DEFAULT_PREFS.maxKm ? 1 : 0)
     + (prefs.showCZ ? 0 : 1);
 }
@@ -154,6 +155,24 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   }
   artGruppe.append(chips);
 
+  const genreGruppe = neu('div', 'gruppe');
+  genreGruppe.append(neu('p', 'gruppentitel', 'Genres anzeigen (Konzerte, Comedy …)'));
+  const genreChips = neu('div', 'chips');
+  for (const [genre, text] of [...Object.entries(GENRES), ['sonstige', SONSTIGE_KONZERTE]]) {
+    const chip = neu('button', 'chip', text);
+    chip.setAttribute('type', 'button');
+    chip.setAttribute('aria-pressed', String(!prefs.hiddenGenres.includes(genre)));
+    chip.addEventListener('click', () => {
+      const aus = prefs.hiddenGenres.includes(genre);
+      prefs.hiddenGenres = aus ? prefs.hiddenGenres.filter((g) => g !== genre) : [...prefs.hiddenGenres, genre];
+      chip.setAttribute('aria-pressed', String(aus));
+      aktualisiereZaehler();
+      beiAenderung();
+    });
+    genreChips.append(chip);
+  }
+  genreGruppe.append(genreChips);
+
   const schalter = neu('label', 'schalter');
   const haken = neu('input');
   haken.setAttribute('type', 'checkbox');
@@ -165,7 +184,7 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   });
   schalter.append(haken, neu('span', null, 'Tschechien'));
 
-  feld.append(ortGruppe, artGruppe, schalter);
+  feld.append(ortGruppe, artGruppe, genreGruppe, schalter);
   mehr.append(feld);
   aktualisiereZaehler();
   leiste.append(mehr);

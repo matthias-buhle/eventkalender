@@ -108,3 +108,41 @@ export function shorten(text, n) {
   const wortende = kopf.lastIndexOf(' ');
   return `${(wortende > 0 ? kopf.slice(0, wortende) : kopf).trimEnd()}…`;
 }
+
+export const GENRES = {
+  'rock-pop': 'Rock & Pop',
+  'metal-punk': 'Metal & Punk',
+  klassik: 'Klassik & Chor',
+  jazz: 'Jazz & Blues',
+  'schlager-folk': 'Schlager & Folk',
+  'hiphop-elektro': 'Hip-Hop & Elektro',
+  comedy: 'Comedy & Kabarett',
+  musical: 'Musical',
+};
+
+// Reihenfolge = Vorrang: das Besondere vor dem Allgemeinen ("Popchor" ist Pop, nicht Chor).
+const GENRE_REGELN = /** @type {[string, RegExp][]} */ ([
+  ['comedy', /comedy|kabarett|cabaret|stand.?up|satire|kleinkunst/],
+  ['musical', /musical/],
+  ['metal-punk', /\bmetal|\bpunk|hardcore|thrash|heavy/],
+  ['jazz', /jazz|swing|blues|big.?band/],
+  ['hiphop-elektro', /hip.?hop|\brap\b|rapper|techno|\bhouse\b|electro|elektro|\bedm\b|\bdance\b|trance|drum.?n.?bass/],
+  ['schlager-folk', /schlager|volksmusik|blasorchester|volkst[uü]mlich|folk|blasmusik|shanty|country|bluegrass|liedermacher|chanson/],
+  ['rock-pop', /\brock|\bpop\b|pop.?chor|\bindie\b|songwriter/],
+  ['klassik', /klassik|classical|sinfon|symphon|philharmon|orchester|kammermusik|kammerorchester|\boper\b|operette|\bchor\b|chor\b|kantate|oratori|requiem|orgel|klavier|violin|cello|fagott|quartett|ensemble|motette|barock|bach\b|mozart|beethoven|vivaldi|chopin|brahms|h[aä]ndel/],
+]);
+
+/**
+ * Rät das Genre aus Texten (Kategorie, Titel, Beschreibung …). Der erste Text, in dem etwas passt, entscheidet;
+ * "Konzert" allein sagt nichts. Bleibt es unklar: null (die Seite nennt das "Sonstige").
+ * @param {...(string|null|undefined)} texte
+ * @returns {string|null}
+ */
+export function detectGenre(...texte) {
+  for (const roh of texte) {
+    const t = String(roh ?? '').toLowerCase();
+    if (!t) continue;
+    for (const [genre, regel] of GENRE_REGELN) if (regel.test(t)) return genre;
+  }
+  return null;
+}

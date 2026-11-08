@@ -172,3 +172,24 @@ test('ortsliste: Name, Koordinaten und Land aller Orte im Umkreis, nach Namen so
   assert.deepEqual(liste.map((o) => o.name), [...liste.map((o) => o.name)].sort((a, b) => a.localeCompare(b, 'de')));
   assert.ok(!liste.some((o) => o.name === 'Ulm' || o.name === 'Berlin'), 'ferne Orte sind keine Mitte zur Auswahl');
 });
+
+test('runAll rät das Genre: Konzerte aus Titel und Beschreibung, Comedy auch bei sonstigen Terminen, Fremdes bleibt leer', async () => {
+  const { events } = await runAll({
+    now: NOW, http: {},
+    sources: [quelle('q', async () => [
+      ev({ title: 'Jazzabend im Keller', art: 'konzert' }),
+      ev({ title: 'Konzert', description: 'Ein Klavierabend mit Chopin', art: 'konzert' }),
+      ev({ title: 'Danger Dan', art: 'konzert' }),
+      ev({ title: 'Kabarett: Die Spitzen', art: 'sonstiges' }),
+      ev({ title: 'Rockabilly Frühschoppen', art: 'fest' }),
+      ev({ title: 'Metal Open Air', art: 'konzert', genre: 'rock-pop' }),
+    ])],
+  });
+  const genre = (titel) => events.find((e) => e.title === titel).genre;
+  assert.equal(genre('Jazzabend im Keller'), 'jazz');
+  assert.equal(genre('Konzert'), 'klassik');
+  assert.equal(genre('Danger Dan'), null);
+  assert.equal(genre('Kabarett: Die Spitzen'), 'comedy');
+  assert.equal(genre('Rockabilly Frühschoppen'), null, 'außerhalb von Konzert nur Comedy und Musical');
+  assert.equal(genre('Metal Open Air'), 'rock-pop', 'was die Quelle selbst liefert, bleibt');
+});

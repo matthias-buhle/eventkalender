@@ -1,7 +1,7 @@
 import { makeEvent } from '../model.js';
 import { berlinIso } from '../time.js';
 import { CENTER } from '../geo.js';
-import { cleanText, normalizeArt } from '../normalize.js';
+import { cleanText, detectGenre, normalizeArt } from '../normalize.js';
 
 export const name = 'ticketmaster';
 
@@ -25,6 +25,7 @@ function zuEvent(e) {
     sourceId: e.id,
     sourceUrl: e.url,
     title: cleanText(e.name),
+    genre: detectGenre(artText.replace(/alternative/i, 'Rock')),
     art: /music|musik/i.test(klasse?.segment?.name ?? '') ? 'konzert' : normalizeArt(artText, e.name),
     start: berlinIso(start.localDate, mitZeit ? start.localTime.slice(0, 5) : null),
     hasTime: mitZeit,
