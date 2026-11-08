@@ -1,6 +1,9 @@
 // Arten und ihre Unterarten (Feld "genre" am Termin): Genres bei Konzerten, Sorten bei Märkten und Schauen.
 // Die Schlüssel entsprechen src/normalize.js; die Seite kann diese Datei nicht laden.
 
+/** Alle Arten in der Reihenfolge der Filterknöpfe. */
+export const ARTEN = ['konzert', 'party', 'markt', 'fest', 'schau', 'sonstiges'];
+
 /** Reihenfolge = Reihenfolge der Filterknöpfe. "sonstige" gilt für Termine dieser Art ohne bekannte Unterart. */
 export const SORTEN = {
   konzert: {

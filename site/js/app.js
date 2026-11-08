@@ -1,9 +1,8 @@
 // Seitenlogik: Daten laden, Filterleiste aufbauen, Liste zeichnen, Einstellungen am Gerät merken.
-import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, DEFAULT_PREFS } from './filter.js';
+import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, einzelneArt, artWaehlen, wirksameSorten, DEFAULT_PREFS } from './filter.js';
 import { renderEventCard, renderStatusFooter, dayLabel, artName } from './render.js';
-import { SORTEN } from './arten.js';
+import { ARTEN, SORTEN } from './arten.js';
 
-const ARTEN = ['konzert', 'party', 'markt', 'fest', 'schau', 'sonstiges'];
 const ZEIT_CHIPS = [
   ['alle', 'Alle'], ['heute', 'Heute'], ['wochenende', 'Wochenende'], ['7', '7 Tage'], ['30', '30 Tage'], ['60', '60 Tage'],
 ];
@@ -40,7 +39,7 @@ function standText(iso) {
 /** Wie viele Filter im Bereich "Mehr Filter" vom Standard abweichen (der Zeitraum ist immer sichtbar). */
 function aktiveFilter(prefs) {
   return (prefs.hiddenArt.length ? 1 : 0)
-    + (prefs.hiddenGenres.length ? 1 : 0)
+    + (wirksameSorten(prefs).length ? 1 : 0)
     + (prefs.ort || prefs.maxKm < DEFAULT_PREFS.maxKm ? 1 : 0)
     + (prefs.showCZ ? 0 : 1);
 }
@@ -133,31 +132,46 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   });
   ortGruppe.append(ortLabel, regler);
 
+  // Arten: "Alle" oder einzelne Arten wählen. Unterfilter (Genres, Sorten) gibt es nur, wenn genau eine Art gewählt ist.
   const artGruppe = neu('div', 'gruppe');
   artGruppe.append(neu('p', 'gruppentitel', 'Arten anzeigen'));
   const chips = neu('div', 'chips');
-  const sortenGruppen = new Map(); // Art -> Gruppe der Unterarten; nur sichtbar, solange die Art angezeigt wird
+  const artChips = new Map();
+  const sortenGruppen = new Map();
+  const zeigeArten = () => {
+    const alle = prefs.hiddenArt.length === 0;
+    for (const [art, chip] of artChips) {
+      chip.setAttribute('aria-pressed', String(art === 'alle' ? alle : !alle && !prefs.hiddenArt.includes(art)));
+    }
+    const einzel = einzelneArt(prefs.hiddenArt);
+    for (const [art, gruppe] of sortenGruppen) gruppe.hidden = art !== einzel;
+    aktualisiereZaehler();
+  };
+  const alleChip = neu('button', 'chip wahl', 'Alle');
+  alleChip.setAttribute('type', 'button');
+  alleChip.addEventListener('click', () => {
+    prefs.hiddenArt = [];
+    zeigeArten();
+    beiAenderung();
+  });
+  artChips.set('alle', alleChip);
+  chips.append(alleChip);
   for (const art of ARTEN) {
-    const chip = neu('button', 'chip', artName(art));
+    const chip = neu('button', 'chip wahl', artName(art));
     chip.setAttribute('type', 'button');
-    chip.setAttribute('aria-pressed', String(!prefs.hiddenArt.includes(art)));
     chip.addEventListener('click', () => {
-      const aus = prefs.hiddenArt.includes(art);
-      prefs.hiddenArt = aus ? prefs.hiddenArt.filter((a) => a !== art) : [...prefs.hiddenArt, art];
-      chip.setAttribute('aria-pressed', String(aus));
-      if (sortenGruppen.has(art)) sortenGruppen.get(art).hidden = !aus;
-      aktualisiereZaehler();
+      prefs.hiddenArt = artWaehlen(prefs.hiddenArt, art);
+      zeigeArten();
       beiAenderung();
     });
+    artChips.set(art, chip);
     chips.append(chip);
   }
   artGruppe.append(chips);
 
-  // Unterarten (Genres, Sorten) gibt es nur bei Konzerten, Märkten und Schauen und nur, solange die Art angezeigt wird.
   const sortenFelder = [];
   for (const [art, def] of Object.entries(SORTEN)) {
     const gruppe = neu('div', 'gruppe');
-    gruppe.hidden = prefs.hiddenArt.includes(art);
     gruppe.append(neu('p', 'gruppentitel', def.titel));
     const sortenChips = neu('div', 'chips');
     for (const [schluessel, text] of [...Object.entries(def.liste), [def.sonstige, def.sonstigeText]]) {
@@ -191,7 +205,7 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
 
   feld.append(ortGruppe, artGruppe, ...sortenFelder, schalter);
   mehr.append(feld);
-  aktualisiereZaehler();
+  zeigeArten();
   leiste.append(mehr);
 }
 

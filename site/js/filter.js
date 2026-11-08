@@ -1,10 +1,12 @@
 // Reine Funktionen für Filter, Gruppierung und gespeicherte Einstellungen. Kein Zugriff auf window oder document.
-import { sorteFilter } from './arten.js';
+import { ARTEN, SORTEN, sorteFilter } from './arten.js';
 
 /**
  * ort: Mitte des Umkreises (Name aus dem Ortsverzeichnis) oder null für Sebnitz.
  * zeit: 'alle' | 'heute' | 'wochenende' | '7' | '30' | '60' (Tage ab heute).
  * hiddenGenres: ausgeblendete Unterarten (Genres der Konzerte, Sorten der Märkte und Schauen), siehe arten.js.
+ * hiddenGenres: ausgeblendete Unterarten (Genres der Konzerte, Sorten der Märkte und Schauen), siehe arten.js;
+ * sie wirken nur, wenn genau eine Art angezeigt wird.
  * suche: Suchtext (wird nicht gespeichert).
  * @typedef {{hiddenArt:string[], hiddenGenres:string[], hiddenTags:string[], maxKm:number, showCZ:boolean, ort:string|null, zeit:string, suche:string}} Prefs
  */
@@ -88,6 +90,33 @@ function passtZurSuche(e, woerter) {
   return woerter.every((w) => heu.includes(w));
 }
 
+/** Die Art, wenn genau eine angezeigt wird (nur dann gibt es Unterfilter), sonst null. */
+export function einzelneArt(hiddenArt) {
+  const aktiv = ARTEN.filter((a) => !hiddenArt.includes(a));
+  return aktiv.length === 1 ? aktiv[0] : null;
+}
+
+/**
+ * Neue Liste ausgeblendeter Arten nach dem Antippen einer Art: Aus "alle" wird die Art allein, weitere kommen dazu
+ * oder gehen wieder; wären am Ende keine oder alle Arten angezeigt, heißt das "alle" (leere Liste).
+ */
+export function artWaehlen(hiddenArt, art) {
+  const aktiv = ARTEN.filter((a) => !hiddenArt.includes(a));
+  let neu;
+  if (aktiv.length === ARTEN.length) neu = [art];
+  else if (aktiv.includes(art)) neu = aktiv.filter((a) => a !== art);
+  else neu = [...aktiv, art];
+  return neu.length === 0 || neu.length === ARTEN.length ? [] : ARTEN.filter((a) => !neu.includes(a));
+}
+
+/** Die ausgeblendeten Unterarten, die gerade wirken: nur bei genau einer Art, und nur deren eigene Schlüssel. */
+export function wirksameSorten(prefs) {
+  const art = einzelneArt(prefs.hiddenArt);
+  const def = art ? SORTEN[art] : null;
+  if (!def) return [];
+  return prefs.hiddenGenres.filter((g) => g === def.sonstige || Object.hasOwn(def.liste, g));
+}
+
 /**
  * Filtert nach Einstellungen und entfernt Vergangenes. Ein Termin von heute bleibt bis Tagesende (Berliner Zeit).
  * @param {any[]} events
@@ -97,6 +126,7 @@ function passtZurSuche(e, woerter) {
  */
 export function applyFilters(events, prefs, nowIso, orte = {}) {
   const heute = berlinDay(nowIso);
+  const sortenAus = wirksameSorten(prefs);
   const fenster = zeitfenster(prefs, heute);
   const mitte = prefs.ort ? orte[prefs.ort] : null;
   const woerter = glatt(prefs.suche).split(/\s+/).filter(Boolean);
@@ -105,7 +135,7 @@ export function applyFilters(events, prefs, nowIso, orte = {}) {
     if (fenster.bis && e.start.slice(0, 10) > fenster.bis) return false;
     if (!passtZurSuche(e, woerter)) return false;
     if (prefs.hiddenArt.includes(e.art)) return false;
-    if (prefs.hiddenGenres.includes(sorteFilter(e))) return false;
+    if (sortenAus.includes(sorteFilter(e))) return false;
     if ((e.tags ?? []).some((t) => prefs.hiddenTags.includes(t))) return false;
     if (mitte) {
       if (Number.isFinite(e.lat) && Number.isFinite(e.lon) && luftlinieKm(mitte, e) > prefs.maxKm) return false;
