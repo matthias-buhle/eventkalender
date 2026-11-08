@@ -47,7 +47,8 @@
     "note": "Nutzungsrecht angefragt, bei Nein abschalten",
     "url": "https://www.goerlitz.de/termine/api",
     "days": 60,
-    "maxPages": 150
+    "maxPages": 150,
+    "fallbackPlace": "Görlitz"
   },
   "augusto": {
     "enabled": true,
@@ -57,7 +58,8 @@
       "stadt-bautzen"
     ],
     "days": 60,
-    "maxPages": 80
+    "maxPages": 80,
+    "fallbackPlace": "Bautzen"
   },
   "goout": {
     "enabled": true,

@@ -18,6 +18,7 @@ export async function fetchEvents({ http, today, config }) {
       });
       events.push(...zuEvents(zeilen, {
         quelle: 'Augusto',
+        fallbackPlace: config.fallbackPlace,
         linkFuer: (row) => `https://augusto-sachsen.de/veranstaltungen/t/${row.Id}/${encodeURIComponent(row.Slug)}`,
       }));
       geklappt++;

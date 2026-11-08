@@ -83,3 +83,11 @@ test('augusto: ausverkauft im Titel wird erkannt, sonst null', async () => {
   assert.equal(events.find((e) => e.title.startsWith('Weihnachtskonzert')).ticketStatus, 'ausverkauft');
   assert.equal(events.find((e) => e.title === 'Neujahrskonzert').ticketStatus, null);
 });
+
+test('augusto: Spielstätte ohne Ortsangabe bekommt Koordinaten und Namen der Region (fallbackPlace)', async () => {
+  const seite = { Pager: { IsLastPage: true }, EventDates: [zeile({ Title: 'Lesung', LocationName: 'Galerie Budissin', DateTime: '2026-11-14T19:00:00+0100', Production: { DateFromTo: '14. November 2026' } })] };
+  const http = { get: async (url) => ({ status: 200, body: new URL(url).searchParams.get('p') === '1' ? seite : { Pager: { IsLastPage: true }, EventDates: [] }, url }) };
+  const [e] = await fetchEvents({ http, today: '2026-11-08', config: { ...config, fallbackPlace: 'Bautzen' } });
+  assert.equal(e.placeName, 'Galerie Budissin, Raum Bautzen');
+  assert.ok(Math.abs(e.lat - 51.18) < 0.1 && Math.abs(e.lon - 14.42) < 0.1, `${e.lat}, ${e.lon}`);
+});

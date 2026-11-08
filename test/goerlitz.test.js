@@ -118,3 +118,17 @@ test('goerlitz: ein HTTP-Fehler wird weitergereicht', async () => {
   const kaputt = { get: async () => { throw new Error('HTTP 500'); } };
   await assert.rejects(fetchEvents({ http: kaputt, today: '2026-11-08', config }), /HTTP 500/);
 });
+
+test('goerlitz: Spielstätte ohne Ortsangabe bekommt Koordinaten und Namen der Region (fallbackPlace)', async () => {
+  const rows = [
+    zeile({ Title: 'Lesung im Salzhaus', LocationName: 'Christian-Weise-Bibliothek / Salzhaus', Production1: { DateFromTo: '14. November 2026' }, DateTime: '2026-11-14T19:00:00+0100' }),
+    zeile({ Title: 'Vortrag', LocationName: 'Stadtmuseum Löbau', Production1: { DateFromTo: '15. November 2026' }, DateTime: '2026-11-15T19:00:00+0100' }),
+  ];
+  const [ohne, mit] = await holen([seiteMit(rows)], { fallbackPlace: 'Görlitz' });
+  assert.equal(ohne.placeName, 'Christian-Weise-Bibliothek / Salzhaus, Raum Görlitz');
+  assert.ok(Math.abs(ohne.lat - 51.15) < 0.1 && Math.abs(ohne.lon - 14.99) < 0.1, `${ohne.lat}, ${ohne.lon}`);
+  assert.equal(mit.placeName, 'Stadtmuseum Löbau', 'ein Name, der sich selbst auflösen lässt, bleibt unverändert');
+  assert.equal(mit.lat, null);
+  const [ungesetzt] = await holen([seiteMit(rows.slice(0, 1))]);
+  assert.equal(ungesetzt.lat, null, 'ohne fallbackPlace ändert sich nichts');
+});

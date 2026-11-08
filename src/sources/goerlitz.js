@@ -13,6 +13,7 @@ export async function fetchEvents({ http, today, config }) {
   });
   return zuEvents(zeilen, {
     quelle: 'Görlitz Termine',
+    fallbackPlace: config.fallbackPlace,
     linkFuer: (row) => `https://www.goerlitz.de/termine/detail/${row.Id}`,
   });
 }
