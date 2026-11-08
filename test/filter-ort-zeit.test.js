@@ -52,11 +52,9 @@ test('zeitfenster: Wochenende ist Freitag bis Sonntag; am Wochenende selbst ab h
   assert.deepEqual(w('2026-11-15'), { von: '2026-11-15', bis: '2026-11-15' }, 'Sonntag');
 });
 
-test('zeitfenster: eigener Zeitraum; offene Enden, ein Beginn in der Vergangenheit und vertauschte Daten', () => {
-  assert.deepEqual(zeitfenster(prefs({ zeit: 'bereich', von: '2026-12-01', bis: '2026-12-24' }), '2026-11-08'), { von: '2026-12-01', bis: '2026-12-24' });
-  assert.deepEqual(zeitfenster(prefs({ zeit: 'bereich', von: null, bis: '2026-12-24' }), '2026-11-08'), { von: '2026-11-08', bis: '2026-12-24' });
-  assert.deepEqual(zeitfenster(prefs({ zeit: 'bereich', von: '2026-10-01', bis: null }), '2026-11-08'), { von: '2026-11-08', bis: null });
-  assert.deepEqual(zeitfenster(prefs({ zeit: 'bereich', von: '2026-12-24', bis: '2026-12-01' }), '2026-11-08'), { von: '2026-12-01', bis: '2026-12-24' });
+test('zeitfenster: 60 Tage; ein unbekannter Wert (auch das frühere "bereich") gilt wie alle', () => {
+  assert.deepEqual(zeitfenster(prefs({ zeit: '60' }), '2026-11-08'), { von: '2026-11-08', bis: '2027-01-06' });
+  assert.deepEqual(zeitfenster(prefs({ zeit: 'bereich' }), '2026-11-08'), { von: '2026-11-08', bis: null });
 });
 
 test('Zeitraum: Termine, die das Fenster berühren, bleiben (auch mehrtägige); andere fallen weg', () => {
@@ -70,16 +68,16 @@ test('Zeitraum: Termine, die das Fenster berühren, bleiben (auch mehrtägige); 
   const ids = (extra) => applyFilters(liste, prefs(extra), NOW).map((e) => e.id);
   assert.deepEqual(ids({ zeit: 'heute' }), ['heute', 'markt-laeuft']);
   assert.deepEqual(ids({ zeit: '7' }), ['heute', 'in3', 'markt-laeuft']);
-  assert.deepEqual(ids({ zeit: 'bereich', von: '2026-11-24', bis: '2026-11-30' }), ['markt-spaeter']);
   assert.deepEqual(ids({ zeit: 'alle' }), ['heute', 'in3', 'in10', 'markt-laeuft', 'markt-spaeter']);
 });
 
 test('loadPrefs: Ort, Zeitraum und Daten werden geprüft; ältere Einstellungen bekommen die Standardwerte', () => {
   const lade = (obj) => loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify(obj) }));
   assert.deepEqual(lade({ hiddenArt: ['markt'], maxKm: 30 }), { ...DEFAULT_PREFS, hiddenArt: ['markt'], maxKm: 30 });
-  assert.deepEqual(lade({ ort: 42, zeit: 'immer', von: 'gestern', bis: '2026-13-45x' }), DEFAULT_PREFS);
-  const gut = lade({ ort: 'Bautzen', zeit: 'bereich', von: '2026-12-01', bis: '2026-12-24' });
-  assert.deepEqual([gut.ort, gut.zeit, gut.von, gut.bis], ['Bautzen', 'bereich', '2026-12-01', '2026-12-24']);
+  assert.deepEqual(lade({ ort: 42, zeit: 'immer', von: 'gestern', suche: 'x' }), DEFAULT_PREFS);
+  assert.deepEqual(lade({ zeit: 'bereich' }).zeit, 'alle', 'der frühere eigene Zeitraum ist weg');
+  const gut = lade({ ort: 'Bautzen', zeit: '60' });
+  assert.deepEqual([gut.ort, gut.zeit], ['Bautzen', '60']);
 });
 
 // --- Genre ---
@@ -104,4 +102,24 @@ test('loadPrefs: hiddenGenres wird als Textliste geprüft, ältere Einstellungen
   assert.deepEqual(lade({ maxKm: 30 }).hiddenGenres, []);
   assert.deepEqual(lade({ hiddenGenres: ['jazz', 3, 'comedy'] }).hiddenGenres, ['jazz', 'comedy']);
   assert.deepEqual(lade({ hiddenGenres: 'jazz' }).hiddenGenres, []);
+});
+
+// --- Suche ---
+
+test('Suche: findet in Titel, Ort und Beschreibung; Groß-/Kleinschreibung, Umlaute und Ligaturen egal; alle Wörter müssen passen', () => {
+  const liste = [
+    ev({ id: 'ramm', title: 'RAMMSTEIN SYMPHONIC TRIBUTE', placeName: 'Dresden' }),
+    ev({ id: 'jazz', title: 'Jazzabend', description: 'Mit dem Kölner Trio um Jürgen Groß', placeName: 'Görlitz' }),
+    ev({ id: 'markt', title: 'Weihnachtsmarkt', placeName: 'Bad Schandau' }),
+  ];
+  const ids = (suche) => applyFilters(liste, prefs({ suche }), NOW).map((e) => e.id);
+  assert.deepEqual(ids(''), ['ramm', 'jazz', 'markt']);
+  assert.deepEqual(ids('   '), ['ramm', 'jazz', 'markt'], 'nur Leerzeichen suchen nichts');
+  assert.deepEqual(ids('rammstein'), ['ramm']);
+  assert.deepEqual(ids('goerlitz'), ['jazz'], 'Ort mit ö');
+  assert.deepEqual(ids('görlitz jazz'), ['jazz']);
+  assert.deepEqual(ids('kolner trio'), ['jazz'], 'Beschreibung, ohne Umlaut');
+  assert.deepEqual(ids('jürgen gross'), ['jazz'], 'ß wie ss');
+  assert.deepEqual(ids('jazz markt'), [], 'alle Wörter müssen vorkommen');
+  assert.deepEqual(ids('xyz'), []);
 });

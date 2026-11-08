@@ -2,16 +2,16 @@
 
 /**
  * ort: Mitte des Umkreises (Name aus dem Ortsverzeichnis) oder null für Sebnitz.
- * zeit: 'alle' | 'heute' | 'wochenende' | '7' | '30' | 'bereich' (dann gelten von/bis, JJJJ-MM-TT).
- * @typedef {{hiddenArt:string[], hiddenGenres:string[], hiddenTags:string[], maxKm:number, showCZ:boolean, ort:string|null, zeit:string, von:string|null, bis:string|null}} Prefs
+ * zeit: 'alle' | 'heute' | 'wochenende' | '7' | '30' | '60' (Tage ab heute).
+ * suche: Suchtext (wird nicht gespeichert).
+ * @typedef {{hiddenArt:string[], hiddenGenres:string[], hiddenTags:string[], maxKm:number, showCZ:boolean, ort:string|null, zeit:string, suche:string}} Prefs
  */
 
 const SCHLUESSEL = 'eventkalender.prefs';
-export const ZEITEN = ['alle', 'heute', 'wochenende', '7', '30', 'bereich'];
-const TAG = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+export const ZEITEN = ['alle', 'heute', 'wochenende', '7', '30', '60'];
 
 /** @type {Prefs} */
-export const DEFAULT_PREFS = Object.freeze({ hiddenArt: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', von: null, bis: null });
+export const DEFAULT_PREFS = Object.freeze({ hiddenArt: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', suche: '' });
 
 const R = 6371;
 const rad = (d) => (d * Math.PI) / 180;
@@ -37,17 +37,13 @@ export function zeitfenster(prefs, heute) {
     case 'heute': return { von: heute, bis: heute };
     case '7': return { von: heute, bis: tagPlus(heute, 6) };
     case '30': return { von: heute, bis: tagPlus(heute, 29) };
+    case '60': return { von: heute, bis: tagPlus(heute, 59) };
     case 'wochenende': {
       const wochentag = new Date(`${heute}T00:00:00Z`).getUTCDay(); // 0 = Sonntag
       if (wochentag === 0) return { von: heute, bis: heute };
       if (wochentag === 6) return { von: heute, bis: tagPlus(heute, 1) };
       const freitag = tagPlus(heute, 5 - wochentag);
       return { von: freitag, bis: tagPlus(freitag, 2) };
-    }
-    case 'bereich': {
-      let [von, bis] = [prefs.von, prefs.bis];
-      if (von && bis && von > bis) [von, bis] = [bis, von];
-      return { von: von && von > heute ? von : heute, bis: bis ?? null };
     }
     default: return { von: heute, bis: null };
   }
@@ -75,6 +71,21 @@ export function lastDay(ev) {
   return mitternacht ? tagDavor(ende) : ende;
 }
 
+/**
+ * Vergleichsform für die Suche: Kleinschreibung ohne Akzente und Umlautpunkte, ß als ss, ae/oe/ue als a/o/u.
+ * Beide Seiten werden gleich behandelt, daher findet "goerlitz" ebenso "Görlitz" wie "gorlitz".
+ */
+function glatt(text) {
+  return String(text ?? '').toLowerCase().replace(/ß/g, 'ss').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/([aou])e/g, '$1');
+}
+
+/** Passt jedes Wort der Suche irgendwo in Titel, Ort oder Beschreibung? Eine leere Suche passt immer. */
+function passtZurSuche(e, woerter) {
+  if (!woerter.length) return true;
+  const heu = glatt(`${e.title} ${e.placeName} ${e.description}`);
+  return woerter.every((w) => heu.includes(w));
+}
+
 /** Das Genre, nach dem gefiltert wird: Konzerte ohne bekanntes Genre heißen 'sonstige', andere Arten ohne Genre haben keins. */
 function genreFilter(e) {
   return e.genre ?? (e.art === 'konzert' ? 'sonstige' : null);
@@ -91,9 +102,11 @@ export function applyFilters(events, prefs, nowIso, orte = {}) {
   const heute = berlinDay(nowIso);
   const fenster = zeitfenster(prefs, heute);
   const mitte = prefs.ort ? orte[prefs.ort] : null;
+  const woerter = glatt(prefs.suche).split(/\s+/).filter(Boolean);
   return events.filter((e) => {
     if (lastDay(e) < fenster.von) return false;
     if (fenster.bis && e.start.slice(0, 10) > fenster.bis) return false;
+    if (!passtZurSuche(e, woerter)) return false;
     if (prefs.hiddenArt.includes(e.art)) return false;
     if (prefs.hiddenGenres.includes(genreFilter(e))) return false;
     if ((e.tags ?? []).some((t) => prefs.hiddenTags.includes(t))) return false;
@@ -140,8 +153,7 @@ export function loadPrefs(storage) {
       showCZ: typeof roh.showCZ === 'boolean' ? roh.showCZ : DEFAULT_PREFS.showCZ,
       ort: typeof roh.ort === 'string' && roh.ort ? roh.ort : null,
       zeit: ZEITEN.includes(roh.zeit) ? roh.zeit : 'alle',
-      von: TAG.test(roh.von) ? roh.von : null,
-      bis: TAG.test(roh.bis) ? roh.bis : null,
+      suche: '',
     };
   } catch {
     return { ...DEFAULT_PREFS, hiddenArt: [], hiddenGenres: [], hiddenTags: [] };
@@ -151,6 +163,7 @@ export function loadPrefs(storage) {
 /** Speichert die Einstellungen; ein Fehler (voll, gesperrt, privater Modus) bleibt folgenlos. */
 export function savePrefs(storage, prefs) {
   try {
-    storage?.setItem(SCHLUESSEL, JSON.stringify(prefs));
+    const { suche, ...gemerkt } = prefs; // der Suchtext gilt nur für die offene Seite
+    storage?.setItem(SCHLUESSEL, JSON.stringify(gemerkt));
   } catch { /* Einstellungen gelten dann nur für diese Sitzung */ }
 }

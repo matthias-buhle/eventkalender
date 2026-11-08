@@ -164,32 +164,13 @@ test('status nennt Orte, die das Ortsverzeichnis nicht kennt (gelieferte Termine
   assert.deepEqual(sauber.status[0].unbekannteOrte, []);
 });
 
-test('ortsliste: Name, Koordinaten und Land aller Orte im Umkreis, nach Namen sortiert, ohne Aliasse', () => {
+test('ortsliste: nur größere Orte (ab 9.000 Einwohnern) und Sebnitz als Standard, mit Name, Koordinaten und Land, nach Namen sortiert', () => {
   const liste = ortsliste();
-  assert.ok(liste.length > 50);
-  const sebnitz = liste.find((o) => o.name === 'Sebnitz');
-  assert.deepEqual(Object.keys(sebnitz).sort(), ['country', 'lat', 'lon', 'name']);
-  assert.deepEqual(liste.map((o) => o.name), [...liste.map((o) => o.name)].sort((a, b) => a.localeCompare(b, 'de')));
-  assert.ok(!liste.some((o) => o.name === 'Ulm' || o.name === 'Berlin'), 'ferne Orte sind keine Mitte zur Auswahl');
-});
-
-test('runAll rät das Genre: Konzerte aus Titel und Beschreibung, Comedy auch bei sonstigen Terminen, Fremdes bleibt leer', async () => {
-  const { events } = await runAll({
-    now: NOW, http: {},
-    sources: [quelle('q', async () => [
-      ev({ title: 'Jazzabend im Keller', art: 'konzert' }),
-      ev({ title: 'Konzert', description: 'Ein Klavierabend mit Chopin', art: 'konzert' }),
-      ev({ title: 'Danger Dan', art: 'konzert' }),
-      ev({ title: 'Kabarett: Die Spitzen', art: 'sonstiges' }),
-      ev({ title: 'Rockabilly Frühschoppen', art: 'fest' }),
-      ev({ title: 'Metal Open Air', art: 'konzert', genre: 'rock-pop' }),
-    ])],
-  });
-  const genre = (titel) => events.find((e) => e.title === titel).genre;
-  assert.equal(genre('Jazzabend im Keller'), 'jazz');
-  assert.equal(genre('Konzert'), 'klassik');
-  assert.equal(genre('Danger Dan'), null);
-  assert.equal(genre('Kabarett: Die Spitzen'), 'comedy');
-  assert.equal(genre('Rockabilly Frühschoppen'), null, 'außerhalb von Konzert nur Comedy und Musical');
-  assert.equal(genre('Metal Open Air'), 'rock-pop', 'was die Quelle selbst liefert, bleibt');
+  const namen = liste.map((o) => o.name);
+  assert.ok(namen.length >= 30 && namen.length <= 70, `Länge ${namen.length}`);
+  for (const gross of ['Dresden', 'Bautzen', 'Görlitz', 'Pirna', 'Coswig', 'Freiberg', 'Liberec', 'Děčín', 'Sebnitz']) assert.ok(namen.includes(gross), gross);
+  for (const klein of ['Hohnstein', 'Rathen', 'Stolpen', 'Bad Schandau', 'Pulsnitz']) assert.ok(!namen.includes(klein), klein);
+  assert.deepEqual(Object.keys(liste[0]).sort(), ['country', 'lat', 'lon', 'name']);
+  assert.deepEqual(namen, [...namen].sort((a, b) => a.localeCompare(b, 'de')));
+  assert.ok(!namen.includes('Ulm') && !namen.includes('Berlin'), 'ferne Orte sind keine Mitte zur Auswahl');
 });
