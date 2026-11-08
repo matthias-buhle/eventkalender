@@ -33,7 +33,7 @@ Vollständiger lokaler Lauf (`npm run build`, ohne Ticketmaster-Schlüssel), dan
 | augusto | 485 | offene Bedingungen, Anfrage in `docs/anfragen/` |
 | goout (Tschechien) | 20 | siehe oben |
 | ticketmaster | 0 | „kein Schlüssel“, Probe steht aus |
-| gefluegel | 49 | 35 davon ohne Ort (Detailseiten nur begrenzt abgerufen, 10 s Abstand) |
+| gefluegel | 49 | alle mit Ort (Detailseiten einzeln abgerufen, 10 s Abstand; Nachprüfung nach der Schlussprüfung: 49 von 49, keine Abruffehler) |
 | maerkte | 45 | |
 | neustadthalle | 16 | |
 | stolpen | 13 | |
