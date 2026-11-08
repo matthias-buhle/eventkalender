@@ -42,6 +42,10 @@ export function laufTage(dateFromTo) {
   return Math.max(1, Math.round((ende - start) / 86400000) + 1);
 }
 
+/** Märkte, Feste und Schauen dürfen bis zu sechs Wochen laufen (Weihnachtsmärkte); sie werden ein Termin. */
+const MEHRTAEGIG_MAX_TAGE = 45;
+const MEHRTAEGIG_ARTEN = ['markt', 'fest', 'schau'];
+
 const lauf = (row) => (row.Production1 ?? row.Production)?.DateFromTo;
 const kategorie = (row) => `${row.FormalCategoryName ?? ''} ${row.ContentCategoryName ?? ''}`.trim();
 
@@ -58,6 +62,8 @@ export function behalten(row) {
   const tage = laufTage(lauf(row));
   const kat = kategorie(row);
   if (/ausstellung/i.test(kat) && tage > 2) return false;
+  const mehrtaegig = MEHRTAEGIG_ARTEN.includes(normalizeArt(kat, row.Title));
+  if (mehrtaegig && tage <= MEHRTAEGIG_MAX_TAGE) return true;
   if (tage > 14 && (t.zeit === '00:00' || !AUFFUEHRUNG.test(kat))) return false;
   return true;
 }
@@ -79,7 +85,7 @@ export async function holeZeilen({ http, urlFuerSeite, maxPages }) {
 }
 
 /**
- * Wandelt Zeilen in Events. Mehrtägige Märkte/Feste/Schauen (2–14 Tage, gleiche Uhrzeit) werden ein Termin
+ * Wandelt Zeilen in Events. Mehrtägige Märkte/Feste/Schauen (2–45 Tage, gleiche Uhrzeit) werden ein Termin
  * von der ersten bis zur letzten Zeile; alle anderen Zeilen bleiben einzelne Termine.
  * @param {object[]} zeilen
  * @param {{quelle:string, linkFuer:(row:object)=>string, fallbackPlace?:string}} opt
@@ -91,7 +97,7 @@ export function zuEvents(zeilen, { quelle, linkFuer, fallbackPlace }) {
   for (const row of zeilen.filter(behalten)) {
     const tage = laufTage(lauf(row));
     const art = normalizeArt(kategorie(row), row.Title);
-    if (tage >= 2 && tage <= 14 && ['markt', 'fest', 'schau'].includes(art)) {
+    if (tage >= 2 && tage <= MEHRTAEGIG_MAX_TAGE && MEHRTAEGIG_ARTEN.includes(art)) {
       const key = [row.Title, row.LocationName, lauf(row), zeitteile(row).zeit].join('|');
       if (!gruppen.has(key)) gruppen.set(key, []);
       gruppen.get(key).push(row);
