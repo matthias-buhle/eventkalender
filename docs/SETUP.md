@@ -1,0 +1,136 @@
+# Einrichtung: von „liegt auf dem Rechner“ bis „läuft täglich“
+
+Alle Schritte machst du einmal. Hinter jedem Schritt steht, woran du erkennst, dass er geklappt hat.
+Befehle gibst du im Terminal im Projektordner ein (`E:\ClaudeCode\Eventcalender`).
+
+## 1. GitHub-Konto anlegen (du)
+
+Auf <https://github.com/signup> ein kostenloses Konto anlegen, E-Mail-Adresse bestätigen.
+**Erwartet:** Du bist auf github.com angemeldet und hast eine Bestätigungs-Mail geöffnet.
+
+## 2. Am Rechner anmelden (du)
+
+```bash
+gh auth login
+```
+
+Antworten: `GitHub.com` → `HTTPS` → `Login with a web browser`. Den angezeigten Code im Browser eingeben.
+
+```bash
+gh auth status
+```
+
+**Erwartet:** „Logged in to github.com account <dein Name>“.
+
+## 3. Repository verbinden und hochladen
+
+Das Repository `eventkalender` muss **öffentlich** sein (nötig für die kostenlose Veröffentlichung).
+Es enthält keine Schlüssel oder Passwörter, nur Programmcode.
+
+```bash
+git status
+git remote add origin https://github.com/<dein Name>/eventkalender.git
+git push -u origin phase1:main
+```
+
+(Gibt es das Repository noch nicht: `gh repo create eventkalender --public --source . --remote origin --push`.)
+
+**Erwartet:** `git status` zeigt „nothing to commit“; nach dem Push siehst du die Dateien im Browser unter
+`https://github.com/<dein Name>/eventkalender`.
+
+## 4. GitHub Pages einschalten
+
+```bash
+gh api --method POST repos/{owner}/{repo}/pages -f build_type=workflow
+```
+
+**Erwartet:** Eine Antwort mit `"build_type": "workflow"`.
+(Alternativ im Browser: Repository → Settings → Pages → Source: **GitHub Actions**.)
+
+## 5. Geheimen Zufallscode für die Adresse festlegen
+
+```bash
+node -e "console.log(require('crypto').randomBytes(9).toString('base64url'))"
+```
+
+Das Ergebnis (zwölf Zeichen) ist dein Code. Dann, mit deinem Code statt `<Code>`:
+
+```bash
+gh variable set SITE_CODE --body "<Code>"
+```
+
+**Erwartet:** „✓ Created variable SITE_CODE“.
+Wichtig: Der Code ist nur eine Verschleierung der Adresse, **kein Schutz**. Wer die Adresse kennt, sieht den Kalender.
+In dieser Phase stehen dort nur öffentliche Angaben aus den Quellen.
+
+## 6. Ticketmaster-Schlüssel (du)
+
+1. Auf <https://developer.ticketmaster.com> registrieren und eine App anlegen.
+2. Den „Consumer Key“ kopieren.
+3. Hinterlegen (der Befehl fragt nach dem Schlüssel; füge ihn dort ein, nicht in einen Chat):
+
+```bash
+gh secret set TICKETMASTER_API_KEY
+```
+
+**Erwartet:** „✓ Set Actions secret TICKETMASTER_API_KEY“.
+Ohne Schlüssel läuft alles, nur die Quelle Ticketmaster meldet „kein Schlüssel“.
+
+## 7. Kontaktangabe für die Quellen (empfohlen)
+
+Die Abrufe stellen sich als „Eventkalender-Ostsachsen“ vor. Mit einer Kontaktadresse können Betreiber dich erreichen, statt zu sperren:
+
+```bash
+gh variable set EVENTKALENDER_CONTACT --body "deine-mailadresse@example.org"
+```
+
+**Erwartet:** „✓ Created variable EVENTKALENDER_CONTACT“. Die Adresse erscheint in den Abrufen bei den Quellen, nicht auf der Seite.
+
+## 8. Ersten Lauf starten
+
+```bash
+gh workflow run daily.yml
+gh run watch
+```
+
+**Erwartet:** Beide Teile („build“ und „deploy“) werden grün. Das dauert etwa 10 bis 15 Minuten,
+weil der Geflügelzüchterverband nur mit 10 Sekunden Abstand abgerufen wird. Danach läuft der Kalender täglich um 04:17 UTC (05:17 oder 06:17 Uhr bei uns) von selbst.
+Fehlschlag? `gh run view --log-failed` zeigt den Grund. Steht „SITE_CODE fehlt“, Schritt 5 wiederholen.
+
+## 9. Auf dem Handy öffnen
+
+Adresse: `https://<dein Name>.github.io/eventkalender/<Code>/`
+
+- **iPhone (Safari):** Teilen-Symbol → „Zum Home-Bildschirm“.
+- **Android (Chrome):** Menü (⋮) → „App installieren“ oder „Zum Startbildschirm hinzufügen“.
+
+**Erwartet:** Ein Symbol „Events“ auf dem Startbildschirm; es öffnet den Kalender ohne Browserleiste.
+Im Flugmodus zeigt die App den zuletzt geladenen Stand.
+Die Adresse gibst du an deine Freunde weiter (höchstens 20 Personen). Jeder stellt seine Filter selbst ein; sie bleiben auf dem eigenen Handy gespeichert.
+
+## 10. Prüfen, ob alle Quellen liefern
+
+Die Fußzeile der Seite nennt Quellen, die ausgefallen sind („Quelle X seit <Datum> ohne Daten“).
+Die Zahlen je Quelle stehen in `https://<dein Name>.github.io/eventkalender/<Code>/data/status.json`.
+Der Stand der ersten Abnahme steht in `docs/quellen-probe.md`.
+
+## Eine Quelle abschalten
+
+In `sources.json` bei der Quelle `"enabled": false` setzen, speichern, dann:
+
+```bash
+git commit -am "Quelle abgeschaltet" && git push
+gh workflow run daily.yml
+```
+
+**Erwartet:** Beim nächsten Lauf taucht die Quelle nicht mehr auf. Sagt ein Betreiber „Nein“, machst du das sofort.
+
+## Anfragen an die Quellen
+
+Die Vorlagen liegen in `docs/anfragen/`. Du verschickst sie selbst, Claude versendet nichts.
+Bis eine Antwort da ist, bleiben Görlitz und Augusto eingeschaltet (offene Bedingungen, wenige Abrufe am Tag, Link zurück zur Quelle).
+
+## Was in dieser Phase noch nicht dabei ist
+
+Nachtragen durch Freunde (Formular und Foto), KI-Auswertung samt 5-€-Grenze, Zeitungs-PDFs, Übersetzung der tschechischen Beschreibungen
+und ein schickeres Aussehen. Das sind Plan 2 und 3.
