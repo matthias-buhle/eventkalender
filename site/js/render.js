@@ -113,6 +113,22 @@ function quellenZeile(doc, ev) {
   return (ev.sources ?? []).length ? quellen : null;
 }
 
+/** Hinweis unter einem gekürzten Text ("…" am Ende): wo die vollständige Beschreibung steht. */
+function gekuerztHinweis(doc, ev) {
+  if (!/(…|\.\.\.)\s*$/.test(ev.description ?? '')) return null;
+  const hinweis = el(doc, 'p', 'gekuerzt');
+  const quelle = (ev.sources ?? []).find((q) => {
+    const href = safeHref(q.url);
+    return href && /^https?:/i.test(href);
+  });
+  if (!quelle) {
+    hinweis.append('Text gekürzt.');
+    return hinweis;
+  }
+  hinweis.append('Text gekürzt – vollständig bei ', link(doc, quelle.name, safeHref(quelle.url)), '.');
+  return hinweis;
+}
+
 /**
  * Eine Terminkarte.
  * @param {{orte?: string[]}} [optionen] orte: bekannte Ortsnamen, um die Gemeinde auch bei Namen ohne Komma zu erkennen
@@ -148,6 +164,8 @@ export function renderDetail(doc, ev, optionen = {}) {
   if (ort.length) detail.append(el(doc, 'p', 'where', ort.join(' · ')));
   if (ev.needsReview) detail.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
   if (ev.description) detail.append(el(doc, 'p', 'desc', ev.description));
+  const gekuerzt = gekuerztHinweis(doc, ev);
+  if (gekuerzt) detail.append(gekuerzt);
   const knoepfe = kontaktKnoepfe(doc, ev);
   const nav = navigationsLink(ev, plattform(optionen.userAgent));
   if (nav) knoepfe.append(link(doc, 'Navigation', nav, 'btn'));
