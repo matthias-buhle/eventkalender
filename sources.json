@@ -123,5 +123,20 @@
     "listUrl": "https://www.stolpen.de/liste-aller-veranstaltungen",
     "horizonDays": 90,
     "maxDetailPages": 40
+  },
+  "l2club": {
+    "enabled": true,
+    "listUrl": "https://www.l2club.de/events",
+    "maxDetailPages": 30
+  },
+  "steinhaus": {
+    "enabled": true,
+    "url": "https://www.steinhaus-bautzen.de/termine"
+  },
+  "idecin": {
+    "enabled": true,
+    "baseUrl": "https://www.idecin.cz/program",
+    "months": 3,
+    "ausschluss": ["veřejné bruslení"]
   }
 }
