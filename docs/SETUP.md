@@ -125,6 +125,13 @@ gh workflow run daily.yml
 
 **Erwartet:** Beim nächsten Lauf taucht die Quelle nicht mehr auf. Sagt ein Betreiber „Nein“, machst du das sofort.
 
+## Menü „Über Bühnenlicht“
+
+Der Knopf ☰ oben rechts öffnet ein Fenster mit Zweck der Seite, Quellenliste, Lizenzen, Datenschutz und Kontakt. Der Inhalt steht in `site/js/ueber.js`.
+- **Kontaktadresse** (Rückfragen, Löschwünsche): `KONTAKT_MAIL`, derzeit `buehnenlicht@mbuhle.de`. Auf `null` gesetzt entfällt die Zeile.
+- **Neue Quelle** in `sources.json`: dazu gehört ein Eintrag in `QUELLEN` in derselben Datei. `npm test` schlägt sonst fehl.
+- Das Fenster ist auch für die Auflagen von Ticketmaster und die Namensnennung bei Sebnitz (CC BY-SA 4.0) da; beides nicht entfernen.
+
 ## Anfragen an die Quellen
 
 Die Vorlagen liegen in `docs/anfragen/`. Du verschickst sie selbst, Claude versendet nichts.

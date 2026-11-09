@@ -2,6 +2,7 @@
 import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, einzelneArt, artWaehlen, wirksameSorten, anzeigeText, DEFAULT_PREFS } from './filter.js';
 import { renderEventCard, renderDetail, renderStatusFooter, dayLabel, artName } from './render.js';
 import { ARTEN, SORTEN } from './arten.js';
+import { renderUeber } from './ueber.js';
 
 const ZEIT_CHIPS = [
   ['alle', 'Alle'], ['heute', 'Heute'], ['wochenende', 'Wochenende'], ['7', '7 Tage'], ['30', '30 Tage'], ['60', '60 Tage'],
@@ -92,10 +93,27 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   suchfeld.setAttribute('enterkeyhint', 'search');
   suchfeld.value = prefs.suche;
   let suchTimer = null;
+  // Löschkreuz: nur sichtbar, wenn Text im Feld steht; leert das Feld und zeichnet sofort neu
+  const suchBox = neu('div', 'suchbox');
+  const loeschen = neu('button', 'suche-loeschen', '×');
+  loeschen.setAttribute('type', 'button');
+  loeschen.setAttribute('aria-label', 'Suche löschen');
+  const zeigeLoeschen = () => { loeschen.hidden = suchfeld.value === ''; };
+  zeigeLoeschen();
+  suchBox.append(suchfeld, loeschen);
   suchfeld.addEventListener('input', () => {
     prefs.suche = suchfeld.value;
+    zeigeLoeschen();
     clearTimeout(suchTimer);
     suchTimer = setTimeout(beiAenderung, 150); // nicht bei jedem Buchstaben die ganze Liste neu zeichnen
+  });
+  loeschen.addEventListener('click', () => {
+    suchfeld.value = '';
+    prefs.suche = '';
+    zeigeLoeschen();
+    clearTimeout(suchTimer);
+    suchfeld.focus();
+    beiAenderung();
   });
   const zeitReihe = neu('div', 'zeit');
   zeitReihe.setAttribute('role', 'group');
@@ -129,7 +147,7 @@ function baueFilterleiste(leiste, prefs, orteListe, beiAenderung) {
   filterKnopf.addEventListener('click', fenster.oeffnen);
   const zeitZeile = neu('div', 'zeitzeile');
   zeitZeile.append(zeitReihe, filterKnopf);
-  leiste.append(suchfeld, zeitZeile);
+  leiste.append(suchBox, zeitZeile);
   const feld = neu('div', 'feld');
 
   const ortGruppe = neu('div', 'gruppe');
@@ -298,6 +316,9 @@ async function start() {
   let orte = {};
   let filterleiste = null;
   const detail = neuesFenster('detailfenster', 'Einzelheiten');
+  const ueber = neuesFenster('ueberfenster', 'Über Bühnenlicht');
+  ueber.koerper.append(renderUeber(document));
+  document.getElementById('menue')?.addEventListener('click', ueber.oeffnen);
   const zeigeDetail = (ev) => {
     detail.koerper.replaceChildren(renderDetail(document, ev, { orte: Object.keys(orte), userAgent: navigator.userAgent }));
     detail.koerper.scrollTop = 0;
