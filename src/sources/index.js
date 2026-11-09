@@ -12,8 +12,11 @@ import * as gefluegel from './gefluegel.js';
 import * as maerkte from './maerkte.js';
 import * as neustadthalle from './neustadthalle.js';
 import * as stolpen from './stolpen.js';
+import * as l2club from './l2club.js';
+import * as steinhaus from './steinhaus.js';
+import * as idecin from './idecin.js';
 
 export const adapters = [
   aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster,
-  gefluegel, maerkte, neustadthalle, stolpen,
+  gefluegel, maerkte, neustadthalle, stolpen, l2club, steinhaus, idecin,
 ];

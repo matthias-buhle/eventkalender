@@ -70,6 +70,24 @@ export const QUELLEN = [
     links: [{ text: 'neustadthalle.de', url: 'https://www.neustadthalle.de' }],
   },
   {
+    schluessel: 'l2club',
+    name: 'L2 Club Görlitz',
+    hinweis: 'Programm des Clubs (Purevision Events GmbH).',
+    links: [{ text: 'l2club.de', url: 'https://www.l2club.de/events' }],
+  },
+  {
+    schluessel: 'steinhaus',
+    name: 'Steinhaus Bautzen',
+    hinweis: 'Programm des Steinhaus e. V.',
+    links: [{ text: 'steinhaus-bautzen.de', url: 'https://www.steinhaus-bautzen.de/termine' }],
+  },
+  {
+    schluessel: 'idecin',
+    name: 'Děčín (Stadt)',
+    hinweis: 'Kulturprogramm der Stadt Děčín.',
+    links: [{ text: 'idecin.cz', url: 'https://www.idecin.cz/program' }],
+  },
+  {
     schluessel: 'goout',
     name: 'GoOut (Nordböhmen)',
     hinweis: 'Veranstaltungen in Děčín, Ústí nad Labem, Liberec und Česká Lípa.',
