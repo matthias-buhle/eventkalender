@@ -4,7 +4,7 @@ Neun Vorlagen, kurz und auf Deutsch (GoOut zusätzlich auf Englisch). **Du versc
 Der Nutzerkreis in den Mails: Familie, Freunde und einige Mitglieder des Schönbacher Heimatvereins, höchstens 35 Personen; der Link wird nur persönlich per WhatsApp weitergegeben.
 Die ersten acht Mails wurden am 09.11.2026 gegen 11:36 Uhr abgeschickt (liegen in Gmail unter „Gesendet“). Die Anfrage an Dresden Nightlife liegt als Entwurf in Gmail. Unterschrift: vollständige Signatur (Name, Anschrift, Mobil, Mail); die Adresse des Kalenders steht
 absichtlich nicht drin (sie enthält den geheimen Code), die Mails bieten an, sie auf Wunsch zu nennen.
-Den Absender legst du beim Versenden fest (Gmail oder die neue Projektadresse).
+Die ersten acht Mails gingen von Gmail ab, Antworten kommen also dorthin. Die Projektadresse buehnenlicht@mbuhle.de steht im Menü der Seite.
 
 | Datei | Empfänger | Quelle im Kalender | Warum angefragt |
 |---|---|---|---|
