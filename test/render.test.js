@@ -143,6 +143,29 @@ test('Detailansicht: voller Titel, Zeit, Ort, ganze Beschreibung, Knöpfe, Quell
   assert.equal(hrefVon(d, 'Alter Schlachthof'), 'https://example.org/e/1');
 });
 
+test('Detailansicht weist bei gekürztem Text auf die vollständige Beschreibung bei der Quelle hin', () => {
+  for (const ende of ['…', '...']) {
+    const d = renderDetail(document, ev({ description: `Ein Text der abbricht${ende}` }), { orte: [], userAgent: '' });
+    const hinweis = d.querySelector('.gekuerzt');
+    assert.ok(hinweis, `Hinweis bei Ende ${ende}`);
+    assert.equal(hinweis.textContent, 'Text gekürzt – vollständig bei Alter Schlachthof.');
+    assert.equal(hinweis.querySelector('a').getAttribute('href'), 'https://example.org/e/1');
+  }
+  const mehrere = renderDetail(document, ev({ description: 'Abgebrochen…', sources: [{ name: 'Ohne Link', url: null }, { name: 'Zweite', url: 'https://example.org/e/2' }] }), { orte: [], userAgent: '' });
+  assert.equal(mehrere.querySelector('.gekuerzt a').getAttribute('href'), 'https://example.org/e/2', 'erste Quelle mit sicherem Link');
+  const ohneLink = renderDetail(document, ev({ description: 'Abgebrochen…', sources: [] }), { orte: [], userAgent: '' });
+  assert.equal(ohneLink.querySelector('.gekuerzt').textContent, 'Text gekürzt.');
+});
+
+test('kein Kürzungshinweis bei vollständigem oder fehlendem Text und nie auf der Karte', () => {
+  const voll = renderDetail(document, ev({ description: 'Ein vollständiger Satz.' }), { orte: [], userAgent: '' });
+  assert.equal(voll.querySelector('.gekuerzt'), null);
+  const leer = renderDetail(document, ev({ description: null }), { orte: [], userAgent: '' });
+  assert.equal(leer.querySelector('.gekuerzt'), null);
+  const karte = renderEventCard(document, ev({ description: 'Abgebrochen…' }));
+  assert.equal(karte.querySelector('.gekuerzt'), null);
+});
+
 test('Navigationsknopf nur im Detailfenster und nur mit Koordinaten, je nach Gerät', () => {
   const mit = ev({ lat: 51.2701, lon: 14.0949 });
   assert.ok(!knoepfe(renderEventCard(document, mit)).includes('Navigation'), 'nicht auf der Karte');
