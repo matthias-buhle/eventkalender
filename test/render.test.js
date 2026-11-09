@@ -23,12 +23,23 @@ test("Titel '<img src=x onerror=alert(1)>' wird als Text dargestellt, kein img-E
   assert.ok(!karte.outerHTML.includes('<img'));
 });
 
-test('ohne contact keine Knöpfe Anrufen/Webseite/E-Mail', () => {
-  const karte = renderEventCard(document, ev({ contact: undefined }));
+test('ohne contact und ohne Quelle keine Knöpfe Anrufen/Webseite/E-Mail', () => {
+  const karte = renderEventCard(document, ev({ contact: undefined, sources: [] }));
   const texte = knoepfe(karte);
   for (const t of ['Anrufen', 'Zur Webseite', 'E-Mail']) assert.ok(!texte.includes(t), t);
-  const leer = renderEventCard(document, ev({ contact: { phone: null, url: null, email: null } }));
+  const leer = renderEventCard(document, ev({ contact: { phone: null, url: null, email: null }, sources: [] }));
   assert.ok(!knoepfe(leer).includes('Anrufen'));
+});
+
+test('Zur Webseite zeigt ersatzweise auf die erste Quelle mit sicherem Link, in Karte und Detailfenster', () => {
+  const quellen = [{ name: 'Ohne Link', url: null }, { name: 'Böse', url: 'javascript:alert(1)' }, { name: 'Zweite', url: 'https://example.org/e/2' }];
+  for (const seite of [renderEventCard(document, ev({ contact: { phone: null, url: null, email: null }, sources: quellen })),
+    renderDetail(document, ev({ contact: undefined, sources: quellen }), { orte: [], userAgent: '' })]) {
+    assert.equal(hrefVon(seite, 'Zur Webseite'), 'https://example.org/e/2');
+    assert.equal(seite.querySelector('.btn.primaer').textContent, 'Zur Webseite');
+  }
+  const eigene = renderEventCard(document, ev({ contact: { phone: null, url: 'https://veranstalter.example/', email: null }, sources: quellen }));
+  assert.equal(hrefVon(eigene, 'Zur Webseite'), 'https://veranstalter.example/', 'eigene Adresse hat Vorrang');
 });
 
 test('Knöpfe Anrufen, Zur Webseite und E-Mail erscheinen jeweils nur mit Wert', () => {
@@ -36,7 +47,7 @@ test('Knöpfe Anrufen, Zur Webseite und E-Mail erscheinen jeweils nur mit Wert',
   assert.ok(knoepfe(karte).includes('Anrufen'));
   assert.equal(hrefVon(karte, 'Zur Webseite'), 'https://veranstalter.example/');
   assert.equal(hrefVon(karte, 'E-Mail'), 'mailto:info@veranstalter.example');
-  const nurMail = renderEventCard(document, ev({ contact: { phone: null, url: null, email: 'a@b.de' } }));
+  const nurMail = renderEventCard(document, ev({ contact: { phone: null, url: null, email: 'a@b.de' }, sources: [] }));
   assert.deepEqual(knoepfe(nurMail).filter((t) => ['Anrufen', 'Zur Webseite', 'E-Mail'].includes(t)), ['E-Mail']);
 });
 
@@ -54,7 +65,7 @@ test('Linkziele mit javascript: werden nicht als Link ausgegeben', () => {
   const ziele = [...karte.querySelectorAll('a')].map((a) => a.getAttribute('href'));
   assert.ok(ziele.length > 0);
   assert.ok(ziele.every((h) => /^(https?:|tel:|mailto:)/i.test(h)), ziele.join(', '));
-  assert.ok(!knoepfe(karte).includes('Zur Webseite'));
+  assert.equal(hrefVon(karte, 'Zur Webseite'), 'https://example.org/ok', 'unsichere eigene Adresse und unsichere Quelle werden übersprungen');
   assert.ok(karte.textContent.includes('Böse Quelle'), 'Quellenname bleibt als Text sichtbar');
   assert.equal(safeHref('  javascript:alert(1)'), null);
   assert.equal(safeHref('data:text/html,x'), null);
@@ -124,9 +135,9 @@ test('Knöpfe stehen in der Reihenfolge Webseite, Tickets, Anrufen, E-Mail; der 
   assert.deepEqual(knoepfe(alle).filter((t) => t !== 'Alter Schlachthof'), ['Zur Webseite', 'Tickets', 'Anrufen', 'E-Mail']);
   assert.ok(alle.querySelector('.btn.primaer').textContent.includes('Zur Webseite'));
   assert.equal(alle.querySelectorAll('.btn.primaer').length, 1);
-  const nurTickets = renderEventCard(document, ev({ ticketUrl: 'https://tickets.example/', contact: { phone: '03591 12345', url: null, email: null } }));
+  const nurTickets = renderEventCard(document, ev({ ticketUrl: 'https://tickets.example/', contact: { phone: '03591 12345', url: null, email: null }, sources: [] }));
   assert.equal(nurTickets.querySelector('.btn.primaer').textContent, 'Tickets');
-  const nurTelefon = renderEventCard(document, ev({ contact: { phone: '03591 12345', url: null, email: null } }));
+  const nurTelefon = renderEventCard(document, ev({ contact: { phone: '03591 12345', url: null, email: null }, sources: [] }));
   assert.equal(nurTelefon.querySelector('.btn.primaer'), null);
 });
 
@@ -143,18 +154,14 @@ test('Detailansicht: voller Titel, Zeit, Ort, ganze Beschreibung, Knöpfe, Quell
   assert.equal(hrefVon(d, 'Alter Schlachthof'), 'https://example.org/e/1');
 });
 
-test('Detailansicht weist bei gekürztem Text auf die vollständige Beschreibung bei der Quelle hin', () => {
+test('Detailansicht weist bei gekürztem Text als schlichter Text auf die Webseite hin, ohne Link', () => {
   for (const ende of ['…', '...']) {
     const d = renderDetail(document, ev({ description: `Ein Text der abbricht${ende}` }), { orte: [], userAgent: '' });
     const hinweis = d.querySelector('.gekuerzt');
     assert.ok(hinweis, `Hinweis bei Ende ${ende}`);
-    assert.equal(hinweis.textContent, 'Text gekürzt – vollständig bei Alter Schlachthof.');
-    assert.equal(hinweis.querySelector('a').getAttribute('href'), 'https://example.org/e/1');
+    assert.equal(hinweis.textContent, 'Text gekürzt – vollständig auf der Webseite.');
+    assert.equal(hinweis.querySelector('a'), null, 'kein Link im Hinweis');
   }
-  const mehrere = renderDetail(document, ev({ description: 'Abgebrochen…', sources: [{ name: 'Ohne Link', url: null }, { name: 'Zweite', url: 'https://example.org/e/2' }] }), { orte: [], userAgent: '' });
-  assert.equal(mehrere.querySelector('.gekuerzt a').getAttribute('href'), 'https://example.org/e/2', 'erste Quelle mit sicherem Link');
-  const ohneLink = renderDetail(document, ev({ description: 'Abgebrochen…', sources: [] }), { orte: [], userAgent: '' });
-  assert.equal(ohneLink.querySelector('.gekuerzt').textContent, 'Text gekürzt.');
 });
 
 test('kein Kürzungshinweis bei vollständigem oder fehlendem Text und nie auf der Karte', () => {

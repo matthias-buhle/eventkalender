@@ -128,7 +128,6 @@ body:has(dialog[open]) { overflow: hidden; }
 .detail .review { margin-top: 10px; background: var(--warn-bg); color: var(--warn); padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; }
 .detail .desc { margin-top: 12px; font-size: 0.95rem; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-line; }
 .detail .gekuerzt { margin-top: 6px; font-size: 0.8rem; color: var(--muted); }
-.detail .gekuerzt a { color: inherit; text-underline-offset: 2px; }
 .detail .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .detail .sources { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--muted); }
 .detail .kartenkopf { --art-text: var(--accent); }
