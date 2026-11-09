@@ -106,7 +106,7 @@ Adresse: `https://<dein Name>.github.io/eventkalender/<Code>/`
 
 **Erwartet:** Ein Symbol „Events“ auf dem Startbildschirm; es öffnet den Kalender ohne Browserleiste.
 Im Flugmodus zeigt die App den zuletzt geladenen Stand.
-Die Adresse gibst du an deine Freunde weiter (höchstens 20 Personen). Jeder stellt seine Filter selbst ein; sie bleiben auf dem eigenen Handy gespeichert.
+Die Adresse gibst du nur persönlich weiter (WhatsApp), an Familie, Freunde und einige Mitglieder des Schönbacher Heimatvereins (höchstens 35 Personen). Jeder stellt seine Filter selbst ein; sie bleiben auf dem eigenen Handy gespeichert.
 
 ## 10. Prüfen, ob alle Quellen liefern
 
