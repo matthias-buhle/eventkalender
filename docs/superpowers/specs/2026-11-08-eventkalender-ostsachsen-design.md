@@ -143,5 +143,5 @@ Privates, nicht-kommerzielles Projekt für einen Freundeskreis. Es werden nur Fa
 ## 13. Entscheidungen des Auftraggebers nach der Prüfung (**Entschieden**)
 
 - **Einrichtung und Kosten:** Der Auftraggeber legt die nötigen Konten und Schlüssel selbst an (kostenloses Hosting-Konto, KI-Schlüssel, Ticketmaster-Schlüssel); der Baumeister führt ihn Schritt für Schritt durch. Die KI-Kosten sind auf **5 € pro Monat** begrenzt. Ist die Grenze erreicht, pausiert die KI-Auswertung (Fotoerkennung und Zeitungen) bis zum nächsten Monat, die übrige Anzeige läuft weiter.
-- **Nutzerkreis:** höchstens **20 Personen**. Ein privater Link mit Zufallscode genügt als Zugangsschutz.
+- **Nutzerkreis:** höchstens **35 Personen** (Familie, Freunde, einige Mitglieder des Schönbacher Heimatvereins; Link nur persönlich per WhatsApp, nirgends veröffentlicht; geändert am 09.11.2026, vorher 20). Ein privater Link mit Zufallscode genügt als Zugangsschutz.
 - **Quellen mit offenen Nutzungsbedingungen** (Augusto, Görlitz, GoOut, Oberlausitzer Geflügelzüchterverband, Amtsblätter und Anzeiger): werden trotzdem ausgelesen, aber nur wenige Male pro Tag, mit Link zur Quelle. Sagt ein Betreiber **Nein**, wird diese Quelle sofort abgeschaltet.
