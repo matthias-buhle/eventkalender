@@ -64,12 +64,21 @@ function link(doc, text, href, klasse) {
   return a;
 }
 
-/** Die Knöpfe in der Reihenfolge Webseite, Tickets, Anrufen, E-Mail; der erste Webknopf ist der Hauptknopf. */
+/** Die Adresse, wenn sie ein sicherer http(s)-Link ist, sonst null. */
+const webAdresse = (url) => {
+  const href = safeHref(url);
+  return href && /^https?:/i.test(href) ? href : null;
+};
+
+/**
+ * Die Knöpfe in der Reihenfolge Webseite, Tickets, Anrufen, E-Mail; der erste Webknopf ist der Hauptknopf.
+ * "Zur Webseite" nimmt die Adresse des Veranstalters, ersatzweise die Terminseite der ersten Quelle mit sicherem Link.
+ */
 function kontaktKnoepfe(doc, ev) {
   const zeile = el(doc, 'p', 'actions');
   const c = ev.contact ?? {};
-  const web = safeHref(c.url);
-  if (web && /^https?:/i.test(web)) zeile.append(link(doc, 'Zur Webseite', web, 'btn'));
+  const web = webAdresse(c.url) ?? (ev.sources ?? []).map((q) => webAdresse(q.url)).find(Boolean);
+  if (web) zeile.append(link(doc, 'Zur Webseite', web, 'btn'));
   const ticket = safeHref(ev.ticketUrl);
   if (ticket && /^https?:/i.test(ticket)) zeile.append(link(doc, 'Tickets', ticket, 'btn'));
   zeile.firstElementChild?.setAttribute('class', 'btn primaer');
@@ -113,20 +122,10 @@ function quellenZeile(doc, ev) {
   return (ev.sources ?? []).length ? quellen : null;
 }
 
-/** Hinweis unter einem gekürzten Text ("…" am Ende): wo die vollständige Beschreibung steht. */
+/** Hinweis unter einem gekürzten Text ("…" am Ende); der Weg zur Webseite ist der Knopf "Zur Webseite" darunter. */
 function gekuerztHinweis(doc, ev) {
   if (!/(…|\.\.\.)\s*$/.test(ev.description ?? '')) return null;
-  const hinweis = el(doc, 'p', 'gekuerzt');
-  const quelle = (ev.sources ?? []).find((q) => {
-    const href = safeHref(q.url);
-    return href && /^https?:/i.test(href);
-  });
-  if (!quelle) {
-    hinweis.append('Text gekürzt.');
-    return hinweis;
-  }
-  hinweis.append('Text gekürzt – vollständig bei ', link(doc, quelle.name, safeHref(quelle.url)), '.');
-  return hinweis;
+  return el(doc, 'p', 'gekuerzt', 'Text gekürzt – vollständig auf der Webseite.');
 }
 
 /**
