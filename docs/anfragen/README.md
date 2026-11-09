@@ -3,7 +3,7 @@
 Dreizehn Vorlagen, kurz und auf Deutsch (GoOut zusätzlich auf Englisch). **Du verschickst sie selbst**, Claude sendet nichts.
 Der Nutzerkreis in den Mails: Familie, Freunde und einige Mitglieder des Schönbacher Heimatvereins, höchstens 35 Personen; der Link wird nur persönlich per WhatsApp weitergegeben.
 Die ersten acht Mails wurden am 09.11.2026 gegen 11:36 Uhr abgeschickt, die an Dresden Nightlife um 12:47 Uhr (alle in Gmail unter „Gesendet“).
-Die Anfragen an mvp.de, 3mag, Beatpol und die Kulturfabrik Hoyerswerda liegen als Entwürfe in Gmail und sind noch nicht abgeschickt.
+Die Anfragen an mvp.de, 3mag, Beatpol und die Kulturfabrik Hoyerswerda wurden um 13:04 Uhr abgeschickt.
 Unterschrift: vollständige Signatur (Name, Anschrift, Mobil, Mail); die Adresse des Kalenders steht
 absichtlich nicht drin (sie enthält den geheimen Code), die Mails bieten an, sie auf Wunsch zu nennen.
 Alle Mails gehen von Gmail ab, Antworten kommen also dorthin. Die Projektadresse buehnenlicht@mbuhle.de steht im Menü der Seite.
@@ -40,4 +40,5 @@ Das gilt sofort und ohne Diskussion. Antworten bitte hier unten festhalten.
 | Datum | Quelle | Antwort |
 |---|---|---|
 | 09.11.2026 | GoOut | nur automatische Eingangsbestätigung (Ticket 195939), noch keine inhaltliche Antwort |
+| 09.11.2026 | mvp.de (MANET Support, Ticket 586708) | Keine ausdrückliche Erlaubnis (viele Termine stammen von Veranstaltern und Partnern), aber: Abruf für den privaten, nicht kommerziellen, nicht öffentlich zugänglichen Kalender im beschriebenen Umfang wird geduldet, solange er in vernünftigem Rahmen bleibt; bei spürbarer Last behalten sie sich eine Sperre vor. Kein Feed, keine Schnittstelle. Rückfrage: Welcher User-Agent? Antwort steht aus. |
 | | | |
