@@ -40,16 +40,36 @@ function nochAktuell(e, heute) {
   return (e.end ?? e.start).slice(0, 10) >= heute;
 }
 
+/** So lange (in Tagen seit dem letzten guten Abruf) bleiben die Termine einer ausgefallenen Quelle im Kalender stehen. */
+export const MAX_UEBERNAHME_TAGE = 14;
+
+/**
+ * Die Termine, die von einer ausgefallenen Quelle noch gezeigt werden: die vom letzten guten Abruf, soweit sie nicht
+ * vorbei sind und der Abruf nicht länger als MAX_UEBERNAHME_TAGE zurückliegt. Sonst nichts.
+ * @param {{lastOkAt?:string, events?:object[]}|undefined} alt Eintrag der Quelle aus rohdaten.json
+ */
+function uebernehmbar(alt, heute, now) {
+  if (!alt || !Array.isArray(alt.events)) return null;
+  const letzter = Date.parse(alt.lastOkAt ?? '');
+  if (Number.isNaN(letzter) || now.getTime() - letzter > MAX_UEBERNAHME_TAGE * 86_400_000) return null;
+  const noch = alt.events.filter((e) => e && typeof e.start === 'string' && nochAktuell(e, heute));
+  return noch.length ? { lastOkAt: alt.lastOkAt, events: noch } : null;
+}
+
 /**
  * Ruft alle aktiven Quellen ab. Jede Quelle ist für sich abgesichert: ein Fehler wird im Status gemeldet
- * und stoppt die anderen nicht.
- * @param {{sources:{name:string, fetchEvents:Function, config?:object}[], http:object, now:Date, previousStatus?:SourceStatus[]}} args
- * @returns {Promise<{events:import('./model.js').Event[], status:SourceStatus[]}>}
+ * und stoppt die anderen nicht. Fällt eine Quelle aus (Fehler oder unerwartet leere Antwort), bleiben ihre Termine vom
+ * letzten guten Abruf stehen (siehe MAX_UEBERNAHME_TAGE); im Status steht dann uebernommen: true.
+ * rohdaten hält je eingeschalteter Quelle die Termine vor dem Zusammenführen, als Grundlage für den nächsten Lauf.
+ * @param {{sources:{name:string, fetchEvents:Function, config?:object}[], http:object, now:Date, previousStatus?:SourceStatus[],
+ *   previousRohdaten?:Record<string,{lastOkAt:string, events:object[]}>}} args
+ * @returns {Promise<{events:import('./model.js').Event[], status:SourceStatus[], rohdaten:Record<string,{lastOkAt:string, events:object[]}>}>}
  */
-export async function runAll({ sources, http, now, previousStatus = [] }) {
+export async function runAll({ sources, http, now, previousStatus = [], previousRohdaten = {} }) {
   const heute = todayBerlin(now);
   const alle = [];
   const status = [];
+  const rohdaten = {};
   for (const source of sources) {
     const config = source.config ?? {};
     if (config.enabled === false) continue;
@@ -64,12 +84,21 @@ export async function runAll({ sources, http, now, previousStatus = [] }) {
         .filter((e) => nochAktuell(e, heute))
         .filter((e) => e.distanceKm == null || e.distanceKm <= RADIUS_KM);
       alle.push(...brauchbar);
+      rohdaten[source.name] = { lastOkAt: now.toISOString(), events: brauchbar };
       status.push({ name: source.name, ok: true, count: geliefert.length, error: null, lastOkAt: now.toISOString(), unbekannteOrte: unbekannteOrte(geliefert) });
     } catch (err) {
-      status.push({ name: source.name, ok: false, count: 0, error: err?.message ?? String(err), lastOkAt: lastOkAlt });
+      const fehler = err?.message ?? String(err);
+      const alt = uebernehmbar(previousRohdaten[source.name], heute, now);
+      if (alt) {
+        alle.push(...alt.events);
+        rohdaten[source.name] = alt;
+        status.push({ name: source.name, ok: false, count: alt.events.length, error: fehler, lastOkAt: alt.lastOkAt, uebernommen: true });
+      } else {
+        status.push({ name: source.name, ok: false, count: 0, error: fehler, lastOkAt: lastOkAlt });
+      }
     }
   }
-  return { events: dedupe(alle), status };
+  return { events: dedupe(alle), status, rohdaten };
 }
 
 /**
@@ -112,8 +141,11 @@ async function main() {
   });
   const sources = adapters.map((a) => ({ name: a.name, fetchEvents: a.fetchEvents, config: config[a.name] ?? { enabled: false } }));
   const now = new Date();
-  const { events: roh, status } = await runAll({ sources, http, now, previousStatus: previous });
-  for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error})` : ''}`);
+  const previousRohdaten = (await readJson(new URL('rohdaten.json', outDir), { quellen: {} })).quellen ?? {};
+  const { events: roh, status, rohdaten } = await runAll({ sources, http, now, previousStatus: previous, previousRohdaten });
+  // Sofort in Text fassen: die spätere Übersetzung darf die gespeicherten Rohtermine nicht verändern.
+  const rohdatenText = JSON.stringify({ generatedAt: now.toISOString(), quellen: rohdaten });
+  for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error}${s.uebernommen ? `; ${s.count} Termine vom Abruf am ${(s.lastOkAt ?? '').slice(0, 10)} übernommen` : ''})` : ''}`);
   pruefeLauf({ events: roh, status });
   // Tschechische Termine ins Deutsche übersetzen; Fehler dabei stoppen den Lauf nie, der Originaltext bleibt dann stehen.
   const alterSpeicher = await readJson(new URL('uebersetzungen.json', outDir), {});
@@ -127,6 +159,7 @@ async function main() {
   await writeFile(new URL('events.json', outDir), JSON.stringify({ generatedAt, events }, null, 1));
   await writeFile(new URL('status.json', outDir), JSON.stringify({ generatedAt, sources: status }, null, 1));
   await writeFile(new URL('places.json', outDir), JSON.stringify(ortsliste()));
+  await writeFile(new URL('rohdaten.json', outDir), rohdatenText);
   await schreibeVersion({ outDir, gebaut: generatedAt });
   console.log(`${events.length} Termine geschrieben`);
 }

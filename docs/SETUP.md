@@ -151,6 +151,14 @@ Es gibt zwei Workflows (Reiter „Actions“ auf GitHub). Beide laufen nie gleic
   - Er holt `events.json`, `status.json`, `places.json` und `uebersetzungen.json` von der laufenden Seite. Fehlt eine Datei oder ist `events.json` leer, bricht er ab und lässt die Seite unverändert.
   - Lokal die Versionsdatei erzeugen: `npm run versiondatei`.
 
+## Wenn eine Quelle ausfällt
+
+Fällt eine Quelle aus (Fehler oder unerwartet leere Antwort), bleiben ihre Termine vom **letzten guten Abruf** im Kalender stehen, solange sie nicht vorbei sind und der Abruf nicht länger als **14 Tage** zurückliegt (`MAX_UEBERNAHME_TAGE` in `src/build.js`). Danach verschwinden sie, damit nichts Überholtes stehen bleibt.
+- In der Fußzeile der Seite steht dann: „Quelle … seit TT.MM.JJJJ nicht erreichbar, gezeigt werden die Termine vom letzten Abruf“. In `status.json` hat die Quelle `uebernommen: true`.
+- Grundlage ist `data/rohdaten.json` (die Termine je Quelle vor dem Zusammenführen). Der Datenlauf holt sie vom letzten Stand, der Programm-Workflow lässt sie unverändert stehen. Es ist ein Hilfsfile, die Seite lädt es nicht.
+- Eine **abgeschaltete** Quelle (`"enabled": false`, etwa nach einem Nein der Betreiber) wird nie übernommen; ihre Termine verschwinden mit dem nächsten Lauf.
+- Der Schutz greift erst, wenn ein Datenlauf `rohdaten.json` einmal geschrieben hat; der erste Lauf nach der Einführung hat sie noch nicht.
+
 ## Menü „Über Bühnenlicht“
 
 Der Knopf ☰ oben rechts öffnet ein Fenster mit Zweck der Seite, Quellenliste, Lizenzen, Datenschutz und Kontakt. Der Inhalt steht in `site/js/ueber.js`.
