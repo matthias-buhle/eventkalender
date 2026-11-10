@@ -101,6 +101,17 @@ export const QUELLEN = [
   },
 ];
 
+/**
+ * Die Quellen in der Liste nach Art gegliedert. Jede Quelle steht in genau einer Gruppe;
+ * der Test test/ueber.test.js stellt das sicher.
+ */
+export const GRUPPEN = [
+  { titel: 'Städte und Tourismus', schluessel: ['satourn', 'bischofswerda', 'kamenz', 'stolpen', 'goerlitz', 'augusto'] },
+  { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel'] },
+  { titel: 'Ticketverkauf', schluessel: ['ticketmaster'] },
+  { titel: 'Tschechien', schluessel: ['idecin', 'goout'] },
+];
+
 function el(doc, tag, klasse, text) {
   const e = doc.createElement(tag);
   if (klasse) e.setAttribute('class', klasse);
@@ -118,18 +129,54 @@ function link(doc, text, href) {
   return a;
 }
 
-const abschnitt = (doc, titel) => el(doc, 'h3', null, titel);
+/** Ein aufklappbarer Abschnitt (details/summary: geht ohne Skript und ist mit Tastatur und Vorlesehilfe bedienbar). */
+function abschnitt(doc, titel, offen = false) {
+  const d = el(doc, 'details', 'abschnitt');
+  if (offen) d.setAttribute('open', '');
+  d.append(el(doc, 'summary', null, titel));
+  const inhalt = el(doc, 'div', 'abschnitt-inhalt');
+  d.append(inhalt);
+  return { d, inhalt };
+}
+
+/** "10.11.2026" aus einem ISO-Zeitpunkt; ungültige Angaben ergeben null. */
+function datumVon(iso) {
+  const t = Date.parse(iso ?? '');
+  if (Number.isNaN(t)) return null;
+  return new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', day: '2-digit', month: '2-digit', year: 'numeric' }).format(t);
+}
+
+/** "Version 1.4.0 (ec29751) · gebaut am 10.11.2026"; ohne Angaben entfällt die Zeile. */
+export function versionsZeile(info) {
+  if (!info?.version) return null;
+  const teile = [`Version ${info.version}${info.commit ? ` (${info.commit})` : ''}`];
+  const datum = datumVon(info.gebaut);
+  if (datum) teile.push(`gebaut am ${datum}`);
+  return teile.join(' · ');
+}
+
+function quelleEintrag(doc, q) {
+  const punkt = el(doc, 'li');
+  punkt.append(el(doc, 'strong', null, q.name), ' – ', q.hinweis, ' ');
+  q.links.forEach((l, i) => {
+    if (i) punkt.append(', ');
+    punkt.append(link(doc, l.text, l.url));
+  });
+  return punkt;
+}
 
 /**
- * Der Inhalt des Fensters "Über Bühnenlicht".
- * @param {{kontaktMail?: string|null}} [optionen] kontaktMail: Adresse für Rückfragen und Löschwünsche; ohne sie entfällt die Zeile
+ * Der Inhalt des Fensters "Über Bühnenlicht", in aufklappbaren Abschnitten; nur "Wofür" ist beim Öffnen aufgeklappt.
+ * @param {{kontaktMail?: string|null, version?: {version:string, commit?:string|null, gebaut?:string}|null}} [optionen]
+ *   kontaktMail: Adresse für Rückfragen und Löschwünsche; ohne sie entfällt die Zeile.
+ *   version: Angaben aus data/version.json; ohne sie entfällt die Versionszeile.
  */
 export function renderUeber(doc, optionen = {}) {
   const mail = optionen.kontaktMail === undefined ? KONTAKT_MAIL : optionen.kontaktMail;
   const wurzel = el(doc, 'div', 'ueber');
 
-  wurzel.append(
-    abschnitt(doc, 'Wofür'),
+  const wofuer = abschnitt(doc, 'Wofür', true);
+  wofuer.inhalt.append(
     el(doc, 'p', null, 'Bühnenlicht sammelt Konzerte, Feste, Märkte und Partys aus Ostsachsen und Umgebung an einem Ort. '
       + 'Es ist ein privates Projekt ohne Werbung und ohne Gewinn, gedacht für Familie, Freunde und den Heimatverein. '
       + 'Die Termine werden einmal täglich neu geholt. Bitte den Link nicht weitergeben.'),
@@ -138,30 +185,38 @@ export function renderUeber(doc, optionen = {}) {
       + 'zur Webseite, Tickets bestellen, anrufen, E-Mail schreiben und Navigation zum Veranstaltungsort.'),
   );
 
-  wurzel.append(abschnitt(doc, 'Woher die Termine kommen'));
-  const liste = el(doc, 'ul', 'quellenliste');
-  for (const q of QUELLEN) {
-    const punkt = el(doc, 'li');
-    punkt.append(el(doc, 'strong', null, q.name), ' – ', q.hinweis, ' ');
-    q.links.forEach((l, i) => {
-      if (i) punkt.append(', ');
-      punkt.append(link(doc, l.text, l.url));
-    });
-    liste.append(punkt);
+  const quellen = abschnitt(doc, `Woher die Termine kommen (${QUELLEN.length} Quellen)`);
+  const nachSchluessel = new Map(QUELLEN.map((q) => [q.schluessel, q]));
+  const gruppiert = new Set();
+  for (const gruppe of GRUPPEN) {
+    const eintraege = gruppe.schluessel.map((s) => nachSchluessel.get(s)).filter(Boolean);
+    if (!eintraege.length) continue;
+    eintraege.forEach((q) => gruppiert.add(q.schluessel));
+    const liste = el(doc, 'ul', 'quellenliste');
+    eintraege.forEach((q) => liste.append(quelleEintrag(doc, q)));
+    quellen.inhalt.append(el(doc, 'h4', null, gruppe.titel), liste);
+    if (gruppe.schluessel.includes('idecin')) {
+      const uebersetzung = el(doc, 'p', 'klein', 'Texte aus Tschechien werden maschinell mit ');
+      uebersetzung.append(
+        link(doc, 'DeepL', 'https://www.deepl.com'),
+        ' ins Deutsche übersetzt und können Fehler enthalten. Der tschechische Originaltitel steht dann am Anfang der Beschreibung.',
+      );
+      quellen.inhalt.append(uebersetzung);
+    }
   }
-  const uebersetzung = el(doc, 'p', 'klein', 'Texte aus Tschechien (Děčín, GoOut) werden maschinell mit ');
-  uebersetzung.append(
-    link(doc, 'DeepL', 'https://www.deepl.com'),
-    ' ins Deutsche übersetzt und können Fehler enthalten. Der tschechische Originaltitel steht dann am Anfang der Beschreibung.',
-  );
-  wurzel.append(
-    liste,
+  // Eine Quelle, die in keiner Gruppe steht, soll trotzdem sichtbar sein.
+  const uebrige = QUELLEN.filter((q) => !gruppiert.has(q.schluessel));
+  if (uebrige.length) {
+    const liste = el(doc, 'ul', 'quellenliste');
+    uebrige.forEach((q) => liste.append(quelleEintrag(doc, q)));
+    quellen.inhalt.append(el(doc, 'h4', null, 'Weitere'), liste);
+  }
+  quellen.inhalt.append(
     el(doc, 'p', 'klein', 'Übernommen werden Titel, Zeit, Ort und eine kurze Beschreibung, keine Bilder. Jeder Eintrag führt zur Seite des Anbieters. '
       + 'Wo die Erlaubnis noch nicht vorliegt, ist sie angefragt; bei einem Nein wird die Quelle abgeschaltet.'),
-    uebersetzung,
   );
 
-  wurzel.append(abschnitt(doc, 'Lizenzen'));
+  const lizenzen = abschnitt(doc, 'Lizenzen');
   const cc = el(doc, 'p', null, 'Termine aus Sebnitz und der Sächsischen Schweiz stehen je Termin unter CC0 oder unter ');
   cc.append(
     link(doc, 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.de'),
@@ -169,23 +224,31 @@ export function renderUeber(doc, optionen = {}) {
   );
   const schriften = el(doc, 'p', null, 'Schriften: Barlow Condensed (Jeremy Tribby) und Inter (Rasmus Andersson), beide unter der SIL Open Font License 1.1 (');
   schriften.append(link(doc, 'openfontlicense.org', 'https://openfontlicense.org'), ').');
-  wurzel.append(cc, schriften);
+  lizenzen.inhalt.append(cc, schriften);
 
   const tm = el(doc, 'p', null, 'Ticketmaster-Termine kommen über die Schnittstelle von Ticketmaster. Wer etwas davon entfernt haben möchte, '
     + 'meldet sich; es wird binnen 24 Stunden entfernt. Beim Klick auf „Tickets“ gilt die ');
   tm.append(link(doc, 'Datenschutzerklärung von Ticketmaster', 'https://privacy.ticketmaster.de/de/privacy-policy#privacy-notice'), '.');
-  wurzel.append(
-    abschnitt(doc, 'Datenschutz'),
+  const datenschutz = abschnitt(doc, 'Datenschutz');
+  datenschutz.inhalt.append(
     el(doc, 'p', null, 'Die Seite setzt keine Cookies und keine Zähler. Auf dem Gerät werden nur deine Einstellungen (Suche, Filter, Design) und die zuletzt geladenen Termine gemerkt.'),
     tm,
   );
 
+  const kontaktAbschnitt = abschnitt(doc, 'Kontakt');
   const kontakt = el(doc, 'p');
   if (mail) {
     kontakt.append('Rückfragen und Löschwünsche: ', link(doc, mail, `mailto:${mail}`), '.');
   } else {
     kontakt.append('Rückfragen und Löschwünsche bitte an die Person, von der du den Link bekommen hast.');
   }
-  wurzel.append(abschnitt(doc, 'Kontakt'), kontakt, el(doc, 'p', 'klein', 'Bühnenlicht – von Matthias B.'));
+  kontaktAbschnitt.inhalt.append(kontakt);
+
+  wurzel.append(wofuer.d, quellen.d, lizenzen.d, datenschutz.d, kontaktAbschnitt.d);
+
+  const fuss = el(doc, 'p', 'klein fussnote', 'Bühnenlicht – von Matthias B.');
+  const zeile = versionsZeile(optionen.version);
+  if (zeile) fuss.append(el(doc, 'br'), el(doc, 'span', 'versionszeile', zeile));
+  wurzel.append(fuss);
   return wurzel;
 }

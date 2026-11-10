@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parseHTML } from 'linkedom';
-import { QUELLEN, KONTAKT_MAIL, renderUeber } from '../site/js/ueber.js';
+import { QUELLEN, GRUPPEN, KONTAKT_MAIL, renderUeber, versionsZeile } from '../site/js/ueber.js';
 
 const { document } = parseHTML('<!doctype html><html><body></body></html>');
 const quellenJson = JSON.parse(readFileSync(new URL('../sources.json', import.meta.url), 'utf8'));
@@ -90,4 +90,39 @@ test('ohne Adresse steht, wohin Löschwünsche gehen: zur Person, die den Link w
 
 test('die E-Mail-Adresse des Betreibers steht nirgends im Fenster', () => {
   assert.ok(!text(null).includes('gmail'));
+});
+
+test('jede Quelle steht in genau einer Gruppe, und jede Gruppe nennt nur bekannte Quellen', () => {
+  const alle = GRUPPEN.flatMap((g) => g.schluessel);
+  assert.equal(new Set(alle).size, alle.length, 'keine Quelle doppelt');
+  assert.deepEqual([...alle].sort(), QUELLEN.map((q) => q.schluessel).sort());
+});
+
+test('Tschechische Quellen stehen in der Gruppe Tschechien, mit dem Übersetzungshinweis darunter', () => {
+  const tschechien = GRUPPEN.find((g) => g.titel === 'Tschechien');
+  assert.deepEqual([...tschechien.schluessel].sort(), ['goout', 'idecin']);
+});
+
+test('Gliederung: fünf aufklappbare Abschnitte, nur der erste ist offen', () => {
+  const abschnitte = [...renderUeber(document, {}).querySelectorAll('details.abschnitt')];
+  assert.deepEqual(abschnitte.map((d) => d.querySelector('summary').textContent.replace(/\s*\(.*\)$/, '')),
+    ['Wofür', 'Woher die Termine kommen', 'Lizenzen', 'Datenschutz', 'Kontakt']);
+  assert.deepEqual(abschnitte.map((d) => d.hasAttribute('open')), [true, false, false, false, false]);
+});
+
+test('Abschnitt Quellen nennt die Anzahl und gliedert nach Gruppen', () => {
+  const inhalt = renderUeber(document, {});
+  const quellen = [...inhalt.querySelectorAll('details.abschnitt')][1];
+  assert.match(quellen.querySelector('summary').textContent, new RegExp(`\\(${QUELLEN.length} Quellen\\)`));
+  assert.deepEqual([...quellen.querySelectorAll('h4')].map((h) => h.textContent), GRUPPEN.map((g) => g.titel));
+  assert.equal(quellen.querySelectorAll('li').length, QUELLEN.length);
+});
+
+test('Version: Zeile mit Nummer, Commit und Datum; ohne Angaben entfällt sie', () => {
+  assert.equal(versionsZeile({ version: '1.4.0', commit: 'ec29751', gebaut: '2026-11-10T14:23:31.511Z' }), 'Version 1.4.0 (ec29751) · gebaut am 10.11.2026');
+  assert.equal(versionsZeile({ version: '1.4.0', commit: null, gebaut: 'kaputt' }), 'Version 1.4.0');
+  assert.equal(versionsZeile(null), null);
+  assert.equal(versionsZeile({}), null);
+  assert.match(renderUeber(document, { version: { version: '1.4.0', commit: 'ec29751', gebaut: '2026-11-10T14:23:31Z' } }).textContent, /Version 1\.4\.0 \(ec29751\)/);
+  assert.ok(!/Version \d/.test(renderUeber(document, {}).textContent));
 });

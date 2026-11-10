@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
-import { runAll, pruefeLauf, ortsliste } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste, versionsInfo } from '../src/build.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
 
@@ -196,4 +196,12 @@ test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre So
   assert.equal(von('Stand-up-Abend'), null, 'Comedy gibt es nur als Konzert-Genre');
   assert.equal(von('Flohmarkt am Ring'), 'troedel', 'ein Konzert-Genre bei einem Markt wird verworfen und neu bestimmt');
   assert.equal(von('Ohne Hinweis'), null);
+});
+
+test('versionsInfo: Nummer aus package.json, Commit auf 7 Zeichen gekürzt, ungültiger Commit entfällt', () => {
+  const gebaut = '2026-11-10T14:23:31.511Z';
+  assert.deepEqual(versionsInfo({ paket: { version: '1.4.0' }, sha: 'EC29751AB0123456789012345678901234567890', gebaut }), { version: '1.4.0', commit: 'ec29751', gebaut });
+  assert.equal(versionsInfo({ paket: { version: '1.4.0' }, sha: 'kein commit', gebaut }).commit, null);
+  assert.equal(versionsInfo({ paket: { version: '1.4.0' }, sha: undefined, gebaut }).commit, null);
+  assert.equal(versionsInfo({ paket: {}, sha: null, gebaut }).version, '');
 });
