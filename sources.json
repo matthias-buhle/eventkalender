@@ -90,24 +90,6 @@
     "horizonDays": 60,
     "maxDetailPages": 60
   },
-  "maerkte": {
-    "enabled": false,
-    "urls": [
-      "https://meine-flohmarkt-termine.de/de/plz-gebiet/01",
-      "https://meine-flohmarkt-termine.de/de/plz-gebiet/02",
-      "https://meine-kunsthandwerker-termine.de/de/plz-gebiet/01",
-      "https://meine-kunsthandwerker-termine.de/de/plz-gebiet/02"
-    ],
-    "horizonDays": 60,
-    "maxPages": 8,
-    "ausserhalbPlz": [
-      "0158",
-      "0159",
-      "0160",
-      "0161",
-      "0162"
-    ]
-  },
   "neustadthalle": {
     "enabled": true,
     "url": "https://www.neustadthalle.de/veranstaltungen.html",
