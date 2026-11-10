@@ -6,7 +6,8 @@
   "description": "Privater Eventkalender für Ostsachsen (Umkreis 75 km um PLZ 01855)",
   "scripts": {
     "test": "node --test",
-    "build": "node src/build.js"
+    "build": "node src/build.js",
+    "versiondatei": "node src/version.js"
   },
   "dependencies": {
     "cheerio": "^1.2.0",

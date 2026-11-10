@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { todayBerlin } from './time.js';
 import { CENTER, RADIUS_KM, distanceKm, resolvePlace } from './geo.js';
@@ -8,6 +7,7 @@ import { dedupe } from './dedupe.js';
 import { detectSorte, passendeSorte } from './normalize.js';
 import { createPoliteClient } from './http.js';
 import { uebersetzeTermine } from './uebersetzen.js';
+import { schreibeVersion } from './version.js';
 
 const MIN_ERGIEBIG = 5;
 
@@ -99,23 +99,6 @@ async function readJson(path, fallback) {
   }
 }
 
-/**
- * Die Programmversion für die Anzeige im Kopf und im Menü: Nummer aus package.json, Commit aus dem Workflow (GITHUB_SHA)
- * oder, auf dem eigenen Rechner, aus git; fehlt beides, bleibt der Commit leer.
- */
-export function versionsInfo({ paket, sha, gebaut }) {
-  const commit = typeof sha === 'string' && /^[0-9a-f]{7,40}$/i.test(sha.trim()) ? sha.trim().slice(0, 7).toLowerCase() : null;
-  return { version: String(paket?.version ?? ''), commit, gebaut };
-}
-
-function gitKurz() {
-  try {
-    return execFileSync('git', ['rev-parse', '--short=7', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-  } catch {
-    return null;
-  }
-}
-
 async function main() {
   const { adapters } = await import('./sources/index.js');
   // sources.json muss lesbar sein: ein Tippfehler dort darf nicht alle Quellen stillschweigend abschalten.
@@ -144,8 +127,7 @@ async function main() {
   await writeFile(new URL('events.json', outDir), JSON.stringify({ generatedAt, events }, null, 1));
   await writeFile(new URL('status.json', outDir), JSON.stringify({ generatedAt, sources: status }, null, 1));
   await writeFile(new URL('places.json', outDir), JSON.stringify(ortsliste()));
-  const paket = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
-  await writeFile(new URL('version.json', outDir), JSON.stringify(versionsInfo({ paket, sha: process.env.GITHUB_SHA ?? gitKurz(), gebaut: generatedAt })));
+  await schreibeVersion({ outDir, gebaut: generatedAt });
   console.log(`${events.length} Termine geschrieben`);
 }
 

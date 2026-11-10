@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
-import { runAll, pruefeLauf, ortsliste, versionsInfo } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste } from '../src/build.js';
+import { versionsInfo, schreibeVersion } from '../src/version.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
 
@@ -204,4 +205,22 @@ test('versionsInfo: Nummer aus package.json, Commit auf 7 Zeichen gekÃ¼rzt, ungÃ
   assert.equal(versionsInfo({ paket: { version: '1.4.0' }, sha: 'kein commit', gebaut }).commit, null);
   assert.equal(versionsInfo({ paket: { version: '1.4.0' }, sha: undefined, gebaut }).commit, null);
   assert.equal(versionsInfo({ paket: {}, sha: null, gebaut }).version, '');
+});
+
+test('schreibeVersion: legt version.json im Zielordner an, mit Nummer aus package.json', async () => {
+  const { mkdtemp, readFile, rm } = await import('node:fs/promises');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { pathToFileURL } = await import('node:url');
+  const ordner = await mkdtemp(join(tmpdir(), 'version-'));
+  try {
+    const outDir = pathToFileURL(join(ordner, 'data') + '/');
+    const gebaut = '2026-11-10T16:00:00.000Z';
+    const info = await schreibeVersion({ outDir, gebaut, sha: 'abcdef1234567' });
+    const paket = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+    assert.deepEqual(info, { version: paket.version, commit: 'abcdef1', gebaut });
+    assert.deepEqual(JSON.parse(await readFile(new URL('version.json', outDir), 'utf8')), info);
+  } finally {
+    await rm(ordner, { recursive: true, force: true });
+  }
 });
