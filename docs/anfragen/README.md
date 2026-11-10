@@ -1,9 +1,10 @@
 # Anfragen an die Quellen
 
-Dreizehn Vorlagen, kurz und auf Deutsch (GoOut zusätzlich auf Englisch). **Du verschickst sie selbst**, Claude sendet nichts.
+Siebzehn Vorlagen, kurz und auf Deutsch (GoOut zusätzlich auf Englisch). **Du verschickst sie selbst**, Claude sendet nichts.
 Der Nutzerkreis in den Mails: Familie, Freunde und einige Mitglieder des Schönbacher Heimatvereins, höchstens 35 Personen; der Link wird nur persönlich per WhatsApp weitergegeben.
 Die ersten acht Mails wurden am 09.11.2026 gegen 11:36 Uhr abgeschickt, die an Dresden Nightlife um 12:47 Uhr (alle in Gmail unter „Gesendet“).
 Die Anfragen an mvp.de, 3mag, Beatpol und die Kulturfabrik Hoyerswerda wurden um 13:04 Uhr abgeschickt.
+Die letzten vier Vorlagen (TMGS/Dresden Marketing, flohmarkt-sachsen.de, dresden.de, Oberlausitzer Trödelmarkt) liegen seit dem 10.11.2026 als Gmail-Entwürfe bereit und sind **noch nicht abgeschickt**; Hintergrund: `docs/quellen-recherche-maerkte.md`.
 Unterschrift: vollständige Signatur (Name, Anschrift, Mobil, Mail); die Adresse des Kalenders steht
 absichtlich nicht drin (sie enthält den geheimen Code), die Mails bieten an, sie auf Wunsch zu nennen.
 Alle Mails gehen von Gmail ab, Antworten kommen also dorthin. Die Projektadresse buehnenlicht@mbuhle.de steht im Menü der Seite.
@@ -24,6 +25,10 @@ Alle Mails gehen von Gmail ab, Antworten kommen also dorthin. Die Projektadresse
 | `3mag.md` | kontakt@3mag.eu | noch nicht eingebaut | KI-Crawler auf der Hauptseite ausgeschlossen; sicherheitshalber vorab gefragt |
 | `beatpol.md` | info@beatpol.de | noch nicht eingebaut | Impressum verlangt Zustimmung zur Verwertung der Inhalte |
 | `kufa-hoyerswerda.md` | post@kufa-hoyerswerda.de (unbestätigt, im Impressum verschleiert, vor dem Senden prüfen) | noch nicht eingebaut | Impressum erlaubt Kopien nur privat und nicht kommerziell |
+| `tmgs-sachsen-tourismus.md` | info@sachsen-tour.de und info@marketing.dresden.de (eine Mail an beide) | noch nicht eingebaut | Impressum verlangt Zustimmung zur Vervielfältigung; Lizenz je Termin (CC BY 4.0, CC0), bei Märkten ohne Lizenz Rückfrage |
+| `flohmarkt-sachsen.md` | info@flohmarkt-sachsen.de (DDV Sachsen GmbH) | noch nicht eingebaut | Impressum verlangt Zustimmung zur Vervielfältigung; iCal-Feed endet nach 50 Terminen |
+| `dresden-weihnachtsmaerkte.md` | info@dresden.info (Dresden Information GmbH) | noch nicht eingebaut | Impressum erlaubt Vervielfältigung nur privat, Weitergabe ausgeschlossen; robots.txt mit 5 s Pause |
+| `oberlausitzer-troedelmarkt.md` | kontakt@oberlausitzer-troedelmarkt.de (alternativ info@, vor dem Senden prüfen) | noch nicht eingebaut | keine Nutzungsregel auf der Seite, Rückfrage der Höflichkeit halber; Termine nur bis 17.10.2026 |
 
 Keine Anfrage nötig (Stand der Prüfung vom 09.11.2026, siehe `pruefung-2026-11-09.md`): Sebnitz und Sächsische Schweiz
 (Lizenz je Termin CC0 oder CC BY-SA, bei CC BY-SA Namensnennung), Bischofswerda (Feed der Stadt, keine Bedingungen),
