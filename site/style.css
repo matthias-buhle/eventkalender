@@ -83,7 +83,11 @@ h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-tr
 .berg-hinten { fill: var(--berg-hinten); }
 .berg-vorn { fill: var(--berg-vorn); }
 .sonne { position: absolute; top: 14px; right: max(40px, calc(50% - 310px)); width: 28px; height: 28px; border-radius: 50%; background: var(--sonne); z-index: 0; }
-.stand { position: relative; z-index: 2; margin: 0; padding: 2px max(16px, calc((100% - 720px) / 2)) 0; color: var(--muted); font-size: 0.8rem; }
+.standzeile { position: relative; z-index: 2; display: flex; align-items: baseline; gap: 6px; padding: 2px max(16px, calc((100% - 720px) / 2)) 0; color: var(--muted); font-size: 0.8rem; }
+.stand { margin: 0; }
+.versionsmarke { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.versionsmarke::before { content: "·"; margin-right: 6px; }
+.versionsmarke[hidden] { display: none; }
 
 /* Filterleiste: klebt unter dem Namen, 4 px Luft dazwischen (vom Hintergrund überdeckt) */
 .filters { padding-top: 8px; padding-bottom: 0; position: sticky; top: calc(var(--kopf) + 4px); background: var(--bg); box-shadow: 0 -4px 0 var(--bg); z-index: 3; border-bottom: 1px solid var(--line); }
@@ -129,8 +133,18 @@ body:has(dialog[open]) { overflow: hidden; }
 .sheet-koerper { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 4px 16px 16px; overscroll-behavior: contain; }
 .sheet-fuss { flex: 0 0 auto; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--bg); }
 .ergebnis { width: 100%; justify-content: center; min-height: 48px; font-size: 1rem; cursor: pointer; }
-.ueber h3 { margin: 16px 0 6px; font: 600 0.9rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.ueber h3:first-child { margin-top: 4px; }
+.ueber .abschnitt { border-top: 1px solid var(--line); }
+.ueber .abschnitt:first-child { border-top: 0; }
+.ueber summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 6px 2px; cursor: pointer; list-style: none; font: 600 0.9rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.ueber summary::-webkit-details-marker { display: none; }
+.ueber summary::after { content: ""; flex: 0 0 auto; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform 0.15s; }
+.ueber details[open] > summary::after { transform: rotate(-135deg); }
+.ueber summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.ueber .abschnitt-inhalt { padding: 0 2px 12px; }
+.ueber h4 { margin: 12px 0 6px; font: 600 0.8rem/1.2 var(--anzeige); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); }
+.ueber h4:first-child { margin-top: 2px; }
+.ueber .quellenliste { margin-bottom: 4px; }
+.ueber .fussnote { margin-top: 12px; }
 .ueber p { margin: 0 0 8px; font-size: 0.95rem; line-height: 1.5; }
 .ueber .klein { font-size: 0.8rem; color: var(--muted); }
 .ueber ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }

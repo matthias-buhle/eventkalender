@@ -1,5 +1,5 @@
 // Service Worker: Seite und Termindaten werden zwischengespeichert. Erst das Netz, bei Ausfall der letzte Stand.
-const CACHE = 'eventkalender-v4';
+const CACHE = 'eventkalender-v5';
 const GRUNDSTOCK = [
   './', 'index.html', 'style.css', 'manifest.webmanifest',
   'js/app.js', 'js/arten.js', 'js/filter.js', 'js/ort.js', 'js/render.js', 'js/theme.js', 'js/ueber.js',
@@ -7,7 +7,7 @@ const GRUNDSTOCK = [
   'fonts/barlow-condensed-600-latin.woff2', 'fonts/barlow-condensed-600-latin-ext.woff2',
   'fonts/barlow-condensed-700-latin.woff2', 'fonts/barlow-condensed-700-latin-ext.woff2',
   'fonts/inter-latin.woff2', 'fonts/inter-latin-ext.woff2',
-  'data/events.json', 'data/status.json', 'data/places.json',
+  'data/events.json', 'data/status.json', 'data/places.json', 'data/version.json',
 ];
 
 self.addEventListener('install', (event) => {

@@ -147,7 +147,9 @@ gh workflow run daily.yml
 
 Der Knopf ☰ oben rechts öffnet ein Fenster mit Zweck der Seite, Quellenliste, Lizenzen, Datenschutz und Kontakt. Der Inhalt steht in `site/js/ueber.js`.
 - **Kontaktadresse** (Rückfragen, Löschwünsche): `KONTAKT_MAIL`, derzeit `buehnenlicht@mbuhle.de`. Auf `null` gesetzt entfällt die Zeile.
-- **Neue Quelle** in `sources.json`: dazu gehört ein Eintrag in `QUELLEN` in derselben Datei. `npm test` schlägt sonst fehl.
+- **Aufbau:** fünf aufklappbare Abschnitte (Wofür, Woher die Termine kommen, Lizenzen, Datenschutz, Kontakt); beim Öffnen ist nur „Wofür“ aufgeklappt. Die Quellen stehen nach `GRUPPEN` sortiert.
+- **Neue Quelle** in `sources.json`: dazu gehört ein Eintrag in `QUELLEN` und in genau eine Gruppe in `GRUPPEN` in derselben Datei. `npm test` schlägt sonst fehl.
+- **Versionsnummer:** steht oben in der Stand-Zeile („v1.4.0“) und unten im Menü („Version 1.4.0 (Commit) · gebaut am …“). Die Nummer kommt aus `package.json` (`version`, von Hand erhöhen, z. B. 1.5.0 bei neuen Funktionen, 1.4.1 bei Korrekturen). Commit und Datum schreibt der Bau selbst in `site/data/version.json`.
 - Das Fenster ist auch für die Auflagen von Ticketmaster und die Namensnennung bei Sebnitz (CC BY-SA 4.0) da; beides nicht entfernen.
 
 ## Anfragen an die Quellen

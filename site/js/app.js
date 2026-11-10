@@ -328,6 +328,8 @@ async function start() {
   const beiAenderung = () => {
     savePrefs(speicher(), prefs);
     zeichne();
+    // Eine neue Auswahl ist eine neue Liste: wieder von oben beginnen, nicht bei der zuletzt gesehenen Karte.
+    window.scrollTo(0, 0);
   };
   // Ohne Ortsverzeichnis (Datei fehlt) bleibt der Umkreis um Sebnitz, die Seite funktioniert weiter.
   try {
@@ -346,6 +348,17 @@ async function start() {
   } catch {
     liste.replaceChildren(neu('p', 'leer', 'Die Termine konnten nicht geladen werden. Bitte später erneut versuchen.'));
   }
+  try {
+    const info = await ladeJson('data/version.json');
+    if (info?.version) {
+      const marke = document.getElementById('version');
+      if (marke) {
+        marke.textContent = `v${info.version}`;
+        marke.hidden = false;
+      }
+      ueber.koerper.replaceChildren(renderUeber(document, { version: info }));
+    }
+  } catch { /* ohne Versionsangabe bleibt die Anzeige einfach leer */ }
   try {
     const status = await ladeJson('data/status.json');
     fuss.replaceChildren(renderStatusFooter(document, status.sources));
