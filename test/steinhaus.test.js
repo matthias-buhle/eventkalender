@@ -54,6 +54,26 @@ test('steinhaus: vergangene Termine fallen heraus', async () => {
   assert.equal(events.length, 4);
 });
 
+test('steinhaus: steht eine Liste vergangener Termine vor den kommenden, werden trotzdem die kommenden gefunden', async () => {
+  const termin = (titel, slug, start) => ({ title: titel, slug, scheduling: { config: { startDate: start, endDate: start } } });
+  const rueckblick = { widgetcomp: { events: { events: [termin('Altes Fest', 'altes-fest', '2026-11-07T20:00:00.000Z')] } } };
+  const kommend = { widgetTPASection: { events: { events: [
+    termin('Neues Konzert', 'neues-konzert', '2026-11-12T19:00:00.000Z'),
+    termin('Noch ein Konzert', 'noch-ein-konzert', '2026-11-20T19:00:00.000Z'),
+  ] } } };
+  const seite = (...teile) => `<html><body>${teile.map((t) => `<script type="application/json">${JSON.stringify(t)}</script>`).join('')}</body></html>`;
+  for (const body of [seite({ a: rueckblick, b: kommend }), seite(kommend, rueckblick), seite(rueckblick, kommend)]) {
+    const events = await holen('2026-11-10', body);
+    assert.deepEqual(events.map((e) => e.title).sort(), ['Neues Konzert', 'Noch ein Konzert']);
+  }
+});
+
+test('steinhaus: derselbe Termin in mehreren Listen erscheint nur einmal', async () => {
+  const termin = { title: 'Doppelt', slug: 'doppelt', scheduling: { config: { startDate: '2026-11-12T19:00:00.000Z', endDate: '2026-11-12T19:00:00.000Z' } } };
+  const body = `<script type="application/json">${JSON.stringify({ a: [termin], b: [termin] })}</script>`;
+  assert.equal((await holen('2026-11-10', body)).length, 1);
+});
+
 test('steinhaus: Seite ohne eingebettete Termine ist ein Fehler', async () => {
   await assert.rejects(() => holen('2026-11-09', '<html><body>leer</body></html>'), /keine Termine/);
 });

@@ -8,34 +8,40 @@ export const name = 'steinhaus';
 const QUELLE = 'Steinhaus Bautzen';
 const SEITE = 'https://www.steinhaus-bautzen.de/event-details/';
 
-/** Sucht im eingebetteten Wix-JSON die Liste der Termine (Objekte mit title, slug und scheduling). */
-function findeTermine(wert) {
+/**
+ * Sucht im eingebetteten Wix-JSON alle Listen von Terminen (Objekte mit title, slug und scheduling).
+ * Die Seite enthält mehrere: die kommenden Termine und einen Rückblick mit vergangenen. Je nach Auslieferung
+ * steht mal die eine, mal die andere zuerst, deshalb werden alle gesammelt.
+ */
+function findeTermine(wert, treffer = []) {
   if (Array.isArray(wert)) {
-    if (wert.length && wert[0]?.scheduling && wert[0]?.title && wert[0]?.slug) return wert;
-    for (const x of wert) {
-      const r = findeTermine(x);
-      if (r) return r;
-    }
+    if (wert.length && wert[0]?.scheduling && wert[0]?.title && wert[0]?.slug) treffer.push(wert);
+    else for (const x of wert) findeTermine(x, treffer);
   } else if (wert && typeof wert === 'object') {
-    for (const k of Object.keys(wert)) {
-      const r = findeTermine(wert[k]);
-      if (r) return r;
-    }
+    for (const k of Object.keys(wert)) findeTermine(wert[k], treffer);
   }
-  return null;
+  return treffer;
 }
 
 function leseTermine(html) {
   const $ = cheerio.load(html);
+  const bekannt = new Set();
+  const alle = [];
   for (const el of $('script[type="application/json"]').toArray()) {
     const t = $(el).text();
     if (!t.includes('"scheduling"')) continue;
     try {
-      const liste = findeTermine(JSON.parse(t));
-      if (liste) return liste;
+      for (const liste of findeTermine(JSON.parse(t))) {
+        for (const roh of liste) {
+          if (roh?.slug && !bekannt.has(roh.slug)) {
+            bekannt.add(roh.slug);
+            alle.push(roh);
+          }
+        }
+      }
     } catch { /* kaputtes JSON einer anderen Stelle der Seite */ }
   }
-  return [];
+  return alle;
 }
 
 function zuEvent(roh) {
