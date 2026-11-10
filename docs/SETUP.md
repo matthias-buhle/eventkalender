@@ -94,7 +94,7 @@ gh run watch
 ```
 
 **Erwartet:** Beide Teile („build“ und „deploy“) werden grün. Das dauert etwa 10 bis 15 Minuten,
-weil der Geflügelzüchterverband nur mit 10 Sekunden Abstand abgerufen wird. Danach läuft der Kalender täglich um 04:17 UTC (05:17 oder 06:17 Uhr bei uns) von selbst.
+weil der Geflügelzüchterverband nur mit 10 Sekunden Abstand abgerufen wird. Danach läuft der Kalender täglich um 02:43 UTC (03:43 oder 04:43 Uhr bei uns) von selbst, GitHub kann geplante Läufe um Stunden verzögern oder ganz auslassen; dann den Lauf von Hand starten.
 Fehlschlag? `gh run view --log-failed` zeigt den Grund. Steht „SITE_CODE fehlt“, Schritt 5 wiederholen.
 
 ## 9. Auf dem Handy öffnen
