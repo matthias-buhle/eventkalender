@@ -149,10 +149,16 @@ export function renderUeber(doc, optionen = {}) {
     });
     liste.append(punkt);
   }
+  const uebersetzung = el(doc, 'p', 'klein', 'Texte aus Tschechien (Děčín, GoOut) werden maschinell mit ');
+  uebersetzung.append(
+    link(doc, 'DeepL', 'https://www.deepl.com'),
+    ' ins Deutsche übersetzt und können Fehler enthalten. Der tschechische Originaltitel steht dann am Anfang der Beschreibung.',
+  );
   wurzel.append(
     liste,
     el(doc, 'p', 'klein', 'Übernommen werden Titel, Zeit, Ort und eine kurze Beschreibung, keine Bilder. Jeder Eintrag führt zur Seite des Anbieters. '
       + 'Wo die Erlaubnis noch nicht vorliegt, ist sie angefragt; bei einem Nein wird die Quelle abgeschaltet.'),
+    uebersetzung,
   );
 
   wurzel.append(abschnitt(doc, 'Lizenzen'));

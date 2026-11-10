@@ -48,10 +48,19 @@ jobs:
             "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/status.json" \
             -o site/data/status.json || rm -f site/data/status.json
 
+      # Zwischenspeicher der DeepL-Übersetzungen vom letzten Stand holen, damit nichts doppelt übersetzt wird.
+      # Fehlt er, wird neu übersetzt (rund 25.000 Zeichen), das ist in Ordnung.
+      - name: Übersetzungs-Zwischenspeicher holen
+        run: |
+          curl -fsS --max-time 30 \
+            "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/uebersetzungen.json" \
+            -o site/data/uebersetzungen.json || rm -f site/data/uebersetzungen.json
+
       # Fällt nur eine Quelle aus, endet der Lauf trotzdem erfolgreich: der Fehler steht in status.json.
       - run: npm run build
         env:
           TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
           EVENTKALENDER_CONTACT: ${{ vars.EVENTKALENDER_CONTACT }}
 
       - name: Seite zusammenstellen

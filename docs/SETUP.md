@@ -86,6 +86,24 @@ gh variable set EVENTKALENDER_CONTACT --body "deine-mailadresse@example.org"
 
 **Erwartet:** „✓ Created variable EVENTKALENDER_CONTACT“. Die Adresse erscheint in den Abrufen bei den Quellen, nicht auf der Seite.
 
+## 7b. DeepL-Schlüssel für die Übersetzung tschechischer Termine (optional)
+
+Titel und Beschreibung der Termine aus Tschechien (GoOut, Děčín) werden beim Bauen mit DeepL ins Deutsche übersetzt;
+der Originaltitel steht dann am Anfang der Beschreibung („Originaltitel: …“).
+
+1. Auf <https://www.deepl.com/pro-api> den Tarif **Developer** (kostenlos, einmalige Gutschrift von 1 Million Zeichen) anlegen.
+2. Den Schlüssel unter <https://www.deepl.com/your-account/keys> kopieren (Gratis-Schlüssel enden auf `:fx`).
+3. Hinterlegen (der Befehl fragt nach dem Schlüssel; füge ihn dort ein, nicht in einen Chat):
+
+```bash
+gh secret set DEEPL_API_KEY
+```
+
+Ohne Schlüssel, bei Fehlern oder wenn die Gutschrift aufgebraucht ist, bleibt der tschechische Originaltext stehen; der Lauf bricht nie ab.
+Jede Übersetzung wird in `uebersetzungen.json` zwischengespeichert (liegt auf der veröffentlichten Seite, der Workflow holt sie
+vor dem Bauen wieder ab), sodass derselbe Text nur einmal Zeichen kostet. Im Lauf-Protokoll steht eine Zeile „Übersetzung: …“ mit dem Verbrauch.
+Einträge, die 90 Tage nicht mehr vorkamen, werden verworfen.
+
 ## 8. Ersten Lauf starten
 
 ```bash
