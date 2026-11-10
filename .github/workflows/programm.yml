@@ -1,0 +1,85 @@
+name: Programm veröffentlichen
+
+# Veröffentlicht eine neue Programmversion (alles unter site/) mit den bereits vorhandenen Termindaten,
+# ohne die Quellen abzufragen. Dauert wenige Minuten statt rund 25. Die Daten selbst holt weiterhin
+# "Taeglich aktualisieren". Änderungen an src/ (Quellen-Adaptern) oder sources.json brauchen dagegen einen Datenlauf.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'package.json'
+      - '.github/workflows/programm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Dieselbe Gruppe wie der Datenlauf: beide laufen nie gleichzeitig, das später gestartete wartet.
+# Dadurch sieht dieser Lauf immer die Daten des zuletzt fertigen Datenlaufs.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SITE_CODE: ${{ vars.SITE_CODE }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Zufallscode prüfen
+        run: |
+          if [ -z "$SITE_CODE" ]; then
+            echo "Die Repository-Variable SITE_CODE fehlt (siehe docs/SETUP.md, Schritt 5)." >&2
+            exit 1
+          fi
+
+      - run: npm ci
+
+      # Schlägt ein Test fehl, bricht der Lauf hier ab und es wird nichts veröffentlicht.
+      - run: npm test
+
+      # Die Termindaten vom zuletzt veröffentlichten Stand holen. Fehlt eine Datei, bricht der Lauf ab:
+      # sonst stünde danach eine Seite ohne Termine online (und der nächste Datenlauf ohne Übersetzungs-Zwischenspeicher).
+      - name: Vorhandene Daten holen
+        run: |
+          mkdir -p site/data
+          base="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data"
+          for datei in events.json status.json places.json uebersetzungen.json; do
+            curl -fsS --retry 3 --retry-delay 5 --max-time 60 "$base/$datei" -o "site/data/$datei" \
+              || { echo "Konnte $datei nicht von der veröffentlichten Seite laden, Abbruch." >&2; exit 1; }
+          done
+          # events.json muss ein JSON mit Terminliste sein, sonst nicht veröffentlichen
+          node -e "const d=JSON.parse(require('fs').readFileSync('site/data/events.json','utf8')); if(!Array.isArray(d.events)||!d.events.length||!d.generatedAt){console.error('events.json ist leer oder ungültig');process.exit(1)} console.log(d.events.length+' Termine, Stand '+d.generatedAt)"
+
+      - name: Versionsdatei schreiben
+        run: npm run versiondatei
+
+      - name: Seite zusammenstellen
+        run: |
+          mkdir -p "_pages/${SITE_CODE}"
+          cp -r site/. "_pages/${SITE_CODE}/"
+          printf 'User-agent: *\nDisallow: /\n' > _pages/robots.txt
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _pages
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

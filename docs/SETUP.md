@@ -143,13 +143,21 @@ gh workflow run daily.yml
 
 **Erwartet:** Beim nächsten Lauf taucht die Quelle nicht mehr auf. Sagt ein Betreiber „Nein“, machst du das sofort.
 
+## Programm und Daten getrennt veröffentlichen
+
+Es gibt zwei Workflows (Reiter „Actions“ auf GitHub). Beide laufen nie gleichzeitig; der später gestartete wartet.
+- **„Taeglich aktualisieren“** fragt alle Quellen ab (rund 25 Minuten) und veröffentlicht Daten und Programm. Läuft täglich um 02:43 UTC und auf Knopfdruck. Nötig bei Änderungen an `src/` (Quellen) und `sources.json`.
+- **„Programm veröffentlichen“** (`.github/workflows/programm.yml`) veröffentlicht nur das Programm (alles unter `site/`) mit den **bereits vorhandenen** Daten. Dauert wenige Minuten. Startet von selbst, wenn etwas unter `site/` oder `package.json` auf `main` gepusht wird, und auf Knopfdruck („Run workflow“). „Stand: …“ bleibt dabei unverändert.
+  - Er holt `events.json`, `status.json`, `places.json` und `uebersetzungen.json` von der laufenden Seite. Fehlt eine Datei oder ist `events.json` leer, bricht er ab und lässt die Seite unverändert.
+  - Lokal die Versionsdatei erzeugen: `npm run versiondatei`.
+
 ## Menü „Über Bühnenlicht“
 
 Der Knopf ☰ oben rechts öffnet ein Fenster mit Zweck der Seite, Quellenliste, Lizenzen, Datenschutz und Kontakt. Der Inhalt steht in `site/js/ueber.js`.
 - **Kontaktadresse** (Rückfragen, Löschwünsche): `KONTAKT_MAIL`, derzeit `buehnenlicht@mbuhle.de`. Auf `null` gesetzt entfällt die Zeile.
 - **Aufbau:** fünf aufklappbare Abschnitte (Wofür, Woher die Termine kommen, Lizenzen, Datenschutz, Kontakt); beim Öffnen ist nur „Wofür“ aufgeklappt. Die Quellen stehen nach `GRUPPEN` sortiert.
 - **Neue Quelle** in `sources.json`: dazu gehört ein Eintrag in `QUELLEN` und in genau eine Gruppe in `GRUPPEN` in derselben Datei. `npm test` schlägt sonst fehl.
-- **Versionsnummer:** steht oben in der Stand-Zeile („v1.4.0“) und unten im Menü („Version 1.4.0 (Commit) · gebaut am …“). Die Nummer kommt aus `package.json` (`version`, von Hand erhöhen, z. B. 1.5.0 bei neuen Funktionen, 1.4.1 bei Korrekturen). Commit und Datum schreibt der Bau selbst in `site/data/version.json`.
+- **Versionsnummer:** steht oben in der Stand-Zeile („v1.4.0“) und unten im Menü („Version 1.4.0 (Commit) · gebaut am …“). Die Nummer kommt aus `package.json` (`version`, von Hand erhöhen, z. B. 1.5.0 bei neuen Funktionen, 1.4.1 bei Korrekturen). Commit und Datum schreibt jeder der beiden Workflows in `site/data/version.json` (Code in `src/version.js`).
 - Das Fenster ist auch für die Auflagen von Ticketmaster und die Namensnennung bei Sebnitz (CC BY-SA 4.0) da; beides nicht entfernen.
 
 ## Anfragen an die Quellen
