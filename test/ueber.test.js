@@ -39,6 +39,16 @@ test('Sebnitz: Lizenz und Namensnennung stehen im Fenster', () => {
   assert.ok(t.includes('Touristinformation Sebnitz'));
 });
 
+test('Übersetzung: Hinweis auf DeepL und den Originaltitel steht im Fenster, DeepL ist verlinkt', () => {
+  const inhalt = renderUeber(document, {});
+  const t = inhalt.textContent;
+  assert.match(t, /maschinell mit DeepL/);
+  assert.match(t, /Originaltitel/);
+  const a = [...inhalt.querySelectorAll('a')].find((x) => x.getAttribute('href') === 'https://www.deepl.com');
+  assert.ok(a);
+  assert.equal(a.getAttribute('rel'), 'noopener noreferrer');
+});
+
 test('Ticketmaster: Hinweis zu Datenschutz und Entfernung steht im Fenster', () => {
   const t = text(null);
   assert.ok(t.includes('Ticketmaster'));

@@ -6,6 +6,7 @@ import { CENTER, RADIUS_KM, distanceKm, resolvePlace } from './geo.js';
 import { dedupe } from './dedupe.js';
 import { detectSorte, passendeSorte } from './normalize.js';
 import { createPoliteClient } from './http.js';
+import { uebersetzeTermine } from './uebersetzen.js';
 
 const MIN_ERGIEBIG = 5;
 
@@ -110,10 +111,17 @@ async function main() {
   });
   const sources = adapters.map((a) => ({ name: a.name, fetchEvents: a.fetchEvents, config: config[a.name] ?? { enabled: false } }));
   const now = new Date();
-  const { events, status } = await runAll({ sources, http, now, previousStatus: previous });
+  const { events: roh, status } = await runAll({ sources, http, now, previousStatus: previous });
   for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error})` : ''}`);
-  pruefeLauf({ events, status });
+  pruefeLauf({ events: roh, status });
+  // Tschechische Termine ins Deutsche übersetzen; Fehler dabei stoppen den Lauf nie, der Originaltext bleibt dann stehen.
+  const alterSpeicher = await readJson(new URL('uebersetzungen.json', outDir), {});
+  const { events, cache, stats } = await uebersetzeTermine(roh, {
+    apiKey: process.env.DEEPL_API_KEY, cache: alterSpeicher, heute: todayBerlin(now),
+  });
+  console.log(`Übersetzung: ${stats.uebersetzt} neu (${stats.zeichen} Zeichen), ${stats.ausCache} aus dem Zwischenspeicher${stats.fehler ? `, Hinweis: ${stats.fehler}` : ''}`);
   await mkdir(outDir, { recursive: true });
+  await writeFile(new URL('uebersetzungen.json', outDir), JSON.stringify(cache));
   const generatedAt = now.toISOString();
   await writeFile(new URL('events.json', outDir), JSON.stringify({ generatedAt, events }, null, 1));
   await writeFile(new URL('status.json', outDir), JSON.stringify({ generatedAt, sources: status }, null, 1));
