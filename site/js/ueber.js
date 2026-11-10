@@ -99,15 +99,6 @@ export const QUELLEN = [
     hinweis: 'Schauen und Termine der Züchter.',
     links: [{ text: 'rassegefluegel-oberlausitz.de', url: 'https://www.rassegefluegel-oberlausitz.de/' }],
   },
-  {
-    schluessel: 'maerkte',
-    name: 'Flohmärkte und Kunsthandwerkermärkte',
-    hinweis: 'Termine, die Veranstalter dort einstellen.',
-    links: [
-      { text: 'meine-flohmarkt-termine.de', url: 'https://meine-flohmarkt-termine.de' },
-      { text: 'meine-kunsthandwerker-termine.de', url: 'https://meine-kunsthandwerker-termine.de' },
-    ],
-  },
 ];
 
 function el(doc, tag, klasse, text) {

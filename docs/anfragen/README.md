@@ -14,7 +14,7 @@ Alle Mails gehen von Gmail ab, Antworten kommen also dorthin. Die Projektadresse
 | `stadt-goerlitz.md` | info@goerlitz.de | `goerlitz` | Impressum: Zustimmung nötig über Privatgebrauch hinaus; Daten stammen aus SaTourN, Zuständigkeit unklar |
 | `goout.md` | info@goout.net | `goout` (Tschechien) | Nutzungsbedingungen: nur private Nutzung ohne Zustimmung |
 | `gefluegelzuechter.md` | info@rassegefluegel-oberlausitz.de | `gefluegel` | Impressum: Nachnutzung braucht schriftliche Genehmigung |
-| `maerkte.md` | info@meine-flohmarkt-termine.de und info@meine-kunsthandwerker-termine.de (eine Mail an beide) | `maerkte` | keine Regeln gefunden; Termine stellen Veranstalter ein, Firma ist Kampagne Spezial GmbH |
+| `maerkte.md` | info@meine-flohmarkt-termine.de und info@meine-kunsthandwerker-termine.de (eine Mail an beide) | `maerkte` (**abgeschaltet**, Nein vom 10.11.2026) | keine Regeln gefunden; Termine stellen Veranstalter ein, Firma ist Kampagne Spezial GmbH |
 | `aust-konzerte.md` | info@aust-konzerte.com | `aust` (Alter Schlachthof, Junge Garde) | Impressum: Verwendung über Privates hinaus nur mit Zustimmung |
 | `stadt-kamenz.md` | stadtverwaltung@kamenz.de | `kamenz` | Impressum: Vervielfältigung nur mit Zustimmung |
 | `stadt-stolpen.md` | stadt@stolpen.de (evtl. stadtinfo@stolpen.de) | `stolpen` | Impressum: Vervielfältigung nur mit Zustimmung |
@@ -40,5 +40,6 @@ Das gilt sofort und ohne Diskussion. Antworten bitte hier unten festhalten.
 | Datum | Quelle | Antwort |
 |---|---|---|
 | 09.11.2026 | GoOut | nur automatische Eingangsbestätigung (Ticket 195939), noch keine inhaltliche Antwort |
+| 10.11.2026 | Märkte (meine-flohmarkt-termine.de, meine-kunsthandwerker-termine.de, krencky24.de; Michael Krencky, Kampagne Spezial GmbH) | **Nein.** Keine Genehmigung zur automatisierten Übernahme und Weiterverwendung; Bitte, die Übernahme einzustellen, bereits übernommene Daten aus dem Kalender zu entfernen und das kurz schriftlich zu bestätigen. Besuchen und Verlinken bleibt erlaubt. Umgesetzt: `maerkte` auf `"enabled": false`, Menüeintrag entfernt; Bestätigung als Gmail-Entwurf. Die Termine verschwinden mit dem ersten Lauf nach dem Push von der Seite. |
 | 09.11.2026 | mvp.de (MANET Support, Ticket 586708) | Keine ausdrückliche Erlaubnis (viele Termine stammen von Veranstaltern und Partnern), aber: Abruf für den privaten, nicht kommerziellen, nicht öffentlich zugänglichen Kalender im beschriebenen Umfang wird geduldet, solange er in vernünftigem Rahmen bleibt; bei spürbarer Last behalten sie sich eine Sperre vor. Kein Feed, keine Schnittstelle. Rückfrage: Welcher User-Agent? Antwort steht aus. |
 | | | |

@@ -2,7 +2,7 @@ name: Taeglich aktualisieren
 
 on:
   schedule:
-    - cron: '17 4 * * *' # täglich 04:17 UTC
+    - cron: '43 2 * * *' # täglich 02:43 UTC (03:43 Uhr MEZ); GitHub verzögert Läufe zu vollen Stunden besonders stark
   workflow_dispatch:
 
 permissions:

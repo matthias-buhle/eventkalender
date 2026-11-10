@@ -91,7 +91,7 @@
     "maxDetailPages": 60
   },
   "maerkte": {
-    "enabled": true,
+    "enabled": false,
     "urls": [
       "https://meine-flohmarkt-termine.de/de/plz-gebiet/01",
       "https://meine-flohmarkt-termine.de/de/plz-gebiet/02",

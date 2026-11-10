@@ -8,9 +8,10 @@ const { document } = parseHTML('<!doctype html><html><body></body></html>');
 const quellenJson = JSON.parse(readFileSync(new URL('../sources.json', import.meta.url), 'utf8'));
 const text = (mail) => renderUeber(document, { kontaktMail: mail }).textContent;
 
-test('jede Quelle aus sources.json hat einen Eintrag im Menü, und umgekehrt', () => {
+test('jede eingeschaltete Quelle aus sources.json hat einen Eintrag im Menü, und umgekehrt', () => {
   const imMenue = QUELLEN.map((q) => q.schluessel).sort();
-  assert.deepEqual(imMenue, Object.keys(quellenJson).sort());
+  const aktiv = Object.entries(quellenJson).filter(([, c]) => c.enabled !== false).map(([k]) => k).sort();
+  assert.deepEqual(imMenue, aktiv);
 });
 
 test('jeder Menüeintrag hat Namen, sichere Adresse und Hinweis zur Nutzung', () => {
