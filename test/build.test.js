@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
-import { runAll, pruefeLauf, ortsliste } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste, MAX_UEBERNAHME_TAGE } from '../src/build.js';
 import { versionsInfo, schreibeVersion } from '../src/version.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
@@ -121,6 +121,105 @@ test('lastOkAt wird aus previousStatus übernommen, wenn die Quelle ausfällt, u
   assert.equal(ok.status[0].lastOkAt, NOW.toISOString());
   assert.equal(ok.status[0].count, 1);
   assert.equal(ok.status[0].error, null);
+});
+
+// --- Übernahme bei Quellenausfall ---
+const ROH_GUT = '2026-11-09T05:00:00.000Z'; // gestern, innerhalb der 14 Tage
+const rohdatenVon = (name, events, lastOkAt = ROH_GUT) => ({ [name]: { lastOkAt, events } });
+
+test('Erfolg: rohdaten hält je Quelle die Termine und den Zeitpunkt des Abrufs', async () => {
+  const { rohdaten } = await runAll({ now: NOW, http: {}, sources: [quelle('q', async () => [ev({ title: 'A' }), ev({ title: 'B' })])] });
+  assert.deepEqual(Object.keys(rohdaten), ['q']);
+  assert.equal(rohdaten.q.lastOkAt, NOW.toISOString());
+  assert.deepEqual(rohdaten.q.events.map((e) => e.title).sort(), ['A', 'B']);
+});
+
+test('Ausfall: Termine vom letzten guten Abruf bleiben stehen, Status meldet es', async () => {
+  const alt = [ev({ title: 'Gestern geholt' })].map((e) => ({ ...e, distanceKm: 0 }));
+  const { events, status, rohdaten } = await runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('q', alt),
+    sources: [quelle('q', async () => { throw new Error('HTTP 503'); })],
+  });
+  assert.deepEqual(events.map((e) => e.title), ['Gestern geholt']);
+  assert.equal(status[0].ok, false);
+  assert.match(status[0].error, /HTTP 503/);
+  assert.equal(status[0].uebernommen, true);
+  assert.equal(status[0].count, 1);
+  assert.equal(status[0].lastOkAt, ROH_GUT);
+  // der alte Stand bleibt als Grundlage für den nächsten Lauf erhalten, mit dem alten Zeitpunkt
+  assert.equal(rohdaten.q.lastOkAt, ROH_GUT);
+  assert.equal(rohdaten.q.events.length, 1);
+});
+
+test('unerwartet leere Antwort zählt wie ein Ausfall: die alten Termine bleiben', async () => {
+  const { events, status } = await runAll({
+    now: NOW, http: {},
+    previousStatus: [{ name: 'q', ok: true, count: 12, error: null, lastOkAt: ROH_GUT }],
+    previousRohdaten: rohdatenVon('q', [ev({ title: 'Bleibt' })]),
+    sources: [quelle('q', async () => [])],
+  });
+  assert.deepEqual(events.map((e) => e.title), ['Bleibt']);
+  assert.equal(status[0].error, 'leere Antwort');
+  assert.equal(status[0].uebernommen, true);
+});
+
+test('Übernahme: vorbeigegangene Termine fallen weg, nur der Rest bleibt', async () => {
+  const { events } = await runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('q', [ev({ title: 'Vorbei', start: '2026-11-08T10:00:00+01:00' }), ev({ title: 'Kommt', start: '2026-11-20T10:00:00+01:00' })]),
+    sources: [quelle('q', async () => { throw new Error('x'); })],
+  });
+  assert.deepEqual(events.map((e) => e.title), ['Kommt']);
+});
+
+test('Übernahme endet nach 14 Tagen ohne guten Abruf', async () => {
+  const lauf = (lastOkAt) => runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('q', [ev({ title: 'Alt' })], lastOkAt),
+    sources: [quelle('q', async () => { throw new Error('x'); })],
+  });
+  const gerade = await lauf(new Date(NOW.getTime() - MAX_UEBERNAHME_TAGE * 86_400_000).toISOString());
+  assert.equal(gerade.events.length, 1);
+  const zuAlt = await lauf(new Date(NOW.getTime() - MAX_UEBERNAHME_TAGE * 86_400_000 - 1000).toISOString());
+  assert.equal(zuAlt.events.length, 0);
+  assert.equal(zuAlt.status[0].uebernommen, undefined);
+  assert.equal(zuAlt.status[0].count, 0);
+  assert.deepEqual(zuAlt.rohdaten, {});
+});
+
+test('Übernahme: ohne gespeicherte Rohdaten oder mit kaputtem Eintrag passiert nichts Schlimmes', async () => {
+  for (const previousRohdaten of [{}, { q: null }, { q: { lastOkAt: 'kaputt', events: [] } }, { q: { lastOkAt: ROH_GUT, events: 'x' } }, { q: { lastOkAt: ROH_GUT, events: [null, { title: 'ohne start' }] } }]) {
+    const { events, status } = await runAll({ now: NOW, http: {}, previousRohdaten, sources: [quelle('q', async () => { throw new Error('x'); })] });
+    assert.equal(events.length, 0);
+    assert.equal(status[0].ok, false);
+    assert.equal(status[0].uebernommen, undefined);
+  }
+});
+
+test('Übernahme gilt nur für eingeschaltete Quellen: eine abgeschaltete Quelle (z. B. nach einem Nein) verschwindet sofort', async () => {
+  const { events, status, rohdaten } = await runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('aus', [ev({ title: 'Darf nicht bleiben' })]),
+    sources: [quelle('aus', async () => { throw new Error('nie aufgerufen'); }, { enabled: false })],
+  });
+  assert.equal(events.length, 0);
+  assert.equal(status.length, 0);
+  assert.deepEqual(rohdaten, {});
+});
+
+test('Übernahme: alte Termine werden mit den frischen Terminen anderer Quellen zusammengeführt', async () => {
+  const gleich = { title: 'Konzert', start: '2026-11-20T20:00:00+01:00', placeName: 'Sebnitz' };
+  const { events } = await runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('alt', [{ ...ev({ ...gleich, sourceName: 'Alt', sourceUrl: 'https://alt.example/1' }), distanceKm: 0 }]),
+    sources: [
+      quelle('alt', async () => { throw new Error('x'); }),
+      quelle('neu', async () => [ev({ ...gleich, sourceName: 'Neu', sourceUrl: 'https://neu.example/1' })]),
+    ],
+  });
+  assert.equal(events.length, 1);
+  assert.deepEqual(events[0].sources.map((s) => s.name).sort(), ['Alt', 'Neu']);
 });
 
 test('liefert ein Adapter Unsinn statt einer Liste, ist das ein Fehler dieser Quelle', async () => {

@@ -56,6 +56,14 @@ jobs:
             "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/uebersetzungen.json" \
             -o site/data/uebersetzungen.json || rm -f site/data/uebersetzungen.json
 
+      # Die Rohtermine je Quelle vom letzten Stand holen: fällt eine Quelle aus, bleiben ihre Termine vom letzten guten
+      # Abruf stehen (bis 14 Tage). Fehlt die Datei (z. B. beim ersten Lauf), gibt es für diesen Lauf nur keinen Schutz.
+      - name: Rohtermine vom letzten Stand holen
+        run: |
+          curl -fsS --retry 2 --max-time 60 \
+            "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/rohdaten.json" \
+            -o site/data/rohdaten.json || rm -f site/data/rohdaten.json
+
       # Fällt nur eine Quelle aus, endet der Lauf trotzdem erfolgreich: der Fehler steht in status.json.
       - run: npm run build
         env:

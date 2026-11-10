@@ -232,6 +232,15 @@ test('Fußzeile nennt nur ausgefallene Quellen mit Datum; bei lauter ok keine Wa
   assert.ok(!/ohne Daten/.test(gut.textContent));
 });
 
+test('Fußzeile: bei übernommenen Terminen steht, dass die Termine vom letzten Abruf stammen', () => {
+  const fuss = renderStatusFooter(document, [
+    { name: 'goerlitz', ok: false, count: 316, error: 'HTTP 500', lastOkAt: '2026-11-05T05:00:00.000Z', uebernommen: true },
+    { name: 'goout', ok: false, count: 0, error: 'x', lastOkAt: null },
+  ]);
+  assert.match(fuss.textContent, /Quelle goerlitz seit 05\.11\.2026 nicht erreichbar, gezeigt werden die Termine vom letzten Abruf/);
+  assert.match(fuss.textContent, /Quelle goout seit unbekannt ohne Daten/);
+});
+
 test('Fußzeile setzt Quellennamen als Text, nicht als HTML', () => {
   const fuss = renderStatusFooter(document, [{ name: '<b>x</b>', ok: false, count: 0, error: 'e', lastOkAt: null }]);
   assert.equal(fuss.querySelectorAll('b').length, 0);

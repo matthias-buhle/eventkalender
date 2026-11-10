@@ -179,11 +179,14 @@ const deutschesDatum = (iso) => {
   return m ? `${m[3]}.${m[2]}.${m[1]}` : 'unbekannt';
 };
 
-/** Fußzeile: nennt nur Quellen mit ok:false. */
+/** Fußzeile: nennt nur Quellen mit ok:false; wurden ihre alten Termine übernommen, steht das dabei. */
 export function renderStatusFooter(doc, status) {
   const fuss = el(doc, 'div', 'status-footer');
   for (const s of (status ?? []).filter((x) => x && x.ok === false)) {
-    fuss.append(el(doc, 'p', 'source-warning', `Quelle ${s.name} seit ${deutschesDatum(s.lastOkAt)} ohne Daten`));
+    const text = s.uebernommen === true
+      ? `Quelle ${s.name} seit ${deutschesDatum(s.lastOkAt)} nicht erreichbar, gezeigt werden die Termine vom letzten Abruf`
+      : `Quelle ${s.name} seit ${deutschesDatum(s.lastOkAt)} ohne Daten`;
+    fuss.append(el(doc, 'p', 'source-warning', text));
   }
   return fuss;
 }

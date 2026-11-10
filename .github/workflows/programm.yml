@@ -58,6 +58,10 @@ jobs:
             curl -fsS --retry 3 --retry-delay 5 --max-time 60 "$base/$datei" -o "site/data/$datei" \
               || { echo "Konnte $datei nicht von der veröffentlichten Seite laden, Abbruch." >&2; exit 1; }
           done
+          # Die Rohtermine je Quelle gehören dem Datenlauf (Schutz bei Quellenausfall); sie müssen erhalten bleiben,
+          # sonst fehlen sie beim nächsten Datenlauf. Gibt es sie noch nicht (vor dem ersten Datenlauf damit), ist das kein Fehler.
+          curl -fsS --retry 3 --retry-delay 5 --max-time 60 "$base/rohdaten.json" -o site/data/rohdaten.json \
+            || { echo "Hinweis: rohdaten.json gibt es noch nicht, wird übersprungen."; rm -f site/data/rohdaten.json; }
           # events.json muss ein JSON mit Terminliste sein, sonst nicht veröffentlichen
           node -e "const d=JSON.parse(require('fs').readFileSync('site/data/events.json','utf8')); if(!Array.isArray(d.events)||!d.events.length||!d.generatedAt){console.error('events.json ist leer oder ungültig');process.exit(1)} console.log(d.events.length+' Termine, Stand '+d.generatedAt)"
 
