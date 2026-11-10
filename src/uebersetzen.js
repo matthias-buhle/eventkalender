@@ -19,21 +19,34 @@ const schluessel = (text) => createHash('sha1').update(text).digest('hex');
 const gleich = (a, b) => a.normalize('NFC').trim().toLowerCase() === b.normalize('NFC').trim().toLowerCase();
 const realSleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/** Ein Stapel Texte an DeepL. Wirft bei Fehlern; 429 und 5xx werden einmal wiederholt, 456 (Kontingent) nie. */
+/** Der jeweils andere Server: ob ein Schlüssel zum Free- oder Pro-Server gehört, verrät nicht jeder Tarif am Ende (:fx). */
+const andererHost = (host) => (host === 'https://api-free.deepl.com' ? 'https://api.deepl.com' : 'https://api-free.deepl.com');
+
+/**
+ * Ein Stapel Texte an DeepL. Wirft bei Fehlern; 429 und 5xx werden einmal wiederholt, 456 (Kontingent) nie.
+ * Bei 403 (Schlüssel passt nicht zum Server) wird einmal am anderen Server versucht.
+ */
 async function uebersetzeStapel(texte, { apiKey, fetchImpl, sleep }) {
-  const anfrage = () => fetchImpl(`${deeplHost(apiKey)}/v2/translate`, {
+  const anfrage = (host) => fetchImpl(`${host}/v2/translate`, {
     method: 'POST',
     headers: { Authorization: `DeepL-Auth-Key ${apiKey.trim()}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: texte, source_lang: 'CS', target_lang: 'DE' }),
     signal: AbortSignal.timeout(30000),
   });
-  let res = await anfrage();
+  let host = deeplHost(apiKey);
+  let res = await anfrage(host);
+  if (res.status === 403) {
+    host = andererHost(host);
+    res = await anfrage(host);
+  }
   if (res.status === 429 || res.status >= 500) {
     await sleep(3000);
-    res = await anfrage();
+    res = await anfrage(host);
   }
   if (!res.ok) {
-    const fehler = new Error(res.status === 456 ? 'DeepL-Kontingent aufgebraucht' : `DeepL HTTP ${res.status}`);
+    let meldung = '';
+    try { meldung = (await res.json())?.message ?? ''; } catch { /* Antwort ohne JSON */ }
+    const fehler = new Error(res.status === 456 ? 'DeepL-Kontingent aufgebraucht' : `DeepL HTTP ${res.status}${meldung ? ` (${meldung})` : ''}`);
     fehler.status = res.status;
     throw fehler;
   }
