@@ -121,6 +121,26 @@ test('ein Serverfehler (503) wird einmal wiederholt', async () => {
   assert.equal(events[0].title, 'DE: Trh');
 });
 
+test('403: es wird einmal am anderen Server versucht und danach dort weitergemacht', async () => {
+  const urls = [];
+  const fetchImpl = async (url, opts) => {
+    urls.push(url);
+    if (url.startsWith('https://api.deepl.com')) return { ok: false, status: 403, json: async () => ({ message: 'Wrong endpoint' }) };
+    return { ok: true, status: 200, json: async () => ({ translations: JSON.parse(opts.body).text.map((t) => ({ text: `DE: ${t}` })) }) };
+  };
+  const { events } = await uebersetzeTermine([ev({ title: 'Trh', description: null })], { apiKey: 'ohne-endung', heute: HEUTE, fetchImpl, sleep: ohnePause });
+  assert.deepEqual(urls, ['https://api.deepl.com/v2/translate', 'https://api-free.deepl.com/v2/translate']);
+  assert.equal(events[0].title, 'DE: Trh');
+});
+
+test('403 an beiden Servern: die Meldung von DeepL steht im Hinweis, der Schlüssel nirgends', async () => {
+  const fetchImpl = async () => ({ ok: false, status: 403, json: async () => ({ message: 'Forbidden' }) });
+  const { events, stats } = await uebersetzeTermine([ev({ title: 'Trh' })], { apiKey: 'geheim-123:fx', heute: HEUTE, fetchImpl, sleep: ohnePause });
+  assert.equal(events[0].title, 'Trh');
+  assert.match(stats.fehler, /403 \(Forbidden\)/);
+  assert.ok(!stats.fehler.includes('geheim'));
+});
+
 test('ein Netzfehler wirft nicht', async () => {
   const fetchImpl = async () => { throw new Error('ECONNRESET'); };
   const { events, stats } = await uebersetzeTermine([ev({ title: 'Trh' })], { apiKey: 'k', heute: HEUTE, fetchImpl, sleep: ohnePause });

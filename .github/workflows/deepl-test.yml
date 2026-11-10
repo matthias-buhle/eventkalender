@@ -1,0 +1,30 @@
+name: DeepL testen
+
+# Kurzer Prüflauf (Sekunden): übersetzt einen Testsatz und meldet, ob der Schlüssel funktioniert.
+# Es werden keine Daten veröffentlicht und der Schlüssel erscheint nicht im Protokoll.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Testsatz übersetzen
+        run: |
+          node --input-type=module -e "
+          import { uebersetzeTermine, deeplHost } from './src/uebersetzen.js';
+          const key = process.env.DEEPL_API_KEY ?? '';
+          console.log('Schlüssel gesetzt:', key.trim().length > 0, '| Länge:', key.trim().length, '| endet auf :fx:', key.trim().endsWith(':fx'), '| erster Server:', key ? deeplHost(key) : '-');
+          const ev = [{ country: 'CZ', title: 'Vánoční trh v Děčíně', description: null }];
+          const r = await uebersetzeTermine(ev, { apiKey: key, heute: new Date().toISOString().slice(0, 10) });
+          console.log('Ergebnis:', JSON.stringify(r.events[0].title), '| Zeichen:', r.stats.zeichen, '| Hinweis:', r.stats.fehler);
+          "
