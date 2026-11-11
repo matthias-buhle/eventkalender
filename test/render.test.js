@@ -259,3 +259,44 @@ test('Karte nennt Genre bzw. Sorte hinter der Art, aber nur bei Konzert, Markt u
   assert.equal(label({ genre: '<b>x</b>' }), null);
   assert.equal(label({}), null, 'ältere Daten ohne genre');
 });
+
+const lizenzBsp = (extra = {}) => ({ name: 'CC BY-SA 4.0', url: 'https://creativecommons.org/licenses/by-sa/4.0/deed.de', urheber: 'Touristinformation Sebnitz', ...extra });
+const detail = (e) => renderDetail(document, e, { orte: [], userAgent: '' });
+
+test('Detailfenster zeigt Lizenz und Urheber', () => {
+  const d = detail(ev({ lizenz: lizenzBsp() }));
+  const p = d.querySelector('p.lizenz');
+  assert.ok(p);
+  assert.equal(p.textContent, 'Lizenz: CC BY-SA 4.0 · Urheber: Touristinformation Sebnitz');
+  const a = p.querySelector('a');
+  assert.equal(a.textContent, 'CC BY-SA 4.0');
+  assert.equal(a.getAttribute('href'), 'https://creativecommons.org/licenses/by-sa/4.0/deed.de');
+  assert.equal(a.getAttribute('rel'), 'noopener noreferrer');
+  assert.equal(a.getAttribute('target'), '_blank');
+  const quelle = d.querySelector('p.sources');
+  assert.equal(quelle.nextSibling, p, 'direkt nach der Quellenzeile');
+});
+
+test('Lizenz ohne Urheber zeigt nur den Lizenznamen', () => {
+  const p = detail(ev({ lizenz: lizenzBsp({ name: 'CC0 1.0', urheber: null }) })).querySelector('p.lizenz');
+  assert.equal(p.textContent, 'Lizenz: CC0 1.0');
+});
+
+test('Karte ohne Lizenz und Detailfenster ohne Lizenz haben keinen Lizenz-Absatz', () => {
+  assert.equal(detail(ev()).querySelector('.lizenz'), null);
+  assert.equal(detail(ev({ lizenz: null })).querySelector('.lizenz'), null);
+  assert.equal(renderEventCard(document, ev({ lizenz: lizenzBsp() })).querySelector('.lizenz'), null, 'die Karte zeigt die Lizenz nie');
+  assert.equal(renderEventCard(document, ev()).querySelector('.lizenz'), null);
+});
+
+test('Fremder Text im Urheber wird als Text dargestellt, unsichere Lizenzadresse ergibt keinen Link', () => {
+  const boese = '<img src=x onerror=alert(1)>';
+  const d = detail(ev({ lizenz: lizenzBsp({ urheber: boese, name: boese }) }));
+  assert.equal(d.querySelectorAll('img').length, 0);
+  assert.ok(d.querySelector('p.lizenz').textContent.includes(boese));
+  for (const url of ['javascript:alert(3)', 'mailto:a@b.de', 'tel:123', null, '']) {
+    const p = detail(ev({ lizenz: lizenzBsp({ url }) })).querySelector('p.lizenz');
+    assert.equal(p.querySelectorAll('a').length, 0, String(url));
+    assert.equal(p.textContent, 'Lizenz: CC BY-SA 4.0 · Urheber: Touristinformation Sebnitz');
+  }
+});
