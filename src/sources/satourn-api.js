@@ -28,8 +28,13 @@ const liste = (wert) => (wert === undefined || wert === null ? [] : [].concat(we
 const text = (wert) => (typeof wert === 'string' ? wert.trim() : '');
 const zahl = (wert) => (wert === null || wert === undefined || wert === '' || !Number.isFinite(Number(wert)) ? null : Number(wert));
 
-function lizenzAus(roh, urheber) {
-  const adresse = text(roh);
+/**
+ * Lizenz aus der Adresse der Lizenz (Weißliste, genau die https-Adressen oben; ein angehängtes "deed.xx" und der
+ * fehlende Schrägstrich am Ende stören nicht). Gibt null zurück, wenn die Lizenz nicht zu den drei offenen gehört.
+ * Wird auch vom Sebnitzer Teil (satourn.js) genutzt, damit beide Teile dieselbe Weißliste anwenden.
+ */
+export function lizenzAus(roh, urheber) {
+  const adresse = text(roh).replace(/\/?deed\.[a-z]{2}$/i, '');
   const schluessel = adresse.endsWith('/') ? adresse : `${adresse}/`;
   if (!Object.hasOwn(LIZENZEN, schluessel)) return null;
   return { name: LIZENZEN[schluessel], url: `${schluessel}deed.de`, urheber: urheber || null };
@@ -47,11 +52,15 @@ function zuEvent(e, config) {
   const titel = cleanText(e.name);
   const start = text(e.startDate);
   if (!titel || !start) return null;
+  // Die API sucht im Umkreis; ein Eintrag ohne Koordinaten lässt sich nicht verorten (u. a. Testdatensätze im Feed).
+  const ort = liste(e.location)[0] ?? {};
+  const lat = zahl(ort.geo?.latitude);
+  const lon = zahl(ort.geo?.longitude);
+  if (lat === null || lon === null) return null;
   const urheber = e.author ?? {};
   const lizenz = lizenzAus(e.license, text(urheber.name));
   if (!lizenz) return null;
 
-  const ort = liste(e.location)[0] ?? {};
   const beschreibung = cleanText(e.description);
   const kennung = text(liste(e.identifier)[0]) || titel;
   const quelle = [e.url, urheber.url].map(text).find((u) => /^https?:\/\//.test(u)) ?? config.fallbackUrl;
@@ -64,10 +73,10 @@ function zuEvent(e, config) {
     art: artAus(e['@type'], titel),
     start,
     end: text(e.endDate) || null,
-    hasTime: !/T00:00:00/.test(start),
+    hasTime: /T/.test(start) && !/T00:00:00/.test(start), // nur Datum oder Mitternacht: keine Uhrzeit
     placeName: [text(ort.name), text(ort.address?.addressLocality)].filter(Boolean).join(', '),
-    lat: zahl(ort.geo?.latitude),
-    lon: zahl(ort.geo?.longitude),
+    lat,
+    lon,
     contact: { phone: normalizePhone(urheber.telephone), url: text(urheber.url) || null, email: text(urheber.email) || null },
     ticketUrl: text(liste(e.offers)[0]?.url) || null,
     ticketStatus: detectStatus(`${titel} ${beschreibung.slice(0, 160)}`),
@@ -105,8 +114,19 @@ export async function fetchApiEvents({ http, today, config }) {
     throw new Error(`SaTourN-API: ${datensaetze.size} Datensätze nahe am limit ${config.limit}, Antwort vermutlich unvollständig`);
   }
 
-  return body
+  const events = body
     .filter((e) => e && typeof e === 'object' && typeof e.startDate === 'string' && imFenster(e.startDate, e.endDate ?? null, today, letzterTag))
     .map((e) => zuEvent(e, config))
     .filter(Boolean);
+
+  // Eine Antwort ohne einen einzigen verwertbaren Termin ist ein Fehler, kein leeres Ergebnis: die Antwort ist auf
+  // das Zeitfenster zugeschnitten und enthält im Normalbetrieb immer Termine. Sonst fiele der Lauf (Sebnitz liefert ja
+  // weiter) nicht auf, und die 14-Tage-Übernahme der letzten guten Termine finge nie an. Das gilt für eine leere
+  // Antwort ebenso wie für eine, deren Einträge alle herausfallen (z. B. weil sich das Lizenzformat ändert).
+  if (events.length === 0) {
+    throw new Error(body.length === 0
+      ? 'SaTourN-API: leere Antwort, keine Termine'
+      : `SaTourN-API: ${body.length} Einträge, aber keine Termine übrig (Lizenz, Koordinaten oder Zeitfenster prüfen)`);
+  }
+  return events;
 }

@@ -212,5 +212,16 @@
     ],
     "author": { "name": " Gemeinde Sebnitz " },
     "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "1 DB TEST V. (3x POI) ohne Koordinaten",
+    "description": "<p>Testeintrag ohne Geodaten.</p>",
+    "identifier": ["e_100000012"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/ohne-koordinaten",
+    "startDate": "2026-12-07T10:00:00+01:00",
+    "location": [{ "name": "test-poi-veranstaltungsort MIT METADATEN" }],
+    "author": { "name": "Testanbieter" },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/"
   }
 ]

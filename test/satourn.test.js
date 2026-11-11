@@ -92,8 +92,39 @@ test('satourn: nur kommende Tage innerhalb des Zeitraums', async () => {
   const lang = await fetchEvents({ http: fakeHttp(), today: TODAY_SEBNITZ, config });
   assert.ok(kurz.length < lang.length);
   for (const e of kurz) assert.ok(e.start.slice(0, 10) <= '2026-11-21', `${e.title} ${e.start}`);
-  const vergangen = await fetchEvents({ http: fakeHttp(), today: '2027-06-01', config });
-  assert.equal(vergangen.length, 0);
+  // Liegt alles hinter dem Fenster, ist die (auf das Fenster zugeschnittene) API-Antwort leer: das ist ein Fehler.
+  await assert.rejects(fetchEvents({ http: fakeHttp(), today: '2027-06-01', config }), /keine/);
+});
+
+test('satourn: Sebnitzer Termine tragen Lizenz und Urheber aus den eingebetteten Daten', async () => {
+  const events = await fetchEvents({ http: fakeHttp(), today: TODAY_SEBNITZ, config });
+  const sebnitz = events.filter((e) => e.sources[0].name === 'sebnitz.org');
+  const film = sebnitz.find((e) => e.title.startsWith('17. Europäisches Filmfestival'));
+  assert.deepEqual(film.lizenz, {
+    name: 'CC0 1.0',
+    url: 'https://creativecommons.org/publicdomain/zero/1.0/deed.de',
+    urheber: 'Große Kreisstadt Sebnitz Touristinformation Sebnitz',
+  });
+  const nacht = sebnitz.filter((e) => e.title.startsWith('Nachtwächterführung'));
+  assert.ok(nacht.length > 0);
+  for (const e of nacht) {
+    assert.deepEqual(e.lizenz, {
+      name: 'CC BY-SA 4.0',
+      url: 'https://creativecommons.org/licenses/by-sa/4.0/deed.de',
+      urheber: 'Nicole Hesse (Tourismusverband Sächsische Schweiz e.V.)',
+    });
+  }
+});
+
+test('satourn: Sebnitzer Termine mit fremder oder fehlender Lizenz bleiben erhalten, ohne Lizenz', async () => {
+  const fremd = fx('satourn-sebnitz.html').replaceAll('creativecommons.org/publicdomain/zero/1.0/deed.de', 'creativecommons.org/licenses/by-nc/4.0/deed.de');
+  const ohne = fx('satourn-sebnitz.html').replaceAll(/"licenseUrl":"[^"]*",/g, '');
+  for (const seite of [fremd, ohne]) {
+    const events = await fetchEvents({ http: fakeHttp({ sebnitz: seite }), today: TODAY_SEBNITZ, config });
+    const film = events.find((e) => e.title.startsWith('17. Europäisches Filmfestival'));
+    assert.ok(film, 'Termin bleibt erhalten');
+    assert.equal(film.lizenz, null);
+  }
 });
 
 test('satourn: fällt der Sebnitzer Teil aus, kommen die API-Termine', async () => {
