@@ -25,8 +25,10 @@
   "satourn": {
     "enabled": true,
     "sebnitzUrl": "https://www.sebnitz.org/Veranstaltungskalender/",
-    "sitemapIndexUrl": "https://www.saechsische-schweiz.de/sitemap.xml",
-    "maxDetailPages": 150,
+    "apiUrl": "https://meta.et4.de/rest.ashx/search/",
+    "experience": "open-data-sachsen-tourismus",
+    "limit": 1000,
+    "fallbackUrl": "https://www.sachsen-tourismus.de/",
     "horizonDays": 90
   },
   "kamenz": {
