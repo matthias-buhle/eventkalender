@@ -122,6 +122,17 @@ function quellenZeile(doc, ev) {
   return (ev.sources ?? []).length ? quellen : null;
 }
 
+/** Lizenz und Urheber des Termins; der Lizenzname ist nur bei einer sicheren http(s)-Adresse ein Link. Ohne Lizenz entfällt die Zeile. */
+function lizenzZeile(doc, ev) {
+  const l = ev.lizenz;
+  if (!l || !l.name) return null;
+  const zeile = el(doc, 'p', 'lizenz', 'Lizenz: ');
+  const href = webAdresse(l.url);
+  zeile.append(href ? link(doc, l.name, href) : String(l.name));
+  if (l.urheber) zeile.append(' · Urheber: ', String(l.urheber));
+  return zeile;
+}
+
 /** Hinweis unter einem gekürzten Text ("…" am Ende); der Weg zur Webseite ist der Knopf "Zur Webseite" darunter. */
 function gekuerztHinweis(doc, ev) {
   if (!/(…|\.\.\.)\s*$/.test(ev.description ?? '')) return null;
@@ -171,6 +182,8 @@ export function renderDetail(doc, ev, optionen = {}) {
   if (knoepfe.childNodes.length) detail.append(knoepfe);
   const quellen = quellenZeile(doc, ev);
   if (quellen) detail.append(quellen);
+  const lizenz = lizenzZeile(doc, ev);
+  if (lizenz) detail.append(lizenz);
   return detail;
 }
 

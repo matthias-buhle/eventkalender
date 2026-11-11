@@ -11,8 +11,8 @@ export const KONTAKT_MAIL = 'buehnenlicht@mbuhle.de';
 export const QUELLEN = [
   {
     schluessel: 'satourn',
-    name: 'Sebnitz und Sächsische Schweiz',
-    hinweis: 'Termine der Touristinformation Sebnitz u. a. und des Tourismusverbands Sächsische Schweiz.',
+    name: 'Sebnitz, Sächsische Schweiz und Umgebung',
+    hinweis: 'Offene Tourismusdaten Sachsen (Open Data Finder der TMGS) und Termine der Touristinformation Sebnitz.',
     links: [
       { text: 'sebnitz.org', url: 'https://www.sebnitz.org/Veranstaltungskalender/' },
       { text: 'saechsische-schweiz.de', url: 'https://www.saechsische-schweiz.de/' },
@@ -217,10 +217,10 @@ export function renderUeber(doc, optionen = {}) {
   );
 
   const lizenzen = abschnitt(doc, 'Lizenzen');
-  const cc = el(doc, 'p', null, 'Termine aus Sebnitz und der Sächsischen Schweiz stehen je Termin unter CC0 oder unter ');
+  const cc = el(doc, 'p', null, 'Termine aus den offenen Tourismusdaten Sachsen stehen je Termin unter CC0 1.0, CC BY 4.0 oder ');
   cc.append(
     link(doc, 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.de'),
-    '. Bei CC BY-SA 4.0 gilt die Namensnennung: Touristinformation Sebnitz u. a.',
+    '; Lizenz und Urheber stehen im Detailfenster des Termins.',
   );
   const schriften = el(doc, 'p', null, 'Schriften: Barlow Condensed (Jeremy Tribby) und Inter (Rasmus Andersson), beide unter der SIL Open Font License 1.1 (');
   schriften.append(link(doc, 'openfontlicense.org', 'https://openfontlicense.org'), ').');

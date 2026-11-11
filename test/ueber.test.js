@@ -32,11 +32,15 @@ test('das Fenster nennt jede Quelle mit Link', () => {
   for (const a of inhalt.querySelectorAll('a[href^="http"]')) assert.equal(a.getAttribute('rel'), 'noopener noreferrer');
 });
 
-test('Sebnitz: Lizenz und Namensnennung stehen im Fenster', () => {
+test('Sachsen-Tourismus: Lizenzen und Verweis aufs Detailfenster stehen im Fenster', () => {
   const t = text(null);
+  assert.ok(t.includes('CC0 1.0'));
+  assert.ok(t.includes('CC BY 4.0'));
   assert.ok(t.includes('CC BY-SA 4.0'));
-  assert.ok(t.includes('CC0'));
+  assert.match(t, /Lizenz und Urheber stehen im Detailfenster/);
   assert.ok(t.includes('Touristinformation Sebnitz'));
+  const a = [...renderUeber(document, {}).querySelectorAll('a')].find((x) => x.textContent === 'CC BY-SA 4.0');
+  assert.equal(a.getAttribute('href'), 'https://creativecommons.org/licenses/by-sa/4.0/deed.de');
 });
 
 test('Übersetzung: Hinweis auf DeepL und den Originaltitel steht im Fenster, DeepL ist verlinkt', () => {
