@@ -1,0 +1,216 @@
+[
+  {
+    "@type": ["MusicEvent", "Event", "WebPage"],
+    "name": "Weihnachtskonzert „Freue dich, Welt“",
+    "description": "<p>Der Kirchenchor und das Orchester laden ein.</p><p>Eintritt frei, Spenden willkommen.</p>",
+    "identifier": ["e_101382318"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/weihnachtskonzert-freue-dich-welt",
+    "location": [
+      {
+        "name": " Ev.-Luth. Peter-Paul-Kirche Sebnitz ",
+        "address": { "addressLocality": "Sebnitz " },
+        "geo": { "latitude": 50.9667, "longitude": 14.2833 }
+      }
+    ],
+    "author": {
+      "name": " Große Kreisstadt Sebnitz Touristinformation Sebnitz ",
+      "url": "https://www.sebnitz.de/tourist",
+      "telephone": "+49 35971 70960 ",
+      "email": "touristinfo@sebnitz.de"
+    },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-12-13T16:00:00+01:00",
+    "endDate": "2026-12-13T17:30:00+01:00",
+    "offers": [{ "url": "https://tickets.example.org/weihnachtskonzert" }]
+  },
+  {
+    "@type": ["https://odta.io/voc/TemporaryExhibition", "WebPage"],
+    "name": "Sonderausstellung Heimatgeschichte",
+    "description": "<p>Eine Ausstellung zur Geschichte der Region.</p>",
+    "identifier": ["e_100000002"],
+    "location": [
+      {
+        "name": "Heimatmuseum Neustadt",
+        "address": { "addressLocality": "Neustadt in Sachsen" },
+        "geo": { "latitude": 51.0289, "longitude": 14.2108 }
+      }
+    ],
+    "author": {
+      "name": " Heimatverein Neustadt ",
+      "url": "https://example.org/verein/"
+    },
+    "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "startDate": "2026-11-20T10:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "https://odta.io/voc/ChristmasMarket", "WebPage"],
+    "name": "Adventsmarkt",
+    "description": "<p>Buden, Glühwein und Musik auf dem Marktplatz.</p>",
+    "identifier": ["e_100000003"],
+    "location": [
+      {
+        "name": "Marktplatz",
+        "address": { "addressLocality": "Stolpen" },
+        "geo": { "latitude": 51.0436, "longitude": 14.0792 }
+      }
+    ],
+    "author": {
+      "name": " Stadt Stolpen "
+    },
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "startDate": "2026-11-28T00:00:00+01:00"
+  },
+  {
+    "@type": ["FoodEvent", "Event", "WebPage"],
+    "name": "Brauhausweihnacht",
+    "description": "<p>Festliches Menü im Brauhaus.</p>",
+    "identifier": ["e_100916490"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/brauhausweihnacht",
+    "location": [
+      {
+        "name": "Brauhaus Hohnstein",
+        "address": { "addressLocality": "Hohnstein" },
+        "geo": { "latitude": 50.9641, "longitude": 14.1131 }
+      }
+    ],
+    "author": { "name": " Brauhaus Hohnstein " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-11-20T18:00:00+01:00"
+  },
+  {
+    "@type": ["FoodEvent", "Event", "WebPage"],
+    "name": "Brauhausweihnacht",
+    "description": "<p>Festliches Menü im Brauhaus.</p>",
+    "identifier": ["e_100916490"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/brauhausweihnacht",
+    "location": [
+      {
+        "name": "Brauhaus Hohnstein",
+        "address": { "addressLocality": "Hohnstein" },
+        "geo": { "latitude": 50.9641, "longitude": 14.1131 }
+      }
+    ],
+    "author": { "name": " Brauhaus Hohnstein " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-11-26T18:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "ABGESAGT: Lichterfahrt",
+    "description": "<p>Die Fahrt durch den Adventsabend.</p>",
+    "identifier": ["e_100000005"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/lichterfahrt",
+    "location": [
+      {
+        "name": "Bahnhof Bad Schandau",
+        "address": { "addressLocality": "Bad Schandau" },
+        "geo": { "latitude": 50.9189, "longitude": 14.1517 }
+      }
+    ],
+    "author": { "name": " Kirnitzschtalbahn " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-12-01T18:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "Herbstführung im Park",
+    "description": "<p>Spaziergang durch den Park, schon vorbei.</p>",
+    "identifier": ["e_100000006"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/herbstfuehrung",
+    "location": [
+      {
+        "name": "Schlosspark",
+        "address": { "addressLocality": "Pirna" },
+        "geo": { "latitude": 50.9619, "longitude": 13.9380 }
+      }
+    ],
+    "author": { "name": " Stadt Pirna " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-10-20T10:00:00+02:00",
+    "endDate": "2026-10-31T18:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "Wanderausstellung Elbsandstein",
+    "description": "<p>Eine Ausstellung, die noch läuft.</p>",
+    "identifier": ["e_100000007"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/wanderausstellung",
+    "location": [
+      {
+        "name": "Rathaus",
+        "address": { "addressLocality": "Königstein" },
+        "geo": { "latitude": 50.9189, "longitude": 14.0689 }
+      }
+    ],
+    "author": { "name": " Stadt Königstein " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-11-05T10:00:00+01:00",
+    "endDate": "2026-11-14T18:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "Frühlingsmarkt der Vereine",
+    "description": "<p>Liegt hinter dem Fenster.</p>",
+    "identifier": ["e_100000008"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/fruehlingsmarkt",
+    "location": [
+      {
+        "name": "Festwiese",
+        "address": { "addressLocality": "Sebnitz" },
+        "geo": { "latitude": 50.9739, "longitude": 14.2742 }
+      }
+    ],
+    "author": { "name": " Stadt Sebnitz " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2027-03-01T10:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "Vortrag zur Kulturlandschaft",
+    "description": "<p>Nur nicht-kommerzielle Lizenz.</p>",
+    "identifier": ["e_100000009"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/vortrag-kulturlandschaft",
+    "location": [
+      {
+        "name": "Gemeindesaal",
+        "address": { "addressLocality": "Rathen" },
+        "geo": { "latitude": 50.9606, "longitude": 14.0825 }
+      }
+    ],
+    "author": { "name": " Gemeinde Rathen " },
+    "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+    "startDate": "2026-12-05T19:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "description": "<p>Ein Eintrag ohne Namen.</p>",
+    "identifier": ["e_100000010"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/ohne-namen",
+    "location": [
+      {
+        "name": "Dorfplatz",
+        "address": { "addressLocality": "Hinterhermsdorf" },
+        "geo": { "latitude": 50.9014, "longitude": 14.3311 }
+      }
+    ],
+    "author": { "name": " Gemeinde Sebnitz " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "startDate": "2026-12-06T10:00:00+01:00"
+  },
+  {
+    "@type": ["Event", "WebPage"],
+    "name": "Termin ohne Beginn",
+    "description": "<p>Ein Eintrag ohne Startdatum.</p>",
+    "identifier": ["e_100000011"],
+    "url": "https://www.saechsische-schweiz.de/veranstaltung/ohne-beginn",
+    "location": [
+      {
+        "name": "Dorfplatz",
+        "address": { "addressLocality": "Hinterhermsdorf" },
+        "geo": { "latitude": 50.9014, "longitude": 14.3311 }
+      }
+    ],
+    "author": { "name": " Gemeinde Sebnitz " },
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/"
+  }
+]
