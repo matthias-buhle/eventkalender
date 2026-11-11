@@ -1,21 +1,13 @@
 import { XMLParser } from 'fast-xml-parser';
 import { extractSchemaEvents } from '../schemaorg.js';
 import { makeEvent } from '../model.js';
+import { imFenster, plusTage } from '../time.js';
 import { cleanText, detectStatus, normalizeArt, normalizePhone, shorten } from '../normalize.js';
 
 export const name = 'satourn';
 
 const xml = new XMLParser({ ignoreAttributes: true });
 const liste = (wert) => (wert === undefined || wert === null ? [] : [].concat(wert));
-
-function plusTage(tag, tage) {
-  const d = new Date(`${tag}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + tage);
-  return d.toISOString().slice(0, 10);
-}
-
-/** Läuft der Termin im Fenster [heute, ende]? Mehrtägige Termine zählen, solange sie laufen. */
-const imFenster = (start, ende, heute, letzterTag) => start.slice(0, 10) <= letzterTag && (ende ?? start).slice(0, 10) >= heute;
 
 /** Statushinweise nur aus Titel und Kurztext lesen; Langtexte erzählen oft von "verlegten" Handlungen. */
 const statusAus = (...teile) => detectStatus(teile.filter(Boolean).join(' '));

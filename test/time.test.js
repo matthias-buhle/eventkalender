@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { berlinIso, berlinIsoAt, parseGermanDate, todayBerlin } from '../src/time.js';
+import { berlinIso, berlinIsoAt, imFenster, parseGermanDate, plusTage, todayBerlin } from '../src/time.js';
 
 test('berlinIso im Sommer hat Offset +02:00', () => {
   assert.equal(berlinIso('2026-07-01', '20:00'), '2026-07-01T20:00:00+02:00');
@@ -39,4 +39,16 @@ test('berlinIsoAt rechnet einen UTC-Zeitpunkt in Berliner Zeit mit passendem Off
   assert.equal(berlinIsoAt(Date.UTC(2026, 10, 14, 19, 0)), '2026-11-14T20:00:00+01:00');
   assert.equal(berlinIsoAt(Date.UTC(2026, 6, 4, 18, 0)), '2026-07-04T20:00:00+02:00');
   assert.equal(berlinIsoAt(Date.UTC(2026, 11, 31, 23, 30)), '2027-01-01T00:30:00+01:00');
+});
+
+test('plusTage rechnet über Monatsgrenzen', () => {
+  assert.equal(plusTage('2026-11-25', 10), '2026-12-05');
+});
+
+test('imFenster zählt laufende Mehrtagestermine', () => {
+  assert.equal(imFenster('2026-11-05T10:00:00+01:00', '2026-11-14T18:00:00+01:00', '2026-11-11', '2027-02-09'), true);
+  assert.equal(imFenster('2026-10-20T10:00:00+02:00', '2026-10-31T18:00:00+01:00', '2026-11-11', '2027-02-09'), false);
+  assert.equal(imFenster('2027-03-01T10:00:00+01:00', '2027-03-02T10:00:00+01:00', '2026-11-11', '2027-02-09'), false);
+  assert.equal(imFenster('2026-11-20T10:00:00+01:00', null, '2026-11-11', '2027-02-09'), true);
+  assert.equal(imFenster('2026-11-05T10:00:00+01:00', null, '2026-11-11', '2027-02-09'), false);
 });
