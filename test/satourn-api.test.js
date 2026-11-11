@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { fetchApiEvents } from '../src/sources/satourn-api.js';
+import { fetchApiEvents, lizenzAus } from '../src/sources/satourn-api.js';
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/satourn-api.json', import.meta.url), 'utf8'));
 
@@ -119,12 +119,57 @@ test('Fenster', async () => {
   assert.deepEqual(kurz.map((e) => e.start), ['2026-11-20T18:00:00+01:00']);
 });
 
-test('Nicht offene Lizenz, ohne Namen oder ohne Beginn werden übersprungen', async () => {
+test('Nicht offene Lizenz, ohne Namen, ohne Beginn oder ohne Koordinaten werden übersprungen', async () => {
   const events = await lade();
   assert.equal(mitTitel(events, 'Vortrag zur Kulturlandschaft').length, 0, 'I: by-nc');
   assert.equal(mitTitel(events, 'Termin ohne Beginn').length, 0, 'K: ohne startDate');
   assert.equal(events.some((e) => e.sources[0].url.endsWith('/ohne-namen')), false, 'J: ohne name');
+  assert.equal(mitTitel(events, '1 DB TEST V. (3x POI) ohne Koordinaten').length, 0, 'L: ohne geo');
   assert.equal(events.length, 7);
+});
+
+test('Einträge ohne Koordinaten werden übersprungen, auch mit nur einer Hälfte', async () => {
+  const ohne = (geo) => [{ ...fixture[0], location: [{ ...fixture[0].location[0], geo }] }];
+  await assert.rejects(lade({}, ohne(undefined)), /keine/);
+  await assert.rejects(lade({}, ohne({ latitude: 50.9 })), /keine/);
+  await assert.rejects(lade({}, ohne({ latitude: 'x', longitude: 14.2 })), /keine/);
+  assert.equal((await lade({}, ohne({ latitude: '50.9', longitude: '14.2' }))).length, 1, 'Zahlen als Text sind gültig');
+});
+
+test('Leere Antwort ist ein Fehler', async () => {
+  await assert.rejects(lade({}, []), /leer|keine/);
+});
+
+test('Antwort, aus der kein Termin entsteht, ist ein Fehler', async () => {
+  const fremd = fixture.map((e) => ({ ...e, license: 'https://creativecommons.org/licenses/by-nc/4.0/' }));
+  await assert.rejects(lade({}, fremd), /keine/);
+  // Auch wenn alle Einträge außerhalb des Fensters liegen.
+  await assert.rejects(lade({}, [fixture[6], fixture[8]]), /keine/);
+});
+
+test('Lizenz-Weißliste: nur die genaue https-Adresse der drei Lizenzen zählt', async () => {
+  const mit = (license) => [fixture[0], { ...fixture[1], license }];
+  const anzahl = async (license) => (await lade({}, mit(license))).length;
+  assert.equal(await anzahl('https://creativecommons.org/licenses/by-sa/4.0'), 2, 'ohne Schrägstrich ist gültig');
+  assert.equal(await anzahl('http://creativecommons.org/licenses/by-sa/4.0/'), 1, 'http');
+  assert.equal(await anzahl('https://creativecommons.org/licenses/by-sa/3.0/'), 1, 'by-sa 3.0');
+  assert.equal(await anzahl(undefined), 1, 'ohne Lizenz');
+});
+
+test('lizenzAus: Weißliste, deed-Adressen und Urheber', () => {
+  assert.deepEqual(lizenzAus('https://creativecommons.org/licenses/by/4.0/deed.de', 'X'), {
+    name: 'CC BY 4.0', url: 'https://creativecommons.org/licenses/by/4.0/deed.de', urheber: 'X',
+  });
+  assert.equal(lizenzAus('https://creativecommons.org/licenses/by/4.0/', '').urheber, null);
+  assert.equal(lizenzAus('https://creativecommons.org/licenses/by-nd/4.0/deed.de', 'X'), null);
+  assert.equal(lizenzAus(undefined, 'X'), null);
+});
+
+test('Ohne Uhrzeit: Datum allein und Mitternacht sind ganztägig', async () => {
+  const mitStart = (startDate) => [{ ...fixture[0], startDate, endDate: undefined }];
+  assert.equal((await lade({}, mitStart('2026-12-13')))[0].hasTime, false, 'nur Datum');
+  assert.equal((await lade({}, mitStart('2026-12-13T00:00:00+01:00')))[0].hasTime, false, 'Mitternacht');
+  assert.equal((await lade({}, mitStart('2026-12-13T16:00:00+01:00')))[0].hasTime, true);
 });
 
 test('Antwort ohne Array ist ein Fehler', async () => {
@@ -137,4 +182,13 @@ test('Zu viele Datensätze sind ein Fehler', async () => {
     identifier: [`e_9${String(i).padStart(8, '0')}`],
   }));
   await assert.rejects(lade({}, viele), /limit/);
+});
+
+test('Grenze der Abschneide-Prüfung: 899 verschiedene Datensätze gehen, 900 nicht', async () => {
+  const datensaetze = (n) => Array.from({ length: n }, (_, i) => ({ ...fixture[0], identifier: [`e_9${String(i).padStart(8, '0')}`] }));
+  assert.equal((await lade({}, datensaetze(899))).length, 899);
+  await assert.rejects(lade({}, datensaetze(900)), /limit/);
+  // Wiederholungen desselben Datensatzes zählen nur einmal.
+  const wiederholt = Array.from({ length: 950 }, (_, i) => ({ ...fixture[0], startDate: `2026-12-${String(1 + (i % 28)).padStart(2, '0')}T16:00:00+01:00` }));
+  assert.equal((await lade({}, wiederholt)).length, 950);
 });

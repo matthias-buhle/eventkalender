@@ -1,6 +1,6 @@
 import { makeEvent } from '../model.js';
 import { imFenster, plusTage } from '../time.js';
-import { fetchApiEvents } from './satourn-api.js';
+import { fetchApiEvents, lizenzAus } from './satourn-api.js';
 import { cleanText, detectStatus, normalizeArt, normalizePhone, shorten } from '../normalize.js';
 
 export const name = 'satourn';
@@ -8,7 +8,7 @@ export const name = 'satourn';
 /** Statushinweise nur aus Titel und Kurztext lesen; Langtexte erzählen oft von "verlegten" Handlungen. */
 const statusAus = (...teile) => detectStatus(teile.filter(Boolean).join(' '));
 
-// --- sebnitz.org: eingebettetes JSON (Daten der Tourismusdatenbank, Lizenz CC0) ---
+// --- sebnitz.org: eingebettetes JSON (Daten der Tourismusdatenbank, Lizenz je Termin) ---
 
 function ausSebnitz(html, config, heute, letzterTag) {
   const treffer = /<script[^>]*id="event-data"[^>]*>([\s\S]*?)<\/script>/.exec(html);
@@ -17,6 +17,9 @@ function ausSebnitz(html, config, heute, letzterTag) {
   const events = [];
   for (const e of daten.events ?? []) {
     const kontakt = (e.contacts ?? [])[0] ?? {};
+    // Lizenz und Urheber stehen im Datensatz; nur die drei offenen Lizenzen zählen, sonst lizenz null (Termin bleibt).
+    const urheber = typeof e.copyright?.[0]?.name === 'string' ? e.copyright[0].name.trim() : '';
+    const lizenz = lizenzAus(e.licenseUrl, urheber);
     for (const o of e.occurrences ?? []) {
       if (!e.title || !o.start || !imFenster(o.start, o.end, heute, letzterTag)) continue;
       events.push(makeEvent({
@@ -35,6 +38,7 @@ function ausSebnitz(html, config, heute, letzterTag) {
         ticketUrl: e.ticket || null,
         ticketStatus: o.cancelled ? 'abgesagt' : statusAus(e.title, e.teaser),
         description: shorten(cleanText(e.description || e.teaser), 300) || null,
+        lizenz,
       }));
     }
   }

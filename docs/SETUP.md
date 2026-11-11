@@ -166,7 +166,7 @@ Der Knopf ☰ oben rechts öffnet ein Fenster mit Zweck der Seite, Quellenliste,
 - **Aufbau:** fünf aufklappbare Abschnitte (Wofür, Woher die Termine kommen, Lizenzen, Datenschutz, Kontakt); beim Öffnen ist nur „Wofür“ aufgeklappt. Die Quellen stehen nach `GRUPPEN` sortiert.
 - **Neue Quelle** in `sources.json`: dazu gehört ein Eintrag in `QUELLEN` und in genau eine Gruppe in `GRUPPEN` in derselben Datei. `npm test` schlägt sonst fehl.
 - **Versionsnummer:** steht oben in der Stand-Zeile („v1.4.0“) und unten im Menü („Version 1.4.0 (Commit) · gebaut am …“). Die Nummer kommt aus `package.json` (`version`, von Hand erhöhen, z. B. 1.5.0 bei neuen Funktionen, 1.4.1 bei Korrekturen). Commit und Datum schreibt jeder der beiden Workflows in `site/data/version.json` (Code in `src/version.js`).
-- Das Fenster ist auch für die Auflagen von Ticketmaster und die Namensnennung bei Sebnitz (CC BY-SA 4.0) da; beides nicht entfernen.
+- Das Fenster ist auch für die Auflagen von Ticketmaster und die Namensnennung bei CC BY-SA 4.0 (Touristinformation Sebnitz u. a.) da; beides nicht entfernen. Lizenz und Urheber stehen zusätzlich bei jedem Termin im Detailfenster (Feld `lizenz` am Termin, gesetzt von den Quellen sebnitz.org und der SaTourN-API); der Satz im Über-Fenster bleibt trotzdem Pflicht.
 
 ## Anfragen an die Quellen
 

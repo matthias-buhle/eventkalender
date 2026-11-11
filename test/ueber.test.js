@@ -38,7 +38,7 @@ test('Sachsen-Tourismus: Lizenzen und Verweis aufs Detailfenster stehen im Fenst
   assert.ok(t.includes('CC BY 4.0'));
   assert.ok(t.includes('CC BY-SA 4.0'));
   assert.match(t, /Lizenz und Urheber stehen im Detailfenster/);
-  assert.ok(t.includes('Touristinformation Sebnitz'));
+  assert.match(t, /Bei CC BY-SA 4\.0 gilt die Namensnennung: Touristinformation Sebnitz u\. a\./);
   const a = [...renderUeber(document, {}).querySelectorAll('a')].find((x) => x.textContent === 'CC BY-SA 4.0');
   assert.equal(a.getAttribute('href'), 'https://creativecommons.org/licenses/by-sa/4.0/deed.de');
 });

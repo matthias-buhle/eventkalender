@@ -220,7 +220,7 @@ export function renderUeber(doc, optionen = {}) {
   const cc = el(doc, 'p', null, 'Termine aus den offenen Tourismusdaten Sachsen stehen je Termin unter CC0 1.0, CC BY 4.0 oder ');
   cc.append(
     link(doc, 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.de'),
-    '; Lizenz und Urheber stehen im Detailfenster des Termins.',
+    '; Lizenz und Urheber stehen im Detailfenster des Termins. Bei CC BY-SA 4.0 gilt die Namensnennung: Touristinformation Sebnitz u. a.',
   );
   const schriften = el(doc, 'p', null, 'Schriften: Barlow Condensed (Jeremy Tribby) und Inter (Rasmus Andersson), beide unter der SIL Open Font License 1.1 (');
   schriften.append(link(doc, 'openfontlicense.org', 'https://openfontlicense.org'), ').');
