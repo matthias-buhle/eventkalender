@@ -11,7 +11,8 @@ import { createHash } from 'node:crypto';
  *   country:'DE'|'CZ',
  *   sources:{name:string,url:string}[],
  *   contact:Contact, ticketUrl:string|null, ticketStatus:TicketStatus|null,
- *   description:string|null, needsReview:boolean, submittedBy:string|null
+ *   description:string|null, needsReview:boolean, submittedBy:string|null,
+ *   lizenz:{name:string,url:string,urheber:string|null}|null
  * }} Event
  */
 
@@ -51,5 +52,6 @@ export function makeEvent(raw) {
     description: rest.description ?? null,
     needsReview: rest.needsReview ?? false,
     submittedBy: rest.submittedBy ?? null,
+    lizenz: rest.lizenz ?? null,
   };
 }

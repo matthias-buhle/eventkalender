@@ -38,6 +38,7 @@ function merge(a, b) {
     ticketUrl: erster(a.ticketUrl, b.ticketUrl),
     ticketStatus: statusVon(a.ticketStatus, b.ticketStatus),
     description: erster(a.description, b.description),
+    lizenz: erster(a.lizenz, b.lizenz),
     needsReview: a.needsReview && b.needsReview,
   };
 }

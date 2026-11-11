@@ -47,3 +47,12 @@ test('makeEvent: genre ist standardmäßig null und wird sonst übernommen', () 
   assert.equal(makeEvent(base).genre, null);
   assert.equal(makeEvent({ ...base, genre: 'jazz' }).genre, 'jazz');
 });
+
+test('makeEvent setzt lizenz standardmäßig auf null', () => {
+  assert.equal(makeEvent(base).lizenz, null);
+});
+
+test('makeEvent übernimmt lizenz', () => {
+  const lizenz = { name: 'CC BY-SA 4.0', url: 'https://creativecommons.org/licenses/by-sa/4.0/deed.de', urheber: 'Ottendorfer Hütte GmbH' };
+  assert.deepEqual(makeEvent({ ...base, lizenz }).lizenz, lizenz);
+});
