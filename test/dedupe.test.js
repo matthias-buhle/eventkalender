@@ -82,3 +82,14 @@ test('beim Zusammenführen bleibt ein bekanntes Genre erhalten', () => {
   const [e] = dedupe([ev({ genre: null }), ev({ sourceName: 'B', sourceUrl: 'https://b.example/1', genre: 'comedy' })]);
   assert.equal(e.genre, 'comedy');
 });
+
+test('dedupe behält die Lizenz, wenn nur einer der beiden Einträge eine hat', () => {
+  const lizenz = { name: 'CC BY-SA 4.0', url: 'https://creativecommons.org/licenses/by-sa/4.0/deed.de', urheber: 'Ottendorfer Hütte GmbH' };
+  const ohne = ev({ sourceName: 'A', sourceId: '1', sourceUrl: 'https://a.example/1' });
+  const mit = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2', lizenz });
+  for (const eingabe of [[ohne, mit], [mit, ohne]]) {
+    const out = dedupe(eingabe);
+    assert.equal(out.length, 1);
+    assert.deepEqual(out[0].lizenz, lizenz);
+  }
+});
