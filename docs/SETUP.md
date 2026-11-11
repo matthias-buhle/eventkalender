@@ -63,6 +63,18 @@ gh variable set SITE_CODE --body "<Code>"
 Wichtig: Der Code ist nur eine Verschleierung der Adresse, **kein Schutz**. Wer die Adresse kennt, sieht den Kalender.
 In dieser Phase stehen dort nur öffentliche Angaben aus den Quellen.
 
+### Optional: zweiter Zugang mit eigenem Code (z. B. für einen Administrator)
+
+Die Seite wird dann zusätzlich unter einem zweiten Code veröffentlicht, mit denselben Daten. Der Code aus Schritt 5 bleibt unverändert.
+
+```bash
+node -e "console.log(require('crypto').randomBytes(9).toString('base64url'))"
+gh variable set SITE_CODE_ADMIN --body "<zweiter Code>"
+```
+
+Wirksam wird er mit dem nächsten Lauf von `daily.yml` oder `programm.yml`. **Sperren:** `gh variable delete SITE_CODE_ADMIN`, danach einen Lauf anstoßen (`gh workflow run daily.yml`); der Ordner fehlt dann auf der Seite.
+Der Code muss mindestens 8 Zeichen aus `A-Z a-z 0-9 _ -` haben und sich von `SITE_CODE` unterscheiden, sonst wird er übersprungen.
+
 ## 6. Ticketmaster-Schlüssel (du)
 
 1. Auf <https://developer.ticketmaster.com> registrieren und eine App anlegen.

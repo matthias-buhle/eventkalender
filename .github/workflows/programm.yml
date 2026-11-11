@@ -28,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SITE_CODE: ${{ vars.SITE_CODE }}
+      SITE_CODE_ADMIN: ${{ vars.SITE_CODE_ADMIN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -72,6 +73,16 @@ jobs:
         run: |
           mkdir -p "_pages/${SITE_CODE}"
           cp -r site/. "_pages/${SITE_CODE}/"
+          # Optionaler zweiter Zugang mit eigenem Code (z. B. für einen Administrator): gleiche Seite, eigener Ordner.
+          # Löschen der Variable SITE_CODE_ADMIN und ein neuer Lauf sperrt ihn wieder.
+          if [ -n "$SITE_CODE_ADMIN" ]; then
+            if [[ "$SITE_CODE_ADMIN" =~ ^[A-Za-z0-9_-]{8,}$ ]] && [ "$SITE_CODE_ADMIN" != "$SITE_CODE" ]; then
+              mkdir -p "_pages/${SITE_CODE_ADMIN}"
+              cp -r site/. "_pages/${SITE_CODE_ADMIN}/"
+            else
+              echo "SITE_CODE_ADMIN ist ungültig (mindestens 8 Zeichen aus A-Z a-z 0-9 _ - und anders als SITE_CODE), der zweite Zugang wird übersprungen." >&2
+            fi
+          fi
           printf 'User-agent: *\nDisallow: /\n' > _pages/robots.txt
 
       - uses: actions/upload-pages-artifact@v3
