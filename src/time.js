@@ -56,3 +56,13 @@ export function berlinIsoAt(instantMs) {
   const lokal = berlinLocal(instantMs);
   return berlinIso(lokal.slice(0, 10), lokal.slice(11, 16));
 }
+
+/** Tag ('YYYY-MM-DD') plus eine Anzahl Tage. */
+export function plusTage(tag, tage) {
+  const d = new Date(`${tag}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + tage);
+  return d.toISOString().slice(0, 10);
+}
+
+/** Läuft der Termin im Fenster [heute, letzterTag]? Mehrtägige Termine zählen, solange sie laufen. */
+export const imFenster = (start, ende, heute, letzterTag) => start.slice(0, 10) <= letzterTag && (ende ?? start).slice(0, 10) >= heute;
