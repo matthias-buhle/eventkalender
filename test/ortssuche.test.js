@@ -39,11 +39,24 @@ test('suchtexteFuer: Regionstermin fragt "<Spielstätte>, <Region>", ohne Spiels
   assert.deepEqual(suchtexteFuer(ev({ placeName: 'Raum Bautzen', ...BAUTZEN, ortRegionKm: 15 })), []);
 });
 
-test('suchtexteFuer: ohne Koordinaten erst der volle Name, dann der Hauptort; genaue Koordinaten fragen nichts', () => {
-  assert.deepEqual(suchtexteFuer(ev({ placeName: 'Turnhalle, Kubschütz / Kreckwitz' })), ['Turnhalle, Kubschütz / Kreckwitz', 'Kubschütz']);
-  assert.deepEqual(suchtexteFuer(ev({ placeName: 'Unbekanntdorf' })), ['Unbekanntdorf']);
+test('suchtexteFuer: ohne Quellregion keine Frage, auch ohne Koordinaten (Spezifikation: Titel, sonst Rest mit Vermerk)', () => {
+  assert.deepEqual(suchtexteFuer(ev({ placeName: 'Turnhalle, Kubschütz / Kreckwitz' })), []);
+  assert.deepEqual(suchtexteFuer(ev({ placeName: 'Unbekanntdorf' })), []);
   assert.deepEqual(suchtexteFuer(ev({ placeName: 'Sebnitz', lat: 50.97, lon: 14.27 })), []);
   assert.deepEqual(suchtexteFuer(ev({ placeName: '' })), []);
+});
+
+test('Termine ohne Quellregion werden nicht nachgeschlagen und bleiben ohne Koordinaten', async () => {
+  const { abruf, urls } = fakeAbruf({ Nahdorf: [noerdlich(CENTER, 40)], 'Turnhalle, Kubschütz': [noerdlich(CENTER, 30)] });
+  const a = ev({ placeName: 'Nahdorf' });
+  const b = ev({ placeName: 'Turnhalle, Kubschütz' });
+  const { events, cache, stats } = await ergaenzeOrte([a, b], { abruf, cache: {}, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls.length, 0);
+  assert.equal(events[0], a);
+  assert.equal(events[1], b);
+  assert.equal(events[0].lat, null);
+  assert.deepEqual(cache, {});
+  assert.deepEqual(stats, { treffer: 0, ohneTreffer: 0, ausCache: 0, fehler: 0, offen: 0 });
 });
 
 test('Treffer in der Nähe wird übernommen', async () => {
@@ -65,25 +78,6 @@ test('Treffer außerhalb des Annahmeradius wird verworfen und als kein Treffer g
   assert.deepEqual(cache['Rathaus, Bautzen'], { lat: null, lon: null, zuletzt: HEUTE });
   assert.equal(stats.ohneTreffer, 1);
   assert.equal(stats.treffer, 0);
-});
-
-test('ohne Koordinaten und ohne Region zählt der Umkreis um Sebnitz', async () => {
-  const { abruf } = fakeAbruf({ Nahdorf: [noerdlich(CENTER, 40)], Ferndorf: [noerdlich(CENTER, 100)] });
-  const { events, cache } = await ergaenzeOrte(
-    [ev({ placeName: 'Nahdorf' }), ev({ placeName: 'Ferndorf' })],
-    { abruf, cache: {}, heute: HEUTE, sleep: ohnePause },
-  );
-  assert.ok(Math.abs(distanceKm(CENTER, events[0]) - 40) < 0.1);
-  assert.equal(events[0].country, 'DE');
-  assert.equal(events[1].lat, null);
-  assert.equal(cache.Ferndorf.lat, null);
-});
-
-test('ohne Koordinaten: kein Treffer für den vollen Namen, dann wird der Hauptort gefragt', async () => {
-  const { abruf, urls } = fakeAbruf({ Kubschütz: [noerdlich(CENTER, 30)] });
-  const { events } = await ergaenzeOrte([ev({ placeName: 'Turnhalle, Kubschütz' })], { abruf, cache: {}, heute: HEUTE, sleep: ohnePause });
-  assert.equal(urls.length, 2);
-  assert.ok(events[0].lat != null);
 });
 
 test('zweiter Lauf fragt nicht noch einmal', async () => {
@@ -118,11 +112,11 @@ test('gemerkter Treffer gilt nur im Annahmeradius des jeweiligen Termins', async
   assert.equal(r.events[1].ortRegionKm, null);
   assert.equal(r.cache[text].lat, cache[text].lat, 'Eintrag bleibt erhalten');
 
-  // auch innerhalb eines Laufs: ein Treffer für einen Termin ohne Koordinaten (75 km um Sebnitz) verschiebt keinen Regionstermin
-  const { abruf: abruf2 } = fakeAbruf({ 'Rathaus, Bautzen': [noerdlich(BAUTZEN, 25)] });
-  const ohne = ev({ placeName: 'Rathaus, Bautzen' });
-  const r2 = await ergaenzeOrte([ohne, region('Rathaus', 15)], { abruf: abruf2, cache: {}, heute: HEUTE, sleep: ohnePause });
-  assert.ok(r2.events[0].lat != null);
+  // auch innerhalb eines Laufs: ein frischer Treffer für einen 30-km-Termin verschiebt keinen 15-km-Termin
+  const { abruf: abruf2, urls: urls2 } = fakeAbruf({ 'Rathaus, Bautzen': [noerdlich(BAUTZEN, 25)] });
+  const r2 = await ergaenzeOrte([region('Rathaus', 30), region('Rathaus', 15)], { abruf: abruf2, cache: {}, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls2.length, 1);
+  assert.equal(r2.events[0].ortRegionKm, null);
   assert.equal(r2.events[1].ortRegionKm, 15);
   assert.equal(r2.events[1].lat, BAUTZEN.lat);
 });
@@ -137,10 +131,12 @@ test('unbrauchbarer Cache-Eintrag gilt als fehlend und wird neu gefragt', async 
 });
 
 test('Suchtexte wie "constructor" oder "__proto__" sind gewöhnliche Schlüssel', async () => {
-  const { abruf, urls } = fakeAbruf({ constructor: [noerdlich(CENTER, 10)] });
-  const r = await ergaenzeOrte([ev({ placeName: 'constructor' }), ev({ placeName: '__proto__' })], { abruf, cache: {}, heute: HEUTE, sleep: ohnePause });
-  assert.equal(urls.length, 2);
-  assert.ok(r.events[0].lat != null);
+  // Solche Schlüssel kommen nur noch aus einer gelesenen Datei (JSON.parse legt "__proto__" als eigenen Schlüssel an).
+  const cache = JSON.parse(`{"constructor":{"lat":null,"lon":null,"zuletzt":"${HEUTE}"},"__proto__":{"lat":null,"lon":null,"zuletzt":"${HEUTE}"}}`);
+  const { abruf, urls } = fakeAbruf({ 'A, Bautzen': [noerdlich(BAUTZEN, 5)] });
+  const r = await ergaenzeOrte([region('A')], { abruf, cache, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls.length, 1);
+  assert.equal(r.events[0].ortRegionKm, null);
   assert.equal(Object.hasOwn(r.cache, 'constructor'), true);
   assert.equal(Object.hasOwn(r.cache, '__proto__'), true);
   assert.equal(Object.getPrototypeOf(r.cache), Object.prototype);
@@ -221,7 +217,7 @@ test('Fehler: kaputte Antwort (kein Array) zählt als Fehler, wirft nicht', asyn
 });
 
 test('Fehler: auch ein unbrauchbarer Termin oder Cache lässt keine Ausnahme heraus', async () => {
-  const kaputt = { placeName: { toString() { throw new Error('x'); } }, lat: null };
+  const kaputt = { placeName: { toString() { throw new Error('x'); } }, ...BAUTZEN, ortRegionKm: 15 };
   const { abruf } = fakeAbruf();
   const r = await ergaenzeOrte([kaputt, region('A')], { abruf, cache: null, heute: HEUTE, sleep: ohnePause });
   assert.equal(r.events[0], kaputt);
@@ -234,6 +230,43 @@ test('maxAnfragen', async () => {
   const { stats } = await ergaenzeOrte(termine, { abruf, cache: {}, heute: HEUTE, maxAnfragen: 2, sleep: ohnePause });
   assert.equal(urls.length, 2);
   assert.equal(stats.offen, 3);
+});
+
+test('Gesamtgrenze: nach 20 Fehlern insgesamt (nicht in Folge) wird nicht mehr gefragt', async () => {
+  const urls = [];
+  // abwechselnd Fehler und Treffer: nie 5 Fehler in Folge
+  const abruf = async (url) => {
+    urls.push(url);
+    if (urls.length % 2 === 1) throw new Error('Zeitüberschreitung');
+    return [noerdlich(BAUTZEN, 3)];
+  };
+  const termine = Array.from({ length: 50 }, (_, i) => region(`Ort${i}`));
+  const r = await ergaenzeOrte(termine, { abruf, cache: {}, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls.length, 39, 'der 20. Fehler ist die 39. Anfrage');
+  assert.equal(r.stats.fehler, 20);
+  assert.equal(r.stats.treffer, 19);
+  assert.equal(r.stats.offen, 11);
+  const s = r.stats;
+  assert.equal(s.treffer + s.ohneTreffer + s.ausCache + s.fehler + s.offen, termine.length, 'Statistik geht auf');
+  assert.equal(Object.keys(r.cache).length, 19, 'gefundene Treffer bleiben gemerkt');
+  assert.equal(r.events.filter((e) => e.ortRegionKm == null).length, 19);
+});
+
+test('Gesamtgrenze: nach 10 Minuten Laufzeit wird nicht mehr gefragt', async () => {
+  let uhr = 1_000_000;
+  const urls = [];
+  const abruf = async (url) => {
+    urls.push(url);
+    uhr += 4 * 60_000; // jede Anfrage „dauert“ 4 Minuten
+    return [noerdlich(BAUTZEN, 3)];
+  };
+  const termine = ['1', '2', '3', '4', '5', '6'].map((n) => region(`Ort${n}`));
+  const r = await ergaenzeOrte(termine, { abruf, cache: {}, heute: HEUTE, sleep: ohnePause, jetzt: () => uhr });
+  assert.equal(urls.length, 3, 'nach 0, 4 und 8 Minuten gefragt, nach 12 Minuten nicht mehr');
+  assert.equal(r.stats.treffer, 3);
+  assert.equal(r.stats.offen, 3);
+  assert.equal(Object.keys(r.cache).length, 3);
+  assert.deepEqual(r.events.slice(3), termine.slice(3));
 });
 
 test('Aufräumen', async () => {

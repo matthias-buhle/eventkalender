@@ -25,16 +25,21 @@ function ortAusTitel(titel) {
   return ort && distanceKm(CENTER, ort) <= RADIUS_KM ? ort : null;
 }
 
+/** Rubrik, Sorte und Advent aus den Regeln in rubriken.js; für frische und für übernommene Termine. */
+function einordnen(e) {
+  const { rubrik, genre } = rubrikUndGenre(e);
+  const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
+  return { ...e, rubrik, genre, advent };
+}
+
 function anreichern(e) {
   let { lat, lon, country } = e;
   const { ortRegionKm } = e;
-  const { rubrik, genre } = rubrikUndGenre(e);
   if (lat == null || lon == null) {
     const ort = resolvePlace(e.placeName) ?? (ortRegionKm == null ? ortAusTitel(e.title) : null);
     if (ort) ({ lat, lon, country } = ort);
   }
-  const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
-  return mitEntfernung({ ...e, rubrik, genre, advent, lat: lat ?? null, lon: lon ?? null, country, ortRegionKm: ortRegionKm ?? null });
+  return mitEntfernung({ ...einordnen(e), lat: lat ?? null, lon: lon ?? null, country, ortRegionKm: ortRegionKm ?? null });
 }
 
 /** Setzt distanceKm (Luftlinie zum Mittelpunkt, eine Nachkommastelle) neu aus lat/lon; ohne Koordinaten null. */
@@ -66,7 +71,8 @@ function uebernehmbar(alt, heute, now) {
   if (!alt || !Array.isArray(alt.events)) return null;
   const letzter = Date.parse(alt.lastOkAt ?? '');
   if (Number.isNaN(letzter) || now.getTime() - letzter > MAX_UEBERNAHME_TAGE * 86_400_000) return null;
-  const noch = alt.events.filter((e) => e && typeof e.start === 'string' && nochAktuell(e, heute));
+  // Neu einordnen: Einträge im alten Format bekommen rubrik/advent, geänderte Regeln wirken auch auf sie.
+  const noch = alt.events.filter((e) => e && typeof e.start === 'string' && nochAktuell(e, heute)).map(einordnen);
   return noch.length ? { lastOkAt: alt.lastOkAt, events: noch } : null;
 }
 
@@ -161,7 +167,7 @@ async function main() {
   const rohdatenText = JSON.stringify({ generatedAt: now.toISOString(), quellen: rohdaten });
   for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error}${s.uebernommen ? `; ${s.count} Termine vom Abruf am ${(s.lastOkAt ?? '').slice(0, 10)} übernommen` : ''})` : ''}`);
   pruefeLauf({ events: roh, status });
-  // Orte nur mit Regionsmittelpunkt oder ganz ohne Koordinaten über Nominatim nachschlagen; Fehler stoppen den Lauf nie.
+  // Nur Orte mit Regionsmittelpunkt über Nominatim nachschlagen (Termine ohne Quellregion nicht); Fehler stoppen den Lauf nie.
   // Der User-Agent hier bewusst ohne Kontaktangabe: keine persönlichen Daten an diesen Dienst.
   let verortet = roh;
   let orteCache = await readJson(new URL('orte-cache.json', outDir), {});

@@ -153,6 +153,27 @@ test('Ausfall: Termine vom letzten guten Abruf bleiben stehen, Status meldet es'
   assert.equal(rohdaten.q.events.length, 1);
 });
 
+test('Übernahme: alte Termine im alten Format werden neu eingeordnet (Rubrik, Sorte, Advent)', async () => {
+  // Stand vor dieser Version: kein rubrik, kein advent; außerdem ein veralteter Wert, der neu berechnet werden muss
+  const altFormat = { ...ev({ title: 'Weihnachtskonzert', art: 'konzert' }), distanceKm: 0 };
+  delete altFormat.rubrik;
+  delete altFormat.advent;
+  const veraltet = { ...ev({ title: 'Lesung im Rathaus', art: 'sonstiges' }), distanceKm: 0, rubrik: 'konzert', advent: true };
+  const { events, rohdaten } = await runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('q', [altFormat, veraltet]),
+    sources: [quelle('q', async () => { throw new Error('HTTP 503'); })],
+  });
+  const konzert = events.find((e) => e.title === 'Weihnachtskonzert');
+  assert.equal(konzert.rubrik, 'konzert');
+  assert.equal(konzert.advent, true);
+  assert.ok('genre' in konzert);
+  const lesung = events.find((e) => e.title === 'Lesung im Rathaus');
+  assert.equal(lesung.advent, false);
+  assert.notEqual(lesung.rubrik, 'konzert');
+  assert.equal(rohdaten.q.events.find((e) => e.title === 'Weihnachtskonzert').rubrik, 'konzert', 'auch die Grundlage für den nächsten Lauf');
+});
+
 test('unerwartet leere Antwort zählt wie ein Ausfall: die alten Termine bleiben', async () => {
   const { events, status } = await runAll({
     now: NOW, http: {},

@@ -1,9 +1,10 @@
-import { CENTER, RADIUS_KM, distanceKm } from './geo.js';
-import { ortskandidaten } from './ortsname.js';
+import { CENTER, distanceKm } from './geo.js';
 
 /**
- * Feinsuche der Orte über Nominatim (OpenStreetMap): Termine, die nur den Mittelpunkt der Region ihrer Quelle tragen
- * (ortRegionKm), oder gar keine Koordinaten haben, werden nachgeschlagen. Jede Antwort, auch „kein Treffer“, wandert
+ * Feinsuche der Orte über Nominatim (OpenStreetMap): nur Termine, die den Mittelpunkt der Region ihrer Quelle tragen
+ * (ortRegionKm), werden als "<Spielstätte>, <Region>" nachgeschlagen. Termine ohne Quellregion fragen nicht: sie behalten,
+ * was die Titelsuche in build.js ergab, sonst bleiben sie ohne Koordinaten („Ort nicht genau bekannt“ auf der Seite).
+ * Jede Antwort, auch „kein Treffer“, wandert
  * in einen Zwischenspeicher, der von Lauf zu Lauf weitergereicht wird; dieselbe Frage wird so nie zweimal gestellt.
  * Bewusst fehlertolerant: keine Ausnahme verlässt ergaenzeOrte, ein Termin ohne Antwort bleibt, wie er war.
  *
@@ -15,6 +16,9 @@ import { ortskandidaten } from './ortsname.js';
 export const NOMINATIM = 'https://nominatim.openstreetmap.org/search';
 const ABSTAND_MS = 1100;
 const MAX_FEHLER_IN_FOLGE = 5;
+/** Gesamtgrenzen für einen Lauf: danach wird nicht mehr gefragt, auch wenn die Fehler nicht in Folge kamen. */
+const MAX_FEHLER_GESAMT = 20;
+const MAX_DAUER_MS = 10 * 60_000;
 const AUFBEWAHREN_TAGE = 120;
 const realSleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -57,25 +61,16 @@ function regionsteile(placeName) {
  * @returns {string[]}
  */
 export function suchtexteFuer(e) {
-  if (e.ortRegionKm != null) {
-    const teile = regionsteile(e.placeName);
-    if (!teile || !teile.spielstaette || !teile.region) return [];
-    return [`${teile.spielstaette}, ${teile.region}`];
-  }
-  if (e.lat == null) {
-    const voll = String(e.placeName ?? '').trim();
-    if (!voll) return [];
-    const { hauptort } = ortskandidaten(voll);
-    return [...new Set([voll, hauptort].filter(Boolean))];
-  }
-  return [];
+  // Nur mit Quellregion (Mittelpunkt und Annahmeradius); alles andere fragt nicht.
+  if (e.ortRegionKm == null || e.lat == null || e.lon == null) return [];
+  const teile = regionsteile(e.placeName);
+  if (!teile || !teile.spielstaette || !teile.region) return [];
+  return [`${teile.spielstaette}, ${teile.region}`];
 }
 
-/** Mittelpunkt und Radius, in dem ein Treffer für diesen Termin gilt. */
+/** Mittelpunkt und Radius, in dem ein Treffer für diesen Termin gilt (nur Termine mit Quellregion fragen). */
 function annahme(e) {
-  return e.ortRegionKm != null && e.lat != null && e.lon != null
-    ? { mitte: { lat: e.lat, lon: e.lon }, km: e.ortRegionKm }
-    : { mitte: CENTER, km: RADIUS_KM };
+  return { mitte: { lat: e.lat, lon: e.lon }, km: e.ortRegionKm };
 }
 
 /** Wertet eine Nominatim-Antwort aus; wirft, wenn sie keine Liste ist. */
@@ -104,12 +99,14 @@ function imRadius(eintrag, e) {
  * Schlägt die Orte der Termine nach (siehe suchtexteFuer) und übernimmt Treffer im Annahmeradius.
  * Statistik: treffer = mit frischer Antwort neu verortete Termine, ohneTreffer = frische Antworten ohne brauchbaren
  * Treffer, ausCache = aus dem mitgegebenen Zwischenspeicher beantwortete Fragen, fehler = gescheiterte Anfragen,
- * offen = Termine, deren Fragen wegen maxAnfragen oder gehäufter Fehler nicht gestellt wurden.
+ * offen = Termine, deren Fragen wegen maxAnfragen, gehäufter Fehler (5 in Folge, 20 insgesamt) oder der Zeitgrenze
+ * (10 Minuten für die ganze Suche) nicht gestellt wurden. Je Termin gibt es höchstens eine Frage.
  * @param {import('./model.js').Event[]} events
  * @param {{abruf:(url:string)=>Promise<any>, cache?:Record<string,{lat:number|null, lon:number|null, zuletzt:string}>,
- *          heute:string, maxAnfragen?:number, sleep?:(ms:number)=>Promise<void>}} opt
+ *          heute:string, maxAnfragen?:number, sleep?:(ms:number)=>Promise<void>, jetzt?:()=>number}} opt
  */
-export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfragen = 400, sleep = realSleep }) {
+export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfragen = 400, sleep = realSleep, jetzt = Date.now }) {
+  const beginn = jetzt();
   const alt = cache && typeof cache === 'object' ? cache : {};
   // Ohne Prototyp, damit Suchtexte wie "constructor" oder "__proto__" gewöhnliche Schlüssel sind.
   const neuerCache = Object.assign(Object.create(null), alt);
@@ -117,6 +114,8 @@ export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfrag
   const stats = { treffer: 0, ohneTreffer: 0, ausCache: 0, fehler: 0, offen: 0 };
   let anfragen = 0;
   let fehlerInFolge = 0;
+  const genug = () => anfragen >= maxAnfragen || fehlerInFolge >= MAX_FEHLER_IN_FOLGE
+    || stats.fehler >= MAX_FEHLER_GESAMT || jetzt() - beginn >= MAX_DAUER_MS;
 
   const ergebnis = [];
   for (const e of events) {
@@ -130,7 +129,7 @@ export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfrag
         // Eine in diesem Lauf schon gestellte Frage (zweiter Termin, gleicher Text) zählt nicht als Zwischenspeicher.
         if (Object.hasOwn(alt, text)) stats.ausCache += 1;
       } else {
-        if (anfragen >= maxAnfragen || fehlerInFolge >= MAX_FEHLER_IN_FOLGE) {
+        if (genug()) {
           stats.offen += 1;
           break;
         }
