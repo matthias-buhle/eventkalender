@@ -121,6 +121,18 @@ test('detectGenre: Bandnamen, Hits-Abende, Matineen, Singen und Humor aus dem Be
   assert.equal(detectGenre('Bandcamp-Abend'), null);
 });
 
+test('detectGenre: Kirchenmusik hat Vorrang vor den breiten Pop-Wörtern; zu breite Wortteile treffen nicht', () => {
+  assert.equal(detectGenre('Gospel Worship Band'), 'kirche');
+  assert.equal(detectGenre('Kirchenkonzert mit Band'), 'kirche');
+  assert.equal(detectGenre('Gospel Revival'), 'kirche');
+  assert.equal(detectGenre('HUMORZONE - Die Gala'), 'comedy');
+  assert.equal(detectGenre('Ein humorvoller Abend'), null);
+  assert.equal(detectGenre('Humoresken für Streicher'), null);
+  assert.equal(detectGenre('Flügelhorn-Abend'), null);
+  assert.equal(detectGenre('Söhne Mannheims Piano'), 'klassik');
+  assert.equal(detectGenre('Pianobar am Abend'), null);
+});
+
 test('detectGenre: ein früher genannter Text zählt vor späteren; "Konzert" allein sagt nichts über das Genre', () => {
   assert.equal(detectGenre('Konzertabend "BESSER SPÄT ALS NIE"'), null);
   assert.equal(detectGenre('Jazz', 'Ein Abend mit Orchester'), 'jazz');

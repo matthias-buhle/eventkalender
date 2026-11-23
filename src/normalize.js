@@ -133,15 +133,15 @@ export const GENRES = {
 
 // Reihenfolge = Vorrang: das Besondere vor dem Allgemeinen ("Popchor" ist Pop, nicht Chor).
 const GENRE_REGELN = /** @type {[string, RegExp][]} */ ([
-  ['comedy', /comedy|kabarett|cabaret|stand.?up|satire|kleinkunst|humor/],
+  ['comedy', /comedy|kabarett|cabaret|stand.?up|satire|kleinkunst|\bhumor\b|\bhumorzone/],
   ['musical', /musical/],
   ['metal-punk', /\bmetal|\bpunk|hardcore|thrash|heavy/],
   ['jazz', /jazz|swing|blues|big.?band|dixie/],
   ['hiphop-elektro', /hip.?hop|\brap\b|rapper|techno|\bhouse\b|electro|elektro|\bedm\b|\bdance\b|trance|drum.?n.?bass/],
   ['schlager-folk', /schlager|volksmusik|blasorchester|volkst[uü]mlich|folk|blasmusik|shanty|country|bluegrass|liedermacher|chanson|b[oö]hmisch|egerl[aä]nder|dudelsack|tanzmusik|musikanten/],
-  ['rock-pop', /\brock|\bpop\b|pop.?chor|\bindie\b|songwriter|revival|tribute|cover.?band|\bcoverband|\bband\b|\bhits\b|garfunkel|\babba\b|nirvana|coldplay/],
   ['kirche', /kirchenmusik|kirchenkonzert|kirchenschiff|gottesdienst|andacht|gospel|worship|choral|kantorei/],
-  ['klassik', /camerata|cantorum|matin[eé]e|fl[üu]gel|hausmusik|stunde der musik|tchaikovsk|tschaikowsk|a.?cappella|\bpiano|(?:advents?|lieder|neujahrs)singen|mitsingekonzert|adventskonzert|weihnachtskonzert|weihnachtsoratorium|klassik|classical|sinfon|symphon|philharmon|orchester|kammermusik|kammerorchester|\boper\b|operette|\bchor\b|chor\b|kantate|oratori|requiem|orgel|klavier|violin|cello|fagott|quartett|ensemble|motette|barock|bach\b|mozart|beethoven|vivaldi|chopin|brahms|h[aä]ndel/],
+  ['rock-pop',/\brock|\bpop\b|pop.?chor|\bindie\b|songwriter|revival|tribute|cover.?band|\bcoverband|\bband\b|\bhits\b|garfunkel|\babba\b|nirvana|coldplay/],
+  ['klassik', /camerata|cantorum|matin[eé]e|fl[üu]gel\b|hausmusik|stunde der musik|tchaikovsk|tschaikowsk|a.?cappella|\bpiano\b(?! ?bar)|piano(?:abend|konzert|solo|recital)|(?:advents?|lieder|neujahrs)singen|mitsingekonzert|adventskonzert|weihnachtskonzert|weihnachtsoratorium|klassik|classical|sinfon|symphon|philharmon|orchester|kammermusik|kammerorchester|\boper\b|operette|\bchor\b|chor\b|kantate|oratori|requiem|orgel|klavier|violin|cello|fagott|quartett|ensemble|motette|barock|bach\b|mozart|beethoven|vivaldi|chopin|brahms|h[aä]ndel/],
 ]);
 
 /**
