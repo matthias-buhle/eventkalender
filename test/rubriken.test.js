@@ -90,8 +90,9 @@ test('jeder Termin bekommt genau eine bekannte Rubrik', () => {
 });
 
 test('Nachgeschärft an den echten Daten: Vorführung ist keine Führung, Musik und Kurse aus sonstiges, Haus als letzter Hinweis', () => {
-  assert.notEqual(sonst('Filmvorführung „Stolz & Eigensinn“').rubrik, 'fuehrung');
-  assert.notEqual(sonst('Aufführung').rubrik, 'fuehrung');
+  assert.equal(sonst('Filmvorführung „Stolz & Eigensinn“').rubrik, 'theater', 'Vorführung/Aufführung gehören zu Theater, nicht zu Führung');
+  assert.equal(sonst('Aufführung').rubrik, 'theater');
+  assert.equal(sonst('Einführung in die Kalligrafie').rubrik, 'sonstiges');
   assert.deepEqual(sonst('Adventliche Orgelmusik am Mittag'), { rubrik: 'konzert', genre: 'klassik' });
   assert.equal(sonst('Malkurs - Weihnachtliche Strukturkunst').rubrik, 'kurse');
   assert.equal(sonst('Yoga am Morgen').rubrik, 'kurse');
@@ -99,4 +100,26 @@ test('Nachgeschärft an den echten Daten: Vorführung ist keine Führung, Musik 
   assert.equal(sonst('Whisky-Tasting im Besucherbergwerk').rubrik, 'essen');
   assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Peer Gynt', placeName: 'Burgtheater Bautzen' }).rubrik, 'theater');
   assert.equal(sonst('Treffen', 'Musik liegt in der Luft und Kaffee gibt es auch').rubrik, 'essen', 'Musik zählt nur im Titel');
+});
+
+test('Führung: eine Regel für Art schau und sonstiges; Wein- und Steinführung zählen, Einführung nicht', () => {
+  assert.equal(von({ art: 'schau', title: 'Nachtwächterführung' }).rubrik, 'fuehrung');
+  assert.equal(sonst('Nachtwächterführung').rubrik, 'fuehrung');
+  assert.equal(von({ art: 'schau', title: 'Der Nachtwächter zu Bautzen' }).rubrik, 'fuehrung');
+  assert.equal(sonst('Weinführung im Keller').rubrik, 'fuehrung');
+  assert.equal(sonst('Steinführung im Steinbruch').rubrik, 'fuehrung');
+  assert.notEqual(sonst('Einführung in die Fotografie').rubrik, 'fuehrung');
+  assert.notEqual(sonst('Ausführung').rubrik, 'fuehrung');
+});
+
+test('Streichelzoo ist kein Konzert, Streichquartett schon', () => {
+  assert.notEqual(sonst('Streichelzoo').rubrik, 'konzert');
+  assert.equal(sonst('Streichquartett im Schloss').rubrik, 'konzert');
+});
+
+test('essen nur als ganzes Wort oder in bekannten Zusammensetzungen', () => {
+  assert.notEqual(sonst('Messen und Märkte').rubrik, 'essen');
+  assert.notEqual(sonst('Adressen und Hausnummern').rubrik, 'essen');
+  assert.equal(sonst('Gemeinsames Essen').rubrik, 'essen');
+  assert.equal(sonst('Abendessen im Schloss').rubrik, 'essen');
 });

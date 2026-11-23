@@ -1,7 +1,7 @@
 // Prüfwerkzeug für die Filterseite: wendet die Rubrik-Zuordnung auf die lokale (git-ignorierte) site/data/events.json an
-// und druckt Anteile, Konzert-Genres, Advent-Termine, Termine ohne Koordinaten und Stichproben.
+// und druckt Anteile, Konzert-Genres, Termine ohne Koordinaten und Stichproben.
 //   node scripts/bericht.js            nur berichten
-//   node scripts/bericht.js --schreiben   rubrik, genre und advent in die Datei zurückschreiben
+//   node scripts/bericht.js --schreiben   rubrik und genre in die Datei zurückschreiben
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { RUBRIKEN, rubrikUndGenre } from '../src/rubriken.js';
@@ -10,20 +10,10 @@ import { GENRES } from '../src/normalize.js';
 const DATEI = fileURLToPath(new URL('../site/data/events.json', import.meta.url));
 const schreiben = process.argv.includes('--schreiben');
 
-// istAdvent kommt erst in einem späteren Schritt; solange es fehlt, wird Advent nicht gezählt.
-let istAdvent = null;
-try {
-  ({ istAdvent } = await import('../src/advent.js'));
-} catch {
-  istAdvent = null;
-}
-
 const roh = JSON.parse(readFileSync(DATEI, 'utf8'));
 const events = (Array.isArray(roh) ? roh : roh.events).map((e) => {
   const { rubrik, genre } = rubrikUndGenre(e);
-  const neu = { ...e, rubrik, genre };
-  if (typeof istAdvent === 'function') neu.advent = Boolean(istAdvent(neu));
-  return neu;
+  return { ...e, rubrik, genre };
 });
 
 const prozent = (n) => `${((100 * n) / events.length).toFixed(1)} %`;
@@ -48,7 +38,6 @@ const genres = new Map();
 for (const e of je.get('konzert')) genres.set(e.genre, (genres.get(e.genre) ?? 0) + 1);
 for (const [g, n] of [...genres].sort((a, b) => b[1] - a[1])) console.log(`  ${(g ?? '(ohne Genre)').padEnd(16)} ${String(n).padStart(5)}  ${g ? GENRES[g] : ''}`);
 
-console.log(`\nAdvent-Termine: ${typeof istAdvent === 'function' ? events.filter((e) => e.advent).length : '(istAdvent noch nicht vorhanden)'}`);
 console.log(`Termine ohne Koordinaten: ${events.filter((e) => e.lat == null || e.lon == null).length}`);
 
 console.log('\nStichproben (15 je Rubrik):');
