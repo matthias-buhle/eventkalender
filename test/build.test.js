@@ -340,3 +340,15 @@ test('schreibeVersion: legt version.json im Zielordner an, mit Nummer aus packag
     await rm(ordner, { recursive: true, force: true });
   }
 });
+
+test('Weihnachtsmarkt Sebnitz bekommt advent, ein Sommerfest nicht', async () => {
+  const { events } = await runAll({
+    now: NOW, http: {},
+    sources: [quelle('q', async () => [
+      ev({ title: 'Weihnachtsmarkt Sebnitz', art: 'markt' }),
+      ev({ title: 'Sommerfest', art: 'fest' }),
+    ])],
+  });
+  assert.equal(events.find((e) => e.title === 'Weihnachtsmarkt Sebnitz').advent, true);
+  assert.equal(events.find((e) => e.title === 'Sommerfest').advent, false);
+});

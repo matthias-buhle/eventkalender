@@ -61,3 +61,8 @@ test('makeEvent: rubrik ist standardmäßig null und wird sonst übernommen', ()
   assert.equal(makeEvent(base).rubrik, null);
   assert.equal(makeEvent({ ...base, rubrik: 'theater' }).rubrik, 'theater');
 });
+
+test('makeEvent: advent ist standardmäßig false und wird sonst übernommen', () => {
+  assert.equal(makeEvent(base).advent, false);
+  assert.equal(makeEvent({ ...base, advent: true }).advent, true);
+});

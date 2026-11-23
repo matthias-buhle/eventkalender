@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { todayBerlin } from './time.js';
 import { CENTER, RADIUS_KM, distanceKm, resolvePlace } from './geo.js';
 import { dedupe } from './dedupe.js';
-import { rubrikUndGenre } from './rubriken.js';
+import { rubrikUndGenre, istAdvent } from './rubriken.js';
 import { createPoliteClient } from './http.js';
 import { uebersetzeTermine } from './uebersetzen.js';
 import { schreibeVersion } from './version.js';
@@ -23,7 +23,8 @@ function anreichern(e) {
     if (ort) ({ lat, lon, country } = ort);
   }
   const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
-  return { ...e, rubrik, genre, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
+  const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
+  return { ...e, rubrik, genre, advent, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
 }
 
 /** Ortsnamen, die das Ortsverzeichnis nicht kennt: aus gelieferten Terminen und aus dem, was der Adapter verworfen hat. */

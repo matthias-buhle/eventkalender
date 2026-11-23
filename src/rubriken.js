@@ -104,3 +104,20 @@ export function rubrikUndGenre(e) {
 function fuehrung(titel, beschreibung) {
   return { rubrik: 'fuehrung', genre: ersteRegel(FUEHRUNG_REGELN, titel, beschreibung) };
 }
+
+// "advent" steht nicht für Adventure/Adventurer.
+const ADVENT_WOERTER = /advent(?!ure|urer)|weihnacht|nikolaus|christkind|pyramide|winterzauber/;
+// Mehrdeutige Wörter zählen nur im Titel und nie bei Führungen (Stollen = Bergwerk, Lichter der Stadt).
+const ADVENT_TITELWOERTER = /\bstollen|christstollen|\blichter/;
+
+/**
+ * Gehört der Termin zu Advent und Weihnachten? Wirft nie.
+ * @param {{rubrik?:string|null, genre?:string|null, title?:string, description?:string|null}} e
+ * @returns {boolean}
+ */
+export function istAdvent(e) {
+  if (e?.genre === 'weihnachtsmarkt' || e?.genre === 'weihnachten') return true;
+  const titel = klein(e?.title);
+  if (ADVENT_WOERTER.test(titel) || ADVENT_WOERTER.test(klein(e?.description))) return true;
+  return e?.rubrik !== 'fuehrung' && ADVENT_TITELWOERTER.test(titel);
+}

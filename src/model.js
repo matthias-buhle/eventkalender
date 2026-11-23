@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
  * @typedef {{phone:string|null,url:string|null,email:string|null}} Contact
  * @typedef {'ausverkauft'|'verfuegbar'|'abgesagt'|'verlegt'} TicketStatus
  * @typedef {{
- *   id:string, title:string, art:Art, rubrik:string|null, genre:string|null, tags:string[],
+ *   id:string, title:string, art:Art, rubrik:string|null, genre:string|null, advent:boolean, tags:string[],
  *   start:string, end:string|null, hasTime:boolean,
  *   placeName:string, lat:number|null, lon:number|null, distanceKm:number|null,
  *   country:'DE'|'CZ',
@@ -37,6 +37,7 @@ export function makeEvent(raw) {
     art: rest.art ?? 'sonstiges',
     rubrik: rest.rubrik ?? null,
     genre: rest.genre ?? null,
+    advent: rest.advent ?? false,
     tags: rest.tags ?? [],
     start: rest.start,
     end: rest.end ?? null,

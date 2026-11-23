@@ -1,10 +1,10 @@
 // Prüfwerkzeug für die Filterseite: wendet die Rubrik-Zuordnung auf die lokale (git-ignorierte) site/data/events.json an
 // und druckt Anteile, Konzert-Genres, Termine ohne Koordinaten und Stichproben.
 //   node scripts/bericht.js            nur berichten
-//   node scripts/bericht.js --schreiben   rubrik und genre in die Datei zurückschreiben
+//   node scripts/bericht.js --schreiben   rubrik, genre und advent in die Datei zurückschreiben
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { RUBRIKEN, rubrikUndGenre } from '../src/rubriken.js';
+import { RUBRIKEN, rubrikUndGenre, istAdvent } from '../src/rubriken.js';
 import { GENRES } from '../src/normalize.js';
 
 const DATEI = fileURLToPath(new URL('../site/data/events.json', import.meta.url));
@@ -13,7 +13,7 @@ const schreiben = process.argv.includes('--schreiben');
 const roh = JSON.parse(readFileSync(DATEI, 'utf8'));
 const events = (Array.isArray(roh) ? roh : roh.events).map((e) => {
   const { rubrik, genre } = rubrikUndGenre(e);
-  return { ...e, rubrik, genre };
+  return { ...e, rubrik, genre, advent: istAdvent({ rubrik, genre, title: e.title, description: e.description }) };
 });
 
 const prozent = (n) => `${((100 * n) / events.length).toFixed(1)} %`;
@@ -37,6 +37,11 @@ console.log('\nKonzert-Genres:');
 const genres = new Map();
 for (const e of je.get('konzert')) genres.set(e.genre, (genres.get(e.genre) ?? 0) + 1);
 for (const [g, n] of [...genres].sort((a, b) => b[1] - a[1])) console.log(`  ${(g ?? '(ohne Genre)').padEnd(16)} ${String(n).padStart(5)}  ${g ? GENRES[g] : ''}`);
+
+const advent = events.filter((e) => e.advent);
+console.log(`\nAdvent und Weihnachten: ${advent.length} (${prozent(advent.length)})`);
+const schrittAdvent = Math.max(1, Math.floor(advent.length / 20));
+for (const e of advent.filter((_, i) => i % schrittAdvent === 0).slice(0, 20)) console.log(`  - ${e.title.slice(0, 90)}  [${e.rubrik}${e.genre ? `/${e.genre}` : ''}]`);
 
 console.log(`Termine ohne Koordinaten: ${events.filter((e) => e.lat == null || e.lon == null).length}`);
 

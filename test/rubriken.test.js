@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { RUBRIKEN, UNTERARTEN, rubrikUndGenre } from '../src/rubriken.js';
+import { RUBRIKEN, UNTERARTEN, rubrikUndGenre, istAdvent } from '../src/rubriken.js';
 import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN } from '../src/normalize.js';
 
 const von = (e) => rubrikUndGenre({ description: null, genre: null, ...e });
@@ -144,4 +144,37 @@ test('essen: Zusammensetzungen mit -essen, aber nicht Messen oder Adressen', () 
 
 test('Haus mit Kino im Namen: letzter Hinweis für Theater', () => {
   assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Bad Apples', placeName: 'Kunstbauerkino Großhennersdorf' }).rubrik, 'theater');
+});
+
+test('istAdvent: Genre weihnachtsmarkt und weihnachten zählen ohne Wörter im Text', () => {
+  assert.equal(istAdvent({ rubrik: 'markt', genre: 'weihnachtsmarkt', title: 'Markt am Rathaus', description: null }), true);
+  assert.equal(istAdvent({ rubrik: 'fest', genre: 'weihnachten', title: 'Feier im Schloss' }), true);
+});
+
+test('istAdvent: Advent-Wörter in Titel oder Beschreibung', () => {
+  assert.equal(istAdvent({ rubrik: 'konzert', genre: null, title: 'Adventskonzert', description: null }), true);
+  for (const w of ['Nikolaus', 'Weihnacht', 'Christkind', 'Pyramide', 'Winterzauber']) {
+    assert.equal(istAdvent({ rubrik: 'sonstiges', genre: null, title: 'Abend im Ort', description: `Mit dem ${w} und Glühwein.` }), true, w);
+  }
+  assert.equal(istAdvent({ rubrik: 'sonstiges', genre: null, title: 'Adventure Day', description: null }), false);
+});
+
+test('istAdvent: Stollen und Lichter zählen nur im Titel', () => {
+  assert.equal(istAdvent({ rubrik: 'markt', genre: null, title: 'Lichterglanz auf dem Markt', description: null }), true);
+  assert.equal(istAdvent({ rubrik: 'essen', genre: null, title: 'Original Dresdner Stollen backen', description: null }), true);
+  assert.equal(istAdvent({ rubrik: 'sonstiges', genre: null, title: 'Abend im Ort', description: 'Backen Sie Stollen und genießen Sie die Lichter.' }), false);
+});
+
+test('istAdvent: Führungen zählen nur über Advent-Wörter, nicht über Stollen oder Lichter', () => {
+  assert.equal(istAdvent({ rubrik: 'fuehrung', genre: 'untertage', title: 'Führung durch den Stollen', description: null }), false);
+  assert.equal(istAdvent({ rubrik: 'fuehrung', genre: 'stadt', title: 'Abendführung', description: 'Ein Rundgang durch die Lichter der Stadt.' }), false);
+  assert.equal(istAdvent({ rubrik: 'fuehrung', genre: 'stadt', title: 'Lichterführung', description: null }), false);
+  assert.equal(istAdvent({ rubrik: 'fuehrung', genre: 'stadt', title: 'Adventsführung', description: null }), true);
+});
+
+test('istAdvent: Sommerfest ist kein Advent, null-Felder werfen nicht', () => {
+  assert.equal(istAdvent({ rubrik: 'fest', genre: null, title: 'Sommerfest', description: null }), false);
+  assert.equal(istAdvent({ rubrik: null, genre: null, title: 'Sommerfest', description: null }), false);
+  assert.equal(istAdvent({ rubrik: null, genre: null, title: undefined }), false);
+  assert.equal(istAdvent({}), false);
 });
