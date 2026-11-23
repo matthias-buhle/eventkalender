@@ -125,3 +125,10 @@ Das Repo ist jetzt öffentlich, die Seite weiterhin nur über die geheime Adress
 - Barrierefreiheit des Kalenders (Tastatur, Beschriftung) und das Verhalten der Zurück-Taste (die Fenster nutzen den Verlauf des Geräts, siehe `neuesFenster` in `site/js/app.js`).
 - Die bestehenden 351 Tests laufen weiter (`npm test`) und werden dort angepasst, wo sich das gewollte Verhalten ändert. Neue Logik bekommt Tests. Der Dienst-Worker (`site/sw.js`) und die Versionsangabe müssen die geänderten Dateien ausliefern.
 - Die Reihenfolge der Arbeit, zum Beispiel erst Rubriken und Ortszuordnung (Daten), dann Filterseite (Anzeige).
+
+## Nachtrag 23.11.2026 (Version 1.5.1, nach dem ersten Test am Handy)
+
+- Der Monatskalender ist beim Start zugeklappt. Der Chip „Kalender“ (vor „Alle“) klappt ihn auf und zu und nennt den gewählten Tag oder Zeitraum; der eigene Zeitraum-Chip entfällt. Eine Schnellwahl klappt den Kalender zu.
+- Die Unterpunkte einer Rubrik klappen direkt unter ihrer Kachel auf, auch bei mehreren gewählten Rubriken. Vorgewählt ist „Alle“; ein Tipp wählt genau diese Unterart, weitere kommen dazu. Beim Abwählen der Kachel beginnt ihre Auswahl wieder bei „Alle“. Ohne Rubrikwahl wirkt kein Unterfilter.
+- Der Schalter „Nur Advent und Weihnachten“ entfällt (Weihnachtsmärkte stehen unter Märkte). Das Feld `advent` bleibt in den Daten, die Seite wertet es nicht mehr aus.
+- Die Zusammenfassung über der Liste nennt gewählte Unterarten, z. B. „Konzerte (Jazz & Blues)“.

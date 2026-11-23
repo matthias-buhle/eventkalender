@@ -3,13 +3,13 @@ import { RUBRIKEN, SORTEN, rubrikVon, rubrikName, sorteFilter } from './arten.js
 
 /**
  * rubriken: gewählte Rubriken (Schlüssel aus arten.js); leer heißt alle.
- * hiddenGenres: ausgeblendete Unterarten (siehe SORTEN in arten.js); sie wirken nur, wenn genau eine Rubrik gewählt ist.
+ * hiddenGenres: ausgeblendete Unterarten (siehe SORTEN in arten.js); sie wirken nur für gewählte Rubriken. Auf der Seite heißt
+ *   das „Alle“ (nichts ausgeblendet) oder eine Auswahl einzelner Unterarten, siehe gewaehlteSorten und sorteWaehlen.
  * maxKm: Umkreis, eine der Stufen in UMKREISE. ort: Mitte des Umkreises (Name aus dem Ortsverzeichnis) oder null für Sebnitz.
- * advent: nur Termine mit advent === true.
  * zeit: 'alle' | 'heute' | 'wochenende' | '7' | '30' (Tage ab heute) | 'tage' (eigener Zeitraum von … bis, bis null = offen).
  * zeit, von, bis und suche werden nicht gespeichert; nach dem Laden gilt immer das Wochenende.
  * @typedef {{rubriken:string[], hiddenGenres:string[], hiddenTags:string[], maxKm:10|25|50|75, showCZ:boolean, ort:string|null,
- *   advent:boolean, zeit:'alle'|'heute'|'wochenende'|'7'|'30'|'tage', von:string|null, bis:string|null, suche:string}} Prefs
+ *   zeit:'alle'|'heute'|'wochenende'|'7'|'30'|'tage', von:string|null, bis:string|null, suche:string}} Prefs
  */
 
 const SCHLUESSEL = 'eventkalender.prefs';
@@ -20,7 +20,7 @@ const RUBRIK_KEYS = RUBRIKEN.map((r) => r.key);
 /** Der Standard; eingefroren (auch die Listen). loadPrefs liefert davon stets eine eigene, veränderbare Kopie. @type {Readonly<Prefs>} */
 export const DEFAULT_PREFS = Object.freeze({
   rubriken: Object.freeze([]), hiddenGenres: Object.freeze([]), hiddenTags: Object.freeze([]), maxKm: 75, showCZ: true, ort: null,
-  advent: false, zeit: 'wochenende', von: null, bis: null, suche: '',
+  zeit: 'wochenende', von: null, bis: null, suche: '',
 });
 
 /** @returns {Prefs} eine frische Kopie des Standards */
@@ -128,11 +128,6 @@ function passtZurSuche(e, woerter) {
   return woerter.every((w) => heu.includes(w));
 }
 
-/** Die Rubrik, wenn genau eine (bekannte) gewählt ist (nur dann gibt es Unterfilter), sonst null. */
-export function einzelneRubrik(rubriken) {
-  return Array.isArray(rubriken) && rubriken.length === 1 && RUBRIK_KEYS.includes(rubriken[0]) ? rubriken[0] : null;
-}
-
 /**
  * Neue Rubrikwahl nach dem Antippen einer Rubrik: sie kommt dazu oder geht wieder (Reihenfolge wie RUBRIKEN).
  * Leer heißt alle; sind am Ende alle 13 gewählt, heißt das ebenfalls alle (leere Liste). Unbekanntes ändert nichts.
@@ -153,12 +148,58 @@ export function anzeigeText(anzahl) {
   return anzahl === 1 ? '1 Termin anzeigen' : `${anzahl} Termine anzeigen`;
 }
 
-/** Die ausgeblendeten Unterarten, die gerade wirken: nur bei genau einer Rubrik, und nur deren eigene Schlüssel. */
+/** Alle Unterart-Schlüssel einer Rubrik in Knopfreihenfolge, am Ende der für "sonstige"; ohne Unterarten leer. */
+export function sortenSchluessel(rubrik) {
+  const def = Object.hasOwn(SORTEN, rubrik) ? SORTEN[rubrik] : null;
+  return def ? [...Object.keys(def.liste), def.sonstige] : [];
+}
+
+/**
+ * Die gewählten Unterarten einer Rubrik (Knopfreihenfolge); null heißt "Alle": von dieser Rubrik ist nichts ausgeblendet.
+ * @param {string[]|undefined} hiddenGenres
+ * @returns {string[]|null}
+ */
+export function gewaehlteSorten(hiddenGenres, rubrik) {
+  const aus = hiddenGenres ?? [];
+  const alle = sortenSchluessel(rubrik);
+  const gewaehlt = alle.filter((k) => !aus.includes(k));
+  return gewaehlt.length === alle.length ? null : gewaehlt;
+}
+
+/**
+ * Neue Liste hiddenGenres nach dem Antippen einer Unterart: aus "Alle" wird genau diese eine; sonst kommt sie dazu oder geht
+ * wieder. Ist danach keine oder jede gewählt, gilt wieder "Alle". `schluessel` null heißt: der Knopf "Alle".
+ * Die Unterarten anderer Rubriken bleiben; ein Schlüssel, der nicht zur Rubrik gehört, ändert nichts.
+ */
+export function sorteWaehlen(hiddenGenres, rubrik, schluessel) {
+  const bisher = hiddenGenres ?? [];
+  const alle = sortenSchluessel(rubrik);
+  const rest = bisher.filter((k) => !alle.includes(k));
+  if (schluessel == null) return rest;
+  if (!alle.includes(schluessel)) return [...bisher];
+  const gewaehlt = gewaehlteSorten(bisher, rubrik);
+  let neu;
+  if (gewaehlt === null) neu = [schluessel];
+  else neu = gewaehlt.includes(schluessel) ? gewaehlt.filter((k) => k !== schluessel) : [...gewaehlt, schluessel];
+  if (!neu.length || neu.length === alle.length) return rest;
+  return [...rest, ...alle.filter((k) => !neu.includes(k))];
+}
+
+/**
+ * Rubrikwahl und Unterarten nach dem Antippen einer Kachel: die Rubrik kommt dazu oder geht (siehe rubrikWaehlen); ihre
+ * Unterarten beginnen dabei wieder bei "Alle". Übrig bleiben nur Unterarten von Rubriken, die weiter gewählt sind.
+ * @returns {{rubriken:string[], hiddenGenres:string[]}}
+ */
+export function rubrikGetippt(prefs, key) {
+  const rubriken = rubrikWaehlen(prefs.rubriken ?? [], key);
+  const bleibt = new Set(rubriken.filter((r) => r !== key).flatMap(sortenSchluessel));
+  return { rubriken, hiddenGenres: (prefs.hiddenGenres ?? []).filter((g) => bleibt.has(g)) };
+}
+
+/** Die ausgeblendeten Unterarten, die gerade wirken: nur die der gewählten Rubriken (ohne Rubrikwahl keine). */
 export function wirksameSorten(prefs) {
-  const rubrik = einzelneRubrik(prefs.rubriken);
-  const def = rubrik && Object.hasOwn(SORTEN, rubrik) ? SORTEN[rubrik] : null;
-  if (!def) return [];
-  return (prefs.hiddenGenres ?? []).filter((g) => g === def.sonstige || Object.hasOwn(def.liste, g));
+  const erlaubt = new Set((prefs.rubriken ?? []).flatMap(sortenSchluessel));
+  return (prefs.hiddenGenres ?? []).filter((g) => erlaubt.has(g));
 }
 
 /**
@@ -169,7 +210,7 @@ export function wirksameSorten(prefs) {
  * @param {Prefs} prefs
  * @param {string} nowIso
  * @param {Record<string,{lat:number,lon:number}>} [orte] Koordinaten der wählbaren Orte (für die Mitte des Umkreises)
- * @param {{ohneRubrik?:boolean, ohneZeit?:boolean, ohneAdvent?:boolean}} [optionen] einzelne Filter auslassen (für die Zähler);
+ * @param {{ohneRubrik?:boolean, ohneZeit?:boolean}} [optionen] einzelne Filter auslassen (für die Zähler);
  *   ohneRubrik lässt auch die Unterfilter aus, ohneZeit behält das Entfernen von Vergangenem.
  */
 export function applyFilters(events, prefs, nowIso, orte = {}, optionen = {}) {
@@ -177,7 +218,6 @@ export function applyFilters(events, prefs, nowIso, orte = {}, optionen = {}) {
   const rubriken = optionen.ohneRubrik ? [] : (prefs.rubriken ?? []);
   const sortenAus = optionen.ohneRubrik ? [] : wirksameSorten(prefs);
   const fenster = optionen.ohneZeit ? { von: heute, bis: null } : zeitfenster(prefs, heute);
-  const nurAdvent = Boolean(prefs.advent) && !optionen.ohneAdvent;
   const tagsAus = prefs.hiddenTags ?? [];
   const mitte = prefs.ort && orte && Object.hasOwn(orte, prefs.ort) ? orte[prefs.ort] : null;
   const woerter = glatt(prefs.suche).split(/\s+/).filter(Boolean);
@@ -187,7 +227,6 @@ export function applyFilters(events, prefs, nowIso, orte = {}, optionen = {}) {
     if (!passtZurSuche(e, woerter)) return false;
     if (rubriken.length && !rubriken.includes(rubrikVon(e))) return false;
     if (sortenAus.length && sortenAus.includes(sorteFilter(e))) return false;
-    if (nurAdvent && e.advent !== true) return false;
     if ((e.tags ?? []).some((t) => tagsAus.includes(t))) return false;
     if (mitte) {
       if (Number.isFinite(e.lat) && Number.isFinite(e.lon) && luftlinieKm(mitte, e) > prefs.maxKm) return false;
@@ -204,11 +243,6 @@ export function zaehleRubriken(events, prefs, nowIso, orte = {}) {
   return zahlen;
 }
 
-/** Advent-Termine unter allen Filtern außer dem Advent-Schalter selbst. */
-export function zaehleAdvent(events, prefs, nowIso, orte = {}) {
-  return applyFilters(events, prefs, nowIso, orte, { ohneAdvent: true }).filter((e) => e.advent === true).length;
-}
-
 const WOCHENTAGE = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
 /** "Sa 28.11." für 2026-11-28. */
@@ -217,11 +251,22 @@ function tagKurz(tag) {
   return `${WOCHENTAGE[d.getUTCDay()]} ${d.getUTCDate()}.${d.getUTCMonth() + 1}.`;
 }
 
+/** "Konzerte" oder, mit gewählten Unterarten, "Konzerte (Jazz & Blues)"; ab drei Unterarten "Konzerte (3 Sorten)". */
+function rubrikMitSorten(prefs, key) {
+  const name = rubrikName(key);
+  const gewaehlt = gewaehlteSorten(prefs.hiddenGenres, key);
+  if (gewaehlt === null) return name;
+  if (!gewaehlt.length) return `${name} (keine Sorte)`;
+  if (gewaehlt.length > 2) return `${name} (${gewaehlt.length} Sorten)`;
+  const def = SORTEN[key];
+  return `${name} (${gewaehlt.map((k) => (k === def.sonstige ? def.sonstigeText : def.liste[k])).join(', ')})`;
+}
+
 const ZEIT_TEXT = { alle: 'Alle Termine', heute: 'Heute', wochenende: 'Wochenende', 7: '7 Tage', 30: '30 Tage' };
 
 /**
- * Eine Zeile über die aktuelle Wahl, Teile mit " · ": Zeit, Rubriken, Advent, Ort mit Umkreis, Tschechien.
- * z. B. "Wochenende · Konzerte · Advent · Görlitz 25 km".
+ * Eine Zeile über die aktuelle Wahl, Teile mit " · ": Zeit, Rubriken (mit gewählten Unterarten), Ort mit Umkreis, Tschechien.
+ * z. B. "Wochenende · Konzerte (Jazz & Blues) · Görlitz 25 km".
  */
 export function zusammenfassung(prefs, heute) {
   let zeit;
@@ -234,10 +279,9 @@ export function zusammenfassung(prefs, heute) {
   const rubriken = prefs.rubriken ?? [];
   let was;
   if (!rubriken.length) was = 'Alle Rubriken';
-  else if (rubriken.length <= 2) was = rubriken.map(rubrikName).join(', ');
+  else if (rubriken.length <= 2) was = rubriken.map((r) => rubrikMitSorten(prefs, r)).join(', ');
   else was = `${rubriken.length} Rubriken`;
   const teile = [zeit, was];
-  if (prefs.advent) teile.push('Advent');
   teile.push(`${prefs.ort ?? 'Sebnitz'} ${prefs.maxKm} km`);
   if (prefs.showCZ === false) teile.push('ohne Tschechien');
   return teile.join(' · ');
@@ -270,7 +314,7 @@ function umkreisStufe(wert) {
 
 /**
  * Liest die Einstellungen; bei fehlendem, gesperrtem oder kaputtem Speicher gilt der Standard. Unbekannte alte Felder
- * (hiddenArt, zeit "60" …) werden übergangen; zeit ist nach dem Laden immer 'wochenende', von/bis null, suche leer.
+ * (hiddenArt, advent, zeit "60" …) werden übergangen; zeit ist nach dem Laden immer 'wochenende', von/bis null, suche leer.
  * @returns {Prefs}
  */
 export function loadPrefs(storage) {
@@ -287,7 +331,6 @@ export function loadPrefs(storage) {
       maxKm: umkreisStufe(roh.maxKm),
       showCZ: typeof roh.showCZ === 'boolean' ? roh.showCZ : DEFAULT_PREFS.showCZ,
       ort: typeof roh.ort === 'string' && roh.ort ? roh.ort : null,
-      advent: roh.advent === true,
     };
   } catch {
     return standard();

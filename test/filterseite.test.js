@@ -53,6 +53,11 @@ const zahlen = (c) => Object.fromEntries(kacheln(c).map((k) => [k.querySelector(
 const tag = (c, iso) => c.querySelector(`.kalender button[data-tag="${iso}"]`);
 const knopf = (c) => c.querySelector('button.btn.primaer');
 const chip = (c, text) => [...c.querySelectorAll('button.chip')].find((b) => b.textContent === text);
+const kalenderChip = (c) => c.querySelector('button.kalender-chip');
+const kalenderbox = (c) => c.querySelector('.kalenderbox');
+const gruppe = (c, titel) => [...c.querySelectorAll('.sorten')].find((g) => g.querySelector('.gruppentitel').textContent === titel);
+const sorte = (c, titel, text) => [...gruppe(c, titel).querySelectorAll('button.chip')].find((b) => b.textContent === text);
+const gedrueckt = (c, titel) => [...gruppe(c, titel).querySelectorAll('button.chip[aria-pressed="true"]')].map((b) => b.textContent);
 const sichtbareGruppen = (c) => [...c.querySelectorAll('.sorten')].filter((g) => !g.hasAttribute('hidden')).map((g) => g.querySelector('.gruppentitel').textContent);
 
 test('13 Kacheln in Spec-Reihenfolge mit den Zahlen beim Wochenende', () => {
@@ -78,9 +83,10 @@ test('Tipp auf 28.11. wählt den Einzeltag, ruft beiAenderung einmal, Zahlen än
   assert.equal(aufrufe.aenderung, 1);
   assert.equal(zahlen(container)['Märkte'], 0);
   assert.equal(zahlen(container).Konzerte, 1);
-  const zeitChip = container.querySelector('.zeitraum-chip');
-  assert.equal(zeitChip.hasAttribute('hidden'), false);
+  const zeitChip = kalenderChip(container);
   assert.equal(zeitChip.textContent, 'Sa 28.11.');
+  assert.equal(zeitChip.getAttribute('aria-label'), 'Kalender: Sa 28.11.');
+  assert.equal(zeitChip.getAttribute('aria-pressed'), 'true');
   assert.equal(chip(container, 'Wochenende').getAttribute('aria-pressed'), 'false');
   tag(container, '2026-11-29').click();
   assert.deepEqual([ctx.prefs.zeit, ctx.prefs.von, ctx.prefs.bis], ['tage', '2026-11-28', '2026-11-29']);
@@ -180,7 +186,10 @@ test('der Kalender beginnt im Monat des gewählten Tages', () => {
 test('Schnellwahl Wochenende markiert Fr–So im Kalender', () => {
   const { container } = aufbau();
   assert.equal(chip(container, 'Wochenende').getAttribute('aria-pressed'), 'true');
-  assert.equal(container.querySelector('.zeitraum-chip').hasAttribute('hidden'), true);
+  assert.equal(kalenderChip(container).textContent, 'Kalender');
+  assert.equal(kalenderChip(container).getAttribute('aria-pressed'), 'false');
+  assert.equal(kalenderChip(container).hasAttribute('aria-label'), false);
+  assert.equal(container.querySelector('.zeitraum-chip'), null, 'den eigenen Zeitraum-Chip gibt es nicht mehr');
   for (const t of ['2026-11-27', '2026-11-28', '2026-11-29']) assert.ok(tag(container, t).classList.contains('gewaehlt'), t);
   assert.ok(!tag(container, '2026-11-26').classList.contains('gewaehlt'));
   assert.ok(!tag(container, '2026-11-30').classList.contains('gewaehlt'));
@@ -190,7 +199,7 @@ test('Schnellwahl Wochenende markiert Fr–So im Kalender', () => {
 
 test('Schnellwahl-Chips setzen zeit und löschen von/bis', () => {
   const { container, ctx, aufrufe } = aufbau({ zeit: 'tage', von: '2026-11-28', bis: '2026-11-28' });
-  assert.deepEqual([...container.querySelectorAll('.zeitwahl button.chip')].map((b) => b.textContent), ['Heute', 'Wochenende', '7 Tage', '30 Tage', 'Alle']);
+  assert.deepEqual([...container.querySelectorAll('.zeitwahl button.chip')].map((b) => b.textContent), ['Heute', 'Wochenende', '7 Tage', '30 Tage', 'Sa 28.11.', 'Alle'], 'der Kalender-Chip nennt den gewählten Tag');
   chip(container, 'Alle').click();
   assert.deepEqual([ctx.prefs.zeit, ctx.prefs.von, ctx.prefs.bis], ['alle', null, null]);
   assert.equal(aufrufe.aenderung, 1);
@@ -200,7 +209,7 @@ test('Schnellwahl-Chips setzen zeit und löschen von/bis', () => {
   assert.equal(ctx.prefs.zeit, '7');
 });
 
-test('Kachel Konzerte wählt die Rubrik und zeigt den Genre-Unterfilter, bei zwei Rubriken nicht', () => {
+test('Kachel Konzerte wählt die Rubrik und klappt ihre Unterpunkte direkt unter der Kachel auf, auch bei zwei Rubriken', () => {
   const { container, ctx, aufrufe } = aufbau();
   assert.deepEqual(sichtbareGruppen(container), []);
   const k = kachel(container, 'Konzerte');
@@ -210,22 +219,56 @@ test('Kachel Konzerte wählt die Rubrik und zeigt den Genre-Unterfilter, bei zwe
   assert.equal(k.getAttribute('aria-pressed'), 'true');
   assert.equal(kachel(container, 'Konzerte'), k, 'die Kachel bleibt dasselbe Element (Fokus bleibt)');
   assert.deepEqual(sichtbareGruppen(container), ['Konzerte: Genre']);
+  assert.ok(k.nextElementSibling === gruppe(container, 'Konzerte: Genre'), 'die Unterpunkte stehen direkt hinter ihrer Kachel');
+  assert.ok(gruppe(container, 'Konzerte: Genre').parentNode === k.parentNode);
+  assert.equal(gruppe(container, 'Konzerte: Genre').getAttribute('aria-label'), 'Konzerte: Genre');
   kachel(container, 'Märkte').click();
   assert.deepEqual(ctx.prefs.rubriken, ['konzert', 'markt']);
-  assert.deepEqual(sichtbareGruppen(container), []);
+  assert.deepEqual(sichtbareGruppen(container), ['Konzerte: Genre', 'Märkte: Sorte']);
+  kachel(container, 'Theater & Lesungen').click();
+  assert.deepEqual(sichtbareGruppen(container), ['Konzerte: Genre', 'Märkte: Sorte'], 'Rubrik ohne Unterpunkte');
+  k.click();
+  assert.deepEqual(sichtbareGruppen(container), ['Märkte: Sorte']);
 });
 
-test('Unterfilter-Chip blendet die Unterart aus (hiddenGenres)', () => {
-  const { container, ctx, aufrufe } = aufbau({ rubriken: ['konzert'] });
-  const rock = chip(container, 'Rock & Pop');
-  assert.equal(rock.getAttribute('aria-pressed'), 'true');
-  rock.click();
-  assert.deepEqual(ctx.prefs.hiddenGenres, ['rock-pop']);
-  assert.equal(rock.getAttribute('aria-pressed'), 'false');
+test('Unterpunkte: erst gilt "Alle"; ein Tipp wählt genau diese Unterart, weitere kommen dazu, "Alle" hebt es auf', () => {
+  const { container, ctx, aufrufe } = aufbau({ rubriken: ['konzert'], zeit: 'alle' });
+  const G = 'Konzerte: Genre';
+  assert.deepEqual([...gruppe(container, G).querySelectorAll('button.chip')].map((b) => b.textContent).slice(0, 3), ['Alle', 'Rock & Pop', 'Metal & Punk']);
+  assert.deepEqual(gedrueckt(container, G), ['Alle']);
+  assert.equal(knopf(container).textContent, '3 Termine anzeigen');
+  sorte(container, G, 'Rock & Pop').click();
+  assert.deepEqual(gedrueckt(container, G), ['Rock & Pop']);
   assert.equal(aufrufe.aenderung, 1);
-  assert.equal(knopf(container).textContent, 'Keine Termine gefunden');
-  rock.click();
+  assert.ok(!ctx.prefs.hiddenGenres.includes('rock-pop'));
+  assert.equal(ctx.prefs.hiddenGenres.length, 9);
+  assert.equal(knopf(container).textContent, '1 Termin anzeigen');
+  sorte(container, G, 'Sonstige Konzerte').click();
+  assert.deepEqual(gedrueckt(container, G), ['Rock & Pop', 'Sonstige Konzerte']);
+  assert.equal(knopf(container).textContent, '3 Termine anzeigen');
+  sorte(container, G, 'Rock & Pop').click();
+  assert.deepEqual(gedrueckt(container, G), ['Sonstige Konzerte']);
+  assert.equal(knopf(container).textContent, '2 Termine anzeigen');
+  sorte(container, G, 'Alle').click();
+  assert.deepEqual(gedrueckt(container, G), ['Alle']);
   assert.deepEqual(ctx.prefs.hiddenGenres, []);
+  assert.equal(aufrufe.aenderung, 4);
+});
+
+test('Unterpunkte: die letzte abgewählte Unterart führt zurück zu "Alle"; Abwählen der Kachel setzt ihre Unterpunkte zurück', () => {
+  const { container, ctx } = aufbau({ rubriken: ['konzert', 'markt'], zeit: 'alle' });
+  sorte(container, 'Konzerte: Genre', 'Jazz & Blues').click();
+  sorte(container, 'Märkte: Sorte', 'Weihnachtsmarkt').click();
+  assert.deepEqual(gedrueckt(container, 'Konzerte: Genre'), ['Jazz & Blues']);
+  assert.deepEqual(gedrueckt(container, 'Märkte: Sorte'), ['Weihnachtsmarkt']);
+  assert.equal(knopf(container).textContent, '1 Termin anzeigen', 'nur der Weihnachtsmarkt; kein Jazz in der Liste');
+  sorte(container, 'Konzerte: Genre', 'Jazz & Blues').click();
+  assert.deepEqual(gedrueckt(container, 'Konzerte: Genre'), ['Alle']);
+  assert.deepEqual(gedrueckt(container, 'Märkte: Sorte'), ['Weihnachtsmarkt'], 'die andere Rubrik bleibt');
+  kachel(container, 'Märkte').click();
+  assert.deepEqual(ctx.prefs.hiddenGenres, []);
+  kachel(container, 'Märkte').click();
+  assert.deepEqual(gedrueckt(container, 'Märkte: Sorte'), ['Alle'], 'neu gewählt beginnt bei Alle');
 });
 
 test('Kachel mit Zahl 0 ist leer, nicht gesperrt und ändert beim Tipp die Auswahl', () => {
@@ -238,16 +281,59 @@ test('Kachel mit Zahl 0 ist leer, nicht gesperrt und ändert beim Tipp die Auswa
   assert.deepEqual(ctx.prefs.rubriken, ['fest']);
 });
 
-test('Advent-Schalter zeigt die Zahl und setzt prefs.advent', () => {
+test('den Advent-Schalter gibt es nicht mehr; ein altes prefs.advent filtert nichts', () => {
+  const { container } = aufbau({ advent: true });
+  assert.equal(container.querySelector('.schalter-advent'), null);
+  assert.ok(!container.textContent.includes('Advent'));
+  assert.equal(knopf(container).textContent, '2 Termine anzeigen');
+});
+
+test('Kalender: beim Start zugeklappt; der Chip "Kalender" klappt ihn auf und zu, ohne die Auswahl zu ändern', () => {
   const { container, ctx, aufrufe } = aufbau();
-  const schalter = container.querySelector('.schalter-advent');
-  assert.equal(schalter.textContent, 'Nur Advent und Weihnachten (1)');
-  const haken = schalter.querySelector('input[type="checkbox"]');
-  haken.checked = true;
-  haken.dispatchEvent(new fenster.Event('change'));
-  assert.equal(ctx.prefs.advent, true);
-  assert.equal(aufrufe.aenderung, 1);
-  assert.equal(knopf(container).textContent, '1 Termin anzeigen');
+  const chipK = kalenderChip(container);
+  assert.equal(kalenderbox(container).hasAttribute('hidden'), true);
+  assert.equal(chipK.getAttribute('aria-expanded'), 'false');
+  assert.equal(chipK.getAttribute('aria-controls'), kalenderbox(container).getAttribute('id'));
+  assert.ok(chipK.nextElementSibling === chip(container, 'Alle'), 'der Chip steht vor "Alle"');
+  chipK.click();
+  assert.equal(kalenderbox(container).hasAttribute('hidden'), false);
+  assert.equal(chipK.getAttribute('aria-expanded'), 'true');
+  assert.equal(chipK.getAttribute('aria-pressed'), 'false', 'noch kein eigener Tag gewählt');
+  assert.equal(ctx.prefs.zeit, 'wochenende');
+  assert.equal(aufrufe.aenderung, 0);
+  chipK.click();
+  assert.equal(kalenderbox(container).hasAttribute('hidden'), true);
+  assert.equal(chipK.getAttribute('aria-expanded'), 'false');
+});
+
+test('Kalender: bleibt beim Wählen von Tagen offen; eine Schnellwahl klappt ihn zu; der gewählte Zeitraum bleibt am Chip stehen', () => {
+  const { container } = aufbau();
+  const chipK = kalenderChip(container);
+  chipK.click();
+  tag(container, '2026-11-28').click();
+  tag(container, '2026-11-29').click();
+  assert.equal(kalenderbox(container).hasAttribute('hidden'), false);
+  chipK.click();
+  assert.equal(kalenderbox(container).hasAttribute('hidden'), true);
+  assert.equal(chipK.textContent, 'Sa 28.11. – So 29.11.');
+  assert.equal(chipK.getAttribute('aria-pressed'), 'true');
+  chipK.click();
+  chip(container, '7 Tage').click();
+  assert.equal(kalenderbox(container).hasAttribute('hidden'), true);
+  assert.equal(chipK.textContent, 'Kalender');
+  assert.equal(chipK.getAttribute('aria-expanded'), 'false');
+});
+
+test('abgelaufener eigener Zeitraum (Seite stand über Nacht offen): Wochenende ist gedrückt, nicht der Kalender-Chip', () => {
+  let jetzt = JETZT;
+  const { container, ctx, seite } = aufbau({ zeit: 'tage', von: '2026-11-24', bis: '2026-11-24' });
+  ctx.jetzt = () => jetzt;
+  assert.equal(kalenderChip(container).getAttribute('aria-pressed'), 'true');
+  jetzt = '2026-11-25T08:00:00Z';
+  seite.aktualisieren();
+  assert.equal(kalenderChip(container).getAttribute('aria-pressed'), 'false');
+  assert.equal(kalenderChip(container).textContent, 'Kalender');
+  assert.equal(chip(container, 'Wochenende').getAttribute('aria-pressed'), 'true');
 });
 
 test('Umkreis-Chip 25 km setzt maxKm, Ortsauswahl Görlitz setzt prefs.ort, Tschechien setzt showCZ', () => {
@@ -409,12 +495,4 @@ test('Schnellwahl nach dem Blättern: der Kalender zeigt wieder den Monat des ma
   container.querySelector('.monat-vor').click();
   chip(container, '7 Tage').click();
   assert.equal(name.textContent, 'November 2026');
-});
-
-test('der Zeitraum-Chip trägt aria-pressed="true"', () => {
-  const { container } = aufbau();
-  tag(container, '2026-11-28').click();
-  assert.equal(container.querySelector('.zeitraum-chip').getAttribute('aria-pressed'), 'true');
-  chip(container, 'Heute').click();
-  assert.equal(container.querySelector('.zeitraum-chip').hasAttribute('aria-pressed'), false);
 });

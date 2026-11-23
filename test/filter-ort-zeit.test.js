@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  applyFilters, loadPrefs, savePrefs, zeitfenster, einzelneRubrik, rubrikWaehlen, wirksameSorten, zaehleRubriken, zaehleAdvent,
+  applyFilters, loadPrefs, savePrefs, zeitfenster, rubrikWaehlen, wirksameSorten, zaehleRubriken,
   zusammenfassung, tagPlus, UMKREISE, ZEITEN, DEFAULT_PREFS,
 } from '../site/js/filter.js';
 import * as filterModul from '../site/js/filter.js';
@@ -10,6 +10,10 @@ import * as filterModul from '../site/js/filter.js';
 const zeitAbgelaufen = (...a) => filterModul.zeitAbgelaufen(...a);
 const nachRueckkehr = (...a) => filterModul.nachRueckkehr(...a);
 const zeitZurueckgesetzt = (...a) => filterModul.zeitZurueckgesetzt(...a);
+const sortenSchluessel = (...a) => filterModul.sortenSchluessel(...a);
+const gewaehlteSorten = (...a) => filterModul.gewaehlteSorten(...a);
+const sorteWaehlen = (...a) => filterModul.sorteWaehlen(...a);
+const rubrikGetippt = (...a) => filterModul.rubrikGetippt(...a);
 import { RUBRIKEN } from '../site/js/arten.js';
 
 const NOW = '2026-11-08T19:30:00Z'; // Sonntag, 20:30 Uhr in Berlin
@@ -214,8 +218,7 @@ test('Einstellungen: alte Felder, alter Zeitraum und Umkreis rasten ein; kaputte
   assert.deepEqual(lade('{"rubriken":["konzert","gibtsnicht"]}').rubriken, ['konzert']);
   assert.deepEqual(lade('{"rubriken":"konzert"}').rubriken, []);
   assert.deepEqual(lade(JSON.stringify({ rubriken: ALLE_KEYS })).rubriken, [], 'alle 13 heißt alle');
-  assert.equal(lade('{"advent":true}').advent, true);
-  assert.equal(lade('{"advent":"ja"}').advent, false);
+  assert.equal(lade('{"advent":true}').advent, undefined, 'den Advent-Schalter gibt es nicht mehr');
 });
 
 // --- Rubriken und Unterfilter ---
@@ -231,23 +234,76 @@ test('rubrikWaehlen: antippen schaltet die Rubrik um; leer heißt alle; alle 13 
   assert.deepEqual(vorher, ['konzert'], 'die Eingabe bleibt unverändert');
 });
 
-test('einzelneRubrik: nur bei genau einer gewählten Rubrik, sonst null', () => {
-  assert.equal(einzelneRubrik([]), null);
-  assert.equal(einzelneRubrik(['fuehrung']), 'fuehrung');
-  assert.equal(einzelneRubrik(['konzert', 'markt']), null);
-  assert.equal(einzelneRubrik(['gibtsnicht']), null);
+test('sortenSchluessel: alle Unterarten einer Rubrik in Knopfreihenfolge, am Ende die sonstigen; ohne Unterarten leer', () => {
+  assert.deepEqual(sortenSchluessel('markt'), ['weihnachtsmarkt', 'troedel', 'handwerk', 'bauern', 'sonstige-markt']);
+  assert.equal(sortenSchluessel('konzert').length, 10);
+  assert.deepEqual(sortenSchluessel('theater'), []);
+  assert.deepEqual(sortenSchluessel('gibtsnicht'), []);
+  assert.deepEqual(sortenSchluessel('constructor'), []);
 });
 
-test('Unterfilter nur bei genau einer Rubrik: Kinderführungen lassen sich ausblenden, bei zwei Rubriken nicht', () => {
+test('gewaehlteSorten: null heißt "Alle"; sonst die nicht ausgeblendeten Unterarten der Rubrik', () => {
+  assert.equal(gewaehlteSorten([], 'markt'), null);
+  assert.equal(gewaehlteSorten(undefined, 'markt'), null);
+  assert.equal(gewaehlteSorten(['jazz'], 'markt'), null, 'fremde Schlüssel zählen nicht');
+  assert.deepEqual(gewaehlteSorten(['troedel', 'handwerk', 'bauern', 'sonstige-markt'], 'markt'), ['weihnachtsmarkt']);
+  assert.equal(gewaehlteSorten(['jazz'], 'theater'), null, 'Rubrik ohne Unterarten');
+});
+
+test('sorteWaehlen: aus "Alle" wird genau die getippte Unterart; weitere kommen dazu oder gehen wieder', () => {
+  const nur = (rubrik, hidden) => gewaehlteSorten(hidden, rubrik);
+  let h = sorteWaehlen([], 'konzert', 'jazz');
+  assert.deepEqual(nur('konzert', h), ['jazz']);
+  assert.equal(h.length, 9);
+  h = sorteWaehlen(h, 'konzert', 'klassik');
+  assert.deepEqual(nur('konzert', h), ['klassik', 'jazz'], 'Reihenfolge wie die Knöpfe');
+  h = sorteWaehlen(h, 'konzert', 'jazz');
+  assert.deepEqual(nur('konzert', h), ['klassik']);
+  assert.deepEqual(sorteWaehlen(h, 'konzert', 'klassik'), [], 'die letzte abgewählt heißt wieder Alle');
+  assert.deepEqual(sorteWaehlen(h, 'konzert', null), [], 'null heißt Alle');
+});
+
+test('sorteWaehlen: alle einzeln gewählt heißt Alle; andere Rubriken bleiben; Unbekanntes ändert nichts', () => {
+  let h = ['jazz'];
+  for (const k of ['weihnachtsmarkt', 'troedel', 'handwerk', 'bauern']) h = sorteWaehlen(h, 'markt', k);
+  assert.deepEqual(gewaehlteSorten(h, 'markt'), ['weihnachtsmarkt', 'troedel', 'handwerk', 'bauern']);
+  assert.ok(h.includes('jazz'));
+  h = sorteWaehlen(h, 'markt', 'sonstige-markt');
+  assert.deepEqual(h, ['jazz'], 'alle fünf gewählt: nichts mehr ausgeblendet');
+  assert.deepEqual(sorteWaehlen(['jazz'], 'markt', null), ['jazz']);
+  assert.deepEqual(sorteWaehlen(['troedel'], 'markt', 'jazz'), ['troedel'], 'Schlüssel einer anderen Rubrik');
+  assert.deepEqual(sorteWaehlen(['troedel'], 'theater', 'troedel'), ['troedel'], 'Rubrik ohne Unterarten');
+  const vorher = ['troedel'];
+  sorteWaehlen(vorher, 'markt', 'bauern');
+  assert.deepEqual(vorher, ['troedel'], 'die Eingabe bleibt unverändert');
+});
+
+test('rubrikGetippt: wählt oder entfernt die Rubrik; ihre Unterarten beginnen wieder bei Alle, die der übrigen bleiben', () => {
+  const nurJazz = sorteWaehlen([], 'konzert', 'jazz');
+  const p = { rubriken: ['konzert'], hiddenGenres: [...nurJazz, 'tiere'] };
+  const dazu = rubrikGetippt(p, 'markt');
+  assert.deepEqual(dazu.rubriken, ['konzert', 'markt']);
+  assert.deepEqual(dazu.hiddenGenres, nurJazz, 'Jazz bleibt; der Rest einer nicht gewählten Rubrik (tiere) fällt weg');
+  const weg = rubrikGetippt(p, 'konzert');
+  assert.deepEqual(weg, { rubriken: [], hiddenGenres: [] });
+  const alt = rubrikGetippt({ rubriken: [], hiddenGenres: ['jazz'] }, 'konzert');
+  assert.deepEqual(alt, { rubriken: ['konzert'], hiddenGenres: [] }, 'eine neu gewählte Rubrik beginnt bei Alle');
+  assert.deepEqual(rubrikGetippt({ rubriken: ['markt'] }, 'gibtsnicht'), { rubriken: ['markt'], hiddenGenres: [] });
+  assert.deepEqual(p.rubriken, ['konzert'], 'die Eingabe bleibt unverändert');
+});
+
+test('Unterfilter wirken je gewählter Rubrik: Kinderführungen lassen sich auch neben Konzerten ausblenden', () => {
   const liste = [
     ev({ id: 'kinderfuehrung', rubrik: 'fuehrung', art: 'sonstiges', genre: 'kinder' }),
     ev({ id: 'stadtfuehrung', rubrik: 'fuehrung', art: 'sonstiges', genre: 'stadt' }),
     ev({ id: 'konzert', rubrik: 'konzert', genre: 'jazz' }),
+    ev({ id: 'kindertag', rubrik: 'kinder', art: 'sonstiges' }),
   ];
   const ids = (rubriken) => applyFilters(liste, prefs({ rubriken, hiddenGenres: ['kinder'] }), NOW).map((e) => e.id);
   assert.deepEqual(ids(['fuehrung']), ['stadtfuehrung']);
-  assert.deepEqual(ids(['fuehrung', 'konzert']), ['kinderfuehrung', 'stadtfuehrung', 'konzert']);
-  assert.deepEqual(ids([]), ['kinderfuehrung', 'stadtfuehrung', 'konzert']);
+  assert.deepEqual(ids(['fuehrung', 'konzert']), ['stadtfuehrung', 'konzert']);
+  assert.deepEqual(ids(['fuehrung', 'kinder']), ['stadtfuehrung', 'kindertag'], 'die Rubrik Kinder ist nicht die Unterart kinder');
+  assert.deepEqual(ids([]), ['kinderfuehrung', 'stadtfuehrung', 'konzert', 'kindertag'], 'ohne Rubrikwahl wirkt kein Unterfilter');
 });
 
 test('Genre: bei Konzert allein verschwinden ausgeblendete Genres; Konzerte ohne Genre zählen als "sonstige"', () => {
@@ -282,17 +338,19 @@ test('Sorte: bei Markt allein oder Schau allein lassen sich Sorten ausblenden; o
   assert.deepEqual(sids(['tiere', 'sonstige-schau']), []);
 });
 
-test('Unterfilter wirken nur bei genau einer Rubrik; bei mehreren (oder allen) wird alles gezeigt', () => {
+test('Unterfilter wirken bei jeder gewählten Rubrik für sich; ohne Rubrikwahl wird alles gezeigt', () => {
   const liste = [
     ev({ id: 'jazz', genre: 'jazz' }),
+    ev({ id: 'rock', genre: 'rock-pop' }),
     ev({ id: 'weih', art: 'markt', genre: 'weihnachtsmarkt' }),
     ev({ id: 'tiere', art: 'schau', genre: 'tiere' }),
   ];
   const hidden = ['jazz', 'weihnachtsmarkt', 'tiere'];
   const ids = (rubriken) => applyFilters(liste, prefs({ hiddenGenres: hidden, rubriken }), NOW).map((e) => e.id);
-  assert.deepEqual(ids([]), ['jazz', 'weih', 'tiere'], 'alle Rubriken');
-  assert.deepEqual(ids(['konzert', 'markt']), ['jazz', 'weih'], 'zwei Rubriken');
-  assert.deepEqual(ids(['konzert']), [], 'Konzert allein: Jazz ist aus');
+  assert.deepEqual(ids([]), ['jazz', 'rock', 'weih', 'tiere'], 'alle Rubriken');
+  assert.deepEqual(ids(['konzert', 'markt']), ['rock'], 'zwei Rubriken: Jazz und Weihnachtsmarkt sind aus');
+  assert.deepEqual(ids(['konzert', 'schau']), ['rock']);
+  assert.deepEqual(ids(['konzert']), ['rock'], 'Konzert allein: Jazz ist aus');
   assert.deepEqual(ids(['markt']), [], 'Markt allein: Weihnachtsmarkt ist aus');
 });
 
@@ -303,13 +361,13 @@ test('applyFilters ohneRubrik: Rubrik und Unterfilter entfallen', () => {
   assert.deepEqual(applyFilters(liste, p, NOW, {}, { ohneRubrik: true }).map((e) => e.id), ['jazz', 'markt']);
 });
 
-test('wirksameSorten: nur die Schlüssel der einzeln gewählten Rubrik zählen', () => {
+test('wirksameSorten: nur die Schlüssel der gewählten Rubriken zählen', () => {
   const p = (rubriken, hiddenGenres) => prefs({ rubriken, hiddenGenres });
   assert.deepEqual(wirksameSorten(p(['konzert'], ['jazz', 'troedel', 'sonstige'])), ['jazz', 'sonstige']);
   assert.deepEqual(wirksameSorten(p(['markt'], ['jazz', 'troedel'])), ['troedel']);
   assert.deepEqual(wirksameSorten(p(['fuehrung'], ['kinder', 'jazz'])), ['kinder']);
   assert.deepEqual(wirksameSorten(p([], ['jazz'])), []);
-  assert.deepEqual(wirksameSorten(p(['konzert', 'markt'], ['jazz'])), []);
+  assert.deepEqual(wirksameSorten(p(['konzert', 'markt'], ['jazz', 'tiere', 'troedel'])), ['jazz', 'troedel']);
   assert.deepEqual(wirksameSorten(p(['theater'], ['jazz'])), [], 'Rubrik ohne Unterarten');
 });
 
@@ -322,24 +380,19 @@ test('loadPrefs: hiddenGenres wird als Textliste geprüft, ältere Einstellungen
 
 // --- Advent ---
 
-test('Advent: der Schalter lässt nur Advent-Termine durch; zaehleAdvent ignoriert den Schalter selbst', () => {
-  const liste = [
-    ev({ id: 'adv', rubrik: 'markt', art: 'markt', advent: true }),
-    ev({ id: 'normal', advent: false }),
-    ev({ id: 'ohne-feld' }),
-    ev({ id: 'adv-cz', rubrik: 'markt', art: 'markt', advent: true, country: 'CZ' }),
-  ];
-  assert.deepEqual(applyFilters(liste, prefs({ advent: true }), NOW).map((e) => e.id), ['adv', 'adv-cz']);
-  assert.deepEqual(applyFilters(liste, prefs({ advent: true }), NOW, {}, { ohneAdvent: true }).length, 4);
-  assert.equal(zaehleAdvent(liste, prefs({ advent: false }), NOW, {}), 2);
-  assert.equal(zaehleAdvent(liste, prefs({ advent: true }), NOW, {}), 2);
-  assert.equal(zaehleAdvent(liste, prefs({ advent: true, showCZ: false }), NOW, {}), 1, 'die anderen Filter gelten');
-  assert.equal(zaehleAdvent(liste, prefs({ rubriken: ['konzert'] }), NOW, {}), 0, 'auch die Rubrik');
+test('Advent ist kein Filter mehr: ein altes prefs.advent wird übergangen und nicht mehr geladen', () => {
+  const liste = [ev({ id: 'adv', rubrik: 'markt', art: 'markt', advent: true }), ev({ id: 'normal', advent: false }), ev({ id: 'ohne-feld' })];
+  assert.deepEqual(applyFilters(liste, prefs({ advent: true }), NOW).map((e) => e.id), ['adv', 'normal', 'ohne-feld']);
+  assert.equal(Object.hasOwn(DEFAULT_PREFS, 'advent'), false);
+  const alt = loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify({ advent: true, maxKm: 50 }) }));
+  assert.equal(Object.hasOwn(alt, 'advent'), false);
+  assert.equal(alt.maxKm, 50);
+  assert.equal(filterModul.zaehleAdvent, undefined);
 });
 
 // --- Zähler ---
 
-test('zaehleRubriken: alle 13 Schlüssel; gezählt im gewählten Zeitraum, Umkreis, Advent und Tschechien, ohne die Rubrikwahl', () => {
+test('zaehleRubriken: alle 13 Schlüssel; gezählt im gewählten Zeitraum, Umkreis und Tschechien, ohne die Rubrikwahl', () => {
   const tag = (t) => `${t}T19:00:00+01:00`;
   const liste = [
     ev({ id: 'k', rubrik: 'konzert', start: tag('2026-11-28') }),
@@ -357,17 +410,15 @@ test('zaehleRubriken: alle 13 Schlüssel; gezählt im gewählten Zeitraum, Umkre
   assert.equal(zaehleRubriken(liste, { ...p, showCZ: true }, NOV23, ORTE).fest, 1);
   assert.equal(zaehleRubriken(liste, { ...p, maxKm: 75 }, NOV23, ORTE).fuehrung, 1);
   assert.equal(zaehleRubriken(liste, { ...p, ort: 'Bautzen', maxKm: 25 }, NOV23, ORTE).kinder, 0, 'Dresden liegt rund 46 km von Bautzen');
-  const adv = zaehleRubriken(liste, { ...p, advent: true }, NOV23, ORTE);
-  assert.deepEqual([adv.markt, adv.konzert, adv.party], [1, 0, 0]);
   assert.equal(zaehleRubriken(liste, { ...p, bis: '2026-11-29' }, NOV23, ORTE).konzert, 2);
 });
 
 // --- Zusammenfassung ---
 
-test('zusammenfassung: Zeit · Rubriken · Advent · Ort und Umkreis · Tschechien', () => {
+test('zusammenfassung: Zeit · Rubriken · Ort und Umkreis · Tschechien', () => {
   const H = '2026-11-23';
   assert.equal(zusammenfassung(DEFAULT_PREFS, H), 'Wochenende · Alle Rubriken · Sebnitz 75 km');
-  assert.equal(zusammenfassung({ ...DEFAULT_PREFS, rubriken: ['konzert'], ort: 'Görlitz', maxKm: 25, advent: true }, H), 'Wochenende · Konzerte · Advent · Görlitz 25 km');
+  assert.equal(zusammenfassung({ ...DEFAULT_PREFS, rubriken: ['konzert'], ort: 'Görlitz', maxKm: 25, advent: true }, H), 'Wochenende · Konzerte · Görlitz 25 km');
   assert.ok(zusammenfassung({ ...DEFAULT_PREFS, zeit: 'tage', von: '2026-11-28', bis: '2026-11-28' }, H).startsWith('Sa 28.11. · '));
   assert.equal(zusammenfassung({ ...DEFAULT_PREFS, zeit: 'tage', von: '2026-11-27', bis: '2026-11-29' }, H), 'Fr 27.11. – So 29.11. · Alle Rubriken · Sebnitz 75 km');
   assert.equal(zusammenfassung({ ...DEFAULT_PREFS, zeit: 'heute', rubriken: ['konzert', 'markt'], showCZ: false }, H), 'Heute · Konzerte, Märkte · Sebnitz 75 km · ohne Tschechien');
@@ -395,4 +446,20 @@ test('Suche: findet in Titel, Ort und Beschreibung; Groß-/Kleinschreibung, Umla
   assert.deepEqual(ids('jürgen gross'), ['jazz'], 'ß wie ss');
   assert.deepEqual(ids('jazz markt'), [], 'alle Wörter müssen vorkommen');
   assert.deepEqual(ids('xyz'), []);
+});
+
+test('zusammenfassung: nennt gewählte Unterarten hinter der Rubrik (bis zwei mit Namen, sonst die Anzahl)', () => {
+  const H = '2026-11-23';
+  const z = (rubriken, hiddenGenres) => zusammenfassung({ ...DEFAULT_PREFS, rubriken, hiddenGenres }, H);
+  const nurJazz = sorteWaehlen([], 'konzert', 'jazz');
+  assert.equal(z(['konzert'], nurJazz), 'Wochenende · Konzerte (Jazz & Blues) · Sebnitz 75 km');
+  const zwei = sorteWaehlen(nurJazz, 'konzert', 'sonstige');
+  assert.equal(z(['konzert'], zwei), 'Wochenende · Konzerte (Jazz & Blues, Sonstige Konzerte) · Sebnitz 75 km');
+  const drei = sorteWaehlen(zwei, 'konzert', 'klassik');
+  assert.equal(z(['konzert'], drei), 'Wochenende · Konzerte (3 Sorten) · Sebnitz 75 km');
+  const mitMarkt = sorteWaehlen(nurJazz, 'markt', 'weihnachtsmarkt');
+  assert.equal(z(['konzert', 'markt'], mitMarkt), 'Wochenende · Konzerte (Jazz & Blues), Märkte (Weihnachtsmarkt) · Sebnitz 75 km');
+  assert.equal(z(['konzert', 'markt', 'fest'], mitMarkt), 'Wochenende · 3 Rubriken · Sebnitz 75 km');
+  assert.equal(z([], nurJazz), 'Wochenende · Alle Rubriken · Sebnitz 75 km', 'ohne Rubrikwahl wirkt kein Unterfilter');
+  assert.equal(z(['markt'], nurJazz), 'Wochenende · Märkte · Sebnitz 75 km', 'Unterarten einer anderen Rubrik zählen nicht');
 });

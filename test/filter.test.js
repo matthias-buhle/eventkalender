@@ -99,9 +99,9 @@ test('loadPrefs liefert Standard ohne Speicher, bei werfendem Speicher und bei f
   assert.deepEqual(gemischt, { ...DEFAULT_PREFS, hiddenTags: ['a'], showCZ: false });
 });
 
-test('Standard blendet nichts aus: alle Rubriken, 75 km, Tschechien an, Wochenende, kein Advent', () => {
+test('Standard blendet nichts aus: alle Rubriken, 75 km, Tschechien an, Wochenende', () => {
   assert.deepEqual(DEFAULT_PREFS, {
-    rubriken: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, advent: false,
+    rubriken: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null,
     zeit: 'wochenende', von: null, bis: null, suche: '',
   });
   assert.ok(Object.isFrozen(DEFAULT_PREFS) && Object.isFrozen(DEFAULT_PREFS.rubriken), 'der Standard ist nicht veränderbar');
@@ -112,7 +112,7 @@ test('Standard blendet nichts aus: alle Rubriken, 75 km, Tschechien an, Wochenen
 test('savePrefs und loadPrefs: Rundlauf; werfender Speicher löst keine Ausnahme aus', () => {
   const speicher = fakeStorage();
   const eigene = {
-    rubriken: ['markt'], hiddenGenres: ['jazz'], hiddenTags: ['kinder'], maxKm: 50, showCZ: false, ort: 'Bautzen', advent: true,
+    rubriken: ['markt'], hiddenGenres: ['jazz'], hiddenTags: ['kinder'], maxKm: 50, showCZ: false, ort: 'Bautzen',
     zeit: 'wochenende', von: null, bis: null, suche: '',
   };
   savePrefs(speicher, eigene);

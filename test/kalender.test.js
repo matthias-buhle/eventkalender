@@ -68,10 +68,11 @@ test('tageMitTerminen: berücksichtigt ort und maxKm (Umkreis um den gewählten 
   assert.deepEqual(tage(liste, prefs({ ort: 'Dresden', maxKm: 75 }), orte), ['2026-11-27', '2026-11-28']);
 });
 
-test('tageMitTerminen: Advent-Schalter wirkt auf die Punkte', () => {
-  const liste = [ev({ id: 'a', advent: true, start: '2026-11-27T19:00:00+01:00' }), ev({ id: 'b', start: '2026-11-28T19:00:00+01:00' })];
-  assert.deepEqual(tage(liste, prefs({ advent: true })), ['2026-11-27']);
-  assert.deepEqual(tage(liste, prefs({ advent: false })), ['2026-11-27', '2026-11-28']);
+test('tageMitTerminen: Unterfilter einer gewählten Rubrik wirken auf die Punkte', () => {
+  const liste = [ev({ id: 'a', genre: 'jazz', start: '2026-11-27T19:00:00+01:00' }), ev({ id: 'b', genre: 'rock-pop', start: '2026-11-28T19:00:00+01:00' })];
+  assert.deepEqual(tage(liste, prefs({ rubriken: ['konzert'], hiddenGenres: ['rock-pop'] })), ['2026-11-27']);
+  assert.deepEqual(tage(liste, prefs({ rubriken: ['konzert', 'markt'], hiddenGenres: ['rock-pop'] })), ['2026-11-27']);
+  assert.deepEqual(tage(liste, prefs({ hiddenGenres: ['rock-pop'] })), ['2026-11-27', '2026-11-28']);
 });
 
 test('tageMitTerminen: der Zeitraum der Prefs wird ignoriert', () => {

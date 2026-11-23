@@ -166,7 +166,8 @@ test('Version: Zeile mit Nummer, Commit und Datum; ohne Angaben entfällt sie', 
 test('Datenschutz: nennt, was wirklich gemerkt wird (Filter ohne Zeitraum und Suche, Design), nicht die Suche', () => {
   const datenschutz = abschnittMit(renderUeber(document), 'Datenschutz').textContent;
   assert.ok(!/\(Suche, Filter, Design\)/.test(datenschutz), 'die Suche wird nicht gemerkt');
-  for (const wort of ['Rubriken', 'Unterfilter', 'Advent', 'Mittelpunkt', 'Umkreis', 'Tschechien', 'Design', 'zuletzt geladenen Termine']) {
+  assert.ok(!datenschutz.includes('Advent'), 'den Advent-Schalter gibt es nicht mehr');
+  for (const wort of ['Rubriken', 'Unterfilter', 'Mittelpunkt', 'Umkreis', 'Tschechien', 'Design', 'zuletzt geladenen Termine']) {
     assert.ok(datenschutz.includes(wort), wort);
   }
   assert.match(datenschutz, /Zeitraum und Suche werden nicht gemerkt/);

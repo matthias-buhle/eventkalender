@@ -1,7 +1,10 @@
 // Baut die Filterseite (Wann? Was? Wo? und den Anzeigen-Knopf) als DOM.
 // Fremdwerte (Ortsnamen, Rubriknamen, Termindaten) kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { RUBRIKEN, SORTEN } from './arten.js';
-import { UMKREISE, anzeigeText, applyFilters, berlinDay, einzelneRubrik, rubrikWaehlen, zaehleAdvent, zaehleRubriken, zeitfenster } from './filter.js';
+import {
+  DEFAULT_PREFS, UMKREISE, anzeigeText, applyFilters, berlinDay, gewaehlteSorten, rubrikGetippt, sorteWaehlen, zaehleRubriken, zeitAbgelaufen,
+  zeitfenster,
+} from './filter.js';
 import { markierterBereich, monateMitTerminen, monatsName, monatsRaster, tageMitTerminen, tagWaehlen } from './kalender.js';
 
 const STANDARD_ORT = 'Sebnitz';
@@ -37,7 +40,7 @@ function tagKurz(tag) {
   return `${WOCHENTAGE[d.getUTCDay()].slice(0, 2)} ${d.getUTCDate()}.${d.getUTCMonth() + 1}.`;
 }
 
-/** Text des Zeitraum-Chips bei zeit 'tage': "Sa 28.11.", "Sa 28.11. – So 29.11." oder "ab Sa 28.11.". */
+/** Text des Kalender-Chips bei zeit 'tage': "Sa 28.11.", "Sa 28.11. – So 29.11." oder "ab Sa 28.11.". */
 function zeitraumText(prefs, heute) {
   const { von, bis } = zeitfenster(prefs, heute);
   if (!bis) return `ab ${tagKurz(von)}`;
@@ -52,7 +55,8 @@ function abschnitt(doc, titel) {
 
 /**
  * Baut die Filterseite in `container` (dessen bisheriger Inhalt wird ersetzt).
- * Jede Bedienung ändert ctx.prefs, ruft ctx.beiAenderung() genau einmal und zeichnet dann Zahlen, Kalender und Knopf neu.
+ * Jede Bedienung, die die Auswahl ändert, ändert ctx.prefs, ruft ctx.beiAenderung() genau einmal und zeichnet dann Zahlen,
+ * Kalender und Knopf neu. Das Auf- und Zuklappen des Kalenders ändert die Auswahl nicht und ruft beiAenderung nicht.
  * ctx.events, ctx.orteListe, ctx.orte und ctx.laedt dürfen später ersetzt werden; danach aktualisieren() rufen.
  * @param {Document} doc
  * @param {Element} container
@@ -80,15 +84,24 @@ export function baueFilterseite(doc, container, ctx) {
     chip.addEventListener('click', () => {
       Object.assign(ctx.prefs, { zeit: wert, von: null, bis: null });
       geblaettert = false; // der Kalender zeigt wieder den Monat des markierten Bereichs
+      kalenderOffen = false;
       geaendert();
     });
     zeitChips.set(wert, chip);
     zeitwahl.append(chip);
   }
-  const zeitraumChip = el(doc, 'span', 'chip zeitraum-chip');
-  zeitwahl.append(zeitraumChip);
+  // Der Kalender ist beim Start zugeklappt. Dieser Chip (vor "Alle") klappt ihn auf und zu und nennt den eigenen Zeitraum.
+  let kalenderOffen = false;
+  const kalenderChip = knopf(doc, 'chip kalender-chip', 'Kalender');
+  kalenderChip.setAttribute('aria-controls', 'kalenderbox');
+  kalenderChip.addEventListener('click', () => {
+    kalenderOffen = !kalenderOffen;
+    aktualisieren();
+  });
+  zeitwahl.insertBefore(kalenderChip, zeitChips.get('alle'));
 
   const kalenderbox = el(doc, 'div', 'kalenderbox');
+  kalenderbox.setAttribute('id', 'kalenderbox');
   const kopf = el(doc, 'div', 'kalender-kopf');
   const zurueck = knopf(doc, 'monat-zurueck', '‹');
   zurueck.setAttribute('aria-label', 'Voriger Monat');
@@ -156,50 +169,46 @@ export function baueFilterseite(doc, container, ctx) {
   kachelFeld.setAttribute('role', 'group');
   kachelFeld.setAttribute('aria-label', 'Rubriken');
   const kacheln = new Map();
+  /** Je Rubrik mit Unterarten: die Gruppe direkt hinter ihrer Kachel (im Raster über die ganze Breite), "Alle" und die Unterarten. */
+  const sortenGruppen = new Map();
   for (const r of RUBRIKEN) {
     const k = knopf(doc, `kachel art-${r.farbe}`);
     const zahl = el(doc, 'span', 'kachel-zahl', '0');
     k.append(el(doc, 'span', 'kachel-name', r.name), zahl);
     k.addEventListener('click', () => {
-      ctx.prefs.rubriken = rubrikWaehlen(ctx.prefs.rubriken ?? [], r.key);
+      Object.assign(ctx.prefs, rubrikGetippt(ctx.prefs, r.key));
       geaendert();
     });
     kacheln.set(r.key, { k, zahl, name: r.name });
     kachelFeld.append(k);
-  }
-  was.append(kachelFeld);
 
-  const sortenGruppen = new Map();
-  const sortenChips = [];
-  for (const [rubrik, def] of Object.entries(SORTEN)) {
-    const gruppe = el(doc, 'div', 'gruppe sorten');
+    const def = Object.hasOwn(SORTEN, r.key) ? SORTEN[r.key] : null;
+    if (!def) continue;
+    const gruppe = el(doc, 'div', `gruppe sorten art-${r.farbe}`);
+    gruppe.setAttribute('role', 'group');
+    gruppe.setAttribute('aria-label', def.titel);
+    gruppe.setAttribute('hidden', '');
     gruppe.append(el(doc, 'p', 'gruppentitel', def.titel));
     const chips = el(doc, 'div', 'chips');
+    const waehle = (schluessel) => () => {
+      ctx.prefs.hiddenGenres = sorteWaehlen(ctx.prefs.hiddenGenres, r.key, schluessel);
+      geaendert();
+    };
+    const alle = knopf(doc, 'chip sorte-alle', 'Alle');
+    alle.addEventListener('click', waehle(null));
+    chips.append(alle);
+    const einzelne = [];
     for (const [schluessel, text] of [...Object.entries(def.liste), [def.sonstige, def.sonstigeText]]) {
       const chip = knopf(doc, 'chip', text);
-      chip.addEventListener('click', () => {
-        const aus = (ctx.prefs.hiddenGenres ?? []).includes(schluessel);
-        ctx.prefs.hiddenGenres = aus ? ctx.prefs.hiddenGenres.filter((g) => g !== schluessel) : [...(ctx.prefs.hiddenGenres ?? []), schluessel];
-        geaendert();
-      });
-      sortenChips.push([schluessel, chip]);
+      chip.addEventListener('click', waehle(schluessel));
+      einzelne.push([schluessel, chip]);
       chips.append(chip);
     }
     gruppe.append(chips);
-    sortenGruppen.set(rubrik, gruppe);
-    was.append(gruppe);
+    sortenGruppen.set(r.key, { gruppe, alle, einzelne });
+    kachelFeld.append(gruppe);
   }
-
-  const advent = el(doc, 'label', 'schalter schalter-advent');
-  const adventHaken = el(doc, 'input');
-  adventHaken.setAttribute('type', 'checkbox');
-  const adventText = el(doc, 'span');
-  advent.append(adventHaken, adventText);
-  adventHaken.addEventListener('change', () => {
-    ctx.prefs.advent = adventHaken.checked;
-    geaendert();
-  });
-  was.append(advent);
+  was.append(kachelFeld);
 
   // --- Wo? ---
   const wo = abschnitt(doc, 'Wo?');
@@ -269,16 +278,21 @@ export function baueFilterseite(doc, container, ctx) {
     const orte = ctx.orte ?? {};
 
     // Wann?
-    for (const [wert, chip] of zeitChips) chip.setAttribute('aria-pressed', String(prefs.zeit === wert));
-    if (prefs.zeit === 'tage') {
-      zeitraumChip.textContent = zeitraumText(prefs, tagHeute);
-      zeitraumChip.setAttribute('aria-pressed', 'true');
-      zeitraumChip.removeAttribute('hidden');
+    // Ein abgelaufener eigener Zeitraum gilt wie der Standard (siehe zeitfenster); so zeigen es auch die Chips.
+    const zeit = zeitAbgelaufen(prefs, tagHeute) ? DEFAULT_PREFS.zeit : prefs.zeit;
+    for (const [wert, chip] of zeitChips) chip.setAttribute('aria-pressed', String(zeit === wert));
+    if (zeit === 'tage') {
+      const text = zeitraumText(prefs, tagHeute);
+      kalenderChip.textContent = text;
+      kalenderChip.setAttribute('aria-label', `Kalender: ${text}`);
     } else {
-      zeitraumChip.textContent = '';
-      zeitraumChip.removeAttribute('aria-pressed');
-      zeitraumChip.setAttribute('hidden', '');
+      kalenderChip.textContent = 'Kalender';
+      kalenderChip.removeAttribute('aria-label');
     }
+    kalenderChip.setAttribute('aria-pressed', String(zeit === 'tage'));
+    kalenderChip.setAttribute('aria-expanded', String(kalenderOffen));
+    if (kalenderOffen) kalenderbox.removeAttribute('hidden');
+    else kalenderbox.setAttribute('hidden', '');
     const tage = tageMitTerminen(events, prefs, jetzt, orte);
     monate = monateMitTerminen(tage, tagHeute);
     const bereich = markierterBereich(prefs, tagHeute);
@@ -317,15 +331,13 @@ export function baueFilterseite(doc, container, ctx) {
       k.classList.toggle('leer', zahlen[key] === 0);
       k.setAttribute('aria-pressed', String(gewaehlt.includes(key)));
     }
-    const einzel = einzelneRubrik(gewaehlt);
-    for (const [rubrik, gruppe] of sortenGruppen) {
-      if (rubrik === einzel) gruppe.removeAttribute('hidden');
+    for (const [rubrik, { gruppe, alle, einzelne }] of sortenGruppen) {
+      if (gewaehlt.includes(rubrik)) gruppe.removeAttribute('hidden');
       else gruppe.setAttribute('hidden', '');
+      const wahl = gewaehlteSorten(prefs.hiddenGenres, rubrik); // null = Alle
+      alle.setAttribute('aria-pressed', String(wahl === null));
+      for (const [schluessel, chip] of einzelne) chip.setAttribute('aria-pressed', String(wahl !== null && wahl.includes(schluessel)));
     }
-    const aus = prefs.hiddenGenres ?? [];
-    for (const [schluessel, chip] of sortenChips) chip.setAttribute('aria-pressed', String(!aus.includes(schluessel)));
-    adventHaken.checked = Boolean(prefs.advent);
-    adventText.textContent = `Nur Advent und Weihnachten (${zaehleAdvent(events, prefs, jetzt, orte)})`;
 
     // Wo?
     if (orteGezeichnet !== ctx.orteListe) zeichneOrte();

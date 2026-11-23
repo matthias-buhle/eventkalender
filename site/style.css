@@ -199,9 +199,12 @@ footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(
 .filterseite .bereich { display: flex; flex-direction: column; gap: 8px; }
 .filterseite .bereich-titel { margin: 0; font: 600 0.95rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .filterseite .chip { min-height: 40px; }
-.filterseite .zeitraum-chip { display: inline-flex; align-items: center; background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; cursor: default; }
-.filterseite .zeitraum-chip[hidden] { display: none; }
-.filterseite .sorten .chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
+/* Der Chip "Kalender" klappt den Monatsblock auf und zu (Pfeil als Dreieck, damit ihn kein Vorleseprogramm vorliest). */
+.filterseite .kalender-chip { display: inline-flex; align-items: center; gap: 6px; }
+.filterseite .kalender-chip[aria-pressed="true"] { font-weight: 600; }
+.filterseite .kalender-chip::after { content: ""; border: 5px solid transparent; border-bottom-width: 0; border-top-color: currentColor; }
+.filterseite .kalender-chip[aria-expanded="true"]::after { border-width: 0 5px 5px; border-top-color: transparent; border-bottom-color: currentColor; }
+.kalenderbox[hidden] { display: none; }
 
 .kalenderbox { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 8px 8px; }
 /* Schmale Geräte (320 px): weniger Rand, damit jede Tageszelle mindestens 40 px breit bleibt (320 − 32 − 2 − 4 = 282 px / 7) */
@@ -223,14 +226,15 @@ footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(
 .kalender .gewaehlt.a.e { border-radius: 8px; }
 .kalender .gewaehlt.punkt::after { background: var(--accent-text); }
 
-.kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+/* dense: die Unterpunkte einer Kachel stehen über die ganze Breite unter ihrer Zeile, die Nachbarkachel bleibt in der Zeile */
+.kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; gap: 8px; }
 .kachel { --art: var(--art-sonstiges); display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 48px; padding: 8px 10px; border: 1px solid var(--line); border-left: 4px solid var(--art); border-radius: 10px; background: var(--card); color: var(--text); font: inherit; font-size: 0.9rem; line-height: 1.25; text-align: left; cursor: pointer; }
-.kachel.art-konzert { --art: var(--art-konzert); }
-.kachel.art-party { --art: var(--art-party); }
-.kachel.art-markt { --art: var(--art-markt); }
-.kachel.art-fest { --art: var(--art-fest); }
-.kachel.art-schau { --art: var(--art-schau); }
-.kachel.art-sonstiges { --art: var(--art-sonstiges); }
+.kachel.art-konzert, .kacheln .sorten.art-konzert { --art: var(--art-konzert); }
+.kachel.art-party, .kacheln .sorten.art-party { --art: var(--art-party); }
+.kachel.art-markt, .kacheln .sorten.art-markt { --art: var(--art-markt); }
+.kachel.art-fest, .kacheln .sorten.art-fest { --art: var(--art-fest); }
+.kachel.art-schau, .kacheln .sorten.art-schau { --art: var(--art-schau); }
+.kachel.art-sonstiges, .kacheln .sorten.art-sonstiges { --art: var(--art-sonstiges); }
 .kachel-name { min-width: 0; overflow-wrap: anywhere; font-weight: 500; }
 .kachel-zahl { flex: 0 0 auto; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .kachel[aria-pressed="true"] { border-color: var(--accent); border-left-color: var(--art); box-shadow: inset 0 0 0 1px var(--accent); }
@@ -238,7 +242,9 @@ footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(
 .kachel.leer { padding: 8px 10px; text-align: left; color: var(--text); opacity: 0.45; }
 .kachel.leer[aria-pressed="true"] { opacity: 0.75; }
 
-.schalter-advent { min-height: 44px; }
+/* Unterpunkte einer gewählten Rubrik: aufgeklappt direkt unter der Kachel, mit deren Farbstreifen */
+.kacheln .sorten { --art: var(--art-sonstiges); grid-column: 1 / -1; padding: 8px 10px 10px; border: 1px solid var(--accent); border-left: 4px solid var(--art); border-radius: 10px; background: var(--card); }
+.kacheln .sorten .gruppentitel { font-size: 0.8rem; }
 .filterseite .tschechien { min-height: 44px; }
 .filterseite .umkreis + .tschechien { margin-top: -4px; }
 .filterseite-fuss { position: sticky; bottom: 0; margin: 0 -16px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
