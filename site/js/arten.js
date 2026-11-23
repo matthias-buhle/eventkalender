@@ -2,9 +2,6 @@
 // Die Schlüssel und Namen entsprechen src/rubriken.js und src/normalize.js; die Seite kann diese Dateien nicht laden.
 // Der Gleichlauf ist in test/normalize.test.js gesichert.
 
-/** Alle Arten in der Reihenfolge der Filterknöpfe. */
-export const ARTEN = ['konzert', 'party', 'markt', 'fest', 'schau', 'sonstiges'];
-
 /**
  * Die 13 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
  * farbe = Farbfamilie (die Art in src/rubriken.js; die CSS-Klasse art-<farbe> bleibt).

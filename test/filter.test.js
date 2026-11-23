@@ -7,17 +7,26 @@ const ev = (extra = {}) => ({
   id: 'x', title: 'Termin', art: 'konzert', tags: [], start: '2026-11-08T19:00:00+01:00', end: null, hasTime: true,
   placeName: 'Pirna', distanceKm: 20, country: 'DE', ...extra,
 });
-const prefs = (extra = {}) => ({ ...DEFAULT_PREFS, ...extra });
+// Die Tests hier prüfen die übrigen Filter; der Zeitraum steht auf "alle" (Standard ist "wochenende").
+const prefs = (extra = {}) => ({ ...DEFAULT_PREFS, zeit: 'alle', ...extra });
 
 function fakeStorage(inhalt = {}) {
   const daten = { ...inhalt };
   return { getItem: (k) => (k in daten ? daten[k] : null), setItem: (k, v) => { daten[k] = String(v); }, daten };
 }
 
-test('applyFilters blendet hiddenArt aus', () => {
-  const liste = [ev({ id: 'a', art: 'konzert' }), ev({ id: 'b', art: 'markt' }), ev({ id: 'c', art: 'party' })];
-  const rest = applyFilters(liste, prefs({ hiddenArt: ['markt', 'party'] }), NOW);
-  assert.deepEqual(rest.map((e) => e.id), ['a']);
+test('Rubrik filtern: nur die gewählten Rubriken; ohne Feld rubrik gilt die Art; leer heißt alle', () => {
+  const liste = [
+    ev({ id: 'fuehrung', rubrik: 'fuehrung', art: 'sonstiges' }),
+    ev({ id: 'alt-konzert', art: 'konzert' }), // alte Daten ohne rubrik
+    ev({ id: 'markt', rubrik: 'markt', art: 'markt' }),
+    ev({ id: 'theater', rubrik: 'theater', art: 'sonstiges' }),
+  ];
+  const ids = (rubriken) => applyFilters(liste, prefs({ rubriken }), NOW).map((e) => e.id);
+  assert.deepEqual(ids(['fuehrung']), ['fuehrung']);
+  assert.deepEqual(ids(['konzert']), ['alt-konzert']);
+  assert.deepEqual(ids(['konzert', 'theater']), ['alt-konzert', 'theater']);
+  assert.deepEqual(ids([]), ['fuehrung', 'alt-konzert', 'markt', 'theater']);
 });
 
 test('applyFilters blendet hiddenTags aus', () => {
@@ -90,13 +99,22 @@ test('loadPrefs liefert Standard ohne Speicher, bei werfendem Speicher und bei f
   assert.deepEqual(gemischt, { ...DEFAULT_PREFS, hiddenTags: ['a'], showCZ: false });
 });
 
-test('Standard blendet nichts aus: 75 km, Tschechien an', () => {
-  assert.deepEqual(DEFAULT_PREFS, { hiddenArt: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, zeit: 'alle', suche: '' });
+test('Standard blendet nichts aus: alle Rubriken, 75 km, Tschechien an, Wochenende, kein Advent', () => {
+  assert.deepEqual(DEFAULT_PREFS, {
+    rubriken: [], hiddenGenres: [], hiddenTags: [], maxKm: 75, showCZ: true, ort: null, advent: false,
+    zeit: 'wochenende', von: null, bis: null, suche: '',
+  });
+  assert.ok(Object.isFrozen(DEFAULT_PREFS) && Object.isFrozen(DEFAULT_PREFS.rubriken), 'der Standard ist nicht veränderbar');
+  const geladen = loadPrefs(null);
+  assert.ok(!Object.isFrozen(geladen) && geladen.rubriken !== DEFAULT_PREFS.rubriken, 'loadPrefs liefert eine eigene Kopie');
 });
 
 test('savePrefs und loadPrefs: Rundlauf; werfender Speicher löst keine Ausnahme aus', () => {
   const speicher = fakeStorage();
-  const eigene = { hiddenArt: ['markt'], hiddenGenres: ['jazz'], hiddenTags: ['kinder'], maxKm: 30, showCZ: false, ort: 'Bautzen', zeit: '60', suche: '' };
+  const eigene = {
+    rubriken: ['markt'], hiddenGenres: ['jazz'], hiddenTags: ['kinder'], maxKm: 50, showCZ: false, ort: 'Bautzen', advent: true,
+    zeit: 'wochenende', von: null, bis: null, suche: '',
+  };
   savePrefs(speicher, eigene);
   assert.deepEqual(loadPrefs(speicher), eigene);
   savePrefs(speicher, { ...eigene, suche: 'Rammstein' });
