@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { todayBerlin } from './time.js';
 import { CENTER, RADIUS_KM, distanceKm, resolvePlace } from './geo.js';
 import { dedupe } from './dedupe.js';
-import { detectSorte, passendeSorte } from './normalize.js';
+import { rubrikUndGenre } from './rubriken.js';
 import { createPoliteClient } from './http.js';
 import { uebersetzeTermine } from './uebersetzen.js';
 import { schreibeVersion } from './version.js';
@@ -15,19 +15,15 @@ const MIN_ERGIEBIG = 5;
  * @typedef {{name:string, ok:boolean, count:number, error:string|null, lastOkAt:string|null, unbekannteOrte?:string[]}} SourceStatus
  */
 
-/** Unterart (Feld genre): Genre bei Konzerten, Sorte bei Märkten und Schauen; eine Vorgabe der Quelle zählt nur, wenn sie zur Art passt. */
-function genreVon(e) {
-  return passendeSorte(e.art, e.genre) ?? detectSorte(e.art, e.title, e.description);
-}
-
 function anreichern(e) {
   let { lat, lon, country } = e;
+  const { rubrik, genre } = rubrikUndGenre(e);
   if (lat == null || lon == null) {
     const ort = resolvePlace(e.placeName);
     if (ort) ({ lat, lon, country } = ort);
   }
   const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
-  return { ...e, genre: genreVon(e), lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
+  return { ...e, rubrik, genre, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
 }
 
 /** Ortsnamen, die das Ortsverzeichnis nicht kennt: aus gelieferten Terminen und aus dem, was der Adapter verworfen hat. */

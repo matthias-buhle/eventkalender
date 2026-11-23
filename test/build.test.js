@@ -298,6 +298,23 @@ test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre So
   assert.equal(von('Ohne Hinweis'), null);
 });
 
+test('Rubrik: anreichern setzt rubrik und genre aus rubrikUndGenre, art bleibt', async () => {
+  const { events } = await runAll({
+    now: NOW, http: {},
+    sources: [quelle('q', async () => [
+      ev({ title: 'Mühlen- und Bäckereiführung', art: 'sonstiges' }),
+      ev({ title: 'Jazzabend im Club', art: 'konzert' }),
+    ])],
+  });
+  const fuehrung = events.find((e) => e.title === 'Mühlen- und Bäckereiführung');
+  assert.equal(fuehrung.rubrik, 'fuehrung');
+  assert.equal(fuehrung.genre, 'brauerei');
+  assert.equal(fuehrung.art, 'sonstiges');
+  const konzert = events.find((e) => e.title === 'Jazzabend im Club');
+  assert.equal(konzert.rubrik, 'konzert');
+  assert.equal(konzert.genre, 'jazz');
+});
+
 test('versionsInfo: Nummer aus package.json, Commit auf 7 Zeichen gekürzt, ungültiger Commit entfällt', () => {
   const gebaut = '2026-11-10T14:23:31.511Z';
   assert.deepEqual(versionsInfo({ paket: { version: '1.4.0' }, sha: 'EC29751AB0123456789012345678901234567890', gebaut }), { version: '1.4.0', commit: 'ec29751', gebaut });

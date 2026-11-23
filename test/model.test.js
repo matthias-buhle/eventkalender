@@ -56,3 +56,8 @@ test('makeEvent übernimmt lizenz', () => {
   const lizenz = { name: 'CC BY-SA 4.0', url: 'https://creativecommons.org/licenses/by-sa/4.0/deed.de', urheber: 'Ottendorfer Hütte GmbH' };
   assert.deepEqual(makeEvent({ ...base, lizenz }).lizenz, lizenz);
 });
+
+test('makeEvent: rubrik ist standardmäßig null und wird sonst übernommen', () => {
+  assert.equal(makeEvent(base).rubrik, null);
+  assert.equal(makeEvent({ ...base, rubrik: 'theater' }).rubrik, 'theater');
+});
