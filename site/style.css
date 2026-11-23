@@ -89,6 +89,9 @@ h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-tr
 .versionsmarke { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .versionsmarke::before { content: "·"; margin-right: 6px; }
 .versionsmarke[hidden] { display: none; }
+/* Auf der Filterseite ist die Bergkette flacher, damit Zeitwahl und Kacheln ins erste Bild passen; die Sonne steht halb hinter den Bergen. */
+body:has(#filterseite:not([hidden])) .landschaft { height: 44px; }
+body:has(#filterseite:not([hidden])) .sonne { top: 6px; width: 24px; height: 24px; }
 
 /* Kopf der Liste (Zusammenfassung, Filter ändern, Suche): klebt unter dem Namen, 4 px Luft dazwischen (vom Hintergrund überdeckt) */
 .listenkopf { padding-top: 8px; padding-bottom: 4px; position: sticky; top: calc(var(--kopf) + 4px); background: var(--bg); box-shadow: 0 -4px 0 var(--bg); z-index: 3; border-bottom: 1px solid var(--line); }
