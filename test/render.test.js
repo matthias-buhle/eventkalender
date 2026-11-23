@@ -6,7 +6,7 @@ import { renderEventCard, renderDetail, renderStatusFooter, dayLabel, safeHref }
 const { document } = parseHTML('<!doctype html><html><body></body></html>');
 const ev = (extra = {}) => ({
   id: 'x', title: 'Dudelsack-Konzert', art: 'konzert', tags: [], start: '2026-11-14T19:00:00+01:00', end: null, hasTime: true,
-  placeName: 'Pirna', distanceKm: 20.4, country: 'DE',
+  placeName: 'Pirna', distanceKm: 20.4, lat: 50.96, lon: 13.94, country: 'DE',
   sources: [{ name: 'Alter Schlachthof', url: 'https://example.org/e/1' }],
   contact: { phone: null, url: null, email: null }, ticketUrl: null, ticketStatus: null,
   description: null, needsReview: false, submittedBy: null, ...extra,
@@ -299,4 +299,41 @@ test('Fremder Text im Urheber wird als Text dargestellt, unsichere Lizenzadresse
     assert.equal(p.querySelectorAll('a').length, 0, String(url));
     assert.equal(p.textContent, 'Lizenz: CC BY-SA 4.0 · Urheber: Touristinformation Sebnitz');
   }
+});
+
+test('Kartenkopf nennt die Rubrik in der Einzahl; ohne rubrik (alte Daten) die Art, die Farbklasse bleibt die Art', () => {
+  const fuehrung = renderEventCard(document, ev({ art: 'sonstiges', rubrik: 'fuehrung', genre: 'stadt' }));
+  assert.equal(fuehrung.querySelector('.art').textContent, 'Führung');
+  assert.equal(fuehrung.querySelector('.genre').textContent, 'Stadt & Ort');
+  assert.ok(fuehrung.classList.contains('art-sonstiges'));
+  const alt = renderEventCard(document, ev({ art: 'konzert' }));
+  assert.equal(alt.querySelector('.art').textContent, 'Konzert');
+  assert.ok(alt.classList.contains('art-konzert'));
+  const unbekannt = renderEventCard(document, ev({ art: 'konzert', rubrik: 'quatsch' }));
+  assert.equal(unbekannt.querySelector('.art').textContent, 'Konzert');
+  const detailKopf = renderDetail(document, ev({ art: 'sonstiges', rubrik: 'theater' }), { orte: [], userAgent: '' });
+  assert.equal(detailKopf.querySelector('.art').textContent, 'Theater & Lesung');
+});
+
+test('Ausstellung (Farbe Schau) zeigt "Ausstellung · Kunst & Foto"; alter Schau-Termin mit Genre kunst bleibt sichtbar ohne Zusatz', () => {
+  const karte = renderEventCard(document, ev({ art: 'schau', rubrik: 'ausstellung', genre: 'kunst' }));
+  assert.equal(karte.querySelector('.art-zeile').textContent, 'Ausstellung · Kunst & Foto');
+  assert.ok(karte.classList.contains('art-schau'));
+  const alt = renderEventCard(document, ev({ art: 'schau', genre: 'kunst' }));
+  assert.equal(alt.querySelector('.art-zeile').textContent, 'Schau');
+});
+
+test('Ortszeile: ohne Koordinaten "Ort nicht genau bekannt" statt der Kilometer, mit Koordinaten nicht; Karte und Detailfenster', () => {
+  const ohne = ev({ lat: null, lon: null, distanceKm: null });
+  assert.equal(renderEventCard(document, ohne).querySelector('.where').textContent, 'Pirna · Ort nicht genau bekannt');
+  assert.equal(detail(ohne).querySelector('.where').textContent, 'Pirna · Ort nicht genau bekannt');
+  const mit = ev({ lat: 50.96, lon: 13.94 });
+  assert.ok(!renderEventCard(document, mit).querySelector('.where').textContent.includes('Ort nicht genau bekannt'));
+  assert.ok(!detail(mit).querySelector('.where').textContent.includes('Ort nicht genau bekannt'));
+  const nurHinweis = renderEventCard(document, ev({ lat: undefined, lon: undefined, distanceKm: 20, placeName: '' }));
+  assert.equal(nurHinweis.querySelector('.where').textContent, 'Ort nicht genau bekannt');
+  const eineKoordinate = renderEventCard(document, ev({ lat: 50.9, lon: null })).querySelector('.where').textContent;
+  assert.ok(!eineKoordinate.includes('Ort nicht genau bekannt'), 'eine endliche Koordinate genügt');
+  const unsinn = renderEventCard(document, ev({ lat: '50.9', lon: NaN })).querySelector('.where').textContent;
+  assert.ok(unsinn.includes('Ort nicht genau bekannt'), 'Strings und NaN zählen nicht als Koordinate');
 });

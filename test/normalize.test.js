@@ -254,11 +254,16 @@ test('detectSorte(fest): Familie & Kinder, Stadt- & Dorffest, Weihnachten & Lich
   assert.equal(f('Zärtlichkeiten mit Freunden'), null);
 });
 
-test('Unterarten stehen in Erkennung (src) und Seite (site/js/arten.js) mit denselben Schlüsseln und Namen', async () => {
-  const { SORTEN: site } = await import('../site/js/arten.js');
-  const { SORTEN: src } = await import('../src/normalize.js');
-  assert.deepEqual(Object.keys(site), Object.keys(src));
-  for (const art of Object.keys(src)) assert.deepEqual(site[art].liste, src[art], art);
+test('Rubriken und Unterarten stehen in Erkennung (src) und Seite (site/js/arten.js) mit denselben Schlüsseln und Namen', async () => {
+  const { SORTEN: site, RUBRIKEN: siteRubriken } = await import('../site/js/arten.js');
+  const { UNTERARTEN: src, RUBRIKEN: srcRubriken } = await import('../src/rubriken.js');
+  assert.deepEqual(Object.keys(site).sort(), Object.keys(src).sort(), 'dieselben Rubriken haben Unterarten');
+  for (const rubrik of Object.keys(src)) assert.deepEqual(site[rubrik].liste, src[rubrik], rubrik);
   const alle = Object.entries(site).flatMap(([, d]) => [...Object.keys(d.liste), d.sonstige]);
-  assert.equal(new Set(alle).size, alle.length, 'Schlüssel sind über alle Arten eindeutig');
+  assert.equal(new Set(alle).size, alle.length, 'Schlüssel sind über alle Rubriken eindeutig');
+  assert.deepEqual(
+    siteRubriken.map(({ key, name, karte, farbe }) => ({ key, name, karte, art: farbe })),
+    srcRubriken.map(({ key, name, karte, art }) => ({ key, name, karte, art })),
+    'RUBRIKEN: Schlüssel, Namen, Karten-Einzahl und Farbfamilie',
+  );
 });

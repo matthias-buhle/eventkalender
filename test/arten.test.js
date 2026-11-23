@@ -1,0 +1,52 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { RUBRIKEN, SORTEN, rubrikVon, rubrikName, rubrikKarte, sorteFilter, sorteName } from '../site/js/arten.js';
+
+test('rubrikVon: bekannte Rubrik gilt, sonst fällt es auf die Art zurück, Unbekanntes wird sonstiges', () => {
+  assert.equal(rubrikVon({ art: 'unbekannt' }), 'sonstiges');
+  assert.equal(rubrikVon({ art: 'schau', rubrik: 'quatsch' }), 'schau');
+  assert.equal(rubrikVon({ art: 'schau', rubrik: 'ausstellung' }), 'ausstellung');
+  assert.equal(rubrikVon({ art: 'sonstiges', rubrik: 'fuehrung' }), 'fuehrung');
+  for (const art of ['konzert', 'markt', 'party', 'fest', 'schau']) assert.equal(rubrikVon({ art }), art);
+  assert.equal(rubrikVon({ art: 'sonstiges' }), 'sonstiges');
+  assert.equal(rubrikVon({}), 'sonstiges');
+  assert.equal(rubrikVon({ art: 'konzert', rubrik: 'toString' }), 'konzert', 'Prototyp-Namen sind keine Rubrik');
+  assert.equal(rubrikVon({ art: 'toString' }), 'sonstiges');
+});
+
+test('Rubrikname und Karten-Einzahl; 13 Rubriken', () => {
+  assert.equal(RUBRIKEN.length, 13);
+  assert.equal(rubrikName('ausstellung'), 'Ausstellungen & Museen');
+  assert.equal(rubrikKarte('ausstellung'), 'Ausstellung');
+  assert.equal(rubrikKarte('fuehrung'), 'Führung');
+  assert.equal(rubrikName('quatsch'), 'Sonstiges');
+  assert.equal(rubrikKarte('quatsch'), 'Sonstiges');
+});
+
+test('SORTEN je Rubrik, neue Sonstige-Schlüssel und Titel', () => {
+  assert.deepEqual(Object.keys(SORTEN), ['konzert', 'party', 'markt', 'fest', 'schau', 'ausstellung', 'fuehrung']);
+  assert.equal(SORTEN.ausstellung.sonstige, 'sonstige-ausstellung');
+  assert.equal(SORTEN.fuehrung.sonstige, 'sonstige-fuehrung');
+  assert.equal(SORTEN.ausstellung.titel, 'Ausstellungen: Sorte');
+  assert.equal(SORTEN.fuehrung.titel, 'Führungen: Sorte');
+});
+
+test('sorteFilter/sorteName arbeiten mit der Rubrik', () => {
+  assert.equal(sorteFilter({ art: 'schau', rubrik: 'ausstellung', genre: 'kunst' }), 'kunst');
+  assert.equal(sorteName({ art: 'schau', rubrik: 'ausstellung', genre: 'kunst' }), 'Kunst & Foto');
+  assert.equal(sorteFilter({ art: 'sonstiges', rubrik: 'fuehrung', genre: null }), 'sonstige-fuehrung');
+  assert.equal(sorteFilter({ art: 'sonstiges', rubrik: 'fuehrung', genre: 'untertage' }), 'untertage');
+  assert.equal(sorteFilter({ art: 'konzert', genre: 'jazz' }), 'jazz');
+  assert.equal(sorteFilter({ art: 'sonstiges', rubrik: 'wandern' }), null);
+  assert.equal(sorteName({ art: 'sonstiges' }), null);
+});
+
+test('alte Daten: Genre, das die Rubrik nicht (mehr) kennt, wirft nicht und zählt als "sonstige" der Rubrik', () => {
+  const alt = { art: 'schau', genre: 'kunst' }; // vor den Rubriken lag kunst unter schau
+  assert.equal(rubrikVon(alt), 'schau');
+  assert.equal(sorteFilter(alt), 'sonstige-schau');
+  assert.equal(sorteName(alt), null);
+  assert.equal(sorteFilter({ art: 'markt', genre: 'jazz' }), 'sonstige-markt');
+  assert.equal(sorteFilter({ art: 'konzert', genre: { x: 1 } }), 'sonstige');
+  assert.equal(sorteFilter({ art: 'konzert', genre: 'constructor' }), 'sonstige');
+});

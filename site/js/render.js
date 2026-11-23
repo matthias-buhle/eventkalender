@@ -1,5 +1,5 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
-import { sorteName } from './arten.js';
+import { sorteName, rubrikVon, rubrikKarte } from './arten.js';
 import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
 const ARTEN = { markt: 'Markt', konzert: 'Konzert', party: 'Party', fest: 'Fest', schau: 'Schau', sonstiges: 'Sonstiges' };
@@ -94,7 +94,7 @@ function kontaktKnoepfe(doc, ev) {
 function kopfzeile(doc, ev, gemeinde) {
   const kopf = el(doc, 'div', 'kartenkopf');
   const art = el(doc, 'span', 'art-zeile');
-  art.append(el(doc, 'span', 'art', artName(ev.art)));
+  art.append(el(doc, 'span', 'art', rubrikKarte(rubrikVon(ev))));
   const sorte = sorteName(ev);
   if (sorte) art.append(' · ', el(doc, 'span', 'genre', sorte));
   if (ev.country === 'CZ') art.append(' · ', el(doc, 'span', 'land', 'Tschechien'));
@@ -110,7 +110,13 @@ function wannZeile(doc, ev) {
   return wann;
 }
 
-const kmText = (ev) => (ev.distanceKm != null ? `${Math.round(ev.distanceKm)} km` : null);
+const hatKoordinate = (ev) => Number.isFinite(ev.lat) || Number.isFinite(ev.lon);
+
+/** Letzter Teil der Ortszeile: "Ort nicht genau bekannt", wenn weder lat noch lon eine endliche Zahl ist, sonst die Entfernung. */
+const entfernungText = (ev) => {
+  if (!hatKoordinate(ev)) return 'Ort nicht genau bekannt';
+  return ev.distanceKm != null ? `${Math.round(ev.distanceKm)} km` : null;
+};
 
 function quellenZeile(doc, ev) {
   const quellen = el(doc, 'p', 'sources', 'Quelle: ');
@@ -149,7 +155,7 @@ export function renderEventCard(doc, ev, optionen = {}) {
   karte.append(kopfzeile(doc, ev, gemeindeVon(ev.placeName, orte)));
   karte.append(el(doc, 'h3', 'title', ev.title));
   karte.append(wannZeile(doc, ev));
-  const ort = [spielstaetteVon(ev.placeName, orte), kmText(ev)].filter(Boolean);
+  const ort = [spielstaetteVon(ev.placeName, orte), entfernungText(ev)].filter(Boolean);
   if (ort.length) karte.append(el(doc, 'p', 'where', ort.join(' · ')));
   if (ev.needsReview) karte.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
   if (ev.description) karte.append(el(doc, 'p', 'desc', ev.description));
@@ -170,7 +176,7 @@ export function renderDetail(doc, ev, optionen = {}) {
   const detail = el(doc, 'div', `detail art-${ARTEN[ev.art] ? ev.art : 'sonstiges'}`);
   const kopf = kopfzeile(doc, ev, null);
   detail.append(kopf, el(doc, 'h2', 'title', ev.title), wannZeile(doc, ev));
-  const ort = [spielstaetteVon(ev.placeName, orte), gemeinde, kmText(ev)].filter(Boolean);
+  const ort = [spielstaetteVon(ev.placeName, orte), gemeinde, entfernungText(ev)].filter(Boolean);
   if (ort.length) detail.append(el(doc, 'p', 'where', ort.join(' · ')));
   if (ev.needsReview) detail.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
   if (ev.description) detail.append(el(doc, 'p', 'desc', ev.description));

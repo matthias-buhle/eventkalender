@@ -127,7 +127,9 @@ test('Sorte: bei Markt allein oder Schau allein lassen sich Sorten ausblenden; o
   assert.deepEqual(mids(['sonstige']), ['weih', 'trodel', 'm-ohne', 'm-falsch'], 'Konzert-Schlüssel trifft keine Märkte');
   const schau = [ev({ id: 'tiere', art: 'schau', genre: 'tiere' }), ev({ id: 'kunst', art: 'schau', genre: 'kunst' }), ev({ id: 's-ohne', art: 'schau', genre: null })];
   const sids = (hiddenGenres) => applyFilters(schau, prefs({ hiddenGenres, hiddenArt: nur('schau') }), NOW).map((e) => e.id);
-  assert.deepEqual(sids(['tiere', 'sonstige-schau']), ['kunst']);
+  // Alte Daten: kunst gehört seit den Rubriken zu "ausstellung"; ein alter Schau-Termin damit zählt als "sonstige Schau" und bleibt sichtbar, solange die nicht ausgeblendet ist.
+  assert.deepEqual(sids(['tiere']), ['kunst', 's-ohne']);
+  assert.deepEqual(sids(['tiere', 'sonstige-schau']), []);
 });
 
 test('Unterfilter wirken nur bei genau einer Art; bei mehreren Arten (oder allen) wird alles gezeigt', () => {
