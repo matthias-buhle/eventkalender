@@ -100,8 +100,12 @@ export function baueFilterseite(doc, container, ctx) {
   kalenderbox.append(kopf, kalender);
   wann.append(zeitwahl, kalenderbox);
 
-  /** Der gezeigte Monat (JJJJ-MM); Start: Monat des gewählten Tages, sonst von heute. */
-  let monat = ctx.prefs.zeit === 'tage' && typeof ctx.prefs.von === 'string' && ctx.prefs.von > heute() ? ctx.prefs.von.slice(0, 7) : heute().slice(0, 7);
+  /**
+   * Der gezeigte Monat (JJJJ-MM). Bis zum ersten Blättern folgt er der Zeitwahl: der Monat, in dem der markierte Bereich
+   * beginnt, wenn es dort Termine gibt, sonst der Monat von heute. Nach dem Blättern bleibt er, wohin geblättert wurde.
+   */
+  let monat = heute().slice(0, 7);
+  let geblaettert = false;
   let gezeichnet = null;
   let monate = [];
   /** @type {Map<string, Element>} */
@@ -139,6 +143,7 @@ export function baueFilterseite(doc, container, ctx) {
     const i = monate.indexOf(monat) + schritt;
     if (i < 0 || i >= monate.length) return;
     monat = monate[i];
+    geblaettert = true;
     aktualisieren();
   }
   zurueck.addEventListener('click', () => blaettern(-1));
@@ -273,12 +278,20 @@ export function baueFilterseite(doc, container, ctx) {
     }
     const tage = tageMitTerminen(events, prefs, jetzt, orte);
     monate = monateMitTerminen(tage, tagHeute);
+    const bereich = markierterBereich(prefs, tagHeute);
+    if (!geblaettert) {
+      const start = bereich ? bereich.von.slice(0, 7) : null;
+      monat = start && monate.includes(start) ? start : tagHeute.slice(0, 7);
+    }
     if (!monate.includes(monat)) monat = tagHeute.slice(0, 7);
     if (gezeichnet !== monat) zeichneMonat();
     const i = monate.indexOf(monat);
     zurueck.disabled = i <= 0;
     vor.disabled = i >= monate.length - 1;
-    const bereich = markierterBereich(prefs, tagHeute);
+    // Ein Pfeil mit Fokus, der gerade gesperrt wird, gibt den Fokus an den anderen ab (sonst fiele er auf die Seite zurück).
+    const aktiv = doc.activeElement;
+    if (aktiv === vor && vor.disabled && !zurueck.disabled) zurueck.focus();
+    else if (aktiv === zurueck && zurueck.disabled && !vor.disabled) vor.focus();
     for (const [t, zelle] of zellen) {
       const drin = Boolean(bereich) && t >= bereich.von && t <= bereich.bis;
       zelle.disabled = t < tagHeute;

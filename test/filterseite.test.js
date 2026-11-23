@@ -269,3 +269,74 @@ test("Fremdwerte (Titel, Ortsnamen mit '<img …>') erzeugen kein img", () => {
   assert.equal(neu.querySelectorAll('img').length, 0);
   assert.ok([...container.querySelectorAll('select.mittelpunkt option')].some((o) => o.textContent === BOESE));
 });
+
+/** Aufbau mit eigenem Zeitpunkt und eigenen Terminen (für den Startmonat des Kalenders). */
+function aufbauAm(jetzt, events, prefsExtra = {}) {
+  const container = document.createElement('div');
+  document.body.append(container);
+  const ctx = {
+    prefs: { ...DEFAULT_PREFS, rubriken: [], hiddenGenres: [], hiddenTags: [], ...prefsExtra },
+    events,
+    orteListe: ORTE,
+    orte: Object.fromEntries(ORTE.map((o) => [o.name, { lat: o.lat, lon: o.lon }])),
+    jetzt: () => jetzt,
+    beiAenderung: () => {},
+    beiAnzeigen: () => {},
+  };
+  return { container, ctx, seite: baueFilterseite(document, container, ctx) };
+}
+
+const MAI = [
+  ev({ title: 'Maifeuer', rubrik: 'fest', start: '2026-05-01T18:00:00+02:00' }),
+  ev({ title: 'Aprilkonzert', rubrik: 'konzert', start: '2026-04-30T19:00:00+02:00' }),
+];
+
+test('Startmonat: Wochenende am Donnerstag 30. April beginnt am 1. Mai, der Kalender öffnet im Mai', () => {
+  const { container } = aufbauAm('2026-04-30T08:00:00Z', MAI);
+  assert.equal(container.querySelector('.monatsname').textContent, 'Mai 2026');
+  for (const t of ['2026-05-01', '2026-05-02', '2026-05-03']) assert.ok(tag(container, t).classList.contains('gewaehlt'), t);
+  assert.equal(container.querySelector('.monat-zurueck').disabled, false);
+});
+
+test('Startmonat: ohne Termine im Monat des Bereichs bleibt der Kalender im Monat von heute', () => {
+  const { container } = aufbauAm('2026-04-30T08:00:00Z', [MAI[1]]);
+  assert.equal(container.querySelector('.monatsname').textContent, 'April 2026');
+});
+
+test('Startmonat: werden die Termine erst nachgeladen, springt der Kalender in den Monat des Bereichs', () => {
+  const { container, ctx, seite } = aufbauAm('2026-04-30T08:00:00Z', []);
+  assert.equal(container.querySelector('.monatsname').textContent, 'April 2026');
+  ctx.events = MAI;
+  seite.aktualisieren();
+  assert.equal(container.querySelector('.monatsname').textContent, 'Mai 2026');
+});
+
+test('Startmonat: nach dem Blättern bleibt der Kalender im geblätterten Monat', () => {
+  const { container, seite } = aufbauAm('2026-04-30T08:00:00Z', MAI);
+  container.querySelector('.monat-zurueck').click();
+  assert.equal(container.querySelector('.monatsname').textContent, 'April 2026');
+  seite.aktualisieren();
+  assert.equal(container.querySelector('.monatsname').textContent, 'April 2026');
+});
+
+test('Monatspfeil mit Fokus wird gesperrt: der Fokus geht auf den anderen Pfeil', () => {
+  const { container } = aufbau();
+  const zurueck = container.querySelector('.monat-zurueck');
+  const vor = container.querySelector('.monat-vor');
+  // linkedom kennt keinen Fokus; activeElement und focus() werden hier nachgebildet.
+  let aktiv = null;
+  Object.defineProperty(document, 'activeElement', { configurable: true, get: () => aktiv });
+  for (const b of [zurueck, vor]) b.focus = () => { aktiv = b; };
+  try {
+    vor.focus();
+    vor.click(); // Dezember ist der letzte Monat mit Terminen
+    assert.equal(vor.disabled, true);
+    // assert.ok statt assert.equal: der Vergleich zweier linkedom-Knoten würde im Fehlerfall den ganzen Baum ausgeben
+    assert.ok(aktiv === zurueck, 'Fokus auf dem Zurück-Pfeil');
+    zurueck.click(); // zurück im November, dem ersten Monat
+    assert.equal(zurueck.disabled, true);
+    assert.ok(aktiv === vor, 'Fokus auf dem Vor-Pfeil');
+  } finally {
+    delete document.activeElement;
+  }
+});

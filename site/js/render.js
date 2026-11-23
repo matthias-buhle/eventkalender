@@ -7,8 +7,6 @@ const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', ab
 const WOCHENTAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
-export const artName = (art) => ARTEN[art] ?? ARTEN.sonstiges;
-
 /** Gibt die Adresse nur zurück, wenn sie mit https://, http://, tel: oder mailto: beginnt. */
 export function safeHref(url) {
   const t = typeof url === 'string' ? url.trim() : '';
