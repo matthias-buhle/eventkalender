@@ -46,7 +46,7 @@
   },
   "goerlitz": {
     "enabled": true,
-    "note": "Nutzungsrecht angefragt, bei Nein abschalten",
+    "note": "Stadt Görlitz erlaubt die Nutzung des Veranstaltungskalenders, solange sie nicht kommerziell ist (Antwort vom 20.11.2026)",
     "url": "https://www.goerlitz.de/termine/api",
     "days": 60,
     "maxPages": 150,
