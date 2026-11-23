@@ -162,3 +162,12 @@ test('Version: Zeile mit Nummer, Commit und Datum; ohne Angaben entfällt sie', 
   assert.match(renderUeber(document, { version: { version: '1.4.0', commit: 'ec29751', gebaut: '2026-11-10T14:23:31Z' } }).textContent, /Version 1\.4\.0 \(ec29751\)/);
   assert.ok(!/Version \d/.test(renderUeber(document, {}).textContent));
 });
+
+test('Datenschutz: nennt, was wirklich gemerkt wird (Filter ohne Zeitraum und Suche, Design), nicht die Suche', () => {
+  const datenschutz = abschnittMit(renderUeber(document), 'Datenschutz').textContent;
+  assert.ok(!/\(Suche, Filter, Design\)/.test(datenschutz), 'die Suche wird nicht gemerkt');
+  for (const wort of ['Rubriken', 'Unterfilter', 'Advent', 'Mittelpunkt', 'Umkreis', 'Tschechien', 'Design', 'zuletzt geladenen Termine']) {
+    assert.ok(datenschutz.includes(wort), wort);
+  }
+  assert.match(datenschutz, /Zeitraum und Suche werden nicht gemerkt/);
+});

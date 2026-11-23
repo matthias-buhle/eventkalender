@@ -4,6 +4,12 @@ import {
   applyFilters, loadPrefs, savePrefs, zeitfenster, einzelneRubrik, rubrikWaehlen, wirksameSorten, zaehleRubriken, zaehleAdvent,
   zusammenfassung, tagPlus, UMKREISE, ZEITEN, DEFAULT_PREFS,
 } from '../site/js/filter.js';
+import * as filterModul from '../site/js/filter.js';
+
+// Erst mit diesem Fix vorhanden; so scheitern die neuen Tests einzeln statt das ganze Modul beim Import.
+const zeitAbgelaufen = (...a) => filterModul.zeitAbgelaufen(...a);
+const nachRueckkehr = (...a) => filterModul.nachRueckkehr(...a);
+const zeitZurueckgesetzt = (...a) => filterModul.zeitZurueckgesetzt(...a);
 import { RUBRIKEN } from '../site/js/arten.js';
 
 const NOW = '2026-11-08T19:30:00Z'; // Sonntag, 20:30 Uhr in Berlin
@@ -86,6 +92,49 @@ test('zeitfenster tage: von vor heute wird auf heute angehoben; bis null bleibt 
   assert.deepEqual(t('2026-11-20', '2026-11-25'), { von: '2026-11-23', bis: '2026-11-25' });
   assert.deepEqual(t('2026-11-28', null), { von: '2026-11-28', bis: null });
   assert.deepEqual(t(null, null), { von: '2026-11-23', bis: null });
+});
+
+test('zeitfenster tage: ein abgelaufener Zeitraum (bis vor heute) gilt als Wochenende, nie bis < von', () => {
+  // Auswahl 5.–7.11., die App kommt am Montag 9.11. aus dem Hintergrund
+  assert.deepEqual(zeitfenster(prefs({ zeit: 'tage', von: '2026-11-05', bis: '2026-11-07' }), '2026-11-09'), { von: '2026-11-13', bis: '2026-11-15' });
+  assert.equal(zeitAbgelaufen(prefs({ zeit: 'tage', von: '2026-11-05', bis: '2026-11-07' }), '2026-11-09'), true);
+  assert.equal(zeitAbgelaufen(prefs({ zeit: 'tage', von: '2026-11-05', bis: '2026-11-09' }), '2026-11-09'), false, 'bis heute läuft noch');
+  assert.equal(zeitAbgelaufen(prefs({ zeit: 'tage', von: '2026-11-05', bis: null }), '2026-11-09'), false, 'offenes Ende läuft nie ab');
+  assert.equal(zeitAbgelaufen(prefs({ zeit: 'wochenende' }), '2026-11-09'), false);
+  // erschöpfend: jede Kombination von von/bis um heute herum, jede Zeitwahl
+  const tage = Array.from({ length: 21 }, (_, i) => tagPlus('2026-11-13', i - 10));
+  for (const heute of ['2026-11-09', '2026-11-13', '2026-11-14', '2026-11-15']) {
+    for (const zeit of ['alle', 'heute', 'wochenende', '7', '30', 'tage', 'unbekannt']) {
+      for (const von of [null, ...tage]) {
+        for (const bis of [null, ...tage]) {
+          const f = zeitfenster(prefs({ zeit, von, bis }), heute);
+          assert.ok(f.von >= heute, `${zeit} ${von}–${bis} am ${heute}: von vor heute`);
+          assert.ok(f.bis == null || f.bis >= f.von, `${zeit} ${von}–${bis} am ${heute}: bis < von`);
+        }
+      }
+    }
+  }
+});
+
+test('zusammenfassung: ein abgelaufener Zeitraum heißt Wochenende, nicht "Mo 9.11. – Sa 7.11."', () => {
+  const z = zusammenfassung({ ...DEFAULT_PREFS, zeit: 'tage', von: '2026-11-05', bis: '2026-11-07' }, '2026-11-09');
+  assert.equal(z, 'Wochenende · Alle Rubriken · Sebnitz 75 km');
+});
+
+test('nachRueckkehr: nur ein neuer Tag zeichnet neu; ein abgelaufener Zeitraum wird dann zurückgesetzt', () => {
+  const abgelaufen = prefs({ zeit: 'tage', von: '2026-11-05', bis: '2026-11-07' });
+  assert.deepEqual(nachRueckkehr(abgelaufen, '2026-11-09', '2026-11-09'), { neuZeichnen: false, zeitZuruecksetzen: false }, 'gleicher Tag');
+  assert.deepEqual(nachRueckkehr(abgelaufen, '2026-11-07', '2026-11-09'), { neuZeichnen: true, zeitZuruecksetzen: true });
+  assert.deepEqual(nachRueckkehr(prefs({ zeit: 'tage', von: '2026-11-05', bis: '2026-11-20' }), '2026-11-07', '2026-11-09'), { neuZeichnen: true, zeitZuruecksetzen: false });
+  assert.deepEqual(nachRueckkehr(prefs({ zeit: 'tage', von: '2026-11-05', bis: null }), '2026-11-07', '2026-11-09'), { neuZeichnen: true, zeitZuruecksetzen: false });
+  assert.deepEqual(nachRueckkehr(prefs({ zeit: 'heute' }), '2026-11-07', '2026-11-09'), { neuZeichnen: true, zeitZuruecksetzen: false });
+  assert.deepEqual(nachRueckkehr(abgelaufen, null, '2026-11-09'), { neuZeichnen: true, zeitZuruecksetzen: true }, 'noch nie gezeichnet');
+});
+
+test('zeitZurueckgesetzt: Zeit wie im Standard, übrige Einstellungen bleiben', () => {
+  const p = prefs({ zeit: 'tage', von: '2026-11-05', bis: '2026-11-07', rubriken: ['konzert'], maxKm: 25 });
+  assert.deepEqual(zeitZurueckgesetzt(p), { ...p, zeit: DEFAULT_PREFS.zeit, von: DEFAULT_PREFS.von, bis: DEFAULT_PREFS.bis });
+  assert.equal(zeitZurueckgesetzt(p).zeit, 'wochenende');
 });
 
 test('Zeitraum: Termine, die das Fenster berühren, bleiben (auch mehrtägige); andere fallen weg', () => {

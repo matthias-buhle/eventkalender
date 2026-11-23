@@ -103,6 +103,46 @@ test('Tage vor heute sind gesperrt, heute nicht; heute trägt heute; Tag mit Ter
   assert.equal(aufrufe.aenderung, 0);
 });
 
+test('Kacheln tragen einen sprechenden Namen mit Zahl (aria-label), auch nach dem Aktualisieren', () => {
+  const { container, ctx, seite } = aufbau();
+  assert.equal(kachel(container, 'Konzerte').getAttribute('aria-label'), 'Konzerte, 1 Termin');
+  assert.equal(kachel(container, 'Partys').getAttribute('aria-label'), 'Partys, 0 Termine');
+  ctx.prefs.zeit = 'alle';
+  seite.aktualisieren();
+  assert.equal(kachel(container, 'Konzerte').getAttribute('aria-label'), 'Konzerte, 3 Termine');
+  assert.equal(kachel(container, 'Partys').getAttribute('aria-label'), 'Partys, 1 Termin');
+});
+
+test('Tage ohne Termine (ab heute) tragen ohne und bleiben wählbar; Tage mit Termin und vergangene nicht', () => {
+  const { container, ctx } = aufbau();
+  const ohne = tag(container, '2026-11-25');
+  assert.ok(ohne.classList.contains('ohne'));
+  assert.equal(ohne.disabled, false);
+  assert.ok(!tag(container, '2026-11-24').classList.contains('ohne'), 'Tag mit Termin');
+  assert.ok(!tag(container, '2026-11-20').classList.contains('ohne'), 'vergangener Tag ist gesperrt, nicht blass');
+  ohne.click();
+  assert.equal(ctx.prefs.zeit, 'tage');
+  assert.equal(ctx.prefs.von, '2026-11-25');
+});
+
+test('neuer Tag (Rückkehr aus dem Hintergrund): aktualisieren setzt heute und gesperrte Tage neu, auch im selben Monat', () => {
+  let jetzt = JETZT;
+  const { container, ctx, seite } = aufbau();
+  ctx.jetzt = () => jetzt;
+  jetzt = '2026-11-25T08:00:00Z';
+  seite.aktualisieren();
+  assert.equal(tag(container, '2026-11-24').disabled, true);
+  assert.ok(!tag(container, '2026-11-23').classList.contains('heute'));
+  assert.ok(tag(container, '2026-11-25').classList.contains('heute'));
+  assert.equal(tag(container, '2026-11-25').getAttribute('aria-current'), 'date');
+  assert.equal(tag(container, '2026-11-23').getAttribute('aria-current'), null);
+  // Monatswechsel: der neue Monat wird gezeigt
+  jetzt = '2026-12-01T08:00:00Z';
+  seite.aktualisieren();
+  assert.equal(container.querySelector('.monatsname').textContent, 'Dezember 2026');
+  assert.ok(tag(container, '2026-12-01').classList.contains('heute'));
+});
+
 test('Kalender: 42 Zellen, Leerzellen als span, Wochentagszeile, aria-label mit vollem Wochentag und Monat', () => {
   const { container } = aufbau();
   const kal = container.querySelector('.kalender');

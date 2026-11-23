@@ -164,7 +164,7 @@ export function baueFilterseite(doc, container, ctx) {
       ctx.prefs.rubriken = rubrikWaehlen(ctx.prefs.rubriken ?? [], r.key);
       geaendert();
     });
-    kacheln.set(r.key, { k, zahl });
+    kacheln.set(r.key, { k, zahl, name: r.name });
     kachelFeld.append(k);
   }
   was.append(kachelFeld);
@@ -300,6 +300,7 @@ export function baueFilterseite(doc, container, ctx) {
       zelle.disabled = t < tagHeute;
       zelle.classList.toggle('heute', t === tagHeute);
       zelle.classList.toggle('punkt', tage.has(t));
+      zelle.classList.toggle('ohne', t >= tagHeute && !tage.has(t)); // blass, aber wählbar
       zelle.classList.toggle('gewaehlt', drin);
       zelle.classList.toggle('a', drin && t === bereich.von);
       zelle.classList.toggle('e', drin && t === bereich.bis);
@@ -310,8 +311,9 @@ export function baueFilterseite(doc, container, ctx) {
     // Was?
     const zahlen = zaehleRubriken(events, prefs, jetzt, orte);
     const gewaehlt = prefs.rubriken ?? [];
-    for (const [key, { k, zahl }] of kacheln) {
+    for (const [key, { k, zahl, name }] of kacheln) {
       zahl.textContent = String(zahlen[key]);
+      k.setAttribute('aria-label', `${name}, ${zahlen[key] === 1 ? '1 Termin' : `${zahlen[key]} Termine`}`);
       k.classList.toggle('leer', zahlen[key] === 0);
       k.setAttribute('aria-pressed', String(gewaehlt.includes(key)));
     }

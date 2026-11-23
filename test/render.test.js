@@ -301,7 +301,20 @@ test('Fremder Text im Urheber wird als Text dargestellt, unsichere Lizenzadresse
   }
 });
 
-test('Kartenkopf nennt die Rubrik in der Einzahl; ohne rubrik (alte Daten) die Art, die Farbklasse bleibt die Art', () => {
+test('Farbklasse von Karte und Detail folgt der Rubrik (RUBRIKEN.farbe), wie die Kachel; alte Daten über die Art', () => {
+  const klasse = (e) => [renderEventCard(document, e), renderDetail(document, e, { orte: [], userAgent: '' })]
+    .map((x) => [...x.classList].filter((k) => k.startsWith('art-')));
+  // "Konzert" aus der Musikregel auf art:'sonstiges': orange wie die Kachel Konzerte
+  assert.deepEqual(klasse(ev({ art: 'sonstiges', rubrik: 'konzert' })), [['art-konzert'], ['art-konzert']]);
+  // Führung aus art:'schau': Farbfamilie sonstiges wie die Kachel Führungen
+  assert.deepEqual(klasse(ev({ art: 'schau', rubrik: 'fuehrung' })), [['art-sonstiges'], ['art-sonstiges']]);
+  assert.deepEqual(klasse(ev({ art: 'sonstiges', rubrik: 'ausstellung' })), [['art-schau'], ['art-schau']]);
+  // alte Daten ohne rubrik: über rubrikVon nach der Art; Unbekanntes ist sonstiges
+  assert.deepEqual(klasse(ev({ art: 'markt' })), [['art-markt'], ['art-markt']]);
+  assert.deepEqual(klasse(ev({ art: 'quatsch', rubrik: 'quatsch' })), [['art-sonstiges'], ['art-sonstiges']]);
+});
+
+test('Kartenkopf nennt die Rubrik in der Einzahl; ohne rubrik (alte Daten) die Art', () => {
   const fuehrung = renderEventCard(document, ev({ art: 'sonstiges', rubrik: 'fuehrung', genre: 'stadt' }));
   assert.equal(fuehrung.querySelector('.art').textContent, 'Führung');
   assert.equal(fuehrung.querySelector('.genre').textContent, 'Stadt & Ort');

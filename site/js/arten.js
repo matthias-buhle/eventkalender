@@ -39,6 +39,9 @@ export const rubrikName = (key) => (RUBRIK.get(key) ?? RUBRIK.get('sonstiges')).
 /** Einzahl für die Karte ("Konzert"); Unbekanntes heißt "Sonstiges". */
 export const rubrikKarte = (key) => (RUBRIK.get(key) ?? RUBRIK.get('sonstiges')).karte;
 
+/** Farbfamilie einer Rubrik (CSS-Klasse art-<farbe>, wie die Kachel); Unbekanntes ist "sonstiges". */
+export const rubrikFarbe = (key) => (RUBRIK.get(key) ?? RUBRIK.get('sonstiges')).farbe;
+
 /** Je Rubrik mit Unterarten, Reihenfolge = Reihenfolge der Filterknöpfe. "sonstige" gilt für Termine dieser Rubrik ohne bekannte Unterart. */
 export const SORTEN = {
   konzert: {

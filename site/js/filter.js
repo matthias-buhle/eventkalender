@@ -46,8 +46,10 @@ export function tagPlus(tag, n) {
  * Das Tagesfenster {von, bis} (bis null = offen) einer Zeitraum-Einstellung. `von` ist nie vor heute.
  * Wochenende heißt Freitag bis Sonntag; am Wochenende selbst gilt der Rest davon.
  * 'tage' nimmt prefs.von (frühestens heute) bis prefs.bis; ein unbekannter Wert gilt wie 'alle'.
+ * Ein abgelaufener eigener Zeitraum (siehe zeitAbgelaufen) gilt wie der Standard 'wochenende'; `bis` ist nie vor `von`.
  */
 export function zeitfenster(prefs, heute) {
+  if (zeitAbgelaufen(prefs, heute)) return zeitfenster({ zeit: DEFAULT_PREFS.zeit }, heute);
   switch (prefs.zeit) {
     case 'heute': return { von: heute, bis: heute };
     case '7': return { von: heute, bis: tagPlus(heute, 6) };
@@ -60,11 +62,39 @@ export function zeitfenster(prefs, heute) {
       return { von: freitag, bis: tagPlus(freitag, 2) };
     }
     case 'tage': {
-      const von = typeof prefs.von === 'string' && prefs.von > heute ? prefs.von : heute;
-      return { von, bis: typeof prefs.bis === 'string' ? prefs.bis : null };
+      let anfang = typeof prefs.von === 'string' ? prefs.von : null;
+      let ende = typeof prefs.bis === 'string' ? prefs.bis : null;
+      if (anfang && ende && ende < anfang) [anfang, ende] = [ende, anfang]; // verdrehte Angabe: nie bis < von
+      return { von: anfang && anfang > heute ? anfang : heute, bis: ende };
     }
     default: return { von: heute, bis: null };
   }
+}
+
+/**
+ * Ist die Zeitwahl ein eigener Zeitraum, dessen letzter Tag schon vor `heute` liegt? Das passiert, wenn die Seite über
+ * Nacht im Hintergrund stand. (Ein Zeitraum mit offenem Ende läuft nie ab.)
+ */
+export function zeitAbgelaufen(prefs, heute) {
+  return prefs?.zeit === 'tage' && typeof prefs.bis === 'string' && prefs.bis < heute;
+}
+
+/**
+ * Entscheidung, wenn die Seite wieder sichtbar wird: Neu zeichnen nur, wenn seit dem letzten Zeichnen ein neuer
+ * (Berliner) Tag begonnen hat; dann wird ein abgelaufener Zeitraum auf den Standard zurückgesetzt.
+ * @param {Prefs} prefs
+ * @param {string|null} letzterTag Tag (JJJJ-MM-TT) beim letzten Zeichnen
+ * @param {string} heute
+ * @returns {{neuZeichnen:boolean, zeitZuruecksetzen:boolean}}
+ */
+export function nachRueckkehr(prefs, letzterTag, heute) {
+  const neuZeichnen = letzterTag !== heute;
+  return { neuZeichnen, zeitZuruecksetzen: neuZeichnen && zeitAbgelaufen(prefs, heute) };
+}
+
+/** Die Einstellungen mit der Zeitwahl des Standards (zeit, von, bis); alles andere bleibt. */
+export function zeitZurueckgesetzt(prefs) {
+  return { ...prefs, zeit: DEFAULT_PREFS.zeit, von: DEFAULT_PREFS.von, bis: DEFAULT_PREFS.bis };
 }
 
 const berlinTag = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -195,7 +225,8 @@ const ZEIT_TEXT = { alle: 'Alle Termine', heute: 'Heute', wochenende: 'Wochenend
  */
 export function zusammenfassung(prefs, heute) {
   let zeit;
-  if (prefs.zeit === 'tage') {
+  if (zeitAbgelaufen(prefs, heute)) zeit = ZEIT_TEXT[DEFAULT_PREFS.zeit]; // wie zeitfenster: gilt als Wochenende
+  else if (prefs.zeit === 'tage') {
     const { von, bis } = zeitfenster(prefs, heute);
     if (!bis) zeit = `ab ${tagKurz(von)}`;
     else zeit = von === bis ? tagKurz(von) : `${tagKurz(von)} – ${tagKurz(bis)}`;

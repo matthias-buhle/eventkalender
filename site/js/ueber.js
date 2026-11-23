@@ -234,7 +234,8 @@ export function renderUeber(doc, optionen = {}) {
   tm.append(link(doc, 'Datenschutzerklärung von Ticketmaster', 'https://privacy.ticketmaster.de/de/privacy-policy#privacy-notice'), '.');
   const datenschutz = abschnitt(doc, 'Datenschutz');
   datenschutz.inhalt.append(
-    el(doc, 'p', null, 'Die Seite setzt keine Cookies und keine Zähler. Auf dem Gerät werden nur deine Einstellungen (Suche, Filter, Design) und die zuletzt geladenen Termine gemerkt.'),
+    el(doc, 'p', null, 'Die Seite setzt keine Cookies und keine Zähler. Auf dem Gerät werden nur deine Filter (Rubriken, Unterfilter, Advent, '
+      + 'Mittelpunkt, Umkreis, Tschechien), das Design und die zuletzt geladenen Termine gemerkt. Zeitraum und Suche werden nicht gemerkt.'),
     tm,
   );
 

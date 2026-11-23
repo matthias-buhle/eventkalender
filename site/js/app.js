@@ -2,7 +2,7 @@
 // Zwei Ansichten: die Filterseite (beim Start) und die Liste. "N Termine anzeigen" legt einen Verlaufseintrag
 // {ansicht:'liste'} an; Zurück führt von der Liste zur Filterseite. Fenster (Detail, Über) legen eigene Einträge an,
 // ihr Zurück schließt nur das Fenster (Regeln in ansicht.js).
-import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, zusammenfassung } from './filter.js';
+import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, zusammenfassung, nachRueckkehr, zeitZurueckgesetzt } from './filter.js';
 import { renderEventCard, renderDetail, renderStatusFooter, dayLabel } from './render.js';
 import { renderUeber } from './ueber.js';
 import { baueFilterseite } from './filterseite.js';
@@ -158,7 +158,11 @@ async function start() {
     },
   };
 
+  /** Der Berliner Tag beim letzten Zeichnen; kommt die Seite an einem späteren Tag zurück, wird neu gezeichnet. */
+  let gezeichnetAm = berlinDay(ctx.jetzt());
+
   const zeichne = () => {
+    gezeichnetAm = berlinDay(ctx.jetzt());
     zeile.textContent = zusammenfassungMitSuche(zusammenfassung(prefs, berlinDay(new Date().toISOString())), suche);
     if (ladefehler) liste.replaceChildren(neu('p', 'leer', LADEFEHLER));
     else zeichneListe(liste, ctx.events, { ...prefs, suche }, ctx.orte, zeigeDetail);
@@ -211,6 +215,24 @@ async function start() {
   });
 
   const filterseite = baueFilterseite(document, filterBereich, ctx);
+
+  // Zurück aus dem Hintergrund (auf dem Telefon oft am nächsten Tag): heute, gesperrte Tage, Zahlen und Liste neu;
+  // ein inzwischen abgelaufener eigener Zeitraum gilt dann wieder als Wochenende (wie nach dem Laden).
+  function beiRueckkehr() {
+    const heute = berlinDay(ctx.jetzt());
+    const { neuZeichnen, zeitZuruecksetzen } = nachRueckkehr(prefs, gezeichnetAm, heute);
+    if (!neuZeichnen) return;
+    if (zeitZuruecksetzen) Object.assign(prefs, zeitZurueckgesetzt(prefs));
+    gezeichnetAm = heute;
+    filterseite.aktualisieren();
+    if (ansicht === 'liste') zeichne();
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') beiRueckkehr();
+  });
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) beiRueckkehr();
+  });
 
   // Ohne Ortsverzeichnis (Datei fehlt) bleibt der Umkreis um Sebnitz, die Seite funktioniert weiter.
   try {

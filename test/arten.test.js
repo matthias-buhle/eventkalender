@@ -50,3 +50,17 @@ test('alte Daten: Genre, das die Rubrik nicht (mehr) kennt, wirft nicht und zäh
   assert.equal(sorteFilter({ art: 'konzert', genre: { x: 1 } }), 'sonstige');
   assert.equal(sorteFilter({ art: 'konzert', genre: 'constructor' }), 'sonstige');
 });
+
+test('Unterfilter-Schlüssel sind über alle Rubriken eindeutig (hiddenGenres ist eine gemeinsame Liste)', () => {
+  const alle = Object.values(SORTEN).flatMap((def) => [...Object.keys(def.liste), def.sonstige]);
+  const doppelt = alle.filter((k, i) => alle.indexOf(k) !== i);
+  assert.deepEqual(doppelt, []);
+  assert.ok(alle.length > 0);
+});
+
+test('rubrikFarbe: Farbfamilie der Rubrik wie die Kachel; Unbekanntes ist sonstiges', async () => {
+  const { rubrikFarbe } = await import('../site/js/arten.js');
+  for (const r of RUBRIKEN) assert.equal(rubrikFarbe(r.key), r.farbe);
+  assert.equal(rubrikFarbe('quatsch'), 'sonstiges');
+  assert.equal(rubrikFarbe(undefined), 'sonstiges');
+});

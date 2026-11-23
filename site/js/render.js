@@ -1,8 +1,7 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
-import { sorteName, rubrikVon, rubrikKarte } from './arten.js';
+import { sorteName, rubrikVon, rubrikKarte, rubrikFarbe } from './arten.js';
 import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
-const ARTEN = { markt: 'Markt', konzert: 'Konzert', party: 'Party', fest: 'Fest', schau: 'Schau', sonstiges: 'Sonstiges' };
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
 const WOCHENTAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
@@ -149,7 +148,8 @@ function gekuerztHinweis(doc, ev) {
  */
 export function renderEventCard(doc, ev, optionen = {}) {
   const orte = optionen.orte ?? [];
-  const karte = el(doc, 'article', `card art-${ARTEN[ev.art] ? ev.art : 'sonstiges'}`);
+  // Farbe wie die Kachel der Rubrik (alte Daten ohne rubrik: über die Art, siehe rubrikVon)
+  const karte = el(doc, 'article', `card art-${rubrikFarbe(rubrikVon(ev))}`);
   karte.append(kopfzeile(doc, ev, gemeindeVon(ev.placeName, orte)));
   karte.append(el(doc, 'h3', 'title', ev.title));
   karte.append(wannZeile(doc, ev));
@@ -171,7 +171,7 @@ export function renderEventCard(doc, ev, optionen = {}) {
 export function renderDetail(doc, ev, optionen = {}) {
   const orte = optionen.orte ?? [];
   const gemeinde = gemeindeVon(ev.placeName, orte);
-  const detail = el(doc, 'div', `detail art-${ARTEN[ev.art] ? ev.art : 'sonstiges'}`);
+  const detail = el(doc, 'div', `detail art-${rubrikFarbe(rubrikVon(ev))}`);
   const kopf = kopfzeile(doc, ev, null);
   detail.append(kopf, el(doc, 'h2', 'title', ev.title), wannZeile(doc, ev));
   const ort = [spielstaetteVon(ev.placeName, orte), gemeinde, entfernungText(ev)].filter(Boolean);
