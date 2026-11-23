@@ -1,4 +1,4 @@
-// Inhalt des Fensters "Über Bühnenlicht": wofür die Seite da ist, woher die Termine kommen, Lizenzen, Datenschutz, Kontakt.
+// Inhalt des Fensters "Über Bühnenlicht": wofür die Seite da ist, woher die Termine kommen, Lizenzen, Datenschutz, Anbieter und Kontakt.
 // Alles als DOM über textContent, nie über innerHTML.
 
 /** Kontaktadresse des Projekts (Rückfragen, Löschwünsche). Auf null gesetzt entfällt die Zeile. */
@@ -180,7 +180,8 @@ export function renderUeber(doc, optionen = {}) {
     el(doc, 'p', null, 'Bühnenlicht sammelt Konzerte, Feste, Märkte und Partys aus Ostsachsen und Umgebung an einem Ort. '
       + 'Es ist ein privates Projekt ohne Werbung und ohne Gewinn, gedacht für Familie, Freunde und den Heimatverein. '
       + 'Die Termine werden einmal täglich neu geholt. Bitte den Link nicht weitergeben.'),
-    el(doc, 'p', null, 'Mit den Filtern (Zeitraum, Ort und Umkreis, Art, Sorte) und der Suche lässt sich die Liste Schritt für Schritt eingrenzen, bis nur noch passende Termine übrig sind.'),
+    el(doc, 'p', null, 'Die Filterseite am Anfang grenzt mit Zeitraum, Rubrik, Ort und Umkreis ein, wie viele Termine übrig bleiben, zeigt der Knopf unten. '
+      + 'In der Liste lässt sich mit der Suche weiter eingrenzen, bis nur noch passende Termine übrig sind; „Filter ändern“ führt zurück.'),
     el(doc, 'p', null, 'Ein Klick oder Tipp auf einen Termin öffnet die Einzelheiten mit der ganzen Beschreibung und weiteren Knöpfen: '
       + 'zur Webseite, Tickets bestellen, anrufen, E-Mail schreiben und Navigation zum Veranstaltungsort.'),
   );
@@ -224,7 +225,9 @@ export function renderUeber(doc, optionen = {}) {
   );
   const schriften = el(doc, 'p', null, 'Schriften: Barlow Condensed (Jeremy Tribby) und Inter (Rasmus Andersson), beide unter der SIL Open Font License 1.1 (');
   schriften.append(link(doc, 'openfontlicense.org', 'https://openfontlicense.org'), ').');
-  lizenzen.inhalt.append(cc, schriften);
+  const osm = el(doc, 'p', null, 'Ortsangaben werden mit Nominatim ergänzt, dem Suchdienst von OpenStreetMap: ');
+  osm.append(link(doc, '© OpenStreetMap-Mitwirkende (ODbL)', 'https://www.openstreetmap.org/copyright'), '.');
+  lizenzen.inhalt.append(cc, schriften, osm);
 
   const tm = el(doc, 'p', null, 'Ticketmaster-Termine kommen über die Schnittstelle von Ticketmaster. Wer etwas davon entfernt haben möchte, '
     + 'meldet sich; es wird binnen 24 Stunden entfernt. Beim Klick auf „Tickets“ gilt die ');
@@ -235,18 +238,19 @@ export function renderUeber(doc, optionen = {}) {
     tm,
   );
 
-  const kontaktAbschnitt = abschnitt(doc, 'Kontakt');
+  const kontaktAbschnitt = abschnitt(doc, 'Anbieter und Kontakt');
+  const anbieter = el(doc, 'p', null, 'Matthias | B, Schönbach, Sebnitz');
   const kontakt = el(doc, 'p');
   if (mail) {
     kontakt.append('Rückfragen und Löschwünsche: ', link(doc, mail, `mailto:${mail}`), '.');
   } else {
     kontakt.append('Rückfragen und Löschwünsche bitte an die Person, von der du den Link bekommen hast.');
   }
-  kontaktAbschnitt.inhalt.append(kontakt);
+  kontaktAbschnitt.inhalt.append(anbieter, kontakt);
 
   wurzel.append(wofuer.d, quellen.d, lizenzen.d, datenschutz.d, kontaktAbschnitt.d);
 
-  const fuss = el(doc, 'p', 'klein fussnote', 'Bühnenlicht – von Matthias B.');
+  const fuss = el(doc, 'p', 'klein fussnote', 'Bühnenlicht – von Matthias | B');
   const zeile = versionsZeile(optionen.version);
   if (zeile) fuss.append(el(doc, 'br'), el(doc, 'span', 'versionszeile', zeile));
   wurzel.append(fuss);

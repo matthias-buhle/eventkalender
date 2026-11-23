@@ -6,7 +6,7 @@ import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, zusammenfass
 import { renderEventCard, renderDetail, renderStatusFooter, dayLabel } from './render.js';
 import { renderUeber } from './ueber.js';
 import { baueFilterseite } from './filterseite.js';
-import { ansichtNachPopstate, filterAendernPerZurueck, fensterZustand } from './ansicht.js';
+import { ansichtNachPopstate, filterAendernPerZurueck, fensterZustand, zusammenfassungMitSuche } from './ansicht.js';
 
 const LADEFEHLER = 'Die Termine konnten nicht geladen werden. Bitte später erneut versuchen.';
 
@@ -159,7 +159,7 @@ async function start() {
   };
 
   const zeichne = () => {
-    zeile.textContent = zusammenfassung(prefs, berlinDay(new Date().toISOString()));
+    zeile.textContent = zusammenfassungMitSuche(zusammenfassung(prefs, berlinDay(new Date().toISOString())), suche);
     if (ladefehler) liste.replaceChildren(neu('p', 'leer', LADEFEHLER));
     else zeichneListe(liste, ctx.events, { ...prefs, suche }, ctx.orte, zeigeDetail);
   };
@@ -229,6 +229,7 @@ async function start() {
   } catch {
     // Die Filterseite bleibt benutzbar; der Knopf führt zur Liste mit der Fehlermeldung.
     ladefehler = true;
+    ctx.fehler = true;
   }
   ctx.laedt = false;
   filterseite.aktualisieren();

@@ -57,7 +57,7 @@ function abschnitt(doc, titel) {
  * @param {Document} doc
  * @param {Element} container
  * @param {{prefs: any, events: any[], orteListe: {name:string,lat:number,lon:number}[], orte: Record<string,{lat:number,lon:number}>,
- *   jetzt: () => string, beiAenderung: () => void, beiAnzeigen: () => void, laedt?: boolean}} ctx
+ *   jetzt: () => string, beiAenderung: () => void, beiAnzeigen: () => void, laedt?: boolean, fehler?: boolean}} ctx
  * @returns {{aktualisieren(): void}}
  */
 export function baueFilterseite(doc, container, ctx) {
@@ -79,6 +79,7 @@ export function baueFilterseite(doc, container, ctx) {
     const chip = knopf(doc, 'chip', text);
     chip.addEventListener('click', () => {
       Object.assign(ctx.prefs, { zeit: wert, von: null, bis: null });
+      geblaettert = false; // der Kalender zeigt wieder den Monat des markierten Bereichs
       geaendert();
     });
     zeitChips.set(wert, chip);
@@ -271,9 +272,11 @@ export function baueFilterseite(doc, container, ctx) {
     for (const [wert, chip] of zeitChips) chip.setAttribute('aria-pressed', String(prefs.zeit === wert));
     if (prefs.zeit === 'tage') {
       zeitraumChip.textContent = zeitraumText(prefs, tagHeute);
+      zeitraumChip.setAttribute('aria-pressed', 'true');
       zeitraumChip.removeAttribute('hidden');
     } else {
       zeitraumChip.textContent = '';
+      zeitraumChip.removeAttribute('aria-pressed');
       zeitraumChip.setAttribute('hidden', '');
     }
     const tage = tageMitTerminen(events, prefs, jetzt, orte);
@@ -334,6 +337,9 @@ export function baueFilterseite(doc, container, ctx) {
     if (ctx.laedt) {
       anzeigen.textContent = 'Termine werden geladen …';
       anzeigen.disabled = true;
+    } else if (ctx.fehler) {
+      anzeigen.textContent = 'Termine konnten nicht geladen werden';
+      anzeigen.disabled = false; // führt zur Liste mit der Fehlermeldung
     } else {
       anzeigen.textContent = anzeigeText(applyFilters(events, prefs, jetzt, orte).length);
       anzeigen.disabled = false;

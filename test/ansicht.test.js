@@ -55,3 +55,11 @@ test('Filter ändern: history.back() nur auf dem Listeneintrag selbst', () => {
   assert.equal(filterAendernPerZurueck({ fenster: true }), false);
   assert.equal(filterAendernPerZurueck(fensterZustand(LISTE)), false);
 });
+
+test('zusammenfassungMitSuche hängt eine nicht leere Suche in deutschen Anführungszeichen an', async () => {
+  const { zusammenfassungMitSuche } = await import('../site/js/ansicht.js');
+  assert.equal(zusammenfassungMitSuche('Alle Termine', ''), 'Alle Termine');
+  assert.equal(zusammenfassungMitSuche('Alle Termine', '   '), 'Alle Termine');
+  assert.equal(zusammenfassungMitSuche('Alle Termine', ' Rock '), 'Alle Termine · „Rock“');
+  assert.equal(zusammenfassungMitSuche('Alle Termine', undefined), 'Alle Termine');
+});

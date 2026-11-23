@@ -340,3 +340,34 @@ test('Monatspfeil mit Fokus wird gesperrt: der Fokus geht auf den anderen Pfeil'
     delete document.activeElement;
   }
 });
+
+test('ctx.fehler: Knopf nennt den Ladefehler und bleibt bedienbar (führt zur Liste mit der Meldung)', () => {
+  const { container, ctx, aufrufe, seite } = aufbau();
+  ctx.fehler = true;
+  seite.aktualisieren();
+  assert.equal(knopf(container).textContent, 'Termine konnten nicht geladen werden');
+  assert.equal(knopf(container).disabled, false);
+  knopf(container).click();
+  assert.equal(aufrufe.anzeigen, 1);
+  ctx.fehler = false;
+  seite.aktualisieren();
+  assert.notEqual(knopf(container).textContent, 'Termine konnten nicht geladen werden');
+});
+
+test('Schnellwahl nach dem Blättern: der Kalender zeigt wieder den Monat des markierten Bereichs', () => {
+  const { container } = aufbau();
+  const name = container.querySelector('.monatsname');
+  container.querySelector('.monat-vor').click();
+  assert.equal(name.textContent, 'Dezember 2026');
+  chip(container, 'Heute').click();
+  assert.equal(name.textContent, 'November 2026');
+  container.querySelector('.monat-vor').click();
+  chip(container, '7 Tage').click();
+  assert.equal(name.textContent, 'November 2026');
+});
+
+test('der Zeitraum-Chip trägt aria-pressed="true"', () => {
+  const { container } = aufbau();
+  tag(container, '2026-11-28').click();
+  assert.equal(container.querySelector('.zeitraum-chip').getAttribute('aria-pressed'), 'true');
+});

@@ -75,6 +75,37 @@ test('Wofür: erklärt Filter, Eingrenzen der Suche, Details per Klick, Tickets 
   assert.match(t, /Navigation/);
 });
 
+test('Wofür: nennt Zeitraum, Rubrik, Ort und Umkreis und die Filterseite, nicht mehr Art und Sorte', () => {
+  const t = text(null);
+  assert.ok(t.includes('Zeitraum, Rubrik, Ort und Umkreis'));
+  assert.match(t, /Filterseite/);
+  assert.ok(!t.includes('Art, Sorte'));
+});
+
+test('Anbieter und Kontakt: Matthias | B, Schönbach, Sebnitz und Mail, aber keine Straße, Telefon oder Postleitzahl', () => {
+  const abschnitt = [...renderUeber(document, {}).querySelectorAll('details.abschnitt')].find((d) => d.querySelector('summary').textContent === 'Anbieter und Kontakt');
+  const t = abschnitt.textContent;
+  for (const s of ['Matthias | B', 'Schönbach', 'Sebnitz']) assert.ok(t.includes(s), s);
+  assert.equal(abschnitt.querySelector('a[href^="mailto:"]').getAttribute('href'), `mailto:${KONTAKT_MAIL}`);
+  assert.ok(!/Stra(ß|ss)e|Tel|d{5}/.test(t), t);
+  const ohne = [...renderUeber(document, { kontaktMail: null }).querySelectorAll('details.abschnitt')].at(-1);
+  assert.ok(!ohne.querySelector('a[href^="mailto:"]'));
+  assert.ok(ohne.textContent.includes('Matthias | B'));
+});
+
+test('Lizenzen: © OpenStreetMap-Mitwirkende (ODbL) mit Link und Hinweis auf Nominatim', () => {
+  const lizenzen = [...renderUeber(document, {}).querySelectorAll('details.abschnitt')][2];
+  assert.ok(lizenzen.textContent.includes('© OpenStreetMap-Mitwirkende (ODbL)'));
+  const a = [...lizenzen.querySelectorAll('a')].find((x) => x.getAttribute('href') === 'https://www.openstreetmap.org/copyright');
+  assert.ok(a);
+  assert.equal(a.getAttribute('rel'), 'noopener noreferrer');
+  assert.match(lizenzen.textContent, /Nominatim/);
+});
+
+test('Fußnote: Bühnenlicht – von Matthias | B', () => {
+  assert.equal(renderUeber(document, {}).querySelector('.fussnote').textContent, 'Bühnenlicht – von Matthias | B');
+});
+
 test('Schriften: Namen, Urheber und Lizenz stehen im Fenster', () => {
   const t = text(null);
   for (const s of ['Barlow Condensed', 'Jeremy Tribby', 'Inter', 'Rasmus Andersson', 'SIL Open Font License']) assert.ok(t.includes(s), s);
@@ -110,7 +141,7 @@ test('Tschechische Quellen stehen in der Gruppe Tschechien, mit dem Übersetzung
 test('Gliederung: fünf aufklappbare Abschnitte, nur der erste ist offen', () => {
   const abschnitte = [...renderUeber(document, {}).querySelectorAll('details.abschnitt')];
   assert.deepEqual(abschnitte.map((d) => d.querySelector('summary').textContent.replace(/\s*\(.*\)$/, '')),
-    ['Wofür', 'Woher die Termine kommen', 'Lizenzen', 'Datenschutz', 'Kontakt']);
+    ['Wofür', 'Woher die Termine kommen', 'Lizenzen', 'Datenschutz', 'Anbieter und Kontakt']);
   assert.deepEqual(abschnitte.map((d) => d.hasAttribute('open')), [true, false, false, false, false]);
 });
 

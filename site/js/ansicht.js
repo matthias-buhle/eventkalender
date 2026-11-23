@@ -32,3 +32,9 @@ export function filterAendernPerZurueck(state) {
 export function fensterZustand(state) {
   return { ...(state && typeof state === 'object' ? state : {}), fenster: true };
 }
+
+/** Die Zusammenfassungszeile der Liste, mit der Suche (falls nicht leer) als ` · „Text“` dahinter. */
+export function zusammenfassungMitSuche(zeile, suche) {
+  const text = String(suche ?? '').trim();
+  return text ? `${zeile} · „${text}“` : zeile;
+}

@@ -71,7 +71,8 @@ main, footer { padding-left: 16px; padding-right: 16px; max-width: 720px; margin
 h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent); }
 .marke { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
 .von { font: 500 0.75rem/1 "Inter", system-ui, sans-serif; letter-spacing: 0.02em; color: var(--muted); white-space: nowrap; }
-@media (max-width: 359px) { .von { display: none; } }
+/* Schmale Telefone: der Zusatz steht unter dem Titel statt daneben und läuft so nie unter die Kopfknöpfe (Titel 32 px + 12 px Zusatz passen in 56 px) */
+@media (max-width: 479px) { .marke { flex-direction: column; align-items: flex-start; gap: 3px; } }
 .kopfknoepfe { display: flex; align-items: center; gap: 8px; }
 .thema { width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line-strong); background: transparent; color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
 .ico-sonne { display: none; }
