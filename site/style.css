@@ -203,3 +203,51 @@ main { padding-top: 4px; padding-bottom: 24px; }
 
 footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(--muted); }
 .source-warning { margin: 4px 0; }
+
+/* Filterseite: Wann? (Schnellwahl und Monatskalender), Was? (13 Kacheln), Wo? (Mittelpunkt, Umkreis), großer Anzeigen-Knopf */
+.filterseite { max-width: 720px; margin: 0 auto; padding: 4px 16px 0; display: flex; flex-direction: column; gap: 18px; }
+.filterseite .bereich { display: flex; flex-direction: column; gap: 8px; }
+.filterseite .bereich-titel { margin: 0; font: 600 0.95rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.filterseite .chip { min-height: 40px; }
+.filterseite .zeitraum-chip { display: inline-flex; align-items: center; background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; cursor: default; }
+.filterseite .zeitraum-chip[hidden] { display: none; }
+.filterseite .sorten .chip[aria-pressed="false"] { text-decoration: line-through; color: var(--muted); }
+
+.kalenderbox { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 8px 8px; }
+.kalender-kopf { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.monatsname { font: 600 1.1rem/1.2 var(--anzeige); letter-spacing: 0.04em; text-transform: uppercase; }
+.monat-zurueck, .monat-vor { width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--accent); font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.monat-zurueck:disabled, .monat-vor:disabled { color: var(--muted); opacity: 0.35; cursor: default; }
+.kalender { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px 0; text-align: center; }
+.kalender .wt { padding: 2px 0 4px; font-size: 0.7rem; color: var(--muted); }
+.kalender .tag { position: relative; min-height: 40px; padding: 0 0 6px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font: inherit; font-size: 0.9rem; font-variant-numeric: tabular-nums; cursor: pointer; }
+.kalender .tag:disabled { opacity: 0.35; cursor: default; }
+.kalender .heute { box-shadow: inset 0 0 0 1px var(--muted); }
+.kalender .punkt::after { content: ""; position: absolute; left: 50%; bottom: 5px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--accent); }
+.kalender .gewaehlt { background: var(--accent); color: var(--accent-text); font-weight: 600; border-radius: 0; }
+.kalender .gewaehlt.a { border-radius: 8px 0 0 8px; }
+.kalender .gewaehlt.e { border-radius: 0 8px 8px 0; }
+.kalender .gewaehlt.a.e { border-radius: 8px; }
+.kalender .gewaehlt.punkt::after { background: var(--accent-text); }
+
+.kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.kachel { --art: var(--art-sonstiges); display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 48px; padding: 8px 10px; border: 1px solid var(--line); border-left: 4px solid var(--art); border-radius: 10px; background: var(--card); color: var(--text); font: inherit; font-size: 0.9rem; line-height: 1.25; text-align: left; cursor: pointer; }
+.kachel.art-konzert { --art: var(--art-konzert); }
+.kachel.art-party { --art: var(--art-party); }
+.kachel.art-markt { --art: var(--art-markt); }
+.kachel.art-fest { --art: var(--art-fest); }
+.kachel.art-schau { --art: var(--art-schau); }
+.kachel.art-sonstiges { --art: var(--art-sonstiges); }
+.kachel-name { min-width: 0; overflow-wrap: anywhere; font-weight: 500; }
+.kachel-zahl { flex: 0 0 auto; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.kachel[aria-pressed="true"] { border-color: var(--accent); border-left-color: var(--art); box-shadow: inset 0 0 0 1px var(--accent); }
+.kachel[aria-pressed="true"] .kachel-name { font-weight: 600; }
+.kachel.leer { padding: 8px 10px; text-align: left; color: var(--text); opacity: 0.45; }
+.kachel.leer[aria-pressed="true"] { opacity: 0.75; }
+
+.schalter-advent { min-height: 44px; }
+.filterseite .tschechien { min-height: 44px; }
+.filterseite .umkreis + .tschechien { margin-top: -4px; }
+.filterseite-fuss { position: sticky; bottom: 0; margin: 0 -16px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); }
+.filterseite .anzeigen { width: 100%; justify-content: center; min-height: 52px; border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer; }
+.filterseite .anzeigen:disabled { opacity: 0.6; cursor: default; }

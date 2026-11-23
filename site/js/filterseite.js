@@ -1,0 +1,332 @@
+// Baut die Filterseite (Wann? Was? Wo? und den Anzeigen-Knopf) als DOM.
+// Fremdwerte (Ortsnamen, Rubriknamen, Termindaten) kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
+import { RUBRIKEN, SORTEN } from './arten.js';
+import { UMKREISE, anzeigeText, applyFilters, berlinDay, einzelneRubrik, rubrikWaehlen, zaehleAdvent, zaehleRubriken, zeitfenster } from './filter.js';
+import { markierterBereich, monateMitTerminen, monatsName, monatsRaster, tageMitTerminen, tagWaehlen } from './kalender.js';
+
+const STANDARD_ORT = 'Sebnitz';
+const SCHNELLWAHL = [['heute', 'Heute'], ['wochenende', 'Wochenende'], ['7', '7 Tage'], ['30', '30 Tage'], ['alle', 'Alle']];
+const WOCHENTAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const KOPF_TAGE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+
+function el(doc, tag, klasse, text) {
+  const e = doc.createElement(tag);
+  if (klasse) e.setAttribute('class', klasse);
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+function knopf(doc, klasse, text) {
+  const b = el(doc, 'button', klasse, text);
+  b.setAttribute('type', 'button');
+  return b;
+}
+
+const datum = (tag) => new Date(`${tag}T00:00:00Z`);
+
+/** "Samstag, 28. November" */
+function tagLang(tag) {
+  const d = datum(tag);
+  return `${WOCHENTAGE[d.getUTCDay()]}, ${d.getUTCDate()}. ${MONATE[d.getUTCMonth()]}`;
+}
+
+/** "Sa 28.11." */
+function tagKurz(tag) {
+  const d = datum(tag);
+  return `${WOCHENTAGE[d.getUTCDay()].slice(0, 2)} ${d.getUTCDate()}.${d.getUTCMonth() + 1}.`;
+}
+
+/** Text des Zeitraum-Chips bei zeit 'tage': "Sa 28.11.", "Sa 28.11. – So 29.11." oder "ab Sa 28.11.". */
+function zeitraumText(prefs, heute) {
+  const { von, bis } = zeitfenster(prefs, heute);
+  if (!bis) return `ab ${tagKurz(von)}`;
+  return von === bis ? tagKurz(von) : `${tagKurz(von)} – ${tagKurz(bis)}`;
+}
+
+function abschnitt(doc, titel) {
+  const s = el(doc, 'section', 'bereich');
+  s.append(el(doc, 'h2', 'bereich-titel', titel));
+  return s;
+}
+
+/**
+ * Baut die Filterseite in `container` (dessen bisheriger Inhalt wird ersetzt).
+ * Jede Bedienung ändert ctx.prefs, ruft ctx.beiAenderung() genau einmal und zeichnet dann Zahlen, Kalender und Knopf neu.
+ * ctx.events, ctx.orteListe, ctx.orte und ctx.laedt dürfen später ersetzt werden; danach aktualisieren() rufen.
+ * @param {Document} doc
+ * @param {Element} container
+ * @param {{prefs: any, events: any[], orteListe: {name:string,lat:number,lon:number}[], orte: Record<string,{lat:number,lon:number}>,
+ *   jetzt: () => string, beiAenderung: () => void, beiAnzeigen: () => void, laedt?: boolean}} ctx
+ * @returns {{aktualisieren(): void}}
+ */
+export function baueFilterseite(doc, container, ctx) {
+  const seite = el(doc, 'div', 'filterseite');
+  const heute = () => berlinDay(ctx.jetzt());
+
+  const geaendert = () => {
+    ctx.beiAenderung();
+    aktualisieren();
+  };
+
+  // --- Wann? ---
+  const wann = abschnitt(doc, 'Wann?');
+  const zeitwahl = el(doc, 'div', 'chips zeitwahl');
+  zeitwahl.setAttribute('role', 'group');
+  zeitwahl.setAttribute('aria-label', 'Zeitraum');
+  const zeitChips = new Map();
+  for (const [wert, text] of SCHNELLWAHL) {
+    const chip = knopf(doc, 'chip', text);
+    chip.addEventListener('click', () => {
+      Object.assign(ctx.prefs, { zeit: wert, von: null, bis: null });
+      geaendert();
+    });
+    zeitChips.set(wert, chip);
+    zeitwahl.append(chip);
+  }
+  const zeitraumChip = el(doc, 'span', 'chip zeitraum-chip');
+  zeitwahl.append(zeitraumChip);
+
+  const kalenderbox = el(doc, 'div', 'kalenderbox');
+  const kopf = el(doc, 'div', 'kalender-kopf');
+  const zurueck = knopf(doc, 'monat-zurueck', '‹');
+  zurueck.setAttribute('aria-label', 'Voriger Monat');
+  const vor = knopf(doc, 'monat-vor', '›');
+  vor.setAttribute('aria-label', 'Nächster Monat');
+  const monatsname = el(doc, 'span', 'monatsname');
+  monatsname.setAttribute('aria-live', 'polite');
+  kopf.append(zurueck, monatsname, vor);
+  const kalender = el(doc, 'div', 'kalender');
+  kalenderbox.append(kopf, kalender);
+  wann.append(zeitwahl, kalenderbox);
+
+  /** Der gezeigte Monat (JJJJ-MM); Start: Monat des gewählten Tages, sonst von heute. */
+  let monat = ctx.prefs.zeit === 'tage' && typeof ctx.prefs.von === 'string' && ctx.prefs.von > heute() ? ctx.prefs.von.slice(0, 7) : heute().slice(0, 7);
+  let gezeichnet = null;
+  let monate = [];
+  /** @type {Map<string, Element>} */
+  let zellen = new Map();
+
+  function zeichneMonat() {
+    kalender.replaceChildren();
+    zellen = new Map();
+    for (const t of KOPF_TAGE) {
+      const wt = el(doc, 'span', 'wt', t);
+      wt.setAttribute('aria-hidden', 'true');
+      kalender.append(wt);
+    }
+    for (const t of monatsRaster(monat)) {
+      if (!t) {
+        kalender.append(el(doc, 'span', 'tag leerzelle'));
+        continue;
+      }
+      const zelle = knopf(doc, 'tag', String(Number(t.slice(8, 10))));
+      zelle.setAttribute('data-tag', t);
+      zelle.setAttribute('aria-label', tagLang(t));
+      zelle.addEventListener('click', () => {
+        if (zelle.disabled) return;
+        Object.assign(ctx.prefs, tagWaehlen(ctx.prefs, t));
+        geaendert();
+      });
+      zellen.set(t, zelle);
+      kalender.append(zelle);
+    }
+    gezeichnet = monat;
+    monatsname.textContent = monatsName(monat);
+  }
+
+  function blaettern(schritt) {
+    const i = monate.indexOf(monat) + schritt;
+    if (i < 0 || i >= monate.length) return;
+    monat = monate[i];
+    aktualisieren();
+  }
+  zurueck.addEventListener('click', () => blaettern(-1));
+  vor.addEventListener('click', () => blaettern(1));
+
+  // --- Was? ---
+  const was = abschnitt(doc, 'Was?');
+  const kachelFeld = el(doc, 'div', 'kacheln');
+  kachelFeld.setAttribute('role', 'group');
+  kachelFeld.setAttribute('aria-label', 'Rubriken');
+  const kacheln = new Map();
+  for (const r of RUBRIKEN) {
+    const k = knopf(doc, `kachel art-${r.farbe}`);
+    const zahl = el(doc, 'span', 'kachel-zahl', '0');
+    k.append(el(doc, 'span', 'kachel-name', r.name), zahl);
+    k.addEventListener('click', () => {
+      ctx.prefs.rubriken = rubrikWaehlen(ctx.prefs.rubriken ?? [], r.key);
+      geaendert();
+    });
+    kacheln.set(r.key, { k, zahl });
+    kachelFeld.append(k);
+  }
+  was.append(kachelFeld);
+
+  const sortenGruppen = new Map();
+  const sortenChips = [];
+  for (const [rubrik, def] of Object.entries(SORTEN)) {
+    const gruppe = el(doc, 'div', 'gruppe sorten');
+    gruppe.append(el(doc, 'p', 'gruppentitel', def.titel));
+    const chips = el(doc, 'div', 'chips');
+    for (const [schluessel, text] of [...Object.entries(def.liste), [def.sonstige, def.sonstigeText]]) {
+      const chip = knopf(doc, 'chip', text);
+      chip.addEventListener('click', () => {
+        const aus = (ctx.prefs.hiddenGenres ?? []).includes(schluessel);
+        ctx.prefs.hiddenGenres = aus ? ctx.prefs.hiddenGenres.filter((g) => g !== schluessel) : [...(ctx.prefs.hiddenGenres ?? []), schluessel];
+        geaendert();
+      });
+      sortenChips.push([schluessel, chip]);
+      chips.append(chip);
+    }
+    gruppe.append(chips);
+    sortenGruppen.set(rubrik, gruppe);
+    was.append(gruppe);
+  }
+
+  const advent = el(doc, 'label', 'schalter schalter-advent');
+  const adventHaken = el(doc, 'input');
+  adventHaken.setAttribute('type', 'checkbox');
+  const adventText = el(doc, 'span');
+  advent.append(adventHaken, adventText);
+  adventHaken.addEventListener('change', () => {
+    ctx.prefs.advent = adventHaken.checked;
+    geaendert();
+  });
+  was.append(advent);
+
+  // --- Wo? ---
+  const wo = abschnitt(doc, 'Wo?');
+  const ortLabel = el(doc, 'label', 'ort');
+  ortLabel.append(el(doc, 'span', null, 'Mittelpunkt'));
+  const auswahl = el(doc, 'select', 'mittelpunkt');
+  ortLabel.append(auswahl);
+  auswahl.addEventListener('change', () => {
+    ctx.prefs.ort = auswahl.value === STANDARD_ORT ? null : auswahl.value;
+    geaendert();
+  });
+  let orteGezeichnet = null;
+  let ortNamen = [];
+  function zeichneOrte() {
+    ortNamen = (ctx.orteListe ?? []).map((o) => o.name).filter((n) => typeof n === 'string' && n);
+    if (!ortNamen.includes(STANDARD_ORT)) ortNamen.unshift(STANDARD_ORT);
+    auswahl.replaceChildren(...ortNamen.map((name) => {
+      const option = el(doc, 'option', null, name);
+      option.setAttribute('value', name);
+      return option;
+    }));
+    orteGezeichnet = ctx.orteListe;
+  }
+
+  const umkreis = el(doc, 'div', 'chips umkreis');
+  umkreis.setAttribute('role', 'group');
+  umkreis.setAttribute('aria-label', 'Umkreis');
+  const umkreisChips = new Map();
+  for (const km of UMKREISE) {
+    const chip = knopf(doc, 'chip', `${km} km`);
+    chip.addEventListener('click', () => {
+      ctx.prefs.maxKm = km;
+      geaendert();
+    });
+    umkreisChips.set(km, chip);
+    umkreis.append(chip);
+  }
+
+  const tschechien = el(doc, 'label', 'schalter tschechien');
+  const czHaken = el(doc, 'input');
+  czHaken.setAttribute('type', 'checkbox');
+  tschechien.append(czHaken, el(doc, 'span', null, 'Tschechien'));
+  czHaken.addEventListener('change', () => {
+    ctx.prefs.showCZ = czHaken.checked;
+    geaendert();
+  });
+  const umkreisTitel = el(doc, 'p', 'gruppentitel', 'Umkreis');
+  wo.append(ortLabel, umkreisTitel, umkreis, tschechien);
+
+  // --- Anzeigen ---
+  const anzeigen = knopf(doc, 'btn primaer anzeigen');
+  anzeigen.setAttribute('aria-live', 'polite');
+  anzeigen.addEventListener('click', () => {
+    if (!anzeigen.disabled) ctx.beiAnzeigen();
+  });
+  const fuss = el(doc, 'div', 'filterseite-fuss');
+  fuss.append(anzeigen);
+
+  seite.append(wann, was, wo, fuss);
+  container.replaceChildren(seite);
+
+  function aktualisieren() {
+    const prefs = ctx.prefs;
+    const jetzt = ctx.jetzt();
+    const tagHeute = berlinDay(jetzt);
+    const events = ctx.events ?? [];
+    const orte = ctx.orte ?? {};
+
+    // Wann?
+    for (const [wert, chip] of zeitChips) chip.setAttribute('aria-pressed', String(prefs.zeit === wert));
+    if (prefs.zeit === 'tage') {
+      zeitraumChip.textContent = zeitraumText(prefs, tagHeute);
+      zeitraumChip.removeAttribute('hidden');
+    } else {
+      zeitraumChip.textContent = '';
+      zeitraumChip.setAttribute('hidden', '');
+    }
+    const tage = tageMitTerminen(events, prefs, jetzt, orte);
+    monate = monateMitTerminen(tage, tagHeute);
+    if (!monate.includes(monat)) monat = tagHeute.slice(0, 7);
+    if (gezeichnet !== monat) zeichneMonat();
+    const i = monate.indexOf(monat);
+    zurueck.disabled = i <= 0;
+    vor.disabled = i >= monate.length - 1;
+    const bereich = markierterBereich(prefs, tagHeute);
+    for (const [t, zelle] of zellen) {
+      const drin = Boolean(bereich) && t >= bereich.von && t <= bereich.bis;
+      zelle.disabled = t < tagHeute;
+      zelle.classList.toggle('heute', t === tagHeute);
+      zelle.classList.toggle('punkt', tage.has(t));
+      zelle.classList.toggle('gewaehlt', drin);
+      zelle.classList.toggle('a', drin && t === bereich.von);
+      zelle.classList.toggle('e', drin && t === bereich.bis);
+      if (t === tagHeute) zelle.setAttribute('aria-current', 'date');
+      else zelle.removeAttribute('aria-current');
+    }
+
+    // Was?
+    const zahlen = zaehleRubriken(events, prefs, jetzt, orte);
+    const gewaehlt = prefs.rubriken ?? [];
+    for (const [key, { k, zahl }] of kacheln) {
+      zahl.textContent = String(zahlen[key]);
+      k.classList.toggle('leer', zahlen[key] === 0);
+      k.setAttribute('aria-pressed', String(gewaehlt.includes(key)));
+    }
+    const einzel = einzelneRubrik(gewaehlt);
+    for (const [rubrik, gruppe] of sortenGruppen) {
+      if (rubrik === einzel) gruppe.removeAttribute('hidden');
+      else gruppe.setAttribute('hidden', '');
+    }
+    const aus = prefs.hiddenGenres ?? [];
+    for (const [schluessel, chip] of sortenChips) chip.setAttribute('aria-pressed', String(!aus.includes(schluessel)));
+    adventHaken.checked = Boolean(prefs.advent);
+    adventText.textContent = `Nur Advent und Weihnachten (${zaehleAdvent(events, prefs, jetzt, orte)})`;
+
+    // Wo?
+    if (orteGezeichnet !== ctx.orteListe) zeichneOrte();
+    const ort = prefs.ort && ortNamen.includes(prefs.ort) ? prefs.ort : STANDARD_ORT;
+    const gewaehlteOption = [...auswahl.querySelectorAll('option')].find((o) => o.getAttribute('value') === ort);
+    if (gewaehlteOption) gewaehlteOption.selected = true; // wählt die übrigen ab
+    for (const [km, chip] of umkreisChips) chip.setAttribute('aria-pressed', String(prefs.maxKm === km));
+    czHaken.checked = prefs.showCZ !== false;
+
+    // Knopf
+    if (ctx.laedt) {
+      anzeigen.textContent = 'Termine werden geladen …';
+      anzeigen.disabled = true;
+    } else {
+      anzeigen.textContent = anzeigeText(applyFilters(events, prefs, jetzt, orte).length);
+      anzeigen.disabled = false;
+    }
+  }
+
+  aktualisieren();
+  return { aktualisieren };
+}
