@@ -349,6 +349,11 @@ test('ctx.fehler: Knopf nennt den Ladefehler und bleibt bedienbar (führt zur Li
   assert.equal(knopf(container).disabled, false);
   knopf(container).click();
   assert.equal(aufrufe.anzeigen, 1);
+  ctx.laedt = true;
+  seite.aktualisieren();
+  assert.equal(knopf(container).textContent, 'Termine werden geladen …');
+  assert.equal(knopf(container).disabled, true);
+  ctx.laedt = false;
   ctx.fehler = false;
   seite.aktualisieren();
   assert.notEqual(knopf(container).textContent, 'Termine konnten nicht geladen werden');
@@ -370,4 +375,6 @@ test('der Zeitraum-Chip trägt aria-pressed="true"', () => {
   const { container } = aufbau();
   tag(container, '2026-11-28').click();
   assert.equal(container.querySelector('.zeitraum-chip').getAttribute('aria-pressed'), 'true');
+  chip(container, 'Heute').click();
+  assert.equal(container.querySelector('.zeitraum-chip').hasAttribute('aria-pressed'), false);
 });

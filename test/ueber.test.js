@@ -6,6 +6,7 @@ import { QUELLEN, GRUPPEN, KONTAKT_MAIL, renderUeber, versionsZeile } from '../s
 
 const { document } = parseHTML('<!doctype html><html><body></body></html>');
 const quellenJson = JSON.parse(readFileSync(new URL('../sources.json', import.meta.url), 'utf8'));
+const abschnittMit = (wurzel, titel) => [...wurzel.querySelectorAll('details.abschnitt')].find((d) => d.querySelector('summary').textContent === titel);
 const text = (mail) => renderUeber(document, { kontaktMail: mail }).textContent;
 
 test('jede eingeschaltete Quelle aus sources.json hat einen Eintrag im Menü, und umgekehrt', () => {
@@ -83,18 +84,18 @@ test('Wofür: nennt Zeitraum, Rubrik, Ort und Umkreis und die Filterseite, nicht
 });
 
 test('Anbieter und Kontakt: Matthias | B, Schönbach, Sebnitz und Mail, aber keine Straße, Telefon oder Postleitzahl', () => {
-  const abschnitt = [...renderUeber(document, {}).querySelectorAll('details.abschnitt')].find((d) => d.querySelector('summary').textContent === 'Anbieter und Kontakt');
+  const abschnitt = abschnittMit(renderUeber(document, {}), 'Anbieter und Kontakt');
   const t = abschnitt.textContent;
   for (const s of ['Matthias | B', 'Schönbach', 'Sebnitz']) assert.ok(t.includes(s), s);
   assert.equal(abschnitt.querySelector('a[href^="mailto:"]').getAttribute('href'), `mailto:${KONTAKT_MAIL}`);
-  assert.ok(!/Stra(ß|ss)e|Tel|d{5}/.test(t), t);
-  const ohne = [...renderUeber(document, { kontaktMail: null }).querySelectorAll('details.abschnitt')].at(-1);
+  assert.ok(!/Stra(ß|ss)e|Tel|\d{5}/.test(t), t);
+  const ohne = abschnittMit(renderUeber(document, { kontaktMail: null }), 'Anbieter und Kontakt');
   assert.ok(!ohne.querySelector('a[href^="mailto:"]'));
   assert.ok(ohne.textContent.includes('Matthias | B'));
 });
 
 test('Lizenzen: © OpenStreetMap-Mitwirkende (ODbL) mit Link und Hinweis auf Nominatim', () => {
-  const lizenzen = [...renderUeber(document, {}).querySelectorAll('details.abschnitt')][2];
+  const lizenzen = abschnittMit(renderUeber(document, {}), 'Lizenzen');
   assert.ok(lizenzen.textContent.includes('© OpenStreetMap-Mitwirkende (ODbL)'));
   const a = [...lizenzen.querySelectorAll('a')].find((x) => x.getAttribute('href') === 'https://www.openstreetmap.org/copyright');
   assert.ok(a);
