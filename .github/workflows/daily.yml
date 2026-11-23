@@ -65,6 +65,14 @@ jobs:
             "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/rohdaten.json" \
             -o site/data/rohdaten.json || rm -f site/data/rohdaten.json
 
+      # Zwischenspeicher der Ortssuche (Nominatim) vom letzten Stand holen, damit keine Frage zweimal gestellt wird.
+      # Fehlt er, wird neu gefragt (höchstens 400 Anfragen, eine je 1,1 Sekunden), das ist in Ordnung.
+      - name: Orte-Zwischenspeicher holen
+        run: |
+          curl -fsS --max-time 30 \
+            "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/orte-cache.json" \
+            -o site/data/orte-cache.json || rm -f site/data/orte-cache.json
+
       # Fällt nur eine Quelle aus, endet der Lauf trotzdem erfolgreich: der Fehler steht in status.json.
       - run: npm run build
         env:

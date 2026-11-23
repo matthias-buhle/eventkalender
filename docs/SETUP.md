@@ -116,6 +116,12 @@ Jede Übersetzung wird in `uebersetzungen.json` zwischengespeichert (liegt auf d
 vor dem Bauen wieder ab), sodass derselbe Text nur einmal Zeichen kostet. Im Lauf-Protokoll steht eine Zeile „Übersetzung: …“ mit dem Verbrauch.
 Einträge, die 90 Tage nicht mehr vorkamen, werden verworfen.
 
+**Ortssuche:** Termine, deren Quelle nur die Region nennt („…, Raum Bautzen“) oder die gar keine Koordinaten haben, schlägt
+der Lauf bei Nominatim (OpenStreetMap) nach, höchstens 400 Anfragen je Lauf, eine je 1,1 Sekunden, ohne Schlüssel und ohne
+Kontaktangabe. Jede Antwort, auch „kein Treffer“, wird in `orte-cache.json` zwischengespeichert (liegt wie die Übersetzungen
+auf der veröffentlichten Seite, beide Workflows reichen sie weiter), sodass keine Frage zweimal gestellt wird. Im Lauf-Protokoll
+steht eine Zeile „Orte: …“. Einträge, die 120 Tage nicht mehr vorkamen, werden verworfen.
+
 ## 8. Ersten Lauf starten
 
 ```bash

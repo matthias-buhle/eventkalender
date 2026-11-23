@@ -7,6 +7,7 @@ import { dedupe } from './dedupe.js';
 import { rubrikUndGenre, istAdvent } from './rubriken.js';
 import { createPoliteClient } from './http.js';
 import { uebersetzeTermine } from './uebersetzen.js';
+import { ergaenzeOrte, erzeugeAbruf } from './ortssuche.js';
 import { schreibeVersion } from './version.js';
 
 const MIN_ERGIEBIG = 5;
@@ -32,9 +33,15 @@ function anreichern(e) {
     const ort = resolvePlace(e.placeName) ?? (ortRegionKm == null ? ortAusTitel(e.title) : null);
     if (ort) ({ lat, lon, country } = ort);
   }
-  const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
   const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
-  return { ...e, rubrik, genre, advent, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km, ortRegionKm: ortRegionKm ?? null };
+  return mitEntfernung({ ...e, rubrik, genre, advent, lat: lat ?? null, lon: lon ?? null, country, ortRegionKm: ortRegionKm ?? null });
+}
+
+/** Setzt distanceKm (Luftlinie zum Mittelpunkt, eine Nachkommastelle) neu aus lat/lon; ohne Koordinaten null. */
+export function mitEntfernung(e) {
+  const { lat, lon } = e;
+  const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
+  return { ...e, distanceKm: km };
 }
 
 /** Ortsnamen, die das Ortsverzeichnis nicht kennt: aus gelieferten Terminen und aus dem, was der Adapter verworfen hat. */
@@ -154,14 +161,31 @@ async function main() {
   const rohdatenText = JSON.stringify({ generatedAt: now.toISOString(), quellen: rohdaten });
   for (const s of status) console.log(`${s.ok ? 'ok  ' : 'FEHL'} ${s.name}: ${s.count} Termine${s.error ? ` (${s.error}${s.uebernommen ? `; ${s.count} Termine vom Abruf am ${(s.lastOkAt ?? '').slice(0, 10)} übernommen` : ''})` : ''}`);
   pruefeLauf({ events: roh, status });
+  // Orte nur mit Regionsmittelpunkt oder ganz ohne Koordinaten über Nominatim nachschlagen; Fehler stoppen den Lauf nie.
+  // Der User-Agent hier bewusst ohne Kontaktangabe: keine persönlichen Daten an diesen Dienst.
+  let verortet = roh;
+  let orteCache = await readJson(new URL('orte-cache.json', outDir), {});
+  try {
+    const orte = await ergaenzeOrte(roh, {
+      abruf: erzeugeAbruf({ userAgent: 'Eventkalender-Ostsachsen/1.0 (privater Kalender)' }),
+      cache: orteCache, heute: todayBerlin(now),
+    });
+    verortet = orte.events.map(mitEntfernung).filter((e) => e.distanceKm == null || e.distanceKm <= RADIUS_KM);
+    orteCache = orte.cache;
+    const s = orte.stats;
+    console.log(`Orte: ${s.treffer} neu verortet, ${s.ohneTreffer} ohne Treffer, ${s.ausCache} aus dem Zwischenspeicher, ${s.fehler} Fehler, ${s.offen} offen`);
+  } catch (err) {
+    console.warn(`Orte: Nachschlagen übersprungen (${err?.message ?? err})`);
+  }
   // Tschechische Termine ins Deutsche übersetzen; Fehler dabei stoppen den Lauf nie, der Originaltext bleibt dann stehen.
   const alterSpeicher = await readJson(new URL('uebersetzungen.json', outDir), {});
-  const { events, cache, stats } = await uebersetzeTermine(roh, {
+  const { events, cache, stats } = await uebersetzeTermine(verortet, {
     apiKey: process.env.DEEPL_API_KEY, cache: alterSpeicher, heute: todayBerlin(now),
   });
   console.log(`Übersetzung: ${stats.uebersetzt} neu (${stats.zeichen} Zeichen), ${stats.ausCache} aus dem Zwischenspeicher${stats.fehler ? `, Hinweis: ${stats.fehler}` : ''}`);
   await mkdir(outDir, { recursive: true });
   await writeFile(new URL('uebersetzungen.json', outDir), JSON.stringify(cache));
+  await writeFile(new URL('orte-cache.json', outDir), JSON.stringify(orteCache));
   const generatedAt = now.toISOString();
   await writeFile(new URL('events.json', outDir), JSON.stringify({ generatedAt, events }, null, 1));
   await writeFile(new URL('status.json', outDir), JSON.stringify({ generatedAt, sources: status }, null, 1));

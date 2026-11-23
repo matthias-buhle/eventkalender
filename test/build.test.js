@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
 import { RADIUS_KM } from '../src/geo.js';
-import { runAll, pruefeLauf, ortsliste, MAX_UEBERNAHME_TAGE } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste, mitEntfernung, MAX_UEBERNAHME_TAGE } from '../src/build.js';
 import { versionsInfo, schreibeVersion } from '../src/version.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
@@ -388,4 +388,12 @@ test('Ort aus dem Titel: ein Ort außerhalb des Umkreises (z. B. "Reise nach Ber
   assert.equal(events.length, 1);
   assert.equal(events[0].lat, null);
   assert.equal(events[0].distanceKm, null);
+});
+
+test('mitEntfernung: setzt distanceKm aus lat/lon neu, null ohne Koordinaten', () => {
+  const nah = mitEntfernung(ev({ lat: 51.1809, lon: 14.4276, distanceKm: 999 }));
+  assert.ok(nah.distanceKm > 25 && nah.distanceKm < 30, String(nah.distanceKm));
+  assert.equal(nah.distanceKm, Math.round(nah.distanceKm * 10) / 10, 'auf eine Nachkommastelle gerundet');
+  assert.equal(nah.lat, 51.1809);
+  assert.equal(mitEntfernung(ev({ lat: null, lon: null, distanceKm: 12 })).distanceKm, null);
 });
