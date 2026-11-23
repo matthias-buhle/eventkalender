@@ -123,3 +123,25 @@ test('essen nur als ganzes Wort oder in bekannten Zusammensetzungen', () => {
   assert.equal(sonst('Gemeinsames Essen').rubrik, 'essen');
   assert.equal(sonst('Abendessen im Schloss').rubrik, 'essen');
 });
+
+test('Führung: ganze Vorsilben ausgeschlossen, Haus-/Rathaus-/Wein-/Steinführung zählen', () => {
+  for (const t of ['Hausführung', 'Rathausführung', 'Gasthausführung', 'Weinführung', 'Steinführung']) {
+    assert.equal(sonst(t).rubrik, 'fuehrung', t);
+  }
+  for (const t of ['Einführung in die Oper', 'Ausführung', 'Vorführung', 'Aufführung', 'Durchführung', 'Verführung']) {
+    assert.notEqual(sonst(t).rubrik, 'fuehrung', t);
+    assert.notEqual(von({ art: 'schau', title: t }).rubrik, 'fuehrung', `${t} (schau)`);
+  }
+});
+
+test('essen: Zusammensetzungen mit -essen, aber nicht Messen oder Adressen', () => {
+  for (const t of ['Ritteressen', 'Gourmetessen', 'Weinessen', 'Gänseessen', 'Schlachtessen']) {
+    assert.equal(sonst(t).rubrik, 'essen', t);
+  }
+  assert.notEqual(sonst('Messen und Märkte').rubrik, 'essen');
+  assert.notEqual(sonst('Adressen').rubrik, 'essen');
+});
+
+test('Haus mit Kino im Namen: letzter Hinweis für Theater', () => {
+  assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Bad Apples', placeName: 'Kunstbauerkino Großhennersdorf' }).rubrik, 'theater');
+});

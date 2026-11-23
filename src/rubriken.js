@@ -35,8 +35,8 @@ export const UNTERARTEN = {
   fuehrung: FUEHRUNG_UNTER,
 };
 
-// Einführung, Vorführung, Aufführung, Durchführung, Ausführung, Verführung sind keine Führungen; Weinführung, Steinführung schon ("ein" zählt nur als ganzes Wort).
-const FUEHRUNG = /(?<!vor|auf|durch|aus|ver|(?<![a-zäöü])ein)f[uü]hrung|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter/;
+// Einführung, Vorführung, Aufführung, Durchführung, Ausführung, Verführung sind keine Führungen; Weinführung, Steinführung schon ("aus" und "ein" zählen nur als ganzes Wort: Haus-, Rathaus-, Wein-, Steinführung sind Führungen).
+const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter/;
 
 // Reihenfolge = Vorrang (erste passende Regel gewinnt): Führung vor Theater vor Kurse ... vor Kinder, zuletzt Konzert. Für alle Termine der Art "sonstiges"; Titel vor Beschreibung.
 const REGELN = /** @type {[string, RegExp][]} */ ([
@@ -44,9 +44,9 @@ const REGELN = /** @type {[string, RegExp][]} */ ([
   ['theater', /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|vorf[uü]hrung|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer/],
   ['kurse', /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback/],
   ['wandern', /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/],
-  ['essen', /\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|fest)essen\b|kulinar|brunch|dinner|verkostung|\bwein|\bbier|brauerei|backen|k[oö]chen|schlachtfest|g[aä]nse|gans\b|grill|fr[uü]hst[uü]ck|kaffee|kuchen|gl[uü]hwein|tasting|whisky|schmaus|abendbrot|baudenabend/],
+  ['essen', /\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|fest|gourmet|ritter|wein|g[aä]nse|schlacht)essen\b|kulinar|brunch|dinner|verkostung|\bwein|\bbier|brauerei|backen|k[oö]chen|schlachtfest|g[aä]nse|gans\b|grill|fr[uü]hst[uü]ck|kaffee|kuchen|gl[uü]hwein|tasting|whisky|schmaus|abendbrot|baudenabend/],
   ['kinder', /kinder|familie|m[aä]rchen|krabbel|ferienprogramm|basteln|d[aä]umling|rumpelkammer|fusselkopf|\bshaun\b|kuscheltier|spielend/],
-  ['konzert', /konzert|musik|requiem|oratori|kantate|matinee|orgel|vesper|singen\b|\bchor\b|klangschal|klangreise|\bgesang|\bband\b|tribute|hosianna|lieder|philharmon|orchester|bl[aä]ser|sinfon|symphon|klavier|streichorch|streichquartett|streicher\b|quartett|saxophon|piano|violin/],
+  ['konzert', /konzert|musik|requiem|oratori|kantate|matinee|orgel|vesper|singen\b|\bchor\b|klangschal|klangreise|\bgesang|\bband\b|tribute|hosianna|lieder|philharmon|orchester|bl[aä]ser|sinfon|symphon|klavier|streichorch|streichquartett|streicher\b|quartett|saxophon|\bpiano|violin/],
 ]);
 
 // Führungs-Unterarten, Reihenfolge = Vorrang.
@@ -98,7 +98,7 @@ export function rubrikUndGenre(e) {
   if (rubrik === 'konzert') return { rubrik, genre: detectSorte('konzert', e?.title, e?.description) };
   if (rubrik) return { rubrik, genre: null };
   // Letzter Anhaltspunkt: das Haus ("Theater Görlitz", "Kunstbauerkino").
-  return { rubrik: /theater|kino/.test(klein(e?.placeName)) ? 'theater' : 'sonstiges', genre: null };
+  return { rubrik: /theater|kino/.test(klein(e?.placeName)) ? 'theater' : 'sonstiges', genre: null };
 }
 
 function fuehrung(titel, beschreibung) {
