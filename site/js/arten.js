@@ -11,7 +11,7 @@ export const SORTEN = {
     sonstige: 'sonstige',
     sonstigeText: 'Sonstige Konzerte',
     liste: {
-      'rock-pop': 'Rock & Pop', 'metal-punk': 'Metal & Punk', klassik: 'Klassik & Chor', jazz: 'Jazz & Blues',
+      'rock-pop': 'Rock & Pop', 'metal-punk': 'Metal & Punk', klassik: 'Klassik & Chor', kirche: 'Kirchenmusik', jazz: 'Jazz & Blues',
       'schlager-folk': 'Schlager & Folk', 'hiphop-elektro': 'Hip-Hop & Elektro', comedy: 'Comedy & Kabarett', musical: 'Musical',
     },
   },

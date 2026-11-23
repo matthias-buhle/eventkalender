@@ -96,6 +96,31 @@ test('detectGenre: Genre aus Titel, Kategorie und Beschreibung (deutsch und engl
   assert.equal(g(undefined), null);
 });
 
+test('detectGenre: mehr Konzerte erkannt, Kirchenmusik als eigenes Genre (Orgel bleibt Klassik)', () => {
+  assert.equal(detectGenre('Camerata Cantorum - Ein Chorkonzert zur Einstimmung auf die Adventszeit'), 'klassik');
+  assert.equal(detectGenre('A4u – DIE ABBA REVIVAL SHOW'), 'rock-pop');
+  assert.equal(detectGenre('Herbstkonzert "Böhmisch mit Herz"'), 'schlager-folk');
+  assert.equal(detectGenre('Alive Worship'), 'kirche');
+  assert.equal(detectGenre('Gottesdienstmusik zum Drittletzten Sonntag'), 'kirche');
+  assert.equal(detectGenre('Kirchenkonzert'), 'kirche');
+  assert.equal(detectGenre('Orgelkonzert'), 'klassik');
+  assert.equal(detectGenre('Milow'), null);
+});
+
+test('detectGenre: Bandnamen, Hits-Abende, Matineen, Singen und Humor aus dem Bestand', () => {
+  assert.equal(detectGenre('Live-Konzert mit "Rose Hill Band"'), 'rock-pop');
+  assert.equal(detectGenre('„ABER BITTE MIT SAHNE" - Die schönsten Hits von Udo Jürgens'), 'rock-pop');
+  assert.equal(detectGenre('The Simon & Garfunkel Story'), 'rock-pop');
+  assert.equal(detectGenre('Sonntagsmatinee am Flügel'), 'klassik');
+  assert.equal(detectGenre('Hausmusikabend'), 'klassik');
+  assert.equal(detectGenre('Adventsliedersingen mit Peter Lippert'), 'klassik');
+  assert.equal(detectGenre('Konzert: MEDLZ Die 90er – a cappella'), 'klassik');
+  assert.equal(detectGenre('Gerhard Schöne und Musikanten'), 'schlager-folk');
+  assert.equal(detectGenre('HUMORZONE - Anna Mateur'), 'comedy');
+  assert.equal(detectGenre('Dixieland Band'), 'jazz');
+  assert.equal(detectGenre('Bandcamp-Abend'), null);
+});
+
 test('detectGenre: ein früher genannter Text zählt vor späteren; "Konzert" allein sagt nichts über das Genre', () => {
   assert.equal(detectGenre('Konzertabend "BESSER SPÄT ALS NIE"'), null);
   assert.equal(detectGenre('Jazz', 'Ein Abend mit Orchester'), 'jazz');
@@ -103,7 +128,7 @@ test('detectGenre: ein früher genannter Text zählt vor späteren; "Konzert" al
 });
 
 test('detectGenre: Wortteile täuschen nicht ("Höhepunkt" ist kein Punk), Blasorchester sind Blasmusik', () => {
-  assert.equal(detectGenre('Weihnachtskonzert', 'der Jahreshöhepunkt mit Wunderpunkt'), null);
+  assert.equal(detectGenre('Frühjahrskonzert', 'der Jahreshöhepunkt mit Wunderpunkt'), null);
   assert.equal(detectGenre('Post Punk Convention'), 'metal-punk');
   assert.equal(detectGenre('Frühjahrskonzert', 'Das Blasorchester der Lessingstadt'), 'schlager-folk');
 });
