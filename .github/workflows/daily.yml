@@ -69,7 +69,7 @@ jobs:
       # Fehlt er, wird neu gefragt (höchstens 400 Anfragen, eine je 1,1 Sekunden), das ist in Ordnung.
       - name: Orte-Zwischenspeicher holen
         run: |
-          curl -fsS --max-time 30 \
+          curl -fsS --retry 2 --max-time 30 \
             "https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/${SITE_CODE}/data/orte-cache.json" \
             -o site/data/orte-cache.json || rm -f site/data/orte-cache.json
 

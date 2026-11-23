@@ -26,7 +26,7 @@ function fakeAbruf(antworten = {}) {
   const abruf = async (url) => {
     urls.push(url);
     const q = new URL(url).searchParams.get('q');
-    const a = antworten[q];
+    const a = Object.hasOwn(antworten, q) ? antworten[q] : undefined;
     if (a instanceof Error) throw a;
     return a ?? [];
   };
@@ -101,6 +101,67 @@ test('zweiter Lauf fragt nicht noch einmal', async () => {
   assert.equal(lauf2.events[0].ortRegionKm, null);
   assert.equal(lauf2.events[1].ortRegionKm, 30);
   assert.equal(lauf2.cache['Nirgendwo, Bautzen'].zuletzt, '2026-11-24');
+});
+
+test('gemerkter Treffer gilt nur im Annahmeradius des jeweiligen Termins', async () => {
+  const text = 'Rathaus, Bautzen';
+  const cache = { [text]: { ...noerdlich(BAUTZEN, 25), zuletzt: HEUTE } };
+  cache[text].lat = Number(cache[text].lat);
+  cache[text].lon = Number(cache[text].lon);
+  const { abruf, urls } = fakeAbruf();
+  const eng = region('Rathaus', 15);
+  const weit = region('Rathaus', 30);
+  const r = await ergaenzeOrte([eng, weit], { abruf, cache, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls.length, 0);
+  assert.deepEqual(r.events[0], eng, '25 km liegt außerhalb von 15 km: unverändert');
+  assert.equal(r.events[1].lat, cache[text].lat, 'beim 30-km-Termin übernommen');
+  assert.equal(r.events[1].ortRegionKm, null);
+  assert.equal(r.cache[text].lat, cache[text].lat, 'Eintrag bleibt erhalten');
+
+  // auch innerhalb eines Laufs: ein Treffer für einen Termin ohne Koordinaten (75 km um Sebnitz) verschiebt keinen Regionstermin
+  const { abruf: abruf2 } = fakeAbruf({ 'Rathaus, Bautzen': [noerdlich(BAUTZEN, 25)] });
+  const ohne = ev({ placeName: 'Rathaus, Bautzen' });
+  const r2 = await ergaenzeOrte([ohne, region('Rathaus', 15)], { abruf: abruf2, cache: {}, heute: HEUTE, sleep: ohnePause });
+  assert.ok(r2.events[0].lat != null);
+  assert.equal(r2.events[1].ortRegionKm, 15);
+  assert.equal(r2.events[1].lat, BAUTZEN.lat);
+});
+
+test('unbrauchbarer Cache-Eintrag gilt als fehlend und wird neu gefragt', async () => {
+  const cache = { 'Rathaus, Bautzen': { lat: 'x', lon: 'y', zuletzt: HEUTE } };
+  const { abruf, urls } = fakeAbruf({ 'Rathaus, Bautzen': [noerdlich(BAUTZEN, 5)] });
+  const r = await ergaenzeOrte([region('Rathaus')], { abruf, cache, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls.length, 1);
+  assert.equal(typeof r.cache['Rathaus, Bautzen'].lat, 'number');
+  assert.equal(r.events[0].ortRegionKm, null);
+});
+
+test('Suchtexte wie "constructor" oder "__proto__" sind gewöhnliche Schlüssel', async () => {
+  const { abruf, urls } = fakeAbruf({ constructor: [noerdlich(CENTER, 10)] });
+  const r = await ergaenzeOrte([ev({ placeName: 'constructor' }), ev({ placeName: '__proto__' })], { abruf, cache: {}, heute: HEUTE, sleep: ohnePause });
+  assert.equal(urls.length, 2);
+  assert.ok(r.events[0].lat != null);
+  assert.equal(Object.hasOwn(r.cache, 'constructor'), true);
+  assert.equal(Object.hasOwn(r.cache, '__proto__'), true);
+  assert.equal(Object.getPrototypeOf(r.cache), Object.prototype);
+});
+
+test('Cache-Treffer lösen keine Pause aus', async () => {
+  const pausen = [];
+  const cache = { 'A, Bautzen': { lat: null, lon: null, zuletzt: HEUTE }, 'B, Bautzen': { lat: null, lon: null, zuletzt: HEUTE } };
+  const { abruf } = fakeAbruf();
+  await ergaenzeOrte([region('A'), region('B'), region('C')], { abruf, cache, heute: HEUTE, sleep: async (ms) => { pausen.push(ms); } });
+  assert.deepEqual(pausen, []);
+});
+
+test('HTTP 500 zählt als Fehler und wird nicht gemerkt', async () => {
+  const fetchImpl = async () => ({ ok: false, status: 500, json: async () => ({}) });
+  const abruf = erzeugeAbruf({ userAgent: 'Test/1.0', fetchImpl });
+  const a = region('A');
+  const r = await ergaenzeOrte([a], { abruf, cache: {}, heute: HEUTE, sleep: ohnePause });
+  assert.equal(r.stats.fehler, 1);
+  assert.deepEqual(r.cache, {});
+  assert.deepEqual(r.events[0], a);
 });
 
 test('Abfrageurl', async () => {

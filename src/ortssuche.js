@@ -88,6 +88,18 @@ function auswerten(antwort, e) {
   return distanceKm(mitte, { lat, lon }) <= km ? { lat, lon } : { lat: null, lon: null };
 }
 
+/** Ein brauchbarer Eintrag: Koordinaten als endliche Zahlen oder lat:null (endgültig kein Treffer). */
+function gueltig(v) {
+  if (!v || typeof v !== 'object') return false;
+  return v.lat === null || (Number.isFinite(v.lat) && Number.isFinite(v.lon));
+}
+
+/** Liegt ein gemerkter Treffer im Annahmeradius dieses Termins? Der Eintrag gilt je Suchtext, der Radius je Termin. */
+function imRadius(eintrag, e) {
+  const { mitte, km } = annahme(e);
+  return distanceKm(mitte, eintrag) <= km;
+}
+
 /**
  * Schlägt die Orte der Termine nach (siehe suchtexteFuer) und übernimmt Treffer im Annahmeradius.
  * Statistik: treffer = mit frischer Antwort neu verortete Termine, ohneTreffer = frische Antworten ohne brauchbaren
@@ -99,7 +111,8 @@ function auswerten(antwort, e) {
  */
 export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfragen = 400, sleep = realSleep }) {
   const alt = cache && typeof cache === 'object' ? cache : {};
-  const neuerCache = { ...alt };
+  // Ohne Prototyp, damit Suchtexte wie "constructor" oder "__proto__" gewöhnliche Schlüssel sind.
+  const neuerCache = Object.assign(Object.create(null), alt);
   const benutzt = new Set();
   const stats = { treffer: 0, ohneTreffer: 0, ausCache: 0, fehler: 0, offen: 0 };
   let anfragen = 0;
@@ -111,7 +124,7 @@ export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfrag
     try { fragen = suchtexteFuer(e); } catch { /* unbrauchbarer Termin: bleibt, wie er ist */ }
     let neu = e;
     for (const text of fragen) {
-      let eintrag = neuerCache[text];
+      let eintrag = Object.hasOwn(neuerCache, text) && gueltig(neuerCache[text]) ? neuerCache[text] : null;
       let frisch = false;
       if (eintrag) {
         // Eine in diesem Lauf schon gestellte Frage (zweiter Termin, gleicher Text) zählt nicht als Zwischenspeicher.
@@ -136,7 +149,9 @@ export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfrag
       }
       neuerCache[text] = { ...eintrag, zuletzt: heute };
       benutzt.add(text);
-      if (eintrag.lat != null && eintrag.lon != null) {
+      // Auch ein Treffer aus dem Zwischenspeicher oder von einem anderen Termin dieses Laufs muss im eigenen Radius liegen;
+      // sonst gilt er nur für diesen Termin als kein Treffer, der Eintrag bleibt.
+      if (eintrag.lat != null && eintrag.lon != null && (frisch || imRadius(eintrag, e))) {
         neu = { ...e, lat: eintrag.lat, lon: eintrag.lon, country: 'DE', ortRegionKm: null };
         if (frisch) stats.treffer += 1;
         break;
@@ -153,5 +168,5 @@ export async function ergaenzeOrte(events, { abruf, cache = {}, heute, maxAnfrag
     const zuletzt = Date.parse(v?.zuletzt ?? '');
     if (Number.isNaN(zuletzt) || zuletzt < grenze) delete neuerCache[k];
   }
-  return { events: ergebnis, cache: neuerCache, stats };
+  return { events: ergebnis, cache: Object.fromEntries(Object.entries(neuerCache)), stats };
 }
