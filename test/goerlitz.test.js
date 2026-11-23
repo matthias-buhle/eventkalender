@@ -148,3 +148,17 @@ test('goerlitz: ein vierwöchiger Weihnachtsmarkt bleibt ein Termin, mit und ohn
     assert.ok(events[0].end > events[0].start);
   }
 });
+
+test('goerlitz: ortRegionKm ist nachschlagenKm der Config (Standard 15), nur wenn die Region greift', async () => {
+  const rows = [
+    zeile({ Title: 'Lesung im Salzhaus', LocationName: 'Christian-Weise-Bibliothek / Salzhaus', Production1: { DateFromTo: '14. November 2026' }, DateTime: '2026-11-14T19:00:00+0100' }),
+    zeile({ Title: 'Vortrag', LocationName: 'Stadtmuseum Löbau', Production1: { DateFromTo: '15. November 2026' }, DateTime: '2026-11-15T19:00:00+0100' }),
+  ];
+  const [mit15, selbst] = await holen([seiteMit(rows)], { fallbackPlace: 'Görlitz' });
+  assert.equal(mit15.ortRegionKm, 15, 'ohne Angabe in der Config 15');
+  assert.equal(selbst.ortRegionKm, null);
+  const [mit30] = await holen([seiteMit(rows)], { fallbackPlace: 'Görlitz', nachschlagenKm: 30 });
+  assert.equal(mit30.ortRegionKm, 30);
+  const [ungesetzt] = await holen([seiteMit(rows.slice(0, 1))]);
+  assert.equal(ungesetzt.ortRegionKm, null);
+});

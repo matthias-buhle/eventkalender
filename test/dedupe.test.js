@@ -93,3 +93,32 @@ test('dedupe behält die Lizenz, wenn nur einer der beiden Einträge eine hat', 
     assert.deepEqual(out[0].lizenz, lizenz);
   }
 });
+
+test('Regionskoordinaten (ortRegionKm) weichen beim Zusammenführen den genauen Koordinaten des anderen Eintrags', () => {
+  const region = ev({ sourceName: 'A', sourceId: '1', sourceUrl: 'https://a.example/1', lat: 51.18, lon: 14.43, distanceKm: 30, ortRegionKm: 30, country: 'DE' });
+  const genau = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2', lat: 51.2, lon: 14.4, distanceKm: 31.5, ortRegionKm: null, country: 'DE' });
+  for (const eingabe of [[region, genau], [genau, region]]) {
+    const [e] = dedupe(eingabe);
+    assert.equal(e.lat, 51.2);
+    assert.equal(e.lon, 14.4);
+    assert.equal(e.distanceKm, 31.5);
+    assert.equal(e.ortRegionKm, null);
+  }
+});
+
+test('Regionskoordinaten bleiben, wenn der andere Eintrag keine Koordinaten oder ebenfalls nur die Region hat', () => {
+  const region = ev({ sourceName: 'A', sourceId: '1', sourceUrl: 'https://a.example/1', lat: 51.18, lon: 14.43, distanceKm: 30, ortRegionKm: 30 });
+  const ohne = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2' });
+  const [e1] = dedupe([region, ohne]);
+  assert.deepEqual([e1.lat, e1.ortRegionKm], [51.18, 30]);
+  const region2 = ev({ sourceName: 'C', sourceId: '3', sourceUrl: 'https://c.example/3', lat: 51.19, lon: 14.44, distanceKm: 31, ortRegionKm: 15 });
+  const [e2] = dedupe([region, region2]);
+  assert.deepEqual([e2.lat, e2.ortRegionKm], [51.18, 30]);
+});
+
+test('hat nur der zweite Eintrag Koordinaten, kommt sein Regionsradius mit', () => {
+  const ohne = ev({ sourceName: 'A', sourceId: '1', sourceUrl: 'https://a.example/1' });
+  const region = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2', lat: 51.18, lon: 14.43, distanceKm: 30, ortRegionKm: 30 });
+  const [e] = dedupe([ohne, region]);
+  assert.deepEqual([e.lat, e.lon, e.distanceKm, e.ortRegionKm], [51.18, 14.43, 30, 30]);
+});

@@ -66,3 +66,8 @@ test('makeEvent: advent ist standardmäßig false und wird sonst übernommen', (
   assert.equal(makeEvent(base).advent, false);
   assert.equal(makeEvent({ ...base, advent: true }).advent, true);
 });
+
+test('makeEvent: ortRegionKm ist standardmäßig null und wird sonst übernommen', () => {
+  assert.equal(makeEvent(base).ortRegionKm, null);
+  assert.equal(makeEvent({ ...base, ortRegionKm: 30 }).ortRegionKm, 30);
+});

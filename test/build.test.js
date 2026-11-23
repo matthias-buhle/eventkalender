@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
+import { RADIUS_KM } from '../src/geo.js';
 import { runAll, pruefeLauf, ortsliste, MAX_UEBERNAHME_TAGE } from '../src/build.js';
 import { versionsInfo, schreibeVersion } from '../src/version.js';
 
@@ -351,4 +352,40 @@ test('Weihnachtsmarkt Sebnitz bekommt advent, ein Sommerfest nicht', async () =>
   });
   assert.equal(events.find((e) => e.title === 'Weihnachtsmarkt Sebnitz').advent, true);
   assert.equal(events.find((e) => e.title === 'Sommerfest').advent, false);
+});
+
+test('Ort: placeName zuerst, dann der Titel; mit ortRegionKm bleibt es beim Regionsmittelpunkt', async () => {
+  const BAUTZEN = { lat: 51.1809, lon: 14.4276 };
+  const { events } = await runAll({
+    now: NOW, http: {},
+    sources: [quelle('q', async () => [
+      ev({ title: 'Stammtisch', placeName: 'Vereinsheim, Neusalza-Spremberg' }),
+      ev({ title: 'Lokalschau Neusalza-Spremberg', placeName: 'Vereinsheim, Unbekanntdorf' }),
+      ev({ title: 'Weihnachtsmarkt Dresden', placeName: 'Rathaus, Raum Bautzen', ...BAUTZEN, ortRegionKm: 30 }),
+      ev({ title: 'Kegelabend', placeName: 'Vereinsheim, Unbekanntdorf' }),
+    ])],
+  });
+  const von = (titel) => events.find((e) => e.title === titel);
+  assert.equal(von('Stammtisch').lat, 51.0337);
+  const schau = von('Lokalschau Neusalza-Spremberg');
+  assert.equal(schau.lat, 51.0337);
+  assert.equal(schau.lon, 14.5445);
+  assert.ok(schau.distanceKm > 0 && schau.distanceKm < RADIUS_KM);
+  const markt = von('Weihnachtsmarkt Dresden');
+  assert.equal(markt.lat, BAUTZEN.lat);
+  assert.equal(markt.ortRegionKm, 30);
+  const kegeln = von('Kegelabend');
+  assert.equal(kegeln.lat, null);
+  assert.equal(kegeln.distanceKm, null);
+  assert.equal(kegeln.ortRegionKm, null);
+});
+
+test('Ort aus dem Titel: ein Ort außerhalb des Umkreises (z. B. "Reise nach Berlin") wird nicht übernommen, der Termin bleibt sichtbar', async () => {
+  const { events } = await runAll({
+    now: NOW, http: {},
+    sources: [quelle('q', async () => [ev({ title: 'Lesung: Reise nach Berlin', placeName: 'Vereinsheim, Unbekanntdorf' })])],
+  });
+  assert.equal(events.length, 1);
+  assert.equal(events[0].lat, null);
+  assert.equal(events[0].distanceKm, null);
 });

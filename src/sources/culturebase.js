@@ -88,10 +88,11 @@ export async function holeZeilen({ http, urlFuerSeite, maxPages }) {
  * Wandelt Zeilen in Events. Mehrtägige Märkte/Feste/Schauen (2–45 Tage, gleiche Uhrzeit) werden ein Termin
  * von der ersten bis zur letzten Zeile; alle anderen Zeilen bleiben einzelne Termine.
  * @param {object[]} zeilen
- * @param {{quelle:string, linkFuer:(row:object)=>string, fallbackPlace?:string}} opt
+ * @param {{quelle:string, linkFuer:(row:object)=>string, fallbackPlace?:string, fallbackKm?:number}} opt
  * `fallbackPlace`: Region der Quelle; die Zeilen nennen nur die Spielstätte, nicht die Stadt.
+ * `fallbackKm`: Annahmeradius (km) der späteren Feinsuche um den Regionsmittelpunkt (Feld ortRegionKm), Standard 15.
  */
-export function zuEvents(zeilen, { quelle, linkFuer, fallbackPlace }) {
+export function zuEvents(zeilen, { quelle, linkFuer, fallbackPlace, fallbackKm }) {
   const gruppen = new Map();
   const einzeln = [];
   for (const row of zeilen.filter(behalten)) {
@@ -105,18 +106,18 @@ export function zuEvents(zeilen, { quelle, linkFuer, fallbackPlace }) {
       einzeln.push([row]);
     }
   }
-  return [...einzeln, ...gruppen.values()].map((rows) => zuEvent(rows, { quelle, linkFuer, fallbackPlace }));
+  return [...einzeln, ...gruppen.values()].map((rows) => zuEvent(rows, { quelle, linkFuer, fallbackPlace, fallbackKm }));
 }
 
 /** Spielstätte und, wenn sie sich nicht selbst einem Ort zuordnen lässt, Koordinaten der Region der Quelle. */
-function ortVon(row, fallbackPlace) {
+function ortVon(row, fallbackPlace, fallbackKm) {
   const spielstaette = cleanText(row.LocationName);
   const region = fallbackPlace && !resolvePlace(spielstaette) ? resolvePlace(fallbackPlace) : null;
   if (!region) return { placeName: spielstaette };
-  return { placeName: spielstaette ? `${spielstaette}, Raum ${region.name}` : `Raum ${region.name}`, lat: region.lat, lon: region.lon, country: region.country };
+  return { placeName: spielstaette ? `${spielstaette}, Raum ${region.name}` : `Raum ${region.name}`, lat: region.lat, lon: region.lon, country: region.country, ortRegionKm: fallbackKm ?? 15 };
 }
 
-function zuEvent(rows, { quelle, linkFuer, fallbackPlace }) {
+function zuEvent(rows, { quelle, linkFuer, fallbackPlace, fallbackKm }) {
   rows.sort((a, b) => a.DateTime.localeCompare(b.DateTime));
   const erste = rows[0];
   const letzte = rows[rows.length - 1];
@@ -134,7 +135,7 @@ function zuEvent(rows, { quelle, linkFuer, fallbackPlace }) {
     start: berlinIso(a.tag, mitZeit ? a.zeit : null),
     end: rows.length > 1 ? berlinIso(b.tag, b.zeit === '00:00' ? null : b.zeit) : null,
     hasTime: mitZeit,
-    ...ortVon(erste, fallbackPlace),
+    ...ortVon(erste, fallbackPlace, fallbackKm),
     contact: { phone: normalizePhone(text), url: veranstalter || null },
     ticketStatus: detectStatus(`${erste.Title} ${text}`),
     description: shorten(text, 300) || null,

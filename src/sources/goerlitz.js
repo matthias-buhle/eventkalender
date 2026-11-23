@@ -14,6 +14,7 @@ export async function fetchEvents({ http, today, config }) {
   return zuEvents(zeilen, {
     quelle: 'Görlitz Termine',
     fallbackPlace: config.fallbackPlace,
+    fallbackKm: config.nachschlagenKm,
     linkFuer: (row) => `https://www.goerlitz.de/termine/detail/${row.Id}`,
   });
 }

@@ -50,7 +50,8 @@
     "url": "https://www.goerlitz.de/termine/api",
     "days": 60,
     "maxPages": 150,
-    "fallbackPlace": "Görlitz"
+    "fallbackPlace": "Görlitz",
+    "nachschlagenKm": 15
   },
   "augusto": {
     "enabled": true,
@@ -61,7 +62,8 @@
     ],
     "days": 60,
     "maxPages": 80,
-    "fallbackPlace": "Bautzen"
+    "fallbackPlace": "Bautzen",
+    "nachschlagenKm": 30
   },
   "goout": {
     "enabled": true,

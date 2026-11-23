@@ -17,6 +17,10 @@ function statusVon(a, b) {
 }
 
 function merge(a, b) {
+  // Koordinaten samt Regionsradius kommen zusammen von einem Eintrag: von a, außer a hat keine oder nur den
+  // Mittelpunkt der Region (ortRegionKm) und b hat genauere.
+  const nimmB = b.lat != null && (a.lat == null || (a.ortRegionKm != null && b.ortRegionKm == null));
+  const ort = nimmB ? b : a;
   const sources = [...a.sources];
   for (const s of b.sources) if (!sources.some((x) => x.name === s.name)) sources.push(s);
   return {
@@ -25,9 +29,11 @@ function merge(a, b) {
     start: !a.hasTime && b.hasTime ? b.start : a.start,
     end: erster(a.end, b.end),
     hasTime: a.hasTime || b.hasTime,
-    lat: erster(a.lat, b.lat),
-    lon: erster(a.lon, b.lon),
-    distanceKm: erster(a.distanceKm, b.distanceKm),
+    lat: ort.lat,
+    lon: ort.lon,
+    distanceKm: ort.distanceKm,
+    ortRegionKm: ort.ortRegionKm,
+    country: ort.country,
     genre: erster(a.genre, b.genre),
     tags: [...new Set([...a.tags, ...b.tags])],
     contact: {

@@ -91,3 +91,17 @@ test('augusto: Spielstätte ohne Ortsangabe bekommt Koordinaten und Namen der Re
   assert.equal(e.placeName, 'Galerie Budissin, Raum Bautzen');
   assert.ok(Math.abs(e.lat - 51.18) < 0.1 && Math.abs(e.lon - 14.42) < 0.1, `${e.lat}, ${e.lon}`);
 });
+
+test('augusto: ortRegionKm ist nachschlagenKm der Config (Standard 15), nur wenn die Region greift', async () => {
+  const rows = [
+    zeile({ Title: 'Lesung', LocationName: 'Galerie Budissin', DateTime: '2026-11-14T19:00:00+0100', Production: { DateFromTo: '14. November 2026' } }),
+    zeile({ Title: 'Vortrag', LocationName: 'Stadtmuseum Löbau', DateTime: '2026-11-15T19:00:00+0100', Production: { DateFromTo: '15. November 2026' } }),
+  ];
+  const mit = async (extra) => holen({ 'stadt-bautzen': [seiteMit(rows, true)] }, { fallbackPlace: 'Bautzen', ...extra });
+  const [ohneName, selbst] = await mit({ nachschlagenKm: 30 });
+  assert.equal(ohneName.ortRegionKm, 30);
+  assert.equal(selbst.ortRegionKm, null, 'eine Spielstätte, die resolvePlace selbst kennt, braucht keinen Regionsradius');
+  assert.equal((await mit({}))[0].ortRegionKm, 15, 'ohne Angabe in der Config 15');
+  const [ungesetzt] = await holen({ 'stadt-bautzen': [seiteMit(rows.slice(0, 1), true)] });
+  assert.equal(ungesetzt.ortRegionKm, null, 'ohne fallbackPlace kein Regionsradius');
+});

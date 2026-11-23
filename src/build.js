@@ -15,16 +15,26 @@ const MIN_ERGIEBIG = 5;
  * @typedef {{name:string, ok:boolean, count:number, error:string|null, lastOkAt:string|null, unbekannteOrte?:string[]}} SourceStatus
  */
 
+/**
+ * Ort aus dem Titel ("Lokalschau Neusalza-Spremberg"), wenn die Spielstätte nichts hergibt. Nur Orte im Umkreis zählen:
+ * "Reise nach Berlin" sagt nichts darüber, wo der Termin stattfindet, und würde ihn sonst aus dem Kalender werfen.
+ */
+function ortAusTitel(titel) {
+  const ort = resolvePlace(titel);
+  return ort && distanceKm(CENTER, ort) <= RADIUS_KM ? ort : null;
+}
+
 function anreichern(e) {
   let { lat, lon, country } = e;
+  const { ortRegionKm } = e;
   const { rubrik, genre } = rubrikUndGenre(e);
   if (lat == null || lon == null) {
-    const ort = resolvePlace(e.placeName);
+    const ort = resolvePlace(e.placeName) ?? (ortRegionKm == null ? ortAusTitel(e.title) : null);
     if (ort) ({ lat, lon, country } = ort);
   }
   const km = lat != null && lon != null ? Math.round(distanceKm(CENTER, { lat, lon }) * 10) / 10 : null;
   const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
-  return { ...e, rubrik, genre, advent, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km };
+  return { ...e, rubrik, genre, advent, lat: lat ?? null, lon: lon ?? null, country, distanceKm: km, ortRegionKm: ortRegionKm ?? null };
 }
 
 /** Ortsnamen, die das Ortsverzeichnis nicht kennt: aus gelieferten Terminen und aus dem, was der Adapter verworfen hat. */
