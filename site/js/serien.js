@@ -68,3 +68,51 @@ export function zeilenNachTagen(zeilen, fromDay) {
   const zeileVon = new Map(zeilen.map((z) => [z.ev, z]));
   return groupByDay(zeilen.map((z) => z.ev), fromDay).map((g) => ({ day: g.day, zeilen: g.events.map((e) => zeileVon.get(e)) }));
 }
+
+/** Ist die Terminliste der Quelle voll (dann kennen wir nur ein Mindest-Ende)? */
+export const istVoll = (termine) => termine.at(-1).terminlisteVoll === true;
+
+/** Kalendertage seit 1970 aus JJJJ-MM-TT, unabhängig von Zeitzone und Zeitumstellung. */
+const tagNr = (tag) => Date.UTC(+tag.slice(0, 4), +tag.slice(5, 7) - 1, +tag.slice(8, 10)) / 86400000;
+
+/** "freitags, samstags und sonntags" (Reihenfolge Montag bis Sonntag). */
+function wochentageText(tageNr) {
+  const namen = [...new Set(tageNr.map((n) => new Date(n * 86400000).getUTCDay()))]
+    .sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7))
+    .map((w) => `${WOCHENTAGE[w].toLowerCase()}s`);
+  return namen.length === 1 ? namen[0] : `${namen.slice(0, -1).join(', ')} und ${namen.at(-1)}`;
+}
+
+/**
+ * Text der zweiten Zeile einer Serie: Rhythmus, Ende, Anzahl. Die erste passende Regel gilt.
+ * @param {any[]} termine Termine der Serie (mindestens zwei), nach start sortiert
+ * @param {any} naechster der Termin, mit dem die Zeile angeführt wird
+ */
+export function serienText(termine, naechster) {
+  const n = termine.length;
+  const tageListe = [...new Set(termine.map((e) => e.start.slice(0, 10)))];
+  const nrs = tageListe.map(tagNr).sort((a, b) => a - b);
+  const ende = kurzTag(lastDay(termine.at(-1)));
+  const voll = istVoll(termine);
+  const mitEnde = (rhythmus) => (voll ? `${rhythmus}, mindestens bis ${ende}` : `${rhythmus} bis ${ende} · ${n} Termine`);
+
+  if (n <= 3) {
+    const starttag = naechster.start.slice(0, 10);
+    const weitere = termine.filter((e) => e.start !== naechster.start).map((e) => {
+      const tag = e.start.slice(0, 10);
+      return tag === starttag && e.hasTime ? `${e.start.slice(11, 16)} Uhr` : kurzTag(tag);
+    });
+    return `auch ${weitere.join(' und ')}`;
+  }
+  if (nrs.length === 1) return `${n} Termine an diesem Tag`;
+  const spanne = nrs.at(-1) - nrs[0] + 1;
+  if (nrs.length === spanne) return mitEnde('täglich');
+  const wochentage = new Set(nrs.map((x) => new Date(x * 86400000).getUTCDay()));
+  if (wochentage.size === 1) {
+    const woechentlich = nrs.every((x, i) => i === 0 || x - nrs[i - 1] === 7);
+    return mitEnde(woechentlich ? `jeden ${WOCHENTAGE[[...wochentage][0]]}` : wochentageText(nrs));
+  }
+  if (wochentage.size <= 3) return mitEnde(wochentageText(nrs));
+  if (nrs.length >= 5 && nrs.length / spanne >= 0.6) return mitEnde('fast täglich');
+  return voll ? `Termine mindestens bis ${ende}` : `${n} Termine bis ${ende}`;
+}
