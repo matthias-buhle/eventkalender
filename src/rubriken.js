@@ -1,5 +1,5 @@
 import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN, detectGenre, detectSorte, passendeSorte } from './normalize.js';
-import { FUEHRUNG_UNTER, WANDERN_UNTER, KURSE_UNTER, THEATER_UNTER, ESSEN_UNTER, KINDER_UNTER } from './unterpunkte.js';
+import { FUEHRUNG_UNTER, WANDERN_UNTER, KURSE_UNTER, THEATER_UNTER, ESSEN_UNTER, KINDER_UNTER, BAHN, unterpunkt } from './unterpunkte.js';
 
 /**
  * Die 14 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
@@ -43,8 +43,6 @@ export const UNTERARTEN = {
 // Einführung, Vorführung, Aufführung, Durchführung, Ausführung, Verführung sind keine Führungen; Weinführung, Steinführung schon ("aus" und "ein" zählen nur als ganzes Wort: Haus-, Rathaus-, Wein-, Steinführung sind Führungen).
 // Führungskräfte, Führungsstil, Führung auf Distanz sind Kursthemen. Touren und Lichterfahrten sind Führungen (Entscheidung 9).
 const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung(?!skr[aä]ft|sstil|skompetenz| auf distanz)|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter|zwiedzanie|prohl[ií]dk|stadtschleicher|lichterfahrt|(?:stadt|altstadt|kneipen|gl[uü]hwein|laternen|fackel|m[uü]hlen|weihnachts)tour\b/;
-// Sonderfahrten der Bahn zählen zu den Führungen (Entscheidung 11).
-const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|advents|osterhasen|mondschein)(?:fahrt|express|zug)|schmalspurbahn|talbahn\b|grundbahn\b|museumsbahn|kleinbahn/;
 // "märchenhaft" ist ein Beiwort (Adventsshopping, Nacht mit dem Karnevalsclub), kein Märchen.
 const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
 // In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
@@ -98,14 +96,6 @@ const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
 // Stufe 5: die Jahreszeit im Titel ist nur das Thema, ein schwacher Hinweis.
 const JAHRESZEIT = /advent(?!ure|urer)|weihnacht|nikolaus|christkind|pyramide|winterzauber|lichterfest|lichtelfest/;
 
-// Führungs-Unterarten, Reihenfolge = Vorrang.
-const FUEHRUNG_REGELN = /** @type {[string, RegExp][]} */ ([
-  ['kinder', /kinder|familie/],
-  ['untertage', /bergwerk|untertage|stollen|h[oö]hle|schacht|bergbau|salz/],
-  ['brauerei', /brau|b[aä]cker|m[uü]hle|manufaktur|distill|r[oö]sterei/],
-  ['stadt', /stadt|altstadt|rundgang|dorf|spazier/],
-]);
-
 const BESCHREIBUNG_ZEICHEN = 200;
 const klein = (x) => (typeof x === 'string' ? x.toLowerCase() : '');
 
@@ -129,6 +119,16 @@ export function quellHinweis(e) {
   if (e && Object.hasOwn(e, 'genreQuelle')) return e.genreQuelle;
   if (e?.rubrik == null) return e?.genre ?? null;
   return null;
+}
+
+/**
+ * Der Unterpunkt für Führung, Wandern, Kurse, Theater, Essen und Kinder: der Hinweis der Quelle, wenn er in der Liste der
+ * Rubrik steht, sonst aus Titel, Beschreibung und Spielstätte.
+ */
+function unterRubrik(rubrik, e) {
+  const hinweis = quellHinweis(e);
+  if (hinweis && Object.hasOwn(UNTERARTEN[rubrik], hinweis)) return hinweis;
+  return unterpunkt(rubrik, e?.title, e?.description, e?.placeName);
 }
 
 // Räume, in denen Klassik zur Kirchenmusik wird ("Dom kultury" ist ein Kulturhaus, kein Dom).
@@ -193,7 +193,7 @@ export function rubrikUndGenre(e) {
 
   if (art === 'fest') {
     if (FEST_KINO.test(titel)) return { rubrik: 'theater', genre: 'kino' };
-    if (FEST_ESSEN.test(titel)) return { rubrik: 'essen', genre: null };
+    if (FEST_ESSEN.test(titel)) return { rubrik: 'essen', genre: unterRubrik('essen', e) };
     if (FEST_SPORT.test(titel) && !/sportfest/.test(titel)) return { rubrik: 'sport', genre: null };
     return { rubrik: 'fest', genre: sorte('fest') };
   }
@@ -205,7 +205,7 @@ export function rubrikUndGenre(e) {
   }
 
   if (art === 'schau') {
-    if (FUEHRUNG.test(titel)) return fuehrung(titel, beschreibung);
+    if (FUEHRUNG.test(titel)) return { rubrik: 'fuehrung', genre: unterRubrik('fuehrung', e) };
     const s = sorte('schau');
     if (s === 'kunst' || s === 'museum') return { rubrik: 'ausstellung', genre: s };
     if (s === 'tiere' || s === 'hobby') return { rubrik: 'schau', genre: s };
@@ -230,9 +230,8 @@ function sonstigesRubrik(e, titel, beschreibung) {
   return { rubrik: 'sonstiges', genre: null };
 }
 
-/** Rubrik und Unterpunkt zu einer Rubrik aus der Rangfolge. Unterpunkte nur für Führung, Konzert, Fest, Party, Ausstellung. */
+/** Rubrik und Unterpunkt zu einer Rubrik aus der Rangfolge. Unterpunkte gibt es nicht für Sport und Sonstiges. */
 function ergebnis(rubrik, e, titel, beschreibung) {
-  if (rubrik === 'fuehrung') return fuehrung(titel, beschreibung);
   if (rubrik === 'konzert') return konzertRubrik(e, titel, beschreibung);
   if (rubrik === 'fest') return { rubrik, genre: 'brauchtum' };
   if (rubrik === 'party') return { rubrik, genre: detectSorte('party', e?.title) };
@@ -240,11 +239,8 @@ function ergebnis(rubrik, e, titel, beschreibung) {
     const s = detectSorte('schau', e?.title);
     return { rubrik, genre: s === 'kunst' || s === 'museum' ? s : null };
   }
+  if (Object.hasOwn(UNTERARTEN, rubrik)) return { rubrik, genre: unterRubrik(rubrik, e) };
   return { rubrik, genre: null };
-}
-
-function fuehrung(titel, beschreibung) {
-  return { rubrik: 'fuehrung', genre: ersteRegel(FUEHRUNG_REGELN, titel, beschreibung) };
 }
 
 // "advent" steht nicht für Adventure/Adventurer.

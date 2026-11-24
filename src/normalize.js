@@ -184,7 +184,7 @@ export const FEST_SORTEN = {
   festival: 'Festival',
 };
 
-/** Unterarten je Art: Genres bei Konzerten, Sorten bei Märkten, Schauen, Partys und Festen. Andere Arten haben keine. */
+/** Unterarten je Art: Genres bei Konzerten, Sorten bei Märkten, Schauen, Partys und Festen. Die Unterpunkte der übrigen Rubriken stehen in unterpunkte.js. */
 export const SORTEN = { konzert: GENRES, party: PARTY_SORTEN, markt: MARKT_SORTEN, fest: FEST_SORTEN, schau: SCHAU_SORTEN };
 
 const MARKT_REGELN = /** @type {[string, RegExp][]} */ ([

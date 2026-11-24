@@ -42,3 +42,75 @@ export const KINDER_UNTER = {
   'kinder-mitmachen': 'Basteln, Backen & Mitmachen',
   'kinder-lernen': 'Lesen & Lernen',
 };
+
+// Sonderfahrten der Bahn zählen zu den Führungen (Entscheidung 11).
+export const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|advents|osterhasen|mondschein)(?:fahrt|express|zug)|schmalspurbahn|talbahn\b|grundbahn\b|museumsbahn|kleinbahn/;
+
+// Je Rubrik die Unterpunkte mit ihren Stichwörtern; Reihenfolge = Vorrang, erster Treffer gewinnt.
+const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
+  fuehrung: [
+    ['bahn', BAHN],
+    ['kinder', /kinder|familie/],
+    ['untertage', /bergwerk|untertage|stollen|h[oö]hle|schacht|bergbau|salz/],
+    ['brauerei', /brau|b[aä]cker|m[uü]hle|manufaktur|distill|r[oö]sterei/],
+    ['hausfuehrung', /museum|schloss|schlo[sß]|\bburg|kirche|\bdom\b|kloster|\bhaus|rathaus|turm|ausstellung|galerie|gedenkst[aä]tte|sammlung|festung|synagoge|bibliothek|kurator|zeitzeug/],
+    ['stadt', /stadt|rundgang|dorf|spazier|nachtw[aä]chter|stadtschleicher|lichterfahrt|g[aä]sschen/],
+  ],
+  theater: [
+    ['kabarett', /kabarett|cabaret|comedy|comedian|stand.?up|satire|kleinkunst|\bhumor/],
+    ['lesung', /lesung|vorlese|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde|erz[aä]hl/],
+    ['kino', /kino|\bfilm|kurzfilm|filmfest|filmabend|filmvorf/],
+    ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauber|variet|artistik|akrobat/],
+    ['schauspiel', /theater|schauspiel|oper\b|operette|ballett|kom[oö]die|trag[oö]die|auff[uü]hrung|premiere|inszenierung|puppenspiel|marionett|divadel|b[uü]hne/],
+  ],
+  kurse: [
+    ['bewegung', /yoga|pilates|\btanz|fitness|gymnastik|qi.?gong|tai.?chi|meditation|entspann|r[uü]cken(?:schule|training|gymnastik)|zumba|klangschal|achtsam/],
+    ['kreativ', /kreativ|mal(?:en|kurs|treff|nachmittag)|zeichn|t[oö]pfer|keramik|n[aä]h|strick|h[aä]kel|filz|bastel|handwerk|schnitz|kl[oö]ppel|koch|back|floristik|schmied|foto|photowalk|reparatur|stick(?:en|erei)|upcycl|pralin|trommel|verzier|weihnachtskugel/],
+    ['lernen', /computer|\bpc\b|smartphone|handy|internet|digital|\bki\b|excel|sprach|englisch|franz[oö]sisch|tschechisch|polnisch|spanisch|italienisch|beruf|bewerb|weiterbildung|schulung|seminar|lehrgang|kommunikation|f[uü]hrungs?\b|f[uü]hrung auf|online/],
+    ['vortrag', /vortrag|reisebericht|reportage|multivision|infoabend|gespr[aä]ch|podium|diskussion|sternwarte|ratgeber/],
+  ],
+  wandern: [
+    ['wanderung', /wander|exkursion|radtour|\btour\b/],
+    ['spaziergang', /spazier|bummel/],
+    ['natur', /vogel|tier|\bzoo\b|natur|pilz|kr[aä]uter|wald|fledermaus|artenschutz|vivarium|f[uü]tter|erdm[aä]nn/],
+  ],
+  essen: [
+    ['brunch', /brunch|fr[uü]hst[uü]ck/],
+    ['verkostung', /verkostung|probe\b|tasting|whisky|degustation/],
+    ['dinner', /dinner|men[uü]|essen\b|buffet|schmaus|braten|gans\b|baudenabend|h[uü]ttenabend|grill|kochshow|kulinar/],
+  ],
+  kinder: [
+    ['kinder-buehne', /theater|puppen|kasper|marionett|kino|film|konzert|musik|zirkus|musical|zauber|b[uü]hne|m[aä]rchen|revue/],
+    ['kinder-mitmachen', /bastel|back|pl[aä]tzchen|werkstatt|mitmach|kreativ|malen|t[oö]pfer|experiment|spiel|ferien|krabbel|laterne/],
+    ['kinder-lernen', /vorlese|lese|bibliothek|lern|kinderuni|forscher|entdecker|geschichten|bilderbuch/],
+  ],
+});
+
+const BESCHREIBUNG_ZEICHEN = 200;
+const THEATER_HAUS = /theater|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo/;
+const text = (x) => (typeof x === 'string' ? x.toLowerCase() : '');
+
+/**
+ * Der Unterpunkt eines Termins in einer der sechs Rubriken Führung, Theater, Kurse, Wandern, Essen, Kinder:
+ * erster Treffer im Titel, sonst in den ersten 200 Zeichen der Beschreibung; bei Theater zuletzt die Spielstätte.
+ * Für andere Rubriken und ohne Treffer null. Wirft nie.
+ * @param {string} rubrik
+ * @param {string|null|undefined} titel
+ * @param {string|null} [beschreibung]
+ * @param {string|null} [ort]
+ * @returns {string|null}
+ */
+export function unterpunkt(rubrik, titel, beschreibung, ort) {
+  const regeln = Object.hasOwn(REGELN, rubrik) ? REGELN[rubrik] : null;
+  if (!regeln) return null;
+  for (const t of [text(titel), text(beschreibung).slice(0, BESCHREIBUNG_ZEICHEN)]) {
+    if (!t) continue;
+    for (const [schluessel, regel] of regeln) if (regel.test(t)) return schluessel;
+  }
+  if (rubrik === 'theater') {
+    const haus = text(ort);
+    if (/kino/.test(haus)) return 'kino';
+    if (THEATER_HAUS.test(haus)) return 'schauspiel';
+  }
+  return null;
+}

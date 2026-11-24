@@ -371,3 +371,20 @@ test('Altersangabe in der Beschreibung zählt nur im Kinderalter', () => {
   assert.notEqual(sonst('Abend im Saal', 'Einlass ab 18 Jahren').rubrik, 'kinder');
   assert.notEqual(sonst('Abend im Saal', 'Zutritt ab 16 Jahren').rubrik, 'kinder');
 });
+
+test('Durchstich: je Rubrik ein Unterpunkt aus Titel, Beschreibung oder Spielstätte', () => {
+  assert.deepEqual(von({ art: 'schau', title: 'Öffentliche Führung durch das Museum Bautzen' }), { rubrik: 'fuehrung', genre: 'hausfuehrung' });
+  assert.deepEqual(sonst('Kinderführung im Schloss'), { rubrik: 'fuehrung', genre: 'kinder' });
+  assert.deepEqual(sonst('Geführte Wanderung rund um Berggießhübel'), { rubrik: 'wandern', genre: 'wanderung' });
+  assert.deepEqual(sonst('Töpferkurs'), { rubrik: 'kurse', genre: 'kreativ' });
+  assert.deepEqual(sonst('Kabarett Abend'), { rubrik: 'theater', genre: 'kabarett' });
+  assert.deepEqual(sonst('Adventsbrunch im Berghotel'), { rubrik: 'essen', genre: 'brunch' });
+  assert.deepEqual(sonst('Kinderkino am Sonntag'), { rubrik: 'kinder', genre: 'kinder-buehne' });
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Wunderwahr', placeName: 'Haus Görlitz Apollo' }), { rubrik: 'theater', genre: 'schauspiel' });
+  assert.deepEqual(sonst('Eislaufen in Görlitz'), { rubrik: 'sport', genre: null });
+});
+
+test('Hinweis der Quelle zählt nur, wenn er zur Rubrik passt', () => {
+  assert.deepEqual(von({ art: 'sonstiges', genre: 'kabarett', title: 'Abendprogramm im Theater' }), { rubrik: 'theater', genre: 'kabarett' });
+  assert.deepEqual(von({ art: 'sonstiges', genre: 'jazz', title: 'Abendprogramm im Theater' }), { rubrik: 'theater', genre: 'schauspiel' });
+});

@@ -295,7 +295,7 @@ test('ortsliste: genau 8 feste Mittelpunkte (Sebnitz als Standard), mit Name, Ko
   assert.equal(liste.find((o) => o.name === 'Děčín').country, 'CZ');
 });
 
-test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre Sorte, alle anderen Arten keins; unpassende Vorgaben fallen weg', async () => {
+test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre Sorte, übrige Arten ihren Unterpunkt aus dem Titel; unpassende Vorgaben fallen weg', async () => {
   const { events } = await runAll({
     now: NOW, http: {},
     sources: [quelle('q', async () => [
@@ -311,11 +311,11 @@ test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre So
   });
   const von = (titel) => events.find((e) => e.title === titel).genre;
   assert.equal(von('Jazzabend im Club'), 'jazz');
-  assert.equal(von('Comedy-Show Live'), null);
+  assert.equal(von('Comedy-Show Live'), 'kabarett', 'Comedy ist ein Theater-Unterpunkt');
   assert.equal(von('Pirnaer Weihnachtsmarkt'), 'weihnachtsmarkt');
   assert.equal(von('Kleintierschau Hainewalde'), 'tiere');
   assert.equal(von('Rock-Party'), null);
-  assert.equal(von('Stand-up-Abend'), null, 'Comedy ist kein Konzert-Genre mehr; ein Hinweis ohne passende Rubrik fällt weg');
+  assert.equal(von('Stand-up-Abend'), 'kabarett', 'der Hinweis comedy passt zu keiner Liste und fällt weg; der Titel ergibt den Unterpunkt');
   assert.equal(von('Flohmarkt am Ring'), 'troedel', 'ein Konzert-Genre bei einem Markt wird verworfen und neu bestimmt');
   assert.equal(von('Ohne Hinweis'), null);
 });
