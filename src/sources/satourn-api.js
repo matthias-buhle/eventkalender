@@ -26,6 +26,12 @@ const TYP_ART = {
 
 const liste = (wert) => (wert === undefined || wert === null ? [] : [].concat(wert));
 const text = (wert) => (typeof wert === 'string' ? wert.trim() : '');
+
+// Ab so vielen Einträgen je Datensatz in der Antwort gilt die Terminliste als vollständig (Serie, nicht Auswahl).
+export const TERMINE_JE_DATENSATZ = 30;
+
+// Schlüssel eines Datensatzes: Kennung, sonst der Titel (derselbe Schlüssel für Zählung und sourceId).
+const kennungVon = (e, titel) => text(liste(e.identifier)[0]) || titel;
 const zahl = (wert) => (wert === null || wert === undefined || wert === '' || !Number.isFinite(Number(wert)) ? null : Number(wert));
 
 /**
@@ -48,7 +54,7 @@ function artAus(typen, titel) {
   return normalizeArt('', titel);
 }
 
-function zuEvent(e, config) {
+function zuEvent(e, config, voll) {
   const titel = cleanText(e.name);
   const start = text(e.startDate);
   if (!titel || !start) return null;
@@ -62,7 +68,7 @@ function zuEvent(e, config) {
   if (!lizenz) return null;
 
   const beschreibung = cleanText(e.description);
-  const kennung = text(liste(e.identifier)[0]) || titel;
+  const kennung = kennungVon(e, titel);
   const quelle = [e.url, urheber.url].map(text).find((u) => /^https?:\/\//.test(u)) ?? config.fallbackUrl;
 
   return makeEvent({
@@ -82,6 +88,7 @@ function zuEvent(e, config) {
     ticketStatus: detectStatus(`${titel} ${beschreibung.slice(0, 160)}`),
     description: shorten(beschreibung, 300) || null,
     lizenz,
+    terminlisteVoll: voll,
   });
 }
 
@@ -114,9 +121,17 @@ export async function fetchApiEvents({ http, today, config }) {
     throw new Error(`SaTourN-API: ${datensaetze.size} Datensätze nahe am limit ${config.limit}, Antwort vermutlich unvollständig`);
   }
 
+  // Einträge je Datensatz über die ganze Antwort, vor dem Zeitfenster.
+  const schluessel = (e) => kennungVon(e, cleanText(e.name));
+  const proDatensatz = new Map();
+  for (const e of body) {
+    if (!e || typeof e !== 'object') continue;
+    proDatensatz.set(schluessel(e), (proDatensatz.get(schluessel(e)) ?? 0) + 1);
+  }
+
   const events = body
     .filter((e) => e && typeof e === 'object' && typeof e.startDate === 'string' && imFenster(e.startDate, e.endDate ?? null, today, letzterTag))
-    .map((e) => zuEvent(e, config))
+    .map((e) => zuEvent(e, config, proDatensatz.get(schluessel(e)) >= TERMINE_JE_DATENSATZ))
     .filter(Boolean);
 
   // Eine Antwort ohne einen einzigen verwertbaren Termin ist ein Fehler, kein leeres Ergebnis: die Antwort ist auf

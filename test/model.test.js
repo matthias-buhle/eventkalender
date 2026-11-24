@@ -76,3 +76,9 @@ test('makeEvent: ortRegionKm ist standardmäßig null und wird sonst übernommen
   assert.equal(makeEvent(base).ortRegionKm, null);
   assert.equal(makeEvent({ ...base, ortRegionKm: 30 }).ortRegionKm, 30);
 });
+
+test('makeEvent: terminlisteVoll ist standardmäßig false und wird sonst übernommen', () => {
+  const roh = { sourceName: 'X', sourceId: '1', sourceUrl: 'https://x.example/1', title: 'T', start: '2026-11-14T10:00:00+01:00' };
+  assert.equal(makeEvent(roh).terminlisteVoll, false);
+  assert.equal(makeEvent({ ...roh, terminlisteVoll: true }).terminlisteVoll, true);
+});

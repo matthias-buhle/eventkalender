@@ -131,3 +131,11 @@ test('genreQuelle: der erste vorhandene Hinweis gewinnt; ohne das Feld bleibt es
   const d = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2' });
   assert.equal(Object.hasOwn(dedupe([c, d])[0], 'genreQuelle'), false);
 });
+
+test('terminlisteVoll bleibt beim Zusammenführen erhalten, egal von welcher Seite', () => {
+  const a = ev({ sourceName: 'A', sourceId: '1' });
+  const b = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2', terminlisteVoll: true });
+  assert.equal(dedupe([a, b])[0].terminlisteVoll, true);
+  assert.equal(dedupe([b, a])[0].terminlisteVoll, true);
+  assert.equal(dedupe([a, ev({ sourceName: 'B', sourceId: '3', sourceUrl: 'https://b.example/3' })])[0].terminlisteVoll, false);
+});

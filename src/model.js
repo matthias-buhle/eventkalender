@@ -14,7 +14,7 @@ import { createHash } from 'node:crypto';
  *   contact:Contact, ticketUrl:string|null, ticketStatus:TicketStatus|null,
  *   description:string|null, needsReview:boolean, submittedBy:string|null,
  *   lizenz:{name:string,url:string,urheber:string|null}|null,
- *   serie:string|null
+ *   serie:string|null, terminlisteVoll:boolean
  * }} Event
  */
 
@@ -59,5 +59,6 @@ export function makeEvent(raw) {
     needsReview: rest.needsReview ?? false,
     submittedBy: rest.submittedBy ?? null,
     lizenz: rest.lizenz ?? null,
+    terminlisteVoll: rest.terminlisteVoll === true,
   };
 }

@@ -47,6 +47,7 @@ function merge(a, b) {
     description: erster(a.description, b.description),
     lizenz: erster(a.lizenz, b.lizenz),
     needsReview: a.needsReview && b.needsReview,
+    terminlisteVoll: a.terminlisteVoll === true || b.terminlisteVoll === true,
   };
 }
 

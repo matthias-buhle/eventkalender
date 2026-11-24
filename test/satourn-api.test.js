@@ -192,3 +192,26 @@ test('Grenze der Abschneide-Prüfung: 899 verschiedene Datensätze gehen, 900 ni
   const wiederholt = Array.from({ length: 950 }, (_, i) => ({ ...fixture[0], startDate: `2026-12-${String(1 + (i % 28)).padStart(2, '0')}T16:00:00+01:00` }));
   assert.equal((await lade({}, wiederholt)).length, 950);
 });
+
+test('terminlisteVoll: ab 30 Einträgen je Datensatz in der Antwort, darunter nicht', async () => {
+  const reihe = (kennung, n) => Array.from({ length: n }, (_, i) => ({
+    ...fixture[0], identifier: [kennung], name: kennung,
+    startDate: `2026-12-${String(i + 1).padStart(2, '0')}T16:00:00+01:00`, endDate: undefined,
+  }));
+  const events = await lade({}, [...reihe('e_voll', 30), ...reihe('e_kurz', 29)]);
+  assert.equal(mitTitel(events, 'e_voll').length, 30);
+  assert.ok(mitTitel(events, 'e_voll').every((e) => e.terminlisteVoll === true));
+  assert.equal(mitTitel(events, 'e_kurz').length, 29);
+  assert.ok(mitTitel(events, 'e_kurz').every((e) => e.terminlisteVoll === false));
+});
+
+test('terminlisteVoll zählt die Antwort, nicht das Zeitfenster', async () => {
+  // 30 Einträge, davon 10 vor dem Fenster (TODAY ist der 11.11.): die 20 übrigen sind trotzdem markiert.
+  const body = Array.from({ length: 30 }, (_, i) => ({
+    ...fixture[0], identifier: ['e_alt'], name: 'e_alt',
+    startDate: `2026-11-${String(i + 1).padStart(2, '0')}T16:00:00+01:00`, endDate: undefined,
+  }));
+  const events = await lade({}, body);
+  assert.equal(events.length, 20);
+  assert.ok(events.every((e) => e.terminlisteVoll === true));
+});
