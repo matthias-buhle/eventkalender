@@ -1,6 +1,6 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { sorteName, rubrikVon, rubrikKarte, rubrikFarbe, sprachHinweis } from './arten.js';
-import { kurzTag } from './serien.js';
+import { kurzTag, serienText } from './serien.js';
 import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
@@ -98,9 +98,9 @@ function kopfzeile(doc, ev, gemeinde) {
   return kopf;
 }
 
-/** Datum und Uhrzeit, daneben der Ticketstatus. */
-function wannZeile(doc, ev) {
-  const wann = el(doc, 'p', 'when', wannText(ev));
+/** Datum und Uhrzeit, daneben der Ticketstatus; vorsatz steht davor (bei Serien "Nächster Termin: "). */
+function wannZeile(doc, ev, vorsatz = '') {
+  const wann = el(doc, 'p', 'when', vorsatz + wannText(ev));
   if (ev.ticketStatus && STATUS[ev.ticketStatus]) wann.append(' ', el(doc, 'span', `status status-${ev.ticketStatus}`, STATUS[ev.ticketStatus]));
   return wann;
 }
@@ -142,7 +142,8 @@ function gekuerztHinweis(doc, ev) {
 
 /**
  * Eine Terminkarte.
- * @param {{orte?: string[]}} [optionen] orte: bekannte Ortsnamen, um die Gemeinde auch bei Namen ohne Komma zu erkennen
+ * @param {{orte?: string[], termine?: any[]|null}} [optionen] orte: bekannte Ortsnamen, um die Gemeinde auch bei Namen ohne Komma zu erkennen;
+ *   termine: die Termine einer Serie (ab zwei Einträgen), dann zeigt die Karte den nächsten Termin und eine Zeile mit dem Rhythmus
  */
 export function renderEventCard(doc, ev, optionen = {}) {
   const orte = optionen.orte ?? [];
@@ -150,7 +151,9 @@ export function renderEventCard(doc, ev, optionen = {}) {
   const karte = el(doc, 'article', `card art-${rubrikFarbe(rubrikVon(ev))}`);
   karte.append(kopfzeile(doc, ev, gemeindeVon(ev.placeName, orte)));
   karte.append(el(doc, 'h3', 'title', ev.title));
-  karte.append(wannZeile(doc, ev));
+  const serie = Array.isArray(optionen.termine) && optionen.termine.length >= 2 ? optionen.termine : null;
+  karte.append(wannZeile(doc, ev, serie ? 'Nächster Termin: ' : ''));
+  if (serie) karte.append(el(doc, 'p', 'rhythmus', serienText(serie, ev)));
   const ort = [spielstaetteVon(ev.placeName, orte), entfernungText(ev)].filter(Boolean);
   if (ort.length) karte.append(el(doc, 'p', 'where', ort.join(' · ')));
   if (ev.needsReview) karte.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));

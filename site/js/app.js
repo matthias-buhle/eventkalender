@@ -2,8 +2,9 @@
 // Zwei Ansichten: die Filterseite (beim Start) und die Liste. "N Termine anzeigen" legt einen Verlaufseintrag
 // {ansicht:'liste'} an; Zurück führt von der Liste zur Filterseite. Fenster (Detail, Über) legen eigene Einträge an,
 // ihr Zurück schließt nur das Fenster (Regeln in ansicht.js).
-import { applyFilters, groupByDay, berlinDay, loadPrefs, savePrefs, zusammenfassung, nachRueckkehr, zeitZurueckgesetzt } from './filter.js';
+import { applyFilters, berlinDay, loadPrefs, savePrefs, zusammenfassung, nachRueckkehr, zeitZurueckgesetzt } from './filter.js';
 import { renderEventCard, renderDetail, renderStatusFooter, dayLabel } from './render.js';
+import { zeilenAus, zeilenNachTagen } from './serien.js';
 import { renderUeber } from './ueber.js';
 import { baueFilterseite } from './filterseite.js';
 import { ansichtNachPopstate, filterAendernPerZurueck, fensterZustand, zusammenfassungMitSuche } from './ansicht.js';
@@ -86,25 +87,26 @@ function zeichneListe(container, events, prefs, orte, beiOeffnen) {
     container.append(neu('p', 'leer', 'Keine Termine mit diesen Filtern.'));
     return 0;
   }
-  for (const gruppe of groupByDay(sichtbar, heute)) {
+  const zeilen = zeilenAus(sichtbar, events, heute);
+  for (const gruppe of zeilenNachTagen(zeilen, heute)) {
     const abschnitt = neu('section', 'tag');
     abschnitt.append(neu('h2', null, dayLabel(gruppe.day, heute)));
-    for (const ev of gruppe.events) {
-      const karte = renderEventCard(document, ev, optionen);
+    for (const zeile of gruppe.zeilen) {
+      const karte = renderEventCard(document, zeile.ev, { ...optionen, termine: zeile.termine });
       // Ein Tipp auf die Karte (nicht auf einen Knopf oder Link) öffnet die Einzelansicht.
       karte.setAttribute('tabindex', '0');
       karte.addEventListener('click', (e) => {
         if (e.target.closest('a') || String(window.getSelection?.() ?? '')) return;
-        beiOeffnen(ev);
+        beiOeffnen(zeile);
       });
       karte.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && e.target === karte) beiOeffnen(ev);
+        if (e.key === 'Enter' && e.target === karte) beiOeffnen(zeile);
       });
       abschnitt.append(karte);
     }
     container.append(abschnitt);
   }
-  return sichtbar.length;
+  return zeilen.length;
 }
 
 /** Suchfeld über der Liste: zeichnet verzögert neu; das Löschkreuz ist nur bei Text sichtbar. */
@@ -198,8 +200,8 @@ async function start() {
   fenster.push(detail, ueber);
   ueber.koerper.append(renderUeber(document));
   document.getElementById('menue')?.addEventListener('click', ueber.oeffnen);
-  function zeigeDetail(ev) {
-    detail.koerper.replaceChildren(renderDetail(document, ev, { orte: Object.keys(ctx.orte), userAgent: navigator.userAgent }));
+  function zeigeDetail(zeile) {
+    detail.koerper.replaceChildren(renderDetail(document, zeile.ev, { orte: Object.keys(ctx.orte), userAgent: navigator.userAgent }));
     detail.koerper.scrollTop = 0;
     detail.oeffnen();
   }

@@ -362,3 +362,38 @@ test('Karte zeigt den Sprachhinweis nicht bei Konzert und nicht bei unbekanntem 
   assert.equal(karte.querySelector('.sprache'), null);
   assert.equal(karte.querySelectorAll('b').length, 0);
 });
+
+const serienTage = (tage, extra = {}) => tage.map((tag) => ev({ id: tag, start: `${tag}T10:00:00+01:00`, end: `${tag}T21:00:00+01:00`, rubrik: 'markt', serie: 's1', ...extra }));
+
+test('Serienkarte: „Nächster Termin: “ in der ersten Zeile, Rhythmus in der zweiten, dann der Ort', () => {
+  const termine = serienTage(['2026-11-26', '2026-11-27', '2026-11-28', '2026-11-29']);
+  const karte = renderEventCard(document, termine[0], { termine });
+  assert.equal(karte.querySelector('.when').textContent, 'Nächster Termin: Do, 26. Nov., 10:00–21:00 Uhr');
+  const zweite = karte.querySelector('.rhythmus');
+  assert.equal(zweite.textContent, 'täglich bis So, 29. Nov. · 4 Termine');
+  assert.equal(karte.querySelector('.when').nextElementSibling, zweite);
+  assert.equal(zweite.nextElementSibling.getAttribute('class'), 'where');
+});
+
+test('Serienkarte: der Status des nächsten Termins steht in der ersten Zeile', () => {
+  const termine = serienTage(['2026-11-26', '2026-11-27']);
+  termine[1] = { ...termine[1], ticketStatus: 'ausverkauft' };
+  const karte = renderEventCard(document, termine[1], { termine });
+  assert.equal(karte.querySelector('.when .status-ausverkauft').textContent, 'ausverkauft');
+  assert.equal(karte.querySelector('.rhythmus').textContent, 'auch Do, 26. Nov.');
+});
+
+test('ohne termine bleibt die Karte wie bisher, auch wenn der Termin eine Serienkennung trägt', () => {
+  for (const optionen of [{}, { termine: null }]) {
+    const karte = renderEventCard(document, ev({ serie: 's1' }), optionen);
+    assert.equal(karte.querySelector('.when').textContent, 'Sa, 14. Nov., 19:00 Uhr');
+    assert.equal(karte.querySelector('.rhythmus'), null);
+  }
+});
+
+test('Serienkarte: fremde Werte bleiben Text', () => {
+  const boese = '<img src=x onerror=alert(1)>';
+  const termine = serienTage(['2026-11-26', '2026-11-27'], { title: boese, placeName: boese });
+  const karte = renderEventCard(document, termine[0], { termine });
+  assert.equal(karte.querySelectorAll('img').length, 0);
+});
