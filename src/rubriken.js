@@ -70,6 +70,19 @@ function ersteRegel(regeln, titel, beschreibung) {
 }
 
 /**
+ * Der Unterpunkt-Hinweis, den der Adapter geliefert hat. Nach dem Einordnen steht er im Feld genreQuelle, weil genre
+ * dann das Ergebnis ist; frisch vom Adapter (noch ohne rubrik) ist es das Feld genre selbst. Im alten gespeicherten
+ * Format ist genre errechnet und kein Hinweis.
+ * @param {{genre?:string|null, rubrik?:string|null, genreQuelle?:string|null}|undefined} e
+ * @returns {string|null}
+ */
+export function quellHinweis(e) {
+  if (e && Object.hasOwn(e, 'genreQuelle')) return e.genreQuelle;
+  if (e?.rubrik == null) return e?.genre ?? null;
+  return null;
+}
+
+/**
  * Ordnet einen Termin genau einer Rubrik zu und bestimmt die Unterart (Feld genre).
  * Das Feld art bleibt davon unberührt. Wirft nie; Unbekanntes wird "sonstiges".
  * @param {{art?:string, genre?:string|null, title?:string, description?:string|null, placeName?:string}} e
@@ -80,7 +93,7 @@ export function rubrikUndGenre(e) {
   const titel = klein(e?.title);
   // Beschreibungen sind lang und verrauscht ("Kaffee", "Kinder" kommen überall vor): nur der Anfang zählt.
   const beschreibung = klein(e?.description).slice(0, BESCHREIBUNG_ZEICHEN);
-  const sorte = (a) => passendeSorte(a, e?.genre) ?? detectSorte(a, e?.title, e?.description);
+  const sorte = (a) => passendeSorte(a, quellHinweis(e)) ??detectSorte(a, e?.title, e?.description);
 
   if (art === 'konzert' || art === 'markt' || art === 'party' || art === 'fest') return { rubrik: art, genre: sorte(art) };
 

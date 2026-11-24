@@ -35,6 +35,7 @@ function merge(a, b) {
     ortRegionKm: ort.ortRegionKm,
     country: ort.country,
     genre: erster(a.genre, b.genre),
+    ...(Object.hasOwn(a, 'genreQuelle') || Object.hasOwn(b, 'genreQuelle') ? { genreQuelle: erster(a.genreQuelle, b.genreQuelle) } : {}),
     tags: [...new Set([...a.tags, ...b.tags])],
     contact: {
       phone: erster(a.contact.phone, b.contact.phone),

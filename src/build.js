@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { todayBerlin } from './time.js';
 import { CENTER, RADIUS_KM, distanceKm, resolvePlace } from './geo.js';
 import { dedupe } from './dedupe.js';
-import { rubrikUndGenre, istAdvent } from './rubriken.js';
+import { rubrikUndGenre, quellHinweis, istAdvent } from './rubriken.js';
 import { createPoliteClient } from './http.js';
 import { uebersetzeTermine } from './uebersetzen.js';
 import { ergaenzeOrte, erzeugeAbruf } from './ortssuche.js';
@@ -26,10 +26,10 @@ function ortAusTitel(titel) {
 }
 
 /** Rubrik, Sorte und Advent aus den Regeln in rubriken.js; für frische und für übernommene Termine. */
-function einordnen(e) {
+export function einordnen(e) {
   const { rubrik, genre } = rubrikUndGenre(e);
   const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
-  return { ...e, rubrik, genre, advent };
+  return { ...e, genreQuelle: quellHinweis(e), rubrik, genre, advent };
 }
 
 function anreichern(e) {

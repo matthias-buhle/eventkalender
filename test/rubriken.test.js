@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { RUBRIKEN, UNTERARTEN, rubrikUndGenre, istAdvent } from '../src/rubriken.js';
+import { RUBRIKEN, UNTERARTEN, rubrikUndGenre, quellHinweis, istAdvent } from '../src/rubriken.js';
 import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN } from '../src/normalize.js';
 
 const von = (e) => rubrikUndGenre({ description: null, genre: null, ...e });
@@ -177,4 +177,12 @@ test('istAdvent: Sommerfest ist kein Advent, null-Felder werfen nicht', () => {
   assert.equal(istAdvent({ rubrik: null, genre: null, title: 'Sommerfest', description: null }), false);
   assert.equal(istAdvent({ rubrik: null, genre: null, title: undefined }), false);
   assert.equal(istAdvent({}), false);
+});
+
+test('quellHinweis: frisch, schon eingeordnet, altes Format', () => {
+  assert.equal(quellHinweis({ genre: 'jazz' }), 'jazz');
+  assert.equal(quellHinweis({ genre: 'jazz', rubrik: 'konzert' }), null);
+  assert.equal(quellHinweis({ genre: 'rock-pop', rubrik: 'konzert', genreQuelle: 'jazz' }), 'jazz');
+  assert.equal(quellHinweis({ genreQuelle: null, genre: 'jazz' }), null);
+  assert.equal(quellHinweis(undefined), null);
 });

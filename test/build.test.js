@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
 import { RADIUS_KM } from '../src/geo.js';
-import { runAll, pruefeLauf, ortsliste, mitEntfernung, MAX_UEBERNAHME_TAGE } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste, mitEntfernung, einordnen, MAX_UEBERNAHME_TAGE } from '../src/build.js';
 import { versionsInfo, schreibeVersion } from '../src/version.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
@@ -417,4 +417,30 @@ test('mitEntfernung: setzt distanceKm aus lat/lon neu, null ohne Koordinaten', (
   assert.equal(nah.distanceKm, Math.round(nah.distanceKm * 10) / 10, 'auf eine Nachkommastelle gerundet');
   assert.equal(nah.lat, 51.1809);
   assert.equal(mitEntfernung(ev({ lat: null, lon: null, distanceKm: 12 })).distanceKm, null);
+});
+
+test('einordnen ist wiederholbar und behält den Hinweis der Quelle', () => {
+  const a = einordnen({ art: 'konzert', genre: 'jazz', title: 'X' });
+  assert.equal(a.genre, 'jazz');
+  assert.equal(a.genreQuelle, 'jazz');
+  assert.deepEqual(einordnen(a), a);
+  assert.deepEqual(einordnen(einordnen(a)), a);
+  // altes gespeichertes Format: genre ist errechnet und zählt nicht als Hinweis der Quelle
+  const b = einordnen({ art: 'konzert', rubrik: 'konzert', genre: 'klassik', title: 'Sommerhits live' });
+  assert.equal(b.genreQuelle, null);
+  assert.notEqual(b.genre, 'klassik');
+});
+
+test('übernommene Termine einer ausgefallenen Quelle behalten den Hinweis', async () => {
+  const mit = { ...ev({ title: 'X', art: 'konzert', genre: 'jazz', rubrik: 'konzert' }), genreQuelle: 'jazz', distanceKm: 0 };
+  const altFormat = { ...ev({ title: 'Y', art: 'konzert', rubrik: 'konzert', genre: 'klassik' }), distanceKm: 0 };
+  const { events } = await runAll({
+    now: NOW, http: {},
+    previousRohdaten: rohdatenVon('q', [mit, altFormat]),
+    sources: [quelle('q', async () => { throw new Error('HTTP 503'); })],
+  });
+  const x = events.find((e) => e.title === 'X');
+  assert.equal(x.genre, 'jazz');
+  assert.equal(x.genreQuelle, 'jazz');
+  assert.equal(events.find((e) => e.title === 'Y').genreQuelle, null);
 });

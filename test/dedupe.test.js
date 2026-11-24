@@ -122,3 +122,12 @@ test('hat nur der zweite Eintrag Koordinaten, kommt sein Regionsradius mit', () 
   const [e] = dedupe([ohne, region]);
   assert.deepEqual([e.lat, e.lon, e.distanceKm, e.ortRegionKm], [51.18, 14.43, 30, 30]);
 });
+
+test('genreQuelle: der erste vorhandene Hinweis gewinnt; ohne das Feld bleibt es weg', () => {
+  const a = { ...ev({ sourceName: 'A', sourceId: '1', sourceUrl: 'https://a.example/1' }), genreQuelle: null };
+  const b = { ...ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2' }), genreQuelle: 'jazz' };
+  assert.equal(dedupe([a, b])[0].genreQuelle, 'jazz');
+  const c = ev({ sourceName: 'A', sourceId: '1', sourceUrl: 'https://a.example/1' });
+  const d = ev({ sourceName: 'B', sourceId: '2', sourceUrl: 'https://b.example/2' });
+  assert.equal(Object.hasOwn(dedupe([c, d])[0], 'genreQuelle'), false);
+});
