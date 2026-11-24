@@ -9,6 +9,8 @@ import { createPoliteClient } from './http.js';
 import { uebersetzeTermine } from './uebersetzen.js';
 import { ergaenzeOrte, erzeugeAbruf } from './ortssuche.js';
 import { schreibeVersion } from './version.js';
+import { aussortierGrund, GRUENDE } from './aussortieren.js';
+import { spracheVon } from './sprache.js';
 
 const MIN_ERGIEBIG = 5;
 
@@ -30,6 +32,36 @@ export function einordnen(e) {
   const { rubrik, genre } = rubrikUndGenre(e);
   const advent = istAdvent({ rubrik, genre, title: e.title, description: e.description });
   return { ...e, genreQuelle: quellHinweis(e), rubrik, genre, advent };
+}
+
+/**
+ * Letzter Schritt des Laufs, nach der Übersetzung: aussortieren (nur über aussortierGrund, mit Zählung),
+ * neu einordnen, Sprache setzen, Hilfsfeld genreQuelle entfernen. Eingang = Ausgang + Summe der aussortierten.
+ */
+export function fertigstellen(events) {
+  const aussortiert = Object.fromEntries(Object.keys(GRUENDE).map((k) => [k, 0]));
+  const fertig = [];
+  for (const e of events) {
+    const grund = aussortierGrund(e);
+    if (grund) {
+      aussortiert[grund] += 1;
+      continue;
+    }
+    if (e === null || typeof e !== 'object') { fertig.push(e); continue; }
+    try {
+      const { genreQuelle, ...rest } = einordnen(e);
+      fertig.push({ ...rest, sprache: spracheVon(rest) });
+    } catch {
+      const { genreQuelle, ...rest } = e;
+      fertig.push(rest);
+    }
+  }
+  return { events: fertig, aussortiert };
+}
+
+/** Eine Zeile fürs Protokoll, alle drei Gründe immer genannt. */
+export function aussortiertText(zahlen) {
+  return `aussortiert: ${Object.entries(GRUENDE).map(([k, name]) => `${zahlen?.[k] ?? 0} ${name}`).join(', ')}`;
 }
 
 function anreichern(e) {
@@ -185,10 +217,13 @@ async function main() {
   }
   // Tschechische Termine ins Deutsche übersetzen; Fehler dabei stoppen den Lauf nie, der Originaltext bleibt dann stehen.
   const alterSpeicher = await readJson(new URL('uebersetzungen.json', outDir), {});
-  const { events, cache, stats } = await uebersetzeTermine(verortet, {
+  const { events: uebersetzt, cache, stats } = await uebersetzeTermine(verortet, {
     apiKey: process.env.DEEPL_API_KEY, cache: alterSpeicher, heute: todayBerlin(now),
   });
   console.log(`Übersetzung: ${stats.uebersetzt} neu (${stats.zeichen} Zeichen), ${stats.ausCache} aus dem Zwischenspeicher${stats.fehler ? `, Hinweis: ${stats.fehler}` : ''}`);
+  const fertig = fertigstellen(uebersetzt);
+  const events = fertig.events;
+  console.log(aussortiertText(fertig.aussortiert));
   await mkdir(outDir, { recursive: true });
   await writeFile(new URL('uebersetzungen.json', outDir), JSON.stringify(cache));
   await writeFile(new URL('orte-cache.json', outDir), JSON.stringify(orteCache));

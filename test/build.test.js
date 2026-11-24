@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeEvent } from '../src/model.js';
 import { RADIUS_KM } from '../src/geo.js';
-import { runAll, pruefeLauf, ortsliste, mitEntfernung, einordnen, MAX_UEBERNAHME_TAGE } from '../src/build.js';
+import { runAll, pruefeLauf, ortsliste, mitEntfernung, einordnen, fertigstellen, aussortiertText, MAX_UEBERNAHME_TAGE } from '../src/build.js';
 import { versionsInfo, schreibeVersion } from '../src/version.js';
 
 const NOW = new Date('2026-11-10T19:00:00Z'); // 20:00 Berlin, Dienstag 10.11.2026
@@ -443,4 +443,52 @@ test('übernommene Termine einer ausgefallenen Quelle behalten den Hinweis', asy
   assert.equal(x.genre, 'jazz');
   assert.equal(x.genreQuelle, 'jazz');
   assert.equal(events.find((e) => e.title === 'Y').genreQuelle, null);
+});
+
+const NULLEN = { ladenoeffnung: 0, schulvorstellung: 0, gruppentreffen: 0 };
+
+test('fertigstellen: ordnet neu ein, setzt die Sprache, sortiert aus, entfernt genreQuelle', () => {
+  const eingang = [
+    { art: 'konzert', genre: 'jazz', genreQuelle: 'jazz', rubrik: 'konzert', title: 'X', country: 'DE' },
+    { art: 'sonstiges', rubrik: 'sonstiges', title: 'Kabarett „Der nackte Shakespeare 2“', country: 'CZ' },
+    { art: 'sonstiges', title: 'Winter Werksverkauf' },
+    { art: 'sonstiges', title: 'Trauercafe Bautzen' },
+  ];
+  const { events, aussortiert } = fertigstellen(eingang);
+  assert.equal(events.length, 2);
+  assert.equal(events[0].genre, 'jazz');
+  assert.equal(events[0].sprache, null);
+  assert.equal(events[1].sprache, 'cs');
+  for (const e of events) assert.equal(Object.hasOwn(e, 'genreQuelle'), false);
+  assert.deepEqual(aussortiert, { ladenoeffnung: 1, schulvorstellung: 0, gruppentreffen: 1 });
+  assert.equal(events.length + 2, eingang.length);
+});
+
+test('fertigstellen: zweimal angewendet gleich einmal', () => {
+  const f = fertigstellen([
+    { art: 'konzert', genreQuelle: 'jazz', title: 'Jazzabend', country: 'DE' },
+    { art: 'sonstiges', title: 'Kabarett', country: 'CZ' },
+    { art: 'sonstiges', title: 'Markt in Sebnitz' },
+  ]);
+  assert.deepEqual(fertigstellen(f.events).events, f.events);
+});
+
+test('fertigstellen: leere Eingabe, kaputte Einträge, Summe stimmt', () => {
+  assert.deepEqual(fertigstellen([]), { events: [], aussortiert: NULLEN });
+  const eingang = [
+    { art: 'sonstiges', title: 'Příběh bez překladu', country: 'CZ' },
+    null, 'text', {}, { title: 42 },
+    { art: 'sonstiges', title: 'Lagerverkauf' },
+  ];
+  const { events, aussortiert } = fertigstellen(eingang);
+  const summe = Object.values(aussortiert).reduce((a, b) => a + b, 0);
+  assert.equal(events.length + summe, eingang.length);
+  assert.equal(summe, 1);
+});
+
+test('aussortiertText nennt alle drei Gründe', () => {
+  assert.equal(
+    aussortiertText({ ladenoeffnung: 12, schulvorstellung: 0, gruppentreffen: 0 }),
+    'aussortiert: 12 Ladenöffnung, 0 Schulvorstellung, 0 Gruppentreffen',
+  );
 });
