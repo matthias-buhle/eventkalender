@@ -48,10 +48,11 @@ const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|a
 // "märchenhaft" ist ein Beiwort (Adventsshopping, Nacht mit dem Karnevalsclub), kein Märchen.
 const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
 // In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
-const KINDER_BESCHREIBUNG = /f[uü]r kinder|ab \d+ jahren?|kindertheater|puppentheater|familienprogramm/;
+// Altersangaben nur im Kinderalter (bis 12): "Einlass ab 18 Jahren" ist kein Kinderprogramm.
+const KINDER_BESCHREIBUNG = /f[uü]r kinder|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
 const THEATER = /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
 const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback|bastelei|reportage|podiumsgespr|diskussion|diskutiert|wissensvermittlung/;
-const SPORT = /eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach|wettkampf|meisterschaft/;
+const SPORT = /eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
 const WANDERN = /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/;
 // Essen nur im Titel: "Kaffee und Kuchen" in der Beschreibung macht noch kein Essen (Entscheidung 14).
 const ESSEN = /brunch|dinner|men[uü]\b|verkostung|weinprobe|bierprobe|tasting|whisky|kulinar|fr[uü]hst[uü]ck|schmaus|buffet|kaffeeklatsch|\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|gourmet|ritter|wein|g[aä]nse|enten|schlacht)essen\b|g[aä]nsebraten|martinsgans|baudenabend|h[uü]ttenabend|grill|kochshow/;
@@ -85,9 +86,7 @@ const SPIELSTAETTEN = /** @type {[string, RegExp][]} */ ([
   ['kurse', /volkshochschule|\bk?vhs\b/],
   ['konzert', /hutbergb[uü]hne/],
 ]);
-// Stufe 4: die Jahreszeit im Titel ist ein schwacher Hinweis.
-const JAHRESZEIT = /advent(?!ure|urer)|weihnacht|nikolaus|christkind|pyramide|winterzauber|lichterfest|lichtelfest/;
-// Stufe 5: der Anfang der Beschreibung, nur für diese Rubriken.
+// Stufe 4: der Anfang der Beschreibung, nur für diese Rubriken; er nennt die Gattung und zählt deshalb vor der Jahreszeit.
 const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
   ['fuehrung', FUEHRUNG],
   ['fuehrung', BAHN],
@@ -96,6 +95,8 @@ const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
   ['kurse', KURSE],
   ['wandern', WANDERN],
 ]);
+// Stufe 5: die Jahreszeit im Titel ist nur das Thema, ein schwacher Hinweis.
+const JAHRESZEIT = /advent(?!ure|urer)|weihnacht|nikolaus|christkind|pyramide|winterzauber|lichterfest|lichtelfest/;
 
 // Führungs-Unterarten, Reihenfolge = Vorrang.
 const FUEHRUNG_REGELN = /** @type {[string, RegExp][]} */ ([
@@ -222,9 +223,11 @@ function sonstigesRubrik(e, titel, beschreibung) {
   const haus = ersteRegel(SPIELSTAETTEN, klein(e?.placeName));
   if (haus === 'sternwarte') return { rubrik: 'kurse', genre: 'vortrag' };
   if (haus) return ergebnis(haus, e, titel, beschreibung);
-  if (JAHRESZEIT.test(titel)) return { rubrik: 'fest', genre: 'weihnachten' };
   // Musik-, Essens- und Sportwörter zählen nur im Titel; in Beschreibungen kommen sie bei allem Möglichen vor.
-  return ergebnis(ersteRegel(BESCHREIBUNG_REGELN, beschreibung) ?? 'sonstiges', e, titel, beschreibung);
+  const ausBeschreibung = ersteRegel(BESCHREIBUNG_REGELN, beschreibung);
+  if (ausBeschreibung) return ergebnis(ausBeschreibung, e, titel, beschreibung);
+  if (JAHRESZEIT.test(titel)) return { rubrik: 'fest', genre: 'weihnachten' };
+  return { rubrik: 'sonstiges', genre: null };
 }
 
 /** Rubrik und Unterpunkt zu einer Rubrik aus der Rangfolge. Unterpunkte nur für Führung, Konzert, Fest, Party, Ausstellung. */

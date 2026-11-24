@@ -353,3 +353,21 @@ test('Nachgeschärft am Bestand: Gruppen mit gemeinsamem Stichwort', () => {
   assert.deepEqual(sonst('Eine märchenhafte Nacht mit dem BKC'), { rubrik: 'party', genre: 'fasching' }, 'märchenhaft ist kein Märchen');
   assert.equal(sonst('Märchenlesung im Atelier').rubrik, 'kinder');
 });
+
+test('Beschreibung vor Jahreszeit: die Beschreibung nennt die Gattung, die Jahreszeit nur das Thema', () => {
+  assert.equal(sonst('Weihnachten im Zauberwald', 'Familienmusical für Groß und Klein auf der Bühne').rubrik, 'theater');
+  assert.equal(sonst('Wie wurde Weihnachten früher gefeiert?', 'Sonderführungen durch die festlich geschmückten Räume').rubrik, 'fuehrung');
+  assert.deepEqual(sonst('Advent im Hof', 'Gemütliches Beisammensein mit Glühwein'), { rubrik: 'fest', genre: 'weihnachten' });
+});
+
+test('Schach ist Sport, Schacht nicht', () => {
+  for (const t of ['Schachturnier', 'Schachabend', 'Schach für alle']) assert.equal(sonst(t).rubrik, 'sport', t);
+  assert.notEqual(sonst('Schachtfest am Besucherbergwerk').rubrik, 'sport');
+});
+
+test('Altersangabe in der Beschreibung zählt nur im Kinderalter', () => {
+  assert.equal(sonst('Nachmittag im Saal', 'Für Kinder ab 4 Jahren').rubrik, 'kinder');
+  assert.equal(sonst('Abend im Saal', 'Basteln ab 6 Jahren').rubrik, 'kinder');
+  assert.notEqual(sonst('Abend im Saal', 'Einlass ab 18 Jahren').rubrik, 'kinder');
+  assert.notEqual(sonst('Abend im Saal', 'Zutritt ab 16 Jahren').rubrik, 'kinder');
+});
