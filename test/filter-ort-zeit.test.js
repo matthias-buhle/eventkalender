@@ -373,11 +373,59 @@ test('wirksameSorten: nur die Schlüssel der gewählten Rubriken zählen', () =>
   assert.deepEqual(wirksameSorten(p(['theater'], ['jazz'])), [], 'Rubrik ohne Unterarten');
 });
 
-test('loadPrefs: hiddenGenres wird als Textliste geprüft, ältere Einstellungen haben keine', () => {
+test('loadPrefs: mit Stand 2 bleiben bekannte Schlüssel, unbekannte fallen weg', () => {
   const lade = (obj) => loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify(obj) }));
   assert.deepEqual(lade({ maxKm: 30 }).hiddenGenres, []);
-  assert.deepEqual(lade({ hiddenGenres: ['jazz', 3, 'comedy'] }).hiddenGenres, ['jazz', 'comedy']);
-  assert.deepEqual(lade({ hiddenGenres: 'jazz' }).hiddenGenres, []);
+  assert.deepEqual(lade({ stand: 2, hiddenGenres: ['jazz', 3, 'comedy', 'gibtsnicht', 'kabarett'] }).hiddenGenres, ['jazz', 'kabarett']);
+  assert.deepEqual(lade({ stand: 2, hiddenGenres: 'jazz' }).hiddenGenres, []);
+});
+
+test('loadPrefs: Unterpunkt-Auswahl aus der Zeit vor Stand 2 wird einmal zurückgesetzt', () => {
+  const lade = (obj) => loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify(obj) }));
+  const alt = lade({
+    rubriken: ['konzert'], maxKm: 50, ort: 'Bautzen',
+    hiddenGenres: ['rock-pop', 'metal-punk', 'klassik', 'kirche', 'jazz', 'schlager-folk', 'hiphop-elektro', 'musical', 'sonstige'],
+  });
+  assert.deepEqual(alt.hiddenGenres, []);
+  assert.deepEqual(alt.rubriken, ['konzert']);
+  assert.equal(alt.maxKm, 50);
+  assert.equal(alt.ort, 'Bautzen');
+  assert.deepEqual(lade({ rubriken: ['fest'], hiddenGenres: ['familie', 'stadtfest', 'weihnachten', 'festival', 'sonstige-fest'] }).hiddenGenres, []);
+  const liste = [ev({ id: 'ohne-genre', rubrik: 'konzert' })];
+  assert.deepEqual(applyFilters(liste, { ...alt, zeit: 'alle' }, NOW).map((e) => e.id), ['ohne-genre']);
+});
+
+test('savePrefs schreibt den Stand; loadPrefs gibt ihn nicht zurück', () => {
+  const daten = {};
+  const speicher = { getItem: (k) => daten[k] ?? null, setItem: (k, v) => { daten[k] = v; } };
+  savePrefs(speicher, prefs({ rubriken: ['konzert'], hiddenGenres: ['jazz', 'klassik'] }));
+  assert.ok(daten['eventkalender.prefs'].includes('"stand":2'));
+  const geladen = loadPrefs(speicher);
+  assert.deepEqual(geladen.hiddenGenres, ['jazz', 'klassik']);
+  assert.equal(Object.hasOwn(geladen, 'stand'), false);
+});
+
+test('zaehleSorten: Termine je Unterpunkt unter allen Filtern außer Rubrikwahl und Unterpunkt-Auswahl', () => {
+  const tag = (t) => `${t}T19:00:00+01:00`;
+  const liste = [
+    ev({ id: 'j1', rubrik: 'konzert', genre: 'jazz', start: tag('2026-11-28') }),
+    ev({ id: 'j2', rubrik: 'konzert', genre: 'jazz', start: tag('2026-11-28') }),
+    ev({ id: 'o', rubrik: 'konzert', start: tag('2026-11-28') }),
+    ev({ id: 'ka', rubrik: 'theater', art: 'sonstiges', genre: 'kabarett', start: tag('2026-11-28') }),
+    ev({ id: 'alt', rubrik: 'konzert', genre: 'jazz', start: tag('2026-11-20') }),
+  ];
+  const p = prefs({ zeit: 'alle' });
+  const z = filterModul.zaehleSorten(liste, p, NOV23, ORTE);
+  assert.equal(z.jazz, 2);
+  assert.equal(z.sonstige, 1);
+  assert.equal(z.kabarett, 1);
+  assert.equal(z.klassik, 0);
+  assert.equal(z['sonstige-theater'], 0);
+  assert.deepEqual(filterModul.zaehleSorten(liste, { ...p, rubriken: ['markt'] }, NOV23, ORTE), z, 'die Rubrikwahl wirkt nicht');
+  const keinTreffer = filterModul.zaehleSorten(liste, { ...p, suche: 'gibtsnicht' }, NOV23, ORTE);
+  assert.ok(Object.values(keinTreffer).every((n) => n === 0));
+  const nurKlassik = sortenSchluessel('konzert').filter((k) => k !== 'klassik');
+  assert.deepEqual(filterModul.zaehleSorten(liste, { ...p, rubriken: ['konzert'], hiddenGenres: nurKlassik }, NOV23, ORTE), z, 'die Auswahl ändert die Zähler nicht');
 });
 
 // --- Advent ---

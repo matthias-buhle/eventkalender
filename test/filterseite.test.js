@@ -30,13 +30,13 @@ const ORTE = [
   { name: BOESE, lat: 51, lon: 14 },
 ];
 
-function aufbau(prefsExtra = {}) {
+function aufbau(prefsExtra = {}, events = TERMINE) {
   const container = document.createElement('div');
   document.body.append(container);
   const aufrufe = { aenderung: 0, anzeigen: 0 };
   const ctx = {
     prefs: { ...DEFAULT_PREFS, rubriken: [], hiddenGenres: [], hiddenTags: [], ...prefsExtra },
-    events: TERMINE,
+    events,
     orteListe: ORTE,
     orte: Object.fromEntries(ORTE.map((o) => [o.name, { lat: o.lat, lon: o.lon }])),
     jetzt: () => JETZT,
@@ -210,7 +210,13 @@ test('Schnellwahl-Chips setzen zeit und löschen von/bis', () => {
 });
 
 test('Kachel Konzerte wählt die Rubrik und klappt ihre Unterpunkte direkt unter der Kachel auf, auch bei zwei Rubriken', () => {
-  const { container, ctx, aufrufe } = aufbau();
+  // Je Rubrik zwei Unterpunkte mit Terminen am Wochenende, sonst bliebe die Gruppe zu (siehe unten).
+  const mehr = [
+    ...TERMINE,
+    ev({ title: 'Jazzabend', rubrik: 'konzert', genre: 'jazz', start: '2026-11-28T20:00:00+01:00' }),
+    ev({ title: 'Trödelmarkt', rubrik: 'markt', genre: 'troedel', start: '2026-11-28T10:00:00+01:00' }),
+  ];
+  const { container, ctx, aufrufe } = aufbau({}, mehr);
   assert.deepEqual(sichtbareGruppen(container), []);
   const k = kachel(container, 'Konzerte');
   k.click();
@@ -279,6 +285,43 @@ test('Kachel mit Zahl 0 ist leer, nicht gesperrt und ändert beim Tipp die Auswa
   assert.ok(!kachel(container, 'Konzerte').classList.contains('leer'));
   feste.click();
   assert.deepEqual(ctx.prefs.rubriken, ['fest']);
+});
+
+const KONZERT_G = 'Konzerte: Genre';
+const konzerte = (...genres) => genres.map((genre, i) => ev({ title: `K${i}`, rubrik: 'konzert', genre, start: '2026-11-28T19:00:00+01:00' }));
+
+test('leere Unterpunkte sind ausgeblendet', () => {
+  const { container } = aufbau({ rubriken: ['konzert'] }, konzerte('jazz', 'klassik'));
+  assert.equal(sorte(container, KONZERT_G, 'Jazz & Blues').hasAttribute('hidden'), false);
+  assert.equal(sorte(container, KONZERT_G, 'Klassik & Chor').hasAttribute('hidden'), false);
+  assert.equal(sorte(container, KONZERT_G, 'Rock & Pop').hasAttribute('hidden'), true);
+  assert.equal(sorte(container, KONZERT_G, 'Sonstige Konzerte').hasAttribute('hidden'), true);
+  assert.equal(sorte(container, KONZERT_G, 'Alle').hasAttribute('hidden'), false);
+  assert.deepEqual(sichtbareGruppen(container), [KONZERT_G]);
+});
+
+test('ein gewählter Unterpunkt bleibt sichtbar, auch wenn er leer wird', () => {
+  const alleAusserRock = ['metal-punk', 'klassik', 'kirche', 'jazz', 'schlager-folk', 'hiphop-elektro', 'sonstige'];
+  const { container } = aufbau({ rubriken: ['konzert'], hiddenGenres: alleAusserRock }, konzerte('jazz'));
+  const rock = sorte(container, KONZERT_G, 'Rock & Pop');
+  assert.equal(rock.hasAttribute('hidden'), false);
+  assert.equal(rock.getAttribute('aria-pressed'), 'true');
+  assert.deepEqual(sichtbareGruppen(container), [KONZERT_G]);
+});
+
+test('weniger als zwei Unterpunkte mit Terminen: keine Gruppe', () => {
+  const { container } = aufbau({ rubriken: ['konzert'] }, konzerte('jazz', 'jazz'));
+  assert.deepEqual(sichtbareGruppen(container), []);
+  assert.equal(gruppe(container, KONZERT_G).hasAttribute('hidden'), true);
+});
+
+test('14 Kacheln; die vorletzte ist Sport & Freizeit und hat keine Unterpunkt-Gruppe', () => {
+  const { container } = aufbau({ rubriken: ['sport'] });
+  const alle = kacheln(container);
+  assert.equal(alle.length, 14);
+  const sport = alle[12];
+  assert.equal(sport.querySelector('.kachel-name').textContent, 'Sport & Freizeit');
+  assert.ok(!sport.nextElementSibling?.classList.contains('sorten'));
 });
 
 test('den Advent-Schalter gibt es nicht mehr; ein altes prefs.advent filtert nichts', () => {

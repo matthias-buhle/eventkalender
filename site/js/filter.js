@@ -243,7 +243,20 @@ export function zaehleRubriken(events, prefs, nowIso, orte = {}) {
   return zahlen;
 }
 
-const WOCHENTAGE = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+/** Alle Unterpunkt-Schlüssel aller Rubriken, auch die Sammelpunkte. */
+const ALLE_SORTEN = Object.keys(SORTEN).flatMap(sortenSchluessel);
+
+/** Termine je Unterpunkt (alle Schlüssel aller Rubriken, 0 für leere) unter denselben Filtern wie zaehleRubriken. */
+export function zaehleSorten(events, prefs, nowIso, orte = {}) {
+  const zahlen = Object.fromEntries(ALLE_SORTEN.map((k) => [k, 0]));
+  for (const e of applyFilters(events, prefs, nowIso, orte, { ohneRubrik: true })) {
+    const s = sorteFilter(e);
+    if (s !== null) zahlen[s] += 1;
+  }
+  return zahlen;
+}
+
+const WOCHENTAGE =['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
 /** "Sa 28.11." für 2026-11-28. */
 function tagKurz(tag) {
@@ -326,7 +339,8 @@ export function loadPrefs(storage) {
     return {
       ...standard(),
       rubriken: rubriken.length === RUBRIK_KEYS.length ? [] : rubriken,
-      hiddenGenres: stringListe(roh.hiddenGenres),
+      // Eine Auswahl aus der Zeit vor Stand 2 meinte andere Unterpunkte und wird einmal zurückgesetzt.
+      hiddenGenres: roh.stand === 2 ? stringListe(roh.hiddenGenres).filter((g) => ALLE_SORTEN.includes(g)) : [],
       hiddenTags: stringListe(roh.hiddenTags),
       maxKm: umkreisStufe(roh.maxKm),
       showCZ: typeof roh.showCZ === 'boolean' ? roh.showCZ : DEFAULT_PREFS.showCZ,
@@ -341,6 +355,6 @@ export function loadPrefs(storage) {
 export function savePrefs(storage, prefs) {
   try {
     const { suche, zeit, von, bis, ...gemerkt } = prefs;
-    storage?.setItem(SCHLUESSEL, JSON.stringify(gemerkt));
+    storage?.setItem(SCHLUESSEL, JSON.stringify({ ...gemerkt, stand: 2 }));
   } catch { /* Einstellungen gelten dann nur für diese Sitzung */ }
 }

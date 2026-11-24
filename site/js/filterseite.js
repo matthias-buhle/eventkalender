@@ -2,7 +2,7 @@
 // Fremdwerte (Ortsnamen, Rubriknamen, Termindaten) kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { RUBRIKEN, SORTEN } from './arten.js';
 import {
-  DEFAULT_PREFS, UMKREISE, anzeigeText, applyFilters, berlinDay, gewaehlteSorten, rubrikGetippt, sorteWaehlen, zaehleRubriken, zeitAbgelaufen,
+  DEFAULT_PREFS, UMKREISE, anzeigeText, applyFilters, berlinDay, gewaehlteSorten, rubrikGetippt, sorteWaehlen, zaehleRubriken, zaehleSorten, zeitAbgelaufen,
   zeitfenster,
 } from './filter.js';
 import { markierterBereich, monateMitTerminen, monatsName, monatsRaster, tageMitTerminen, tagWaehlen } from './kalender.js';
@@ -331,12 +331,22 @@ export function baueFilterseite(doc, container, ctx) {
       k.classList.toggle('leer', zahlen[key] === 0);
       k.setAttribute('aria-pressed', String(gewaehlt.includes(key)));
     }
+    const sortenZahlen = zaehleSorten(events, prefs, jetzt, orte);
     for (const [rubrik, { gruppe, alle, einzelne }] of sortenGruppen) {
-      if (gewaehlt.includes(rubrik)) gruppe.removeAttribute('hidden');
-      else gruppe.setAttribute('hidden', '');
       const wahl = gewaehlteSorten(prefs.hiddenGenres, rubrik); // null = Alle
       alle.setAttribute('aria-pressed', String(wahl === null));
-      for (const [schluessel, chip] of einzelne) chip.setAttribute('aria-pressed', String(wahl !== null && wahl.includes(schluessel)));
+      let mitTerminen = 0;
+      for (const [schluessel, chip] of einzelne) {
+        const gewaehlterChip = wahl !== null && wahl.includes(schluessel);
+        const hat = sortenZahlen[schluessel] > 0;
+        if (hat) mitTerminen += 1;
+        chip.setAttribute('aria-pressed', String(gewaehlterChip));
+        // Ein leerer Unterpunkt verschwindet, außer er ist gerade gewählt (sonst ließe er sich nicht mehr abwählen).
+        if (hat || gewaehlterChip) chip.removeAttribute('hidden');
+        else chip.setAttribute('hidden', '');
+      }
+      if (gewaehlt.includes(rubrik) && (mitTerminen >= 2 || wahl !== null)) gruppe.removeAttribute('hidden');
+      else gruppe.setAttribute('hidden', '');
     }
 
     // Wo?
