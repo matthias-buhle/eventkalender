@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { RUBRIKEN, SORTEN, rubrikVon, rubrikName, rubrikKarte, rubrikFarbe, sorteFilter, sorteName } from '../site/js/arten.js';
+import { RUBRIKEN, SORTEN, rubrikVon, rubrikName, rubrikKarte, rubrikFarbe, sorteFilter, sorteName, sprachHinweis } from '../site/js/arten.js';
 
 test('rubrikVon: bekannte Rubrik gilt, sonst fällt es auf die Art zurück, Unbekanntes wird sonstiges', () => {
   assert.equal(rubrikVon({ art: 'unbekannt' }), 'sonstiges');
@@ -93,4 +93,14 @@ test('rubrikFarbe: Farbfamilie der Rubrik wie die Kachel; Unbekanntes ist sonsti
   for (const r of RUBRIKEN) assert.equal(rubrikFarbe(r.key), r.farbe);
   assert.equal(rubrikFarbe('quatsch'), 'sonstiges');
   assert.equal(rubrikFarbe(undefined), 'sonstiges');
+});
+
+test('sprachHinweis: nur bei Theater, Kursen, Führungen und Kinderprogramm mit cs oder pl', () => {
+  assert.equal(sprachHinweis({ rubrik: 'theater', sprache: 'cs' }), 'auf Tschechisch');
+  assert.equal(sprachHinweis({ rubrik: 'fuehrung', sprache: 'pl' }), 'auf Polnisch');
+  assert.equal(sprachHinweis({ rubrik: 'konzert', sprache: 'cs' }), null);
+  assert.equal(sprachHinweis({ rubrik: 'markt', sprache: 'pl' }), null);
+  assert.equal(sprachHinweis({ rubrik: 'theater' }), null);
+  assert.equal(sprachHinweis({ rubrik: 'theater', sprache: 'xx' }), null);
+  assert.equal(sprachHinweis(undefined), null);
 });

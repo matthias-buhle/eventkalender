@@ -151,3 +151,12 @@ export function sorteName(e) {
   const def = Object.hasOwn(SORTEN, rubrik) ? SORTEN[rubrik] : null;
   return def && typeof e.genre === 'string' && Object.hasOwn(def.liste, e.genre) ? def.liste[e.genre] : null;
 }
+
+const SPRACHE_HINWEIS = { cs: 'auf Tschechisch', pl: 'auf Polnisch' };
+const SPRACHE_RUBRIKEN = new Set(['theater', 'kurse', 'fuehrung', 'kinder']);
+
+/** Der Sprachhinweis für die Karte; nur bei Theater, Kursen, Führungen und Kinderprogramm und nur für bekannte Werte, sonst null. */
+export function sprachHinweis(e) {
+  if (!SPRACHE_RUBRIKEN.has(rubrikVon(e))) return null;
+  return typeof e?.sprache === 'string' && Object.hasOwn(SPRACHE_HINWEIS, e.sprache) ? SPRACHE_HINWEIS[e.sprache] : null;
+}

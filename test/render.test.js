@@ -350,3 +350,15 @@ test('Ortszeile: ohne Koordinaten "Ort nicht genau bekannt" statt der Kilometer,
   const unsinn = renderEventCard(document, ev({ lat: '50.9', lon: NaN })).querySelector('.where').textContent;
   assert.ok(unsinn.includes('Ort nicht genau bekannt'), 'Strings und NaN zählen nicht als Koordinate');
 });
+
+test('Karte zeigt bei Theater mit sprache cs den Hinweis "auf Tschechisch"', () => {
+  const karte = renderEventCard(document, ev({ rubrik: 'theater', genre: 'kabarett', country: 'CZ', sprache: 'cs' }));
+  assert.equal(karte.querySelector('.sprache').textContent, 'auf Tschechisch');
+});
+
+test('Karte zeigt den Sprachhinweis nicht bei Konzert und nicht bei unbekanntem Wert', () => {
+  assert.equal(renderEventCard(document, ev({ rubrik: 'konzert', sprache: 'cs' })).querySelector('.sprache'), null);
+  const karte = renderEventCard(document, ev({ rubrik: 'theater', sprache: '<b>x</b>' }));
+  assert.equal(karte.querySelector('.sprache'), null);
+  assert.equal(karte.querySelectorAll('b').length, 0);
+});

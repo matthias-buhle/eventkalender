@@ -67,6 +67,11 @@ test('makeEvent: advent ist standardmäßig false und wird sonst übernommen', (
   assert.equal(makeEvent({ ...base, advent: true }).advent, true);
 });
 
+test('makeEvent: sprache ist standardmäßig null und wird sonst übernommen', () => {
+  assert.equal(makeEvent(base).sprache, null);
+  assert.equal(makeEvent({ ...base, sprache: 'cs' }).sprache, 'cs');
+});
+
 test('makeEvent: ortRegionKm ist standardmäßig null und wird sonst übernommen', () => {
   assert.equal(makeEvent(base).ortRegionKm, null);
   assert.equal(makeEvent({ ...base, ortRegionKm: 30 }).ortRegionKm, 30);

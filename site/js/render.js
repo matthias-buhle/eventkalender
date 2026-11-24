@@ -1,5 +1,5 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
-import { sorteName, rubrikVon, rubrikKarte, rubrikFarbe } from './arten.js';
+import { sorteName, rubrikVon, rubrikKarte, rubrikFarbe, sprachHinweis } from './arten.js';
 import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
@@ -95,6 +95,8 @@ function kopfzeile(doc, ev, gemeinde) {
   const sorte = sorteName(ev);
   if (sorte) art.append(' · ', el(doc, 'span', 'genre', sorte));
   if (ev.country === 'CZ') art.append(' · ', el(doc, 'span', 'land', 'Tschechien'));
+  const hinweis = sprachHinweis(ev);
+  if (hinweis) art.append(' · ', el(doc, 'span', 'land sprache', hinweis));
   kopf.append(art);
   if (gemeinde) kopf.append(el(doc, 'span', 'ort-rechts', gemeinde));
   return kopf;
