@@ -1,5 +1,6 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { sorteName, rubrikVon, rubrikKarte, rubrikFarbe, sprachHinweis } from './arten.js';
+import { kurzTag } from './serien.js';
 import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
@@ -27,11 +28,6 @@ export function dayLabel(day, today) {
   return `${t.wochentag}, ${t.tag}. ${t.monat}`;
 }
 
-const kurz = (tag) => {
-  const t = tagTeile(tag);
-  return `${t.wochentag.slice(0, 2)}, ${t.tag}. ${t.monat.slice(0, 3)}.`;
-};
-
 function wannText(ev) {
   const startTag = ev.start.slice(0, 10);
   const endTag = ev.end ? ev.end.slice(0, 10) : null;
@@ -39,9 +35,9 @@ function wannText(ev) {
   const bis = ev.hasTime && ev.end ? ev.end.slice(11, 16) : null;
   if (endTag && endTag !== startTag) {
     const ende = ev.hasTime && bis === '00:00' ? null : endTag;
-    if (ende) return `${kurz(startTag)}${von ? ` ${von}` : ''} – ${kurz(ende)}${bis ? ` ${bis}` : ''}`;
+    if (ende) return `${kurzTag(startTag)}${von ? ` ${von}` : ''} – ${kurzTag(ende)}${bis ? ` ${bis}` : ''}`;
   }
-  return `${kurz(startTag)}${von ? `, ${von}${bis && bis !== '00:00' ? `–${bis}` : ''} Uhr` : ''}`;
+  return `${kurzTag(startTag)}${von ? `, ${von}${bis && bis !== '00:00' ? `–${bis}` : ''} Uhr` : ''}`;
 }
 
 function el(doc, tag, klasse, text) {
