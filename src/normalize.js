@@ -204,7 +204,7 @@ const SCHAU_REGELN = /** @type {[string, RegExp][]} */ ([
 // Reihenfolge = Vorrang: Fasching vor Ball, Silvester vor Disco, Disco vor Club ("Tanzabend mit DJ" und "80er Party mit DJ" sind Disco).
 const PARTY_REGELN = /** @type {[string, RegExp][]} */ ([
   ['fasching', /fasching|karneval|prunksitzung|fastnacht|fasnacht|\bbkc\b|narren/],
-  ['silvester', /silvester|jahreswechsel|neujahr|(?<![a-zäöüß])ball\b|(?<!fu[sß]|hand|volley|basket|feder|faust|wasser|korb|tisch)(?<=[a-zäöüß])ball\b/],
+  ['silvester', /silvester|jahreswechsel|neujahr|(?<![a-zäöüß])ball\b|(?<!fu[sß]|hand|volley|basket|feder|faust|wasser|korb|tisch|base|soft|street|flunky|beach|schnee)(?<=[a-zäöüß])ball\b/],
   ['disco', /disco|disko|\d0er|\b[89]0.?s\b|tanz|retro/],
   ['club', /\bdj\b|club|legt auf|aftershow|after.?party|techno|elektro|electro|\bhouse\b|takeover|\brave\b/],
 ]);

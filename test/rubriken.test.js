@@ -417,20 +417,20 @@ test('Kinder und Familie: Puppenspiel, Familienwochenende und Wendungen in der B
   assert.equal(von({ art: 'sonstiges', title: 'Das höllische Kreuzworträtsel', placeName: 'Děčín', description: 'Originaltitel: Pekelná Křížovka – Kommt vorbei und erlebt mit euren Kindern jede Menge teuflischen Spaß …' }).rubrik, 'kinder');
   assert.deepEqual(sonst('Weihnachtsbäckerei - Familienwochenende im Schullandheim Bautzen/Burk'), { rubrik: 'kinder', genre: 'kinder-mitmachen' });
   assert.equal(sonst('Kasparek Show').rubrik, 'kinder');
-  for (const b of ['für unsere Kleinen: Lieder und Spiele', 'Für die Kleinen gibt es Geschichten', 'Ein Puppenspiel mit Musik', 'Für Kinder von 4 bis 6 Jahre', 'Offen für 6–10 Jahre', 'ab zehn Jahren']) {
+  for (const b of ['für unsere Kleinen: Lieder und Spiele', 'Ein Puppenspiel mit Musik', 'Für Kinder von 4 bis 6 Jahre', 'Offen für 6–10 Jahre', 'ab zehn Jahren']) {
     assert.equal(sonst('Nachmittag am Sonntag', b).rubrik, 'kinder', b);
   }
   // Gegenbeispiele
   assert.equal(sonst('Nachtführung', 'Beginn ab vier Uhr am Markt').rubrik, 'fuehrung');
   assert.equal(sonst('Sommerkino', 'Einlass ab 16 Jahren').rubrik, 'theater');
-  assert.notEqual(sonst('Lesung im Advent', 'Ein Abend für Erwachsene, 18 bis 99 Jahre').rubrik, 'kinder');
-  assert.notEqual(sonst('Vereinsabend', 'Treffen ab vier Uhr, 30 bis 60 Jahre').rubrik, 'kinder');
+  assert.equal(sonst('Lesung im Advent', 'Ein Abend für Erwachsene, 18 bis 99 Jahre').rubrik, 'theater');
+  assert.equal(sonst('Vereinsabend', 'Treffen ab vier Uhr, 30 bis 60 Jahre').rubrik, 'sonstiges');
 });
 
 test('Party: Zusammensetzungen auf "ball" sind Silvester & Ball, Sportbälle nicht', () => {
   assert.deepEqual(von({ art: 'party', title: '4. Bautzener Sportlerball' }), { rubrik: 'party', genre: 'silvester' });
   for (const t of ['Abiball 2026', 'Feuerwehrball', 'Tanzball']) assert.equal(von({ art: 'party', title: t }).genre, 'silvester', t);
-  for (const t of ['Fußball-Party im Vereinsheim', 'Handballparty', 'Wasserball Party']) assert.notEqual(von({ art: 'party', title: t }).genre, 'silvester', t);
+  for (const t of ['Fußball-Party im Vereinsheim', 'Handball – die Party danach', 'Flunkyball-Turnier mit Party', 'Wasserball Party']) assert.notEqual(von({ art: 'party', title: t }).genre, 'silvester', t);
 });
 
 test('Theater: Songtexte in der Beschreibung machen ein Musical (Show)', () => {
@@ -456,4 +456,30 @@ test('Kammermusik in der Beschreibung ist ein Konzert, der Titel gewinnt', () =>
   assert.deepEqual(von({ art: 'sonstiges', title: 'Sehnsucht und Verklärung', placeName: 'Evangelische Kirche, Raum Görlitz', description: 'Schon immer bot Musik nicht nur Raum für Fantasien … In seinem zweiten Streichsextett nimmt Brahms Abschied …' }), { rubrik: 'konzert', genre: 'kirche' });
   assert.deepEqual(von({ art: 'sonstiges', title: 'Abend im Saal', placeName: 'Kulturhaus', description: 'Ein Streichquartett spielt Haydn' }).rubrik, 'konzert');
   assert.equal(von({ art: 'sonstiges', title: 'Vortrag: Brahms und seine Zeit', description: 'Ein Abend über Kammermusik des 19. Jahrhunderts' }).rubrik, 'kurse');
+});
+
+test('Korrekturrunde: Marktwort, Altersangaben, Familienwochenende, Festakte, lieder, Sorte', () => {
+  // F1
+  assert.equal(markt('Adventsmärktchen im Pfarrhof').rubrik, 'markt');
+  assert.equal(markt('Adventsbasar der Kirchgemeinde').rubrik, 'markt');
+  assert.equal(markt('Rehefelder Adventszauber').rubrik, 'fest');
+  // F3
+  assert.notEqual(sonst('Kurs im Saal', 'Kurs ab acht Wochen Laufzeit buchbar').rubrik, 'kinder');
+  assert.notEqual(sonst('Weinabend', 'Weinabend für die kleinen Genießer').rubrik, 'kinder');
+  assert.equal(sonst('Nachmittag im Saal', 'Die Erdmännchenbande lädt ein, für unsere Kleinen (4 bis 6 Jahre)').rubrik, 'kinder');
+  // F4
+  assert.equal(sonst('Großes Sport- und Familienwochenende').rubrik, 'sport');
+  assert.equal(sonst('Weihnachtsbäckerei - Familienwochenende im Schullandheim Bautzen/Burk').rubrik, 'kinder');
+  // F6
+  const haus = 'Theater Görlitz (Gerhart-Hauptmann-Theater Görlitz-Zittau GmbH)';
+  assert.notEqual(von({ art: 'sonstiges', title: 'Große Prunksitzung des Karnevalsvereins', placeName: haus }).rubrik, 'sonstiges');
+  // F7
+  assert.notEqual(von({ art: 'sonstiges', title: 'Neujahrsempfang der Stadt', placeName: 'Rathaus', description: 'Musikalisch umrahmt vom Streichquartett der Musikschule' }).rubrik, 'konzert');
+  // F8
+  assert.equal(sonst('Mitgliederversammlung des Heimatvereins').rubrik, 'sonstiges');
+  assert.equal(von({ art: 'sonstiges', title: 'Mitgliederversammlung des Heimatvereins', placeName: haus }).rubrik, 'sonstiges');
+  assert.equal(sonst('Weihnachtslieder zum Mitsingen').rubrik, 'konzert');
+  // F9
+  assert.deepEqual(markt('21. Lichterzug auf Bergbaupfaden in Seiffen'), { rubrik: 'fest', genre: 'weihnachten' });
+  assert.deepEqual(markt('Mettenschicht im Advent'), { rubrik: 'fest', genre: 'brauchtum' });
 });

@@ -111,3 +111,8 @@ test('Führung: Stadtrundfahrt im Titel ist Stadt, auch mit Mühle oder Brauerei
   pruefe('fuehrung', 'stadt', 'Stadtrundfahrt Bautzen und Besuch der Hammermühle', 'Stadtführung mit Brauereibesuch', 'Stadtrundgang zur Bäckerei');
   pruefe('fuehrung', 'brauerei', 'Brauereiführung mit Verkostung');
 });
+
+test('Kurse: Näh-Wörter sind kreativ, Nähe, Ernährung und Aufnahmen nicht', () => {
+  pruefe('kurse', 'kreativ', 'Nähcafé im Stadtteilhaus', 'Nähabend für Anfänger');
+  pruefe('kurse', 'vortrag', ['Streifzug durch die Sächsische Schweiz', 'Ein interessanter Bild-Ton-Vortrag mit eindrucksvollen Aufnahmen …'], 'Vortrag: Ernährung im Alter', ['Abend im Saal', 'Ein Vortrag in der Nähe des Bahnhofs']);
+});

@@ -44,20 +44,20 @@ export const UNTERARTEN = {
 // Führungskräfte, Führungsstil, Führung auf Distanz sind Kursthemen. Touren und Lichterfahrten sind Führungen (Entscheidung 9).
 const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung(?!skr[aä]ft|sstil|skompetenz| auf distanz)|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter|zwiedzanie|prohl[ií]dk|stadtschleicher|lichterfahrt|(?:stadt|altstadt|kneipen|gl[uü]hwein|laternen|fackel|m[uü]hlen|weihnachts)tour\b/;
 // "märchenhaft" ist ein Beiwort (Adventsshopping, Nacht mit dem Karnevalsclub), kein Märchen.
-const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|ka[sš]p[aá]rek|puppenspiel|puppenb[uü]hne|theater der puppen|marionetten|familienwochenende|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
+const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|ka[sš]p[aá]rek|puppenspiel|puppenb[uü]hne|theater der puppen|marionetten|(?<!sport.{0,8})familienwochenende|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
 // In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
 // Altersangaben nur im Kinderalter (bis 12): "Einlass ab 18 Jahren" ist kein Kinderprogramm.
-const KINDER_BESCHREIBUNG = /f[uü]r kinder|mit (?:euren|ihren) kindern|f[uü]r (?:unsere|die) kleinen|puppenm[aä]rchen|puppenspiel|\bab (?:drei|vier|f[uü]nf|sechs|sieben|acht|neun|zehn)\b(?! (?:uhr|euro|personen|teilnehmer))|\b(?:[1-9]|1[0-2]) ?(?:bis|[-–]) ?(?:[1-9]|1[0-2]) jahre|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
+const KINDER_BESCHREIBUNG = /f[uü]r kinder|mit (?:euren|ihren) kindern|f[uü]r unsere kleinen|puppenm[aä]rchen|puppenspiel|\bab (?:drei|vier|f[uü]nf|sechs|sieben|acht|neun|zehn)\b(?! (?:uhr|euro|personen|teilnehmer|wochen|monat|minuten|tage|stunden))|\b(?:[1-9]|1[0-2]) ?(?:bis|[-–]) ?(?:[1-9]|1[0-2]) jahre|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
 const THEATER = /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|filmnachmittag|filmgespr[aä]ch|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
 const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback|bastelei|reportage|podiumsgespr|diskussion|diskutiert|wissensvermittlung/;
-const SPORT = /eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
+const SPORT = /\bsport\b|eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
 const WANDERN = /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/;
 // Essen nur im Titel: "Kaffee und Kuchen" in der Beschreibung macht noch kein Essen (Entscheidung 14).
 const ESSEN = /brunch|dinner|men[uü]\b|verkostung|weinprobe|bierprobe|tasting|whisky|kulinar|fr[uü]hst[uü]ck|schmaus|buffet|kaffeeklatsch|\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|gourmet|ritter|wein|g[aä]nse|enten|schlacht)essen\b|g[aä]nsebraten|martinsgans|baudenabend|h[uü]ttenabend|grill|kochshow/;
 const BRAUCHTUM = { test: (/** @type {string} */ t) => detectSorte('fest', t) === 'brauchtum' };
 const PARTY = /party|disco|disko|\bball\b|tanzabend|tanznacht|fasching|karneval|\bbkc\b|legt auf|silvester/;
 const AUSSTELLUNG = /vernissage|finissage|ausstellung|zeichnungen|druckgrafik|malerei|fotografien|skulpturen/;
-const KONZERT = /konzert|musik|requiem|oratori|kantate|matinee|orgel|vesper|singen\b|\bchor\b|klangschal|klangreise|\bgesang|\bband\b|tribute|hosianna|lieder|philharmon|orchester|bl[aä]ser|sinfon|symphon|klavier|streichorch|streichquartett|streicher\b|quartett|saxophon|\bpiano|violin|kl[aä]nge\b|gitarr|guitar|\btrio\b|\balbum/;
+const KONZERT = /konzert|musik|requiem|oratori|kantate|matinee|orgel|vesper|singen\b|\bchor\b|klangschal|klangreise|\bgesang|\bband\b|tribute|hosianna|(?<!g)lieder|philharmon|orchester|bl[aä]ser|sinfon|symphon|klavier|streichorch|streichquartett|streicher\b|quartett|saxophon|\bpiano|violin|kl[aä]nge\b|gitarr|guitar|\btrio\b|\balbum/;
 
 // Rangfolge für die Art "sonstiges" (und jede unbekannte Art); erste passende Stufe gewinnt.
 // Stufe 1: die Christnacht ist Kirchenmusik.
@@ -87,7 +87,7 @@ const SPIELSTAETTEN = /** @type {[string, RegExp][]} */ ([
 // Kammermusik und Streicher in der Beschreibung (der Titel nennt sie oft nicht); steht am Ende, damit Vortrag und Co. vorgehen.
 const KAMMERMUSIK = /streichquartett|streichquintett|streichsextett|streichtrio|streichorchester|kammermusik|kammerorchester|sinfoniekonzert/;
 // Festakte im Theaterhaus sind kein Theater: die Spielstätte allein macht dann keine Rubrik.
-const FESTAKT = /verleiht|verleihung|(?<!l|k|ver)ehrung|empfang|sitzung|versammlung/;
+const FESTAKT = /verleiht|verleihung|(?<!l|k|ver)ehrung|empfang|(?<!prunk)sitzung|versammlung/;
 // Stufe 4: der Anfang der Beschreibung, nur für diese Rubriken; er nennt die Gattung und zählt deshalb vor der Jahreszeit.
 const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
   ['fuehrung', FUEHRUNG],
@@ -173,10 +173,11 @@ function konzertRubrik(e, titel, beschreibung) {
 
 // Lichter- und Adventstermine ohne Marktwort sind Feste ("Weihnacht" allein bleibt Markt).
 const MARKT_FEST = /lichter|lichtel|advent(?!ure|urer)|laternenzug|laternenumzug|bergparade|pyramidenfest|weihnachtsfest/;
-// Lichter- und Adventszüge sind hier Advents-Termine (nicht Brauchtum); andere Sorten (Laternen: Familie) bleiben.
+// Lichterzug und Bergparade sind hier Advents-Termine (nicht Brauchtum); andere Sorten (Laternen: Familie, Mettenschicht: Brauchtum) bleiben.
 function marktFestSorte(titel) {
   const s = detectSorte('fest', titel);
-  return s && s !== 'brauchtum' ? s : 'weihnachten';
+  if (s === 'brauchtum' && /lichterzug|bergparade/.test(klein(titel))) return 'weihnachten';
+  return s ?? 'weihnachten';
 }
 const FEST_KINO = /filmfest|kurzfilm|kinofest/;
 const FEST_ESSEN = /weinfest|winzerfest|bierfest|street.?food|schlemmerfest|food.?festival/;
@@ -198,7 +199,7 @@ export function rubrikUndGenre(e) {
   if (art === 'konzert') return konzertRubrik(e, titel, beschreibung);
 
   if (art === 'markt') {
-    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkte/.test(titel)) return { rubrik: 'fest', genre: marktFestSorte(e?.title) };
+    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkt|basar|bazar/.test(titel)) return { rubrik: 'fest', genre: marktFestSorte(e?.title) };
     return { rubrik: 'markt', genre: sorte('markt') };
   }
 
@@ -237,7 +238,7 @@ function sonstigesRubrik(e, titel, beschreibung) {
   if (haus) return ergebnis(haus, e, titel, beschreibung);
   // Musik-, Essens- und Sportwörter zählen nur im Titel; in Beschreibungen kommen sie bei allem Möglichen vor.
   const ausBeschreibung = ersteRegel(BESCHREIBUNG_REGELN, beschreibung);
-  if (ausBeschreibung) return ergebnis(ausBeschreibung, e, titel, beschreibung);
+  if (ausBeschreibung && !(ausBeschreibung === 'konzert' && FESTAKT.test(titel))) return ergebnis(ausBeschreibung, e, titel, beschreibung);
   if (JAHRESZEIT.test(titel)) return { rubrik: 'fest', genre: 'weihnachten' };
   return { rubrik: 'sonstiges', genre: null };
 }

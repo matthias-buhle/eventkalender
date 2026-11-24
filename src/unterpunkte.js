@@ -51,6 +51,7 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
   fuehrung: [
     ['bahn', BAHN],
     ['kinder', /kinder|familie/],
+    // Steht bewusst vor untertage und brauerei: ein Stadtrundgang bleibt Stadt, auch wenn er an Mühle oder Stollen endet. Gibt nur Vorrang.
     ['stadt', /stadtrundfahrt|stadtf[uü]hrung|stadtrundgang/],
     ['untertage', /bergwerk|untertage|stollen|h[oö]hle|schacht|bergbau|salz/],
     ['brauerei', /brauerei|braumanufaktur|brauhaus|braumeister|bierbrau|b[aä]cker|m[uü]hle|manufaktur|distill|r[oö]sterei/],
@@ -66,7 +67,7 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
   ],
   kurse: [
     ['bewegung', /yoga|pilates|\btanz|fitness|gymnastik|qi.?gong|tai.?chi|meditation|entspann|r[uü]cken(?:schule|training|gymnastik)|zumba|klangschal|achtsam/],
-    ['kreativ', /kreativ|mal(?:en|kurs|treff|nachmittag)|zeichn|t[oö]pfer|keramik|\bn[aä]h(?:en|kurs|kreis|treff|maschine|werkstatt|nachmittag)|gen[aä]ht|strick|h[aä]kel|filz|bastel|handwerk|schnitz|kl[oö]ppel|koch|back|floristik|schmied|foto|photowalk|reparatur|stick(?:en|erei)|upcycl|pralin|trommel|verzier|weihnachtskugel/],
+    ['kreativ', /kreativ|mal(?:en|kurs|treff|nachmittag)|zeichn|t[oö]pfer|keramik|\bn[aä]h(?!e\b|er|rung|rboden)|gen[aä]ht|strick|h[aä]kel|filz|bastel|handwerk|schnitz|kl[oö]ppel|koch|back|floristik|schmied|foto|photowalk|reparatur|stick(?:en|erei)|upcycl|pralin|trommel|verzier|weihnachtskugel/],
     ['lernen', /computer|\bpc\b|smartphone|handy|internet|digital|\bki\b|excel|sprach|englisch|franz[oö]sisch|tschechisch|polnisch|spanisch|italienisch|beruf|bewerb|weiterbildung|schulung|seminar|lehrgang|kommunikation|f[uü]hrungs?\b|f[uü]hrung auf|online/],
     ['vortrag', /vortrag|reisebericht|reportage|multivision|infoabend|gespr[aä]ch|podium|diskussion|sternwarte|ratgeber/],
   ],
