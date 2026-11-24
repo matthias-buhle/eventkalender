@@ -1,5 +1,5 @@
 // Bildet aus den gefilterten Terminen die Zeilen der Liste (Einzeltermine und Serien). Reine Funktionen, kein Zugriff auf window oder document.
-import { lastDay, groupByDay } from './filter.js';
+import { lastDay, groupByDay, serieVon } from './filter.js';
 
 const WOCHENTAGE = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
@@ -9,9 +9,6 @@ export function kurzTag(tag) {
   const d = new Date(`${tag}T00:00:00Z`);
   return `${WOCHENTAGE[d.getUTCDay()].slice(0, 2)}, ${d.getUTCDate()}. ${MONATE[d.getUTCMonth()].slice(0, 3)}.`;
 }
-
-/** Die Serien-Kennung eines Termins; alte Daten ohne das Feld und leere Werte sind Einzeltermine (null). */
-const serieVon = (ev) => (typeof ev.serie === 'string' && ev.serie !== '' ? ev.serie : null);
 
 /** Nach start sortiert (stabil); gleicher start nur einmal, der erste gilt. */
 function nachStartOhneDoppelte(termine) {
@@ -69,8 +66,14 @@ export function zeilenNachTagen(zeilen, fromDay) {
   return groupByDay(zeilen.map((z) => z.ev), fromDay).map((g) => ({ day: g.day, zeilen: g.events.map((e) => zeileVon.get(e)) }));
 }
 
-/** Ist die Terminliste der Quelle voll (dann kennen wir nur ein Mindest-Ende)? */
-export const istVoll = (termine) => termine.at(-1).terminlisteVoll === true;
+/** "Fast täglich" ab so vielen Tagen und diesem Anteil der Tage zwischen erstem und letztem Tag. */
+const FAST_TAEGLICH_MIN_TAGE = 5;
+const FAST_TAEGLICH_ANTEIL = 0.6;
+/** Rhythmus-Aussagen ("täglich", "jeden Donnerstag" ...) nur ab so vielen verschiedenen Tagen. */
+const RHYTHMUS_MIN_TAGE = 3;
+
+/** Kennen wir nur ein Mindest-Ende? Ja, wenn die Terminliste der Quelle voll ist (terminlisteVoll) oder die Serie bis an den Rand reicht, den die Quelle vorausschaut (endeOffen). */
+export const istVoll = (termine) => termine.at(-1).terminlisteVoll === true || termine.at(-1).endeOffen === true;
 
 /** Kalendertage seit 1970 aus JJJJ-MM-TT, unabhängig von Zeitzone und Zeitumstellung. */
 const tagNr = (tag) => Date.UTC(+tag.slice(0, 4), +tag.slice(5, 7) - 1, +tag.slice(8, 10)) / 86400000;
@@ -92,7 +95,7 @@ export function serienText(termine, naechster) {
   const n = termine.length;
   const tageListe = [...new Set(termine.map((e) => e.start.slice(0, 10)))];
   const nrs = tageListe.map(tagNr).sort((a, b) => a - b);
-  const ende = kurzTag(lastDay(termine.at(-1)));
+  const ende = kurzTag(termine.map(lastDay).reduce((a, b) => (b > a ? b : a)));
   const voll = istVoll(termine);
   const mitEnde = (rhythmus) => (voll ? `${rhythmus}, mindestens bis ${ende}` : `${rhythmus} bis ${ende} · ${n} Termine`);
 
@@ -102,9 +105,10 @@ export function serienText(termine, naechster) {
       const tag = e.start.slice(0, 10);
       return tag === starttag && e.hasTime ? `${e.start.slice(11, 16)} Uhr` : kurzTag(tag);
     });
-    return `auch ${weitere.join(' und ')}`;
+    return `auch ${[...new Set(weitere)].join(' und ')}`;
   }
   if (nrs.length === 1) return `${n} Termine an diesem Tag`;
+  if (nrs.length < RHYTHMUS_MIN_TAGE) return voll ? `Termine mindestens bis ${ende}` : `${n} Termine bis ${ende}`;
   const spanne = nrs.at(-1) - nrs[0] + 1;
   if (nrs.length === spanne) return mitEnde('täglich');
   const wochentage = new Set(nrs.map((x) => new Date(x * 86400000).getUTCDay()));
@@ -113,6 +117,6 @@ export function serienText(termine, naechster) {
     return mitEnde(woechentlich ? `jeden ${WOCHENTAGE[[...wochentage][0]]}` : wochentageText(nrs));
   }
   if (wochentage.size <= 3) return mitEnde(wochentageText(nrs));
-  if (nrs.length >= 5 && nrs.length / spanne >= 0.6) return mitEnde('fast täglich');
+  if (nrs.length >= FAST_TAEGLICH_MIN_TAGE && nrs.length / spanne >= FAST_TAEGLICH_ANTEIL) return mitEnde('fast täglich');
   return voll ? `Termine mindestens bis ${ende}` : `${n} Termine bis ${ende}`;
 }

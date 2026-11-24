@@ -443,3 +443,16 @@ test('Einzelheiten: Zeilen der Terminliste sind reiner Text', () => {
   const termine = langeSerie(3);
   assert.equal(renderDetail(document, termine[0], { termine }).querySelectorAll('.terminliste a').length, 0);
 });
+
+test('Einzelheiten: nach „Alle Termine zeigen“ bekommt die erste bisher versteckte Zeile den Fokus', () => {
+  const termine = langeSerie(29);
+  const d = renderDetail(document, termine[0], { termine });
+  const sechste = d.querySelectorAll('.terminliste li')[5];
+  // linkedom führt document.activeElement nicht: der Aufruf von focus() wird mitgezählt, das Attribut geprüft.
+  let fokus = 0;
+  sechste.focus = () => { fokus += 1; };
+  d.querySelector('.termine button').click();
+  assert.equal(sechste.getAttribute('tabindex'), '-1');
+  assert.equal(sechste.hasAttribute('hidden'), false);
+  assert.equal(fokus, 1);
+});

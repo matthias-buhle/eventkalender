@@ -27,7 +27,7 @@ const TYP_ART = {
 const liste = (wert) => (wert === undefined || wert === null ? [] : [].concat(wert));
 const text = (wert) => (typeof wert === 'string' ? wert.trim() : '');
 
-// Ab so vielen Einträgen je Datensatz in der Antwort gilt die Terminliste als vollständig (Serie, nicht Auswahl).
+// Ab so vielen Einträgen je Datensatz in der Antwort ist die Terminliste voll, also an der Grenze abgeschnitten: das Ende der Serie ist dann unbekannt (terminlisteVoll).
 export const TERMINE_JE_DATENSATZ = 30;
 
 // Schlüssel eines Datensatzes: Kennung, sonst der Titel (derselbe Schlüssel für Zählung und sourceId).

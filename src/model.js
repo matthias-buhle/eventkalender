@@ -14,7 +14,7 @@ import { createHash } from 'node:crypto';
  *   contact:Contact, ticketUrl:string|null, ticketStatus:TicketStatus|null,
  *   description:string|null, needsReview:boolean, submittedBy:string|null,
  *   lizenz:{name:string,url:string,urheber:string|null}|null,
- *   serie:string|null, terminlisteVoll:boolean
+ *   serie:string|null, endeOffen?:boolean, terminlisteVoll:boolean
  * }} Event
  */
 

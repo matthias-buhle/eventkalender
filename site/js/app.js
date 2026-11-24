@@ -1,5 +1,5 @@
 // Seitenlogik: Daten laden, Filterseite und Liste verdrahten, Einstellungen am Gerät merken.
-// Zwei Ansichten: die Filterseite (beim Start) und die Liste. "N Termine anzeigen" legt einen Verlaufseintrag
+// Zwei Ansichten: die Filterseite (beim Start) und die Liste. "N Veranstaltungen anzeigen" legt einen Verlaufseintrag
 // {ansicht:'liste'} an; Zurück führt von der Liste zur Filterseite. Fenster (Detail, Über) legen eigene Einträge an,
 // ihr Zurück schließt nur das Fenster (Regeln in ansicht.js).
 import { applyFilters, berlinDay, loadPrefs, savePrefs, zusammenfassung, nachRueckkehr, zeitZurueckgesetzt } from './filter.js';
@@ -76,7 +76,7 @@ function neuesFenster(klasse, titelText) {
   return { dialog, koerper, oeffnen, schliessen: () => dialog.close() };
 }
 
-/** Zeichnet die Liste und gibt zurück, wie viele Termine sie zeigt. */
+/** Zeichnet die Liste und gibt zurück, wie viele Zeilen sie zeigt. */
 function zeichneListe(container, events, prefs, orte, beiOeffnen) {
   const jetzt = new Date().toISOString();
   const heute = berlinDay(jetzt);
@@ -200,8 +200,8 @@ async function start() {
   fenster.push(detail, ueber);
   ueber.koerper.append(renderUeber(document));
   document.getElementById('menue')?.addEventListener('click', ueber.oeffnen);
-  function zeigeDetail(zeile) {
-    detail.koerper.replaceChildren(renderDetail(document, zeile.ev, { orte: Object.keys(ctx.orte), termine: zeile.termine, userAgent: navigator.userAgent }));
+  function zeigeDetail(eintrag) {
+    detail.koerper.replaceChildren(renderDetail(document, eintrag.ev, { orte: Object.keys(ctx.orte), termine: eintrag.termine, userAgent: navigator.userAgent }));
     detail.koerper.scrollTop = 0;
     detail.oeffnen();
   }

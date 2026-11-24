@@ -238,7 +238,7 @@ async function main() {
   const markiert = markiereSerien(fertig.events);
   const events = markiert.events;
   console.log(aussortiertText(fertig.aussortiert));
-  console.log(`Serien: ${markiert.serien} mit ${markiert.termine} Terminen`);
+  console.log(`Serien: ${markiert.serien} mit ${markiert.termine} Terminen, ${markiert.offen} mit offenem Ende`);
   await mkdir(outDir, { recursive: true });
   await writeFile(new URL('uebersetzungen.json', outDir), JSON.stringify(cache));
   await writeFile(new URL('orte-cache.json', outDir), JSON.stringify(orteCache));

@@ -127,7 +127,12 @@ function terminAbschnitt(doc, termine) {
     const knopf = el(doc, 'button', 'btn', istVoll(termine) ? 'Alle bekannten Termine zeigen' : `Alle ${termine.length} Termine zeigen`);
     knopf.setAttribute('type', 'button');
     knopf.addEventListener('click', () => {
-      liste.querySelectorAll('li[hidden]').forEach((li) => li.removeAttribute('hidden'));
+      const versteckt = [...liste.querySelectorAll('li[hidden]')];
+      versteckt.forEach((li) => li.removeAttribute('hidden'));
+      if (versteckt[0]) {
+        versteckt[0].setAttribute('tabindex', '-1');
+        versteckt[0].focus({ preventScroll: true });
+      }
       knopf.remove();
     });
     abschnitt.append(knopf);

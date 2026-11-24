@@ -1,5 +1,6 @@
 // Zählt je Rubrik die Einzeltermine vorher und die Veranstaltungen nachher (Serien als eine Veranstaltung).
 // Aufruf: node scripts/serien-pruefen.js <events.json> [--jetzt <ISO-Zeit>] [--schreibe <ordner>]
+import { existsSync } from 'node:fs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -57,11 +58,14 @@ async function main() {
   const markiert = markiereSerien(fertigstellen(events).events);
   console.log(tabelle(zaehleVorherNachher(markiert.events, jetzt)));
   console.log(`\nSerien insgesamt: ${markiert.serien} mit ${markiert.termine} Terminen`);
+  console.log(`Serien mit offenem Ende: ${markiert.offen}`);
   if (o.schreibe) {
     await mkdir(o.schreibe, { recursive: true });
     const generatedAt = new Date().toISOString();
     await writeFile(join(o.schreibe, 'events.json'), JSON.stringify({ generatedAt, events: markiert.events }, null, 1));
-    await writeFile(join(o.schreibe, 'status.json'), JSON.stringify({ generatedAt, sources: [] }, null, 1));
+    const statusPfad = join(o.schreibe, 'status.json');
+    if (existsSync(statusPfad)) console.log(`${statusPfad} ist schon vorhanden und bleibt unverändert.`);
+    else await writeFile(statusPfad, JSON.stringify({ generatedAt, sources: [] }, null, 1));
     await writeFile(join(o.schreibe, 'places.json'), JSON.stringify(ortsliste()));
   }
 }

@@ -149,7 +149,7 @@ export function anzeigeText(anzahl) {
 }
 
 /** Schlüssel einer Serie; leer für Einzeltermine und Daten ohne das Feld serie. */
-const serieVon = (e) => (typeof e.serie === 'string' && e.serie !== '' ? e.serie : null);
+export const serieVon = (e) => (typeof e.serie === 'string' && e.serie !== '' ? e.serie : null);
 
 /** Zahl der Veranstaltungen: jeder Termin ohne Serie zählt 1, jede Serie zusammen 1. */
 export function zaehleVeranstaltungen(events) {

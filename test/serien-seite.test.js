@@ -174,3 +174,27 @@ test('die Zahl am Knopf ist die Zahl der Zeilen', () => {
   assert.equal(zaehleVeranstaltungen(alle), 3);
   assert.equal(zeilenAus(alle, alle, HEUTE).length, 3);
 });
+
+test('istVoll und serienText: ein offenes Ende (endeOffen) wirkt wie eine volle Terminliste', () => {
+  const offen = (liste) => liste.map((e, i) => (i === liste.length - 1 ? { ...e, endeOffen: true } : e));
+  assert.equal(istVoll(offen(reihe('2026-11-26', 13, 7))), true);
+  assert.equal(istVoll(reihe('2026-11-26', 13, 7)), false);
+  assert.equal(text(offen(reihe('2026-11-26', 13, 7))), 'jeden Donnerstag, mindestens bis Do, 18. Feb.');
+});
+
+test('serienText: Rhythmus nur ab drei verschiedenen Tagen', () => {
+  const zweiTage = ['2026-12-27', '2026-12-29'].flatMap((tag) => [t(tag, '10:00'), t(tag, '16:00')]);
+  assert.equal(text(zweiTage), '4 Termine bis Di, 29. Dez.');
+  const voll = zweiTage.map((e, i) => (i === 3 ? { ...e, terminlisteVoll: true } : e));
+  assert.equal(text(voll), 'Termine mindestens bis Di, 29. Dez.');
+});
+
+test('serienText: „auch“ nennt gleiche Angaben nur einmal', () => {
+  const termine = [t('2026-11-27', '10:00'), t('2026-11-28', '10:00'), t('2026-11-28', '16:00')];
+  assert.equal(text(termine), 'auch Sa, 28. Nov.');
+});
+
+test('serienText: Ende ist der späteste letzte Tag aller Termine, nicht der des letzten Eintrags', () => {
+  const termine = [t('2026-11-26', '10:00', { end: '2027-01-10T18:00:00+01:00' }), ...reihe('2026-11-27', 3)];
+  assert.equal(text(termine), 'täglich bis So, 10. Jan. · 4 Termine');
+});

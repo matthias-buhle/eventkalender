@@ -182,6 +182,7 @@ export function renderUeber(doc, optionen = {}) {
       + 'Die Termine werden einmal täglich neu geholt. Bitte den Link nicht weitergeben.'),
     el(doc, 'p', null, 'Die Filterseite am Anfang grenzt mit Zeitraum, Rubrik, Ort und Umkreis ein, wie viele Veranstaltungen übrig bleiben, zeigt der Knopf unten. '
       + 'Was mehrmals stattfindet, etwa ein Weihnachtsmarkt an vielen Tagen oder ein Kurs jede Woche, steht als eine Veranstaltung mit ihrem nächsten Termin; Theater und Konzerte zeigen jede Vorstellung einzeln. '
+      + 'Steht dort „mindestens bis“, kennen wir das Ende nicht sicher: entweder ist die Terminliste der Quelle voll, oder die Serie läuft bis an den Rand des Zeitraums, den die Quelle vorausschaut. Schau dann später noch einmal nach. '
       + 'In der Liste lässt sich mit der Suche weiter eingrenzen, bis nur noch passende Termine übrig sind; „Filter ändern“ führt zurück.'),
     el(doc, 'p', null, 'Ein Klick oder Tipp auf einen Termin öffnet die Einzelheiten mit der ganzen Beschreibung und weiteren Knöpfen: '
       + 'zur Webseite, Tickets bestellen, anrufen, E-Mail schreiben und Navigation zum Veranstaltungsort.'),
