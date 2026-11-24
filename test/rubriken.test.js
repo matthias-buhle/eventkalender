@@ -109,7 +109,7 @@ test('Nachgeschärft an den echten Daten: Vorführung ist keine Führung, Musik 
   assert.equal(sonst('Filmvorführung „Stolz & Eigensinn“').rubrik, 'theater', 'Vorführung/Aufführung gehören zu Theater, nicht zu Führung');
   assert.equal(sonst('Aufführung').rubrik, 'theater');
   assert.equal(sonst('Einführung in die Kalligrafie').rubrik, 'sonstiges');
-  assert.deepEqual(sonst('Adventliche Orgelmusik am Mittag'), { rubrik: 'konzert', genre: 'klassik' });
+  assert.deepEqual(sonst('Adventliche Orgelmusik am Mittag'), { rubrik: 'konzert', genre: 'kirche' });
   assert.equal(sonst('Malkurs - Weihnachtliche Strukturkunst').rubrik, 'kurse');
   assert.equal(sonst('Yoga am Morgen').rubrik, 'kurse');
   assert.equal(sonst('Schwanensee – Ballett in vier Akten').rubrik, 'theater');
@@ -201,4 +201,67 @@ test('quellHinweis: frisch, schon eingeordnet, altes Format', () => {
   assert.equal(quellHinweis({ genre: 'rock-pop', rubrik: 'konzert', genreQuelle: 'jazz' }), 'jazz');
   assert.equal(quellHinweis({ genreQuelle: null, genre: 'jazz' }), null);
   assert.equal(quellHinweis(undefined), null);
+});
+
+test('Kirchenmusik (Entscheidung 5)', () => {
+  assert.deepEqual(von({ art: 'konzert', title: 'Adventliche Orgelmusik am Mittag', placeName: 'Dom St. Petri Bautzen' }), { rubrik: 'konzert', genre: 'kirche' });
+  assert.deepEqual(von({ art: 'konzert', title: '"Orgelpunkt 12" in der Peterskirche, Görlitz' }), { rubrik: 'konzert', genre: 'kirche' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Kammerkonzert', placeName: 'Kirche Cunewalde' }), { rubrik: 'konzert', genre: 'kirche' }, 'Klassik im Kirchenraum');
+  assert.deepEqual(von({ art: 'konzert', title: 'Kammerkonzert', placeName: 'Kulturpalast Dresden' }), { rubrik: 'konzert', genre: 'klassik' });
+  assert.deepEqual(von({ art: 'konzert', genre: 'klassik', title: 'Orgelkonzert' }), { rubrik: 'konzert', genre: 'kirche' }, 'Hinweis Klassik weicht dem Titel');
+  assert.deepEqual(von({ art: 'konzert', genre: 'rock-pop', title: 'Rock in der Kirche', placeName: 'Kirche Cunewalde' }), { rubrik: 'konzert', genre: 'rock-pop' });
+  assert.notEqual(von({ art: 'konzert', title: 'Liederabend', placeName: 'Dom kultury Zgorzelec' }).genre, 'kirche');
+});
+
+test('Konzert wird Theater (Entscheidung 1 bis 3)', () => {
+  assert.deepEqual(von({ art: 'konzert', title: 'Kabarett Herkuleskeule: Hüttenzauber' }), { rubrik: 'theater', genre: 'kabarett' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Monchi', description: 'Liest: Jenseits der Brandmauer' }), { rubrik: 'theater', genre: 'lesung' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Die Nacht der Musicals' }), { rubrik: 'theater', genre: 'show' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Sebastian Fitzek', description: 'Die Einladung - Der Bestseller als packendes Theatererlebnis' }), { rubrik: 'theater', genre: 'schauspiel' });
+  assert.equal(von({ art: 'konzert', title: 'Circus Mirage - Techno Electronic Musik' }).rubrik, 'konzert', 'Musik-Stichwort im Titel schlägt Zirkus');
+  assert.equal(von({ art: 'konzert', title: 'The AC/DC Master-Show', placeName: 'L2 Club, Görlitz' }).rubrik, 'konzert', 'Show im Club ist ein Konzert');
+  assert.deepEqual(von({ art: 'konzert', title: 'A4u – DIE ABBA REVIVAL SHOW' }), { rubrik: 'konzert', genre: 'rock-pop' });
+  assert.deepEqual(von({ art: 'konzert', title: 'KARAT', description: '45 Jahre „Der blaue Planet“ – KARAT auf Tour 2027' }), { rubrik: 'konzert', genre: null });
+});
+
+test('Konzert wird Kinder', () => {
+  assert.deepEqual(von({ art: 'konzert', title: 'Kinderkonzert: Peter und der Wolf' }), { rubrik: 'kinder', genre: 'kinder-buehne' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Familienkonzert der Elbland Philharmonie' }), { rubrik: 'kinder', genre: 'kinder-buehne' });
+});
+
+test('Lichterfest ist ein Fest (Entscheidung 6)', () => {
+  assert.deepEqual(von({ art: 'markt', title: 'Lichterfest Kleinwelka' }), { rubrik: 'fest', genre: 'weihnachten' });
+  assert.deepEqual(von({ art: 'markt', title: 'Lichtelfest mit Weihnachtsmarkt' }), { rubrik: 'markt', genre: 'weihnachtsmarkt' });
+  assert.equal(von({ art: 'markt', title: 'Lichtermarkt Pirna' }).rubrik, 'markt');
+});
+
+test('Brauchtum (Entscheidung 7)', () => {
+  for (const t of ['Hexenfeuer in Ottendorf', 'Osterreiten in Wittichenau', 'Kirmes in Radibor', 'Vogelhochzeit im Kindergarten', 'Maibaumsetzen', 'Schlachtfest im Gasthof']) {
+    assert.deepEqual(von({ art: 'fest', title: t }), { rubrik: 'fest', genre: 'brauchtum' }, t);
+  }
+  assert.deepEqual(von({ art: 'fest', title: 'Martinsumzug in Königstein' }), { rubrik: 'fest', genre: 'familie' });
+  assert.deepEqual(von({ art: 'fest', title: 'Erntedankfestival' }), { rubrik: 'fest', genre: 'festival' });
+});
+
+test('Feste ohne Essen & Trinken (Entscheidung 8)', () => {
+  for (const t of ['Weinfest am Schloss', 'Weihnachts-Food-Festival', 'Streetfood-Festival Bautzen']) {
+    assert.deepEqual(von({ art: 'fest', title: t }), { rubrik: 'essen', genre: null }, t);
+  }
+  assert.deepEqual(von({ art: 'fest', title: '8. Lauterbacher Suppenfest' }), { rubrik: 'fest', genre: 'stadtfest' });
+  assert.deepEqual(von({ art: 'fest', title: 'Apfelfest im Museumshof' }), { rubrik: 'fest', genre: 'stadtfest' });
+});
+
+test('Fest wird Sport oder Kino', () => {
+  assert.deepEqual(von({ art: 'fest', title: 'Fußballturnier zum Dorffest' }), { rubrik: 'sport', genre: null });
+  assert.deepEqual(von({ art: 'fest', title: 'Sebnitzer Stadtlauf' }), { rubrik: 'sport', genre: null });
+  assert.equal(von({ art: 'fest', title: 'Sportfest der Grundschule' }).rubrik, 'fest');
+  assert.deepEqual(von({ art: 'fest', title: '17. Europäisches Filmfestival der Generationen - Im Taxi mit Madeleine' }), { rubrik: 'theater', genre: 'kino' });
+});
+
+test('Party (Entscheidung 13 und Umleitung)', () => {
+  assert.deepEqual(von({ art: 'party', title: 'Tanzabend mit DJ Ulli' }), { rubrik: 'party', genre: 'disco' });
+  assert.deepEqual(von({ art: 'party', title: '80er Party mit DJ Basti' }), { rubrik: 'party', genre: 'disco' });
+  assert.deepEqual(von({ art: 'party', title: 'QUERBEET PARTY mit DJ Basti' }), { rubrik: 'party', genre: 'club' });
+  assert.deepEqual(von({ art: 'party', title: 'Tanzturnier um den Stadtpokal' }), { rubrik: 'sport', genre: null });
+  assert.deepEqual(von({ art: 'party', title: 'Tanzkurs für Paare' }), { rubrik: 'kurse', genre: 'bewegung' });
 });

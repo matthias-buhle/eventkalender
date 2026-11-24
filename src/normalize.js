@@ -135,9 +135,9 @@ const GENRE_REGELN = /** @type {[string, RegExp][]} */ ([
   ['jazz', /jazz|swing|blues|big.?band|dixie/],
   ['hiphop-elektro', /hip.?hop|\brap\b|rapper|techno|\bhouse\b|electro|elektro|\bedm\b|\bdance\b|trance|drum.?n.?bass/],
   ['schlager-folk', /schlager|volksmusik|blasorchester|volkst[uü]mlich|folk|blasmusik|shanty|country|bluegrass|liedermacher|chanson|b[oö]hmisch|egerl[aä]nder|dudelsack|tanzmusik|musikanten/],
-  ['kirche', /kirchenmusik|kirchenkonzert|kirchenschiff|gottesdienst|andacht|gospel|worship|choral|kantorei/],
+  ['kirche', /kirchenmusik|kirchenkonzert|kirchenschiff|gottesdienst|andacht|gospel|worship|choral|kantorei|orgel|vesper|motette|kantate|oratori|adventsmusik|christmette|christvesper|christnacht/],
   ['rock-pop',/\brock|\bpop\b|pop.?chor|\bindie\b|songwriter|revival|tribute|cover.?band|\bcoverband|\bband\b|\bhits\b|garfunkel|\babba\b|nirvana|coldplay/],
-  ['klassik', /camerata|cantorum|matin[eé]e|fl[üu]gel\b|hausmusik|stunde der musik|tchaikovsk|tschaikowsk|a.?cappella|\bpiano\b(?! ?bar)|piano(?:abend|konzert|solo|recital)|(?:advents?|lieder|neujahrs)singen|mitsingekonzert|adventskonzert|weihnachtskonzert|weihnachtsoratorium|klassik|classical|sinfon|symphon|philharmon|orchester|kammermusik|kammerorchester|\boper\b|operette|\bchor\b|chor\b|kantate|oratori|requiem|orgel|klavier|violin|cello|fagott|quartett|ensemble|motette|barock|bach\b|mozart|beethoven|vivaldi|chopin|brahms|h[aä]ndel/],
+  ['klassik', /camerata|cantorum|matin[eé]e|fl[üu]gel\b|hausmusik|stunde der musik|tchaikovsk|tschaikowsk|a.?cappella|\bpiano\b(?! ?bar)|piano(?:abend|konzert|solo|recital)|(?:advents?|lieder|neujahrs)singen|mitsingekonzert|adventskonzert|weihnachtskonzert|kammerkonzert|klassik|classical|sinfon|symphon|philharmon|orchester|kammermusik|kammerorchester|\boper\b|operette|\bchor\b|chor\b|requiem|klavier|violin|cello|fagott|quartett|ensemble|barock|bach\b|mozart|beethoven|vivaldi|chopin|brahms|h[aä]ndel/],
 ]);
 
 /**
@@ -201,19 +201,20 @@ const SCHAU_REGELN = /** @type {[string, RegExp][]} */ ([
   ['museum', /museum|sonderausstellung|f[uü]hrung|geschicht|geologisch|heimat|kabinettausstellung|synagog|j[uü]disch|bibliothek|archiv/],
 ]);
 
-// Reihenfolge = Vorrang: Fasching vor Ball, Silvester vor Club ("Silvester Party mit DJ" ist Silvester).
+// Reihenfolge = Vorrang: Fasching vor Ball, Silvester vor Disco, Disco vor Club ("Tanzabend mit DJ" und "80er Party mit DJ" sind Disco).
 const PARTY_REGELN = /** @type {[string, RegExp][]} */ ([
   ['fasching', /fasching|karneval|prunksitzung|fastnacht|fasnacht|\bbkc\b|narren/],
   ['silvester', /silvester|jahreswechsel|neujahr|\bball\b|(?:weihnachts|abschluss|tanz|fest|ernte|k[oö]nigs|sommer|herbst)ball\b/],
-  ['club', /\bdj\b|club|aftershow|after.?party|techno|elektro|electro|\bhouse\b|takeover|\brave\b/],
-  ['disco', /disco|disko|80er|90er|2000er|\b[89]0.?s\b|tanz|retro/],
+  ['disco', /disco|disko|\d0er|\b[89]0.?s\b|tanz|retro/],
+  ['club', /\bdj\b|club|legt auf|aftershow|after.?party|techno|elektro|electro|\bhouse\b|takeover|\brave\b/],
 ]);
 
 const FEST_REGELN = /** @type {[string, RegExp][]} */ ([
   ['festival', /festival|open.?air/],
+  ['brauchtum', /hexenfeuer|hexenbrennen|walpurgis|maibaum|osterfeuer|osterreiten|vogelhochzeit|zampern|sonnenwend|kirmes|kirchweih|erntedank|schlachtfest|mettenschicht|bergparade|bergaufzug|hutzen|lichterzug/],
   ['weihnachten', /weihnacht|advent|lichterfest|nikolaus|pyramide/],
   ['familie', /familie|kinder|m[aä]rchen|martin|laterne|kasper|puppen|oster/],
-  ['stadtfest', /suppe|\bwein|bier|schlemm|kulinar|gourmet|ernte|kartoffel|k[aä]se|\bbrot|fisch|grill|wurst|genuss|apfel|pilz|stadt|dorf|festumzug|jubil|kirmes|kirchweih|heimat|volksfest|umzug|sommerfest|herbstfest|schlossfest|burgfest|hoffest|gartenfest|vereinsfest|sch[uü]tzenfest/],
+  ['stadtfest', /suppe|\bwein|bier|schlemm|kulinar|gourmet|ernte|kartoffel|k[aä]se|\bbrot|fisch|grill|wurst|genuss|apfel|pilz|stadt|dorf|festumzug|jubil|heimat|volksfest|umzug|sommerfest|herbstfest|schlossfest|burgfest|hoffest|gartenfest|vereinsfest|sch[uü]tzenfest/],
 ]);
 
 function ratenAus(regeln, texte) {

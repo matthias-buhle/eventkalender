@@ -98,14 +98,17 @@ test('detectGenre: Genre aus Titel, Kategorie und Beschreibung (deutsch und engl
   assert.equal(g(undefined), null);
 });
 
-test('detectGenre: mehr Konzerte erkannt, Kirchenmusik als eigenes Genre (Orgel bleibt Klassik)', () => {
+test('detectGenre: mehr Konzerte erkannt, Kirchenmusik als eigenes Genre (Orgel, Vesper, Oratorium gehören dazu)', () => {
   assert.equal(detectGenre('Camerata Cantorum - Ein Chorkonzert zur Einstimmung auf die Adventszeit'), 'klassik');
   assert.equal(detectGenre('A4u – DIE ABBA REVIVAL SHOW'), 'rock-pop');
   assert.equal(detectGenre('Herbstkonzert "Böhmisch mit Herz"'), 'schlager-folk');
   assert.equal(detectGenre('Alive Worship'), 'kirche');
   assert.equal(detectGenre('Gottesdienstmusik zum Drittletzten Sonntag'), 'kirche');
   assert.equal(detectGenre('Kirchenkonzert'), 'kirche');
-  assert.equal(detectGenre('Orgelkonzert'), 'klassik');
+  assert.equal(detectGenre('Orgelkonzert'), 'kirche');
+  assert.equal(detectGenre('J. S. Bach: Weihnachtsoratorium I-III'), 'kirche');
+  assert.equal(detectGenre('Musikalische Vesper'), 'kirche');
+  assert.equal(detectGenre('Sinfoniekonzert'), 'klassik');
   assert.equal(detectGenre('Milow'), null);
 });
 
@@ -223,6 +226,9 @@ test('detectSorte(party): Disco & Tanz, Club & DJ, Silvester & Ball, Fasching & 
   const p = (...t) => detectSorte('party', ...t);
   assert.equal(p('80er 90er Party'), 'disco');
   assert.equal(p('Kirmestanz in Radibor mit der Band SerBeat'), 'disco');
+  assert.equal(p('Tanzabend mit DJ Ulli'), 'disco', 'Disco vor Club');
+  assert.equal(p('80er Party mit DJ Basti'), 'disco', 'Disco vor Club');
+  assert.equal(p('Club Night legt auf: Ulli'), 'club');
   assert.equal(p('Discofox & Schlager XXL – Nikolaus Edition'), 'disco');
   assert.equal(p("Párty bez puberťáků 30+ : best of 80’s a 90’s"), 'disco');
   assert.equal(p('QUERBEET PARTY mit DJ Basti'), 'club');
@@ -244,7 +250,7 @@ test('detectSorte(fest): Familie & Kinder, Stadt- & Dorffest, Weihnachten & Lich
   assert.equal(f('Martinsumzug in Königstein'), 'familie');
   assert.equal(f('Familienfest im Naturkundemuseum'), 'familie');
   assert.equal(f('Festumzug zum Stadtjubiläum'), 'stadtfest');
-  assert.equal(f('Kirmes in Radibor'), 'stadtfest');
+  assert.equal(f('Kirmes in Radibor'), 'brauchtum');
   assert.equal(f('Lichterzauber - Herbstfest im Waldschulheim'), 'stadtfest');
   assert.equal(f('Pyramidenfest'), 'weihnachten');
   assert.equal(f('Weihnachtszeit: Lichterfest am Sächsischen Haus'), 'weihnachten');

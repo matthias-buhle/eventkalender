@@ -1,4 +1,4 @@
-import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN, detectSorte, passendeSorte } from './normalize.js';
+import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN, detectGenre, detectSorte, passendeSorte } from './normalize.js';
 import { FUEHRUNG_UNTER, WANDERN_UNTER, KURSE_UNTER, THEATER_UNTER, ESSEN_UNTER, KINDER_UNTER } from './unterpunkte.js';
 
 /**
@@ -87,6 +87,46 @@ export function quellHinweis(e) {
   return null;
 }
 
+// Räume, in denen Klassik zur Kirchenmusik wird ("Dom kultury" ist ein Kulturhaus, kein Dom).
+const KIRCHENRAUM = /kirche|\bdom\b(?! kultury)|kloster|kapelle|m[uü]nster/;
+
+/**
+ * Der Unterpunkt eines Konzerts aus Hinweis der Quelle, Titel, Beschreibung und Spielstätte. Klassik im Kirchenraum
+ * oder mit Kirchen-Stichwort im Titel (Orgel, Vesper …) ist Kirchenmusik; andere Hinweise (Rock, Jazz …) bleiben.
+ * @param {{genre?:string|null, rubrik?:string|null, genreQuelle?:string|null, title?:string, description?:string|null, placeName?:string}} e
+ * @returns {string|null}
+ */
+function konzertUnterpunkt(e) {
+  const g = passendeSorte('konzert', quellHinweis(e)) ?? detectGenre(e?.title, e?.description);
+  if (g === 'klassik' && (detectGenre(e?.title) === 'kirche' || KIRCHENRAUM.test(klein(e?.placeName)))) return 'kirche';
+  return g;
+}
+
+// Konzerte der Quelle, die keine sind (Reihenfolge = Vorrang). Beschreibungsanfang zählt nur bei den Wörtern, die ihn tragen.
+const KONZERT_KINDER = /kinderkonzert|familienkonzert|taschenlampenkonzert|kinderlieder|kindermusical|f[uü]r kinder/;
+const KONZERT_KABARETT = /kabarett|cabaret|comedy|comedian|stand.?up|satire/;
+const KONZERT_LESUNG = /lesung|\bliest\b|buchvorstellung|buchpremiere|autorengespr|poetry/;
+const KONZERT_SHOW = /musical|zirkus|circus|travestie|zauberer|zauberei|zaubershow|variet/;
+const KONZERT_SHOW_WEICH = /\bshow\b|revue/;
+const KONZERT_SHOW_NICHT = /konzert|tribute|revival|\blive\b/;
+const KONZERT_SCHAUSPIEL = /theaterst[uü]ck|theatererlebnis|schauspiel(?!haus)/;
+
+function konzertRubrik(e, titel, beschreibung) {
+  const beides = (regel) => regel.test(titel) || regel.test(beschreibung);
+  if (KONZERT_KINDER.test(titel)) return { rubrik: 'kinder', genre: 'kinder-buehne' };
+  if (beides(KONZERT_KABARETT)) return { rubrik: 'theater', genre: 'kabarett' };
+  if (beides(KONZERT_LESUNG)) return { rubrik: 'theater', genre: 'lesung' };
+  if (KONZERT_SHOW.test(titel) && detectGenre(e?.title) === null) return { rubrik: 'theater', genre: 'show' };
+  if (KONZERT_SHOW_WEICH.test(titel) && detectGenre(e?.title) === null && !KONZERT_SHOW_NICHT.test(titel) && !/club/.test(klein(e?.placeName))) return { rubrik: 'theater', genre: 'show' };
+  if (beides(KONZERT_SCHAUSPIEL)) return { rubrik: 'theater', genre: 'schauspiel' };
+  return { rubrik: 'konzert', genre: konzertUnterpunkt(e) };
+}
+
+const MARKT_FEST = /(?:lichter|lichtel|advents|pyramiden|weihnachts)fest/;
+const FEST_KINO = /filmfest|kurzfilm|kinofest/;
+const FEST_ESSEN = /weinfest|winzerfest|bierfest|street.?food|schlemmerfest|food.?festival/;
+const FEST_SPORT = /turnier|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b/;
+
 /**
  * Ordnet einen Termin genau einer Rubrik zu und bestimmt die Unterart (Feld genre).
  * Das Feld art bleibt davon unberührt. Wirft nie; Unbekanntes wird "sonstiges".
@@ -100,7 +140,25 @@ export function rubrikUndGenre(e) {
   const beschreibung = klein(e?.description).slice(0, BESCHREIBUNG_ZEICHEN);
   const sorte = (a) => passendeSorte(a, quellHinweis(e)) ??detectSorte(a, e?.title, e?.description);
 
-  if (art === 'konzert' || art === 'markt' || art === 'party' || art === 'fest') return { rubrik: art, genre: sorte(art) };
+  if (art === 'konzert') return konzertRubrik(e, titel, beschreibung);
+
+  if (art === 'markt') {
+    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkte/.test(titel)) return { rubrik: 'fest', genre: detectSorte('fest', e?.title) ?? 'weihnachten' };
+    return { rubrik: 'markt', genre: sorte('markt') };
+  }
+
+  if (art === 'fest') {
+    if (FEST_KINO.test(titel)) return { rubrik: 'theater', genre: 'kino' };
+    if (FEST_ESSEN.test(titel)) return { rubrik: 'essen', genre: null };
+    if (FEST_SPORT.test(titel) && !/sportfest/.test(titel)) return { rubrik: 'sport', genre: null };
+    return { rubrik: 'fest', genre: sorte('fest') };
+  }
+
+  if (art === 'party') {
+    if (/tanzturnier|tanzsport/.test(titel)) return { rubrik: 'sport', genre: null };
+    if (/tanzkurs|tanzschule|tanzworkshop/.test(titel)) return { rubrik: 'kurse', genre: 'bewegung' };
+    return { rubrik: 'party', genre: sorte('party') };
+  }
 
   if (art === 'schau') {
     if (FUEHRUNG.test(titel)) return fuehrung(titel, beschreibung);
