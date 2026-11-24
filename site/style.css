@@ -74,7 +74,7 @@ h1 { margin: 0; font: 700 2rem/1 var(--anzeige); letter-spacing: 0.04em; text-tr
 /* Schmale Telefone: der Zusatz steht unter dem Titel statt daneben und läuft so nie unter die Kopfknöpfe (Titel 32 px + 12 px Zusatz passen in 56 px) */
 @media (max-width: 479px) { .marke { flex-direction: column; align-items: flex-start; gap: 3px; } }
 .kopfknoepfe { display: flex; align-items: center; gap: 8px; }
-.thema { width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line-strong); background: transparent; color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.thema { position: relative; width: 40px; height: 40px; padding: 0; border-radius: 50%; border: 1px solid var(--line-strong); background: transparent; color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
 .ico-sonne { display: none; }
 :root[data-theme="dark"] .ico-mond { display: none; }
 :root[data-theme="dark"] .ico-sonne { display: block; }
@@ -187,7 +187,7 @@ main { padding-top: 4px; padding-bottom: 24px; }
 .card .review { margin-top: 8px; background: var(--warn-bg); color: var(--warn); padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; }
 .card .desc { margin-top: 8px; font-size: 0.9rem; line-height: 1.45; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.85rem; }
+.btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line-strong); background: transparent; color: var(--text); text-decoration: none; font-family: inherit; font-weight: 500; font-size: 0.85rem; }
 /* Die Reihenfolge (Webseite, Tickets, Anrufen, E-Mail, Navigation) kommt aus render.js; der erste Web- oder Ticketknopf ist gefüllt */
 .btn.primaer { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
 .card .sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--muted); }
@@ -201,7 +201,11 @@ footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(
 .filterseite { max-width: 720px; margin: 0 auto; padding: 4px 16px 0; display: flex; flex-direction: column; gap: 18px; }
 .filterseite .bereich { display: flex; flex-direction: column; gap: 8px; }
 .filterseite .bereich-titel { margin: 0; font: 600 0.95rem/1.2 var(--anzeige); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.filterseite .chip { min-height: 40px; }
+.filterseite .chip { position: relative; min-height: 40px; }
+/* Tippfläche 44 px (Empfehlung für Telefone), ohne dass Chips und Kopfknöpfe größer aussehen */
+.filterseite .chip::before, .thema::before { content: ""; position: absolute; inset: -3px -1px; }
+.thema::before { inset: -3px; border-radius: 50%; }
+.filterseite .ort select { min-height: 44px; }
 /* Der Chip "Kalender" klappt den Monatsblock auf und zu (Pfeil als Dreieck, damit ihn kein Vorleseprogramm vorliest). */
 .filterseite .kalender-chip { display: inline-flex; align-items: center; gap: 6px; }
 .filterseite .kalender-chip[aria-pressed="true"] { font-weight: 600; }
@@ -230,8 +234,8 @@ footer { padding-top: 8px; padding-bottom: 32px; font-size: 0.85rem; color: var(
 .kalender .gewaehlt.punkt::after { background: var(--accent-text); }
 
 /* dense: die Unterpunkte einer Kachel stehen über die ganze Breite unter ihrer Zeile, die Nachbarkachel bleibt in der Zeile */
-.kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; gap: 8px; }
-.kachel { --art: var(--art-sonstiges); display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 48px; padding: 8px 10px; border: 1px solid var(--line); border-left: 4px solid var(--art); border-radius: 10px; background: var(--card); color: var(--text); font: inherit; font-size: 0.9rem; line-height: 1.25; text-align: left; cursor: pointer; }
+.kacheln { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; gap: 6px; }
+.kachel { --art: var(--art-sonstiges); display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 46px; padding: 8px 10px; border: 1px solid var(--line); border-left: 4px solid var(--art); border-radius: 10px; background: var(--card); color: var(--text); font: inherit; font-size: 0.9rem; line-height: 1.25; text-align: left; cursor: pointer; }
 .kachel.art-konzert, .kacheln .sorten.art-konzert { --art: var(--art-konzert); }
 .kachel.art-party, .kacheln .sorten.art-party { --art: var(--art-party); }
 .kachel.art-markt, .kacheln .sorten.art-markt { --art: var(--art-markt); }
