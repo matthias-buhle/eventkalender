@@ -399,13 +399,13 @@ test('Spielstätten: eine gemeinsame Liste führt zur Rubrik Theater und zum Rü
 // Task 10, Runde 1: Nachschärfen nach der Stichproben-Bewertung.
 const markt = (title) => von({ art: 'markt', title });
 
-test('Markt ohne Marktwort mit Lichter- oder Adventswort ist ein Fest', () => {
-  for (const t of ['Advent im Miniaturpark "Kleine Sächsische Schweiz"', '21. Lichterzug auf Bergbaupfaden in Seiffen', 'Dresdner Winterlichter', 'Freitaler Schlossadvent']) {
+test('Markt wird nur bei einem Wort auf „…fest“ zum Fest (Entscheidung vom 24.11.2026: Lichter und Advent bleiben Markt)', () => {
+  for (const t of ['Lichterfest Kleinwelka', 'Adventsfest im Pfarrgarten', 'Lichtelfest am Schloss', 'Pyramidenfest', 'Weihnachtsfest der Vereine']) {
     assert.deepEqual(markt(t), { rubrik: 'fest', genre: 'weihnachten' }, t);
   }
-  assert.equal(markt('32. Seiffener Laternenzug in Seiffen').rubrik, 'fest');
-  assert.ok(Object.hasOwn(FEST_SORTEN, markt('32. Seiffener Laternenzug in Seiffen').genre));
-  for (const t of ['Meißner Weihnacht', 'Dresdner Hüttenzauber am Haus der Presse', '34. Seiffener Weihnacht', 'Lichtermarkt Pirna', 'Adventsmarkt am Schloss', 'Weihnachtsmarkt im Advent', 'Adventure Weekend']) {
+  for (const t of ['Advent im Miniaturpark "Kleine Sächsische Schweiz"', '21. Lichterzug auf Bergbaupfaden in Seiffen', 'Dresdner Winterlichter', 'Freitaler Schlossadvent',
+    '32. Seiffener Laternenzug in Seiffen', 'Rehefelder Adventszauber', 'Musik zum Advent', 'Mettenschicht im Advent', 'Lichterfestmarkt am Dom',
+    'Meißner Weihnacht', 'Dresdner Hüttenzauber am Haus der Presse', '34. Seiffener Weihnacht', 'Lichtermarkt Pirna', 'Adventsmarkt am Schloss', 'Weihnachtsmarkt im Advent', 'Adventure Weekend']) {
     assert.equal(markt(t).rubrik, 'markt', t);
   }
 });
@@ -462,7 +462,6 @@ test('Korrekturrunde: Marktwort, Altersangaben, Familienwochenende, Festakte, li
   // F1
   assert.equal(markt('Adventsmärktchen im Pfarrhof').rubrik, 'markt');
   assert.equal(markt('Adventsbasar der Kirchgemeinde').rubrik, 'markt');
-  assert.equal(markt('Rehefelder Adventszauber').rubrik, 'fest');
   // F3
   assert.notEqual(sonst('Kurs im Saal', 'Kurs ab acht Wochen Laufzeit buchbar').rubrik, 'kinder');
   assert.notEqual(sonst('Weinabend', 'Weinabend für die kleinen Genießer').rubrik, 'kinder');
@@ -479,9 +478,6 @@ test('Korrekturrunde: Marktwort, Altersangaben, Familienwochenende, Festakte, li
   assert.equal(sonst('Mitgliederversammlung des Heimatvereins').rubrik, 'sonstiges');
   assert.equal(von({ art: 'sonstiges', title: 'Mitgliederversammlung des Heimatvereins', placeName: haus }).rubrik, 'sonstiges');
   assert.equal(sonst('Weihnachtslieder zum Mitsingen').rubrik, 'konzert');
-  // F9
-  assert.deepEqual(markt('21. Lichterzug auf Bergbaupfaden in Seiffen'), { rubrik: 'fest', genre: 'weihnachten' });
-  assert.deepEqual(markt('Mettenschicht im Advent'), { rubrik: 'fest', genre: 'brauchtum' });
 });
 
 test('S2: Menü trifft (ü ist kein Wortzeichen für \\b)', () => {

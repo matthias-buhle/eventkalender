@@ -173,14 +173,9 @@ function konzertRubrik(e, titel, beschreibung) {
   return { rubrik: 'konzert', genre: konzertUnterpunkt(e) };
 }
 
-// Lichter- und Adventstermine ohne Marktwort sind Feste ("Weihnacht" allein bleibt Markt).
-const MARKT_FEST = /lichter|lichtel|advent(?!ure|urer)|laternenzug|laternenumzug|bergparade|pyramidenfest|weihnachtsfest/;
-// Lichterzug und Bergparade sind hier Advents-Termine (nicht Brauchtum); andere Sorten (Laternen: Familie, Mettenschicht: Brauchtum) bleiben.
-function marktFestSorte(titel) {
-  const s = detectSorte('fest', titel);
-  if (s === 'brauchtum' && /lichterzug|bergparade/.test(klein(titel))) return 'weihnachten';
-  return s ?? 'weihnachten';
-}
+// Nur ein Wort auf "…fest" ohne Marktwort macht aus einem Markt ein Fest. Lichter- und Adventstermine
+// ohne "fest" (Winterlichter, Schlossadvent, Lichterzug) bleiben Markt: Entscheidung des Nutzers vom 24.11.2026.
+const MARKT_FEST = /(?:lichter|lichtel|advents|pyramiden|weihnachts)fest/;
 const FEST_KINO = /filmfest|kurzfilm|kinofest/;
 const FEST_ESSEN = /weinfest|winzerfest|bierfest|street.?food|schlemmerfest|food.?festival/;
 const FEST_SPORT = /turnier|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b/;
@@ -201,7 +196,7 @@ export function rubrikUndGenre(e) {
   if (art === 'konzert') return konzertRubrik(e, titel, beschreibung);
 
   if (art === 'markt') {
-    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkt|basar|bazar/.test(titel)) return { rubrik: 'fest', genre: marktFestSorte(e?.title) };
+    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkt|basar|bazar/.test(titel)) return { rubrik: 'fest', genre: detectSorte('fest', e?.title) ?? 'weihnachten' };
     return { rubrik: 'markt', genre: sorte('markt') };
   }
 
