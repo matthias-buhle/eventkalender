@@ -52,7 +52,7 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
     ['bahn', BAHN],
     ['kinder', /kinder|familie/],
     ['untertage', /bergwerk|untertage|stollen|h[oö]hle|schacht|bergbau|salz/],
-    ['brauerei', /brau|b[aä]cker|m[uü]hle|manufaktur|distill|r[oö]sterei/],
+    ['brauerei', /brauerei|braumanufaktur|brauhaus|braumeister|bierbrau|b[aä]cker|m[uü]hle|manufaktur|distill|r[oö]sterei/],
     ['hausfuehrung', /museum|schloss|schlo[sß]|\bburg|kirche|\bdom\b|kloster|\bhaus|rathaus|turm|ausstellung|galerie|gedenkst[aä]tte|sammlung|festung|synagoge|bibliothek|kurator|zeitzeug/],
     ['stadt', /stadt|rundgang|dorf|spazier|nachtw[aä]chter|stadtschleicher|lichterfahrt|g[aä]sschen/],
   ],
@@ -60,7 +60,7 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
     ['kabarett', /kabarett|cabaret|comedy|comedian|stand.?up|satire|kleinkunst|\bhumor/],
     ['lesung', /lesung|vorlese|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde|erz[aä]hl/],
     ['kino', /kino|\bfilm|kurzfilm|filmfest|filmabend|filmvorf/],
-    ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauber|variet|artistik|akrobat/],
+    ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauberer|zauberei|zaubershow|zauberkunst|zauberk[uü]nstler|variet|artistik|akrobat/],
     ['schauspiel', /theater|schauspiel|oper\b|operette|ballett|kom[oö]die|trag[oö]die|auff[uü]hrung|premiere|inszenierung|puppenspiel|marionett|divadel|b[uü]hne/],
   ],
   kurse: [
@@ -87,7 +87,9 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
 });
 
 const BESCHREIBUNG_ZEICHEN = 200;
-const THEATER_HAUS = /theater|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo/;
+// Die Spielstätten des Theaters: einzige Stelle; rubriken.js baut daraus die Stufe "Spielstätte" der Rangfolge.
+export const KINO_HAUS = /kino/;
+export const THEATER_HAUS = /theater|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo/;
 const text = (x) => (typeof x === 'string' ? x.toLowerCase() : '');
 
 /**
@@ -109,7 +111,7 @@ export function unterpunkt(rubrik, titel, beschreibung, ort) {
   }
   if (rubrik === 'theater') {
     const haus = text(ort);
-    if (/kino/.test(haus)) return 'kino';
+    if (KINO_HAUS.test(haus)) return 'kino';
     if (THEATER_HAUS.test(haus)) return 'schauspiel';
   }
   return null;

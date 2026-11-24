@@ -89,3 +89,14 @@ test('geschärfte Stichwörter: kein Treffer im Teilwort', () => {
   pruefe('essen', 'dinner', 'Uriger Baudenabend');
   pruefe('kinder', 'kinder-buehne', 'Weihnachtliche Kinderrevue');
 });
+
+test('Teilwörter treffen nicht: Brauchtum ist keine Brauerei, Zauberflöte keine Zaubershow', () => {
+  assert.notEqual(u('fuehrung', 'Weihnachtliches Brauchtum im Museum'), 'brauerei');
+  assert.equal(u('fuehrung', 'Weihnachtliches Brauchtum im Museum'), 'hausfuehrung');
+  assert.notEqual(u('fuehrung', 'Braunkohle im Tagebau'), 'brauerei');
+  for (const t of ['Brauerei-Rundgang', 'Führung durch die Braumanufaktur', 'Brauhaus-Abend', 'Besuch beim Braumeister']) assert.equal(u('fuehrung', t), 'brauerei', t);
+  assert.equal(u('theater', 'Die Zauberflöte', null, 'Theater Görlitz'), 'schauspiel');
+  assert.notEqual(u('theater', 'Der Traumzauberbaum'), 'show');
+  assert.equal(u('theater', 'Zaubershow für die ganze Familie'), 'show');
+  assert.equal(u('theater', 'Der große Zauberer'), 'show');
+});

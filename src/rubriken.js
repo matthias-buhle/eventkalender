@@ -1,5 +1,5 @@
 import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN, detectGenre, detectSorte, passendeSorte } from './normalize.js';
-import { FUEHRUNG_UNTER, WANDERN_UNTER, KURSE_UNTER, THEATER_UNTER, ESSEN_UNTER, KINDER_UNTER, BAHN, unterpunkt } from './unterpunkte.js';
+import { FUEHRUNG_UNTER, WANDERN_UNTER, KURSE_UNTER, THEATER_UNTER, ESSEN_UNTER, KINDER_UNTER, BAHN, THEATER_HAUS, KINO_HAUS, unterpunkt } from './unterpunkte.js';
 
 /**
  * Die 14 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
@@ -79,7 +79,7 @@ const TITEL_REGELN = /** @type {[string, {test(t:string):boolean}][]} */ ([
 ]);
 // Stufe 3: die Spielstätte.
 const SPIELSTAETTEN = /** @type {[string, RegExp][]} */ ([
-  ['theater', /theater|kino|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo/],
+  ['theater', new RegExp(`${THEATER_HAUS.source}|${KINO_HAUS.source}`)],
   ['sternwarte', /sternwarte|planetarium/],
   ['kurse', /volkshochschule|\bk?vhs\b/],
   ['konzert', /hutbergb[uü]hne/],

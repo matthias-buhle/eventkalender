@@ -388,3 +388,10 @@ test('Hinweis der Quelle zählt nur, wenn er zur Rubrik passt', () => {
   assert.deepEqual(von({ art: 'sonstiges', genre: 'kabarett', title: 'Abendprogramm im Theater' }), { rubrik: 'theater', genre: 'kabarett' });
   assert.deepEqual(von({ art: 'sonstiges', genre: 'jazz', title: 'Abendprogramm im Theater' }), { rubrik: 'theater', genre: 'schauspiel' });
 });
+
+test('Spielstätten: eine gemeinsame Liste führt zur Rubrik Theater und zum Rückfall-Unterpunkt', () => {
+  const orte = [['Divadlo Liberec', 'schauspiel'], ['Puppenbühne Zittau', 'schauspiel'], ['Haus Zittau Großer Saal', 'schauspiel'], ['Apollo Görlitz', 'schauspiel'], ['Kunstbauerkino Großhennersdorf', 'kino']];
+  for (const [ort, unter] of orte) {
+    assert.deepEqual(von({ art: 'sonstiges', title: 'Ein Abend', placeName: ort }), { rubrik: 'theater', genre: unter }, ort);
+  }
+});
