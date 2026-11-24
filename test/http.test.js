@@ -104,3 +104,47 @@ test('minDelayMs eines Abrufs verlängert den Abstand über perHostDelayMs hinau
   assert.ok(clock.sleeps.some((ms) => ms >= 10000), `Wartezeiten: ${clock.sleeps}`);
   robotsBody = 'User-agent: *\nDisallow: /private\nCrawl-delay: 1\n';
 });
+
+/** Fake-fetch: robots.txt fehlt, jeder andere Abruf wird gemerkt und mit der Antwort aus `antworten` bedient. */
+function fakeFetch(antworten) {
+  const anfragen = [];
+  const fetchImpl = async (url, opts) => {
+    if (String(url).endsWith('/robots.txt')) return new Response('', { status: 404 });
+    anfragen.push({ url: String(url), ...opts });
+    const [status, body] = antworten.shift() ?? [200, '{}'];
+    return new Response(body, { status });
+  };
+  return { anfragen, fetchImpl };
+}
+const clientMit = (f) => createPoliteClient({ userAgent: 'eventkalender-ostsachsen/1.0 (test)', perHostDelayMs: 0, fetchImpl: f.fetchImpl, ...fakeClock() });
+
+test('get: eigene Kopfzeilen eines Abrufs werden mitgesendet, der User-Agent bleibt', async () => {
+  const f = fakeFetch([[200, '{"a":1}']]);
+  await clientMit(f).get('https://api.example.org/liste', { as: 'json', headers: { Authorization: 'Bearer abc' } });
+  assert.equal(f.anfragen[0].headers.Authorization, 'Bearer abc');
+  assert.match(f.anfragen[0].headers['User-Agent'], /^eventkalender-ostsachsen/);
+  assert.equal(f.anfragen[0].method ?? 'GET', 'GET');
+});
+
+test('post: sendet den Inhalt als JSON und liefert die geparste Antwort', async () => {
+  const f = fakeFetch([[200, '{"access_token":"t1"}']]);
+  const r = await clientMit(f).post('https://api.example.org/token', { json: { apiKey: 'k', apiSecret: 's' }, as: 'json' });
+  assert.deepEqual(r.body, { access_token: 't1' });
+  const [anfrage] = f.anfragen;
+  assert.equal(anfrage.method, 'POST');
+  assert.equal(anfrage.headers['Content-Type'], 'application/json');
+  assert.deepEqual(JSON.parse(anfrage.body), { apiKey: 'k', apiSecret: 's' });
+});
+
+test('post: Status ab 400 wirft HttpError, die Meldung nennt nur Status und Adresse', async () => {
+  const f = fakeFetch([[401, '{"error":"falsch"}']]);
+  await assert.rejects(
+    clientMit(f).post('https://api.example.org/token', { json: { apiKey: 'k', apiSecret: 'geheim-wert' }, as: 'json' }),
+    (e) => e instanceof HttpError && e.status === 401 && !e.message.includes('geheim-wert') && e.message.includes('https://api.example.org/token'),
+  );
+});
+
+test('post: beachtet robots.txt wie get', async () => {
+  const c = newClient({ ...fakeClock() });
+  await assert.rejects(c.post(`${base}/private/x`, { json: {} }), RobotsDisallowedError);
+});

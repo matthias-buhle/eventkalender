@@ -12,6 +12,8 @@ const realSleep = (ms) => new Promise((r) => setTimeout(r, ms));
 /**
  * Höflicher Abruf: beachtet robots.txt und Crawl-delay, hält pro Host Abstand,
  * wiederholt bei 5xx genau einmal. Status >= 400 wirft HttpError.
+ * get und post nehmen eigene Kopfzeilen an (headers), z. B. für die Anmeldung an einer Schnittstelle; sie stehen
+ * nie in einer Fehlermeldung (HttpError nennt nur Status und Adresse).
  * @param {{userAgent:string, perHostDelayMs:number, timeoutMs?:number,
  *          fetchImpl?:typeof fetch, now?:()=>number, sleep?:(ms:number)=>Promise<void>}} opts
  */
@@ -24,9 +26,10 @@ export function createPoliteClient({
   const lastAtByHost = new Map();
   const chainByHost = new Map();
 
-  async function request(url, extraHeaders = {}) {
+  async function request(url, { headers = {}, method, body } = {}) {
     return fetchImpl(url, {
-      headers: { 'User-Agent': userAgent, 'Accept-Language': 'de,cs;q=0.8', ...extraHeaders },
+      ...(method ? { method, body } : {}),
+      headers: { 'User-Agent': userAgent, 'Accept-Language': 'de,cs;q=0.8', ...headers },
       signal: AbortSignal.timeout(timeoutMs),
       redirect: 'follow',
     });
@@ -60,7 +63,7 @@ export function createPoliteClient({
     return run;
   }
 
-  async function get(url, { as = 'text', minDelayMs = 0 } = {}) {
+  async function abruf(url, { as = 'text', minDelayMs = 0, ...anfrage } = {}) {
     const u = new URL(url);
     const robots = await robotsFor(u.origin);
     if (robots && robots.isAllowed(url, token) === false) throw new RobotsDisallowedError(url);
@@ -68,10 +71,10 @@ export function createPoliteClient({
     const delayMs = Math.max(perHostDelayMs, (crawlDelay ?? 0) * 1000, minDelayMs);
 
     return schedule(u.host, delayMs, async () => {
-      let res = await request(url);
+      let res = await request(url, anfrage);
       if (res.status >= 500) {
         await sleep(Math.min(delayMs, 1000));
-        res = await request(url);
+        res = await request(url, anfrage);
       }
       if (res.status >= 400) throw new HttpError(res.status, url);
       const text = await res.text();
@@ -79,5 +82,11 @@ export function createPoliteClient({
     });
   }
 
-  return { get };
+  const get = (url, { as, minDelayMs, headers } = {}) => abruf(url, { as, minDelayMs, headers });
+  /** Sendet `json` als JSON-Inhalt (POST); sonst wie get. */
+  const post = (url, { json, as, minDelayMs, headers } = {}) => abruf(url, {
+    as, minDelayMs, method: 'POST', body: JSON.stringify(json), headers: { 'Content-Type': 'application/json', ...headers },
+  });
+
+  return { get, post };
 }
