@@ -1,6 +1,6 @@
 // Baut Karten und Fußzeile als DOM. Fremdwerte kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { sorteName, rubrikVon, rubrikKarte, rubrikFarbe, sprachHinweis } from './arten.js';
-import { kurzTag, serienText } from './serien.js';
+import { kurzTag, serienText, istVoll } from './serien.js';
 import { gemeindeVon, spielstaetteVon, plattform, navigationsLink } from './ort.js';
 
 const STATUS = { verfuegbar: 'Karten verfügbar', ausverkauft: 'ausverkauft', abgesagt: 'abgesagt', verlegt: 'verlegt' };
@@ -100,9 +100,39 @@ function kopfzeile(doc, ev, gemeinde) {
 
 /** Datum und Uhrzeit, daneben der Ticketstatus; vorsatz steht davor (bei Serien "Nächster Termin: "). */
 function wannZeile(doc, ev, vorsatz = '') {
-  const wann = el(doc, 'p', 'when', vorsatz + wannText(ev));
-  if (ev.ticketStatus && STATUS[ev.ticketStatus]) wann.append(' ', el(doc, 'span', `status status-${ev.ticketStatus}`, STATUS[ev.ticketStatus]));
-  return wann;
+  return mitStatus(doc, el(doc, 'p', 'when', vorsatz + wannText(ev)), ev);
+}
+
+/** Hängt den Ticketstatus des Termins (falls bekannt) als Marke an die Zeile. */
+function mitStatus(doc, zeile, ev) {
+  if (ev.ticketStatus && STATUS[ev.ticketStatus]) zeile.append(' ', el(doc, 'span', `status status-${ev.ticketStatus}`, STATUS[ev.ticketStatus]));
+  return zeile;
+}
+
+/** So viele Termine zeigt die Terminliste im Detailfenster, bevor der Knopf die übrigen aufklappt. */
+const TERMINE_SICHTBAR = 5;
+
+/** Abschnitt "Termine" einer Serie: eine Zeile je Termin, ab dem sechsten versteckt, dazu der Knopf zum Aufklappen. */
+function terminAbschnitt(doc, termine) {
+  const abschnitt = el(doc, 'section', 'termine');
+  abschnitt.append(el(doc, 'h3', '', 'Termine'));
+  const liste = el(doc, 'ul', 'terminliste');
+  termine.forEach((t, i) => {
+    const zeile = mitStatus(doc, el(doc, 'li', '', wannText(t)), t);
+    if (i >= TERMINE_SICHTBAR) zeile.setAttribute('hidden', '');
+    liste.append(zeile);
+  });
+  abschnitt.append(liste);
+  if (termine.length > TERMINE_SICHTBAR) {
+    const knopf = el(doc, 'button', 'btn', istVoll(termine) ? 'Alle bekannten Termine zeigen' : `Alle ${termine.length} Termine zeigen`);
+    knopf.setAttribute('type', 'button');
+    knopf.addEventListener('click', () => {
+      liste.querySelectorAll('li[hidden]').forEach((li) => li.removeAttribute('hidden'));
+      knopf.remove();
+    });
+    abschnitt.append(knopf);
+  }
+  return abschnitt;
 }
 
 const hatKoordinate = (ev) => Number.isFinite(ev.lat) || Number.isFinite(ev.lon);
@@ -167,20 +197,24 @@ export function renderEventCard(doc, ev, optionen = {}) {
 
 /**
  * Der Inhalt des Detailfensters: alles zum Termin, die ganze Beschreibung und, wenn Koordinaten da sind, ein Navigationsknopf.
- * @param {{orte?: string[], userAgent?: string}} [optionen]
+ * @param {{orte?: string[], userAgent?: string, termine?: any[]|null}} [optionen] termine: die Termine einer Serie (ab zwei Einträgen),
+ *   dann zeigt der Kopf den nächsten Termin samt Rhythmus und ein Abschnitt "Termine" die Liste
  */
 export function renderDetail(doc, ev, optionen = {}) {
   const orte = optionen.orte ?? [];
   const gemeinde = gemeindeVon(ev.placeName, orte);
   const detail = el(doc, 'div', `detail art-${rubrikFarbe(rubrikVon(ev))}`);
   const kopf = kopfzeile(doc, ev, null);
-  detail.append(kopf, el(doc, 'h2', 'title', ev.title), wannZeile(doc, ev));
+  const serie = Array.isArray(optionen.termine) && optionen.termine.length >= 2 ? optionen.termine : null;
+  detail.append(kopf, el(doc, 'h2', 'title', ev.title), wannZeile(doc, ev, serie ? 'Nächster Termin: ' : ''));
+  if (serie) detail.append(el(doc, 'p', 'rhythmus', serienText(serie, ev)));
   const ort = [spielstaetteVon(ev.placeName, orte), gemeinde, entfernungText(ev)].filter(Boolean);
   if (ort.length) detail.append(el(doc, 'p', 'where', ort.join(' · ')));
   if (ev.needsReview) detail.append(el(doc, 'p', 'review', 'bitte prüfen – Angaben noch nicht bestätigt'));
   if (ev.description) detail.append(el(doc, 'p', 'desc', ev.description));
   const gekuerzt = gekuerztHinweis(doc, ev);
   if (gekuerzt) detail.append(gekuerzt);
+  if (serie) detail.append(terminAbschnitt(doc, serie));
   const knoepfe = kontaktKnoepfe(doc, ev);
   const nav = navigationsLink(ev, plattform(optionen.userAgent));
   if (nav) knoepfe.append(link(doc, 'Navigation', nav, 'btn'));

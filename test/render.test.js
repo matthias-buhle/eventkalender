@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseHTML } from 'linkedom';
 import { renderEventCard, renderDetail, renderStatusFooter, dayLabel, safeHref } from '../site/js/render.js';
+import { tagPlus } from '../site/js/filter.js';
 
 const { document } = parseHTML('<!doctype html><html><body></body></html>');
 const ev = (extra = {}) => ({
@@ -396,4 +397,49 @@ test('Serienkarte: fremde Werte bleiben Text', () => {
   const termine = serienTage(['2026-11-26', '2026-11-27'], { title: boese, placeName: boese });
   const karte = renderEventCard(document, termine[0], { termine });
   assert.equal(karte.querySelectorAll('img').length, 0);
+});
+
+const langeSerie = (n, extra = {}) => Array.from({ length: n }, (_, i) => ev({ id: `t${i}`, start: `${tagPlus('2026-11-26', i)}T10:00:00+01:00`, rubrik: 'markt', serie: 's1', ...extra }));
+const offen = (d) => [...d.querySelectorAll('.terminliste li')].filter((li) => !li.hasAttribute('hidden'));
+
+test('Einzelheiten einer Serie: beide Zeitzeilen, Abschnitt „Termine“ mit fünf Zeilen, Knopf klappt alle auf', () => {
+  const termine = langeSerie(29);
+  termine[2] = { ...termine[2], ticketStatus: 'abgesagt' };
+  const d = renderDetail(document, termine[0], { termine });
+  assert.equal(d.querySelector('.when').textContent, 'Nächster Termin: Do, 26. Nov., 10:00 Uhr');
+  assert.equal(d.querySelector('.rhythmus').textContent, 'täglich bis Do, 24. Dez. · 29 Termine');
+  assert.equal(d.querySelector('.termine h3').textContent, 'Termine');
+  assert.equal(d.querySelectorAll('.terminliste li').length, 29);
+  assert.equal(offen(d).length, 5);
+  assert.equal(offen(d)[0].textContent, 'Do, 26. Nov., 10:00 Uhr');
+  assert.equal(offen(d)[2].querySelector('.status-abgesagt').textContent, 'abgesagt');
+  assert.equal(d.querySelectorAll('.terminliste .status').length, 1);
+  const knopf = d.querySelector('.termine button');
+  assert.equal(knopf.textContent, 'Alle 29 Termine zeigen');
+  knopf.click();
+  assert.equal(offen(d).length, 29);
+  assert.equal(d.querySelector('.termine button'), null);
+});
+
+test('Einzelheiten: bis fünf Termine kein Knopf; volle Terminliste heißt „Alle bekannten Termine zeigen“', () => {
+  const fuenf = langeSerie(5);
+  const d5 = renderDetail(document, fuenf[0], { termine: fuenf });
+  assert.equal(offen(d5).length, 5);
+  assert.equal(d5.querySelector('.termine button'), null);
+  const voll = langeSerie(30);
+  voll[29] = { ...voll[29], terminlisteVoll: true };
+  assert.equal(renderDetail(document, voll[0], { termine: voll }).querySelector('.termine button').textContent, 'Alle bekannten Termine zeigen');
+});
+
+test('Einzelheiten: die Terminliste steht vor den Knöpfen; ohne termine gibt es sie nicht', () => {
+  const termine = langeSerie(3);
+  const d = renderDetail(document, termine[0], { termine });
+  assert.equal(d.querySelector('.termine').nextElementSibling.getAttribute('class'), 'actions');
+  assert.equal(renderDetail(document, ev()).querySelector('.termine'), null);
+  assert.equal(renderDetail(document, ev(), { termine: null }).querySelector('.rhythmus'), null);
+});
+
+test('Einzelheiten: Zeilen der Terminliste sind reiner Text', () => {
+  const termine = langeSerie(3);
+  assert.equal(renderDetail(document, termine[0], { termine }).querySelectorAll('.terminliste a').length, 0);
 });

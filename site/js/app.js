@@ -201,7 +201,7 @@ async function start() {
   ueber.koerper.append(renderUeber(document));
   document.getElementById('menue')?.addEventListener('click', ueber.oeffnen);
   function zeigeDetail(zeile) {
-    detail.koerper.replaceChildren(renderDetail(document, zeile.ev, { orte: Object.keys(ctx.orte), userAgent: navigator.userAgent }));
+    detail.koerper.replaceChildren(renderDetail(document, zeile.ev, { orte: Object.keys(ctx.orte), termine: zeile.termine, userAgent: navigator.userAgent }));
     detail.koerper.scrollTop = 0;
     detail.oeffnen();
   }
