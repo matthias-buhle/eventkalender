@@ -7,6 +7,11 @@ export const name = 'dresden';
 
 const QUELLE = 'Veranstaltungskalender Dresden';
 
+/**
+ * Die robots.txt des Hosts sperrt pauschal alles (gegen Suchmaschinen). Dresden Marketing GmbH hat den Abruf über die
+ * Schnittstelle mit eigenen Zugangsdaten ausdrücklich erlaubt, deshalb ohne diese Prüfung; der Abstand je Host bleibt.
+ */
+const ERLAUBT = { robots: false };
 const text = (wert) => (typeof wert === 'string' ? wert.trim() : '');
 
 /**
@@ -19,7 +24,7 @@ async function holeToken(http, config) {
   if (!apiKey || !apiSecret) throw new Error('keine Zugangsdaten (DRESDEN_API_KEY und DRESDEN_API_SECRET)');
   let antwort;
   try {
-    antwort = await http.post(`${config.apiUrl}/oauth/v2/token`, { json: { apiKey, apiSecret }, as: 'json' });
+    antwort = await http.post(`${config.apiUrl}/oauth/v2/token`, { json: { apiKey, apiSecret }, as: 'json', ...ERLAUBT });
   } catch (err) {
     if (err instanceof HttpError && err.status < 500) throw new Error(`Dresden-API: Anmeldung abgelehnt (HTTP ${err.status}), Zugangsdaten prüfen`);
     throw err;
@@ -41,7 +46,7 @@ async function holeTermine(http, config, token, today) {
   for (let nr = 0; nr < (config.maxPages ?? 40); nr++) {
     const url = new URL('/api/v2/secure/eventdates', config.apiUrl);
     url.search = new URLSearchParams({ offset: String(termine.length), limit: String(limit), include_event: 'true', filter }).toString();
-    const { body } = await http.get(url.href, { as: 'json', headers: { Authorization: `Bearer ${token}` } });
+    const { body } = await http.get(url.href, { as: 'json', headers: { Authorization: `Bearer ${token}` }, ...ERLAUBT });
     if (!Array.isArray(body?.data)) throw new Error('Dresden-API: Antwort enthält keine Terminliste');
     termine.push(...body.data);
     // Ohne total_count gilt eine Seite, die kürzer als limit ist, als die letzte.

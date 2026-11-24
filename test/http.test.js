@@ -148,3 +148,19 @@ test('post: beachtet robots.txt wie get', async () => {
   const c = newClient({ ...fakeClock() });
   await assert.rejects(c.post(`${base}/private/x`, { json: {} }), RobotsDisallowedError);
 });
+
+test('robots: false ruft trotz Verbot ab und fragt robots.txt nicht ab (Schnittstelle mit ausdrücklicher Erlaubnis)', async () => {
+  const gefragt = [];
+  const fetchImpl = async (url, opts) => {
+    gefragt.push(`${opts?.method ?? 'GET'} ${url}`);
+    if (String(url).endsWith('/robots.txt')) return new Response('User-agent: *\nDisallow: /\n', { status: 200 });
+    return new Response('{"ok":true}', { status: 200 });
+  };
+  const c = createPoliteClient({ userAgent: 'eventkalender-ostsachsen/1.0 (test)', perHostDelayMs: 0, fetchImpl, ...fakeClock() });
+  const a = await c.post('https://api.example.org/token', { json: { a: 1 }, as: 'json', robots: false });
+  const b = await c.get('https://api.example.org/liste', { as: 'json', robots: false });
+  assert.deepEqual([a.body, b.body], [{ ok: true }, { ok: true }]);
+  assert.deepEqual(gefragt, ['POST https://api.example.org/token', 'GET https://api.example.org/liste']);
+  // Ohne die Angabe gilt das Verbot weiter.
+  await assert.rejects(c.get('https://api.example.org/liste', { as: 'json' }), RobotsDisallowedError);
+});

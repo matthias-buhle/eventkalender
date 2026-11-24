@@ -63,9 +63,14 @@ export function createPoliteClient({
     return run;
   }
 
-  async function abruf(url, { as = 'text', minDelayMs = 0, ...anfrage } = {}) {
+  /**
+   * `robots: false` überspringt die Prüfung der robots.txt. Nur für Schnittstellen, deren Betreiber den Abruf
+   * ausdrücklich erlaubt hat (eigene Zugangsdaten): dort sperrt die robots.txt Suchmaschinen aus, nicht die Schnittstelle.
+   * Abstand je Host, Wiederholung und Zeitgrenze gelten unverändert.
+   */
+  async function abruf(url, { as = 'text', minDelayMs = 0, robots: pruefen = true, ...anfrage } = {}) {
     const u = new URL(url);
-    const robots = await robotsFor(u.origin);
+    const robots = pruefen === false ? null : await robotsFor(u.origin);
     if (robots && robots.isAllowed(url, token) === false) throw new RobotsDisallowedError(url);
     const crawlDelay = robots?.getCrawlDelay(token);
     const delayMs = Math.max(perHostDelayMs, (crawlDelay ?? 0) * 1000, minDelayMs);
@@ -82,10 +87,10 @@ export function createPoliteClient({
     });
   }
 
-  const get = (url, { as, minDelayMs, headers } = {}) => abruf(url, { as, minDelayMs, headers });
+  const get = (url, { as, minDelayMs, headers, robots } = {}) => abruf(url, { as, minDelayMs, headers, robots });
   /** Sendet `json` als JSON-Inhalt (POST); sonst wie get. */
-  const post = (url, { json, as, minDelayMs, headers } = {}) => abruf(url, {
-    as, minDelayMs, method: 'POST', body: JSON.stringify(json), headers: { 'Content-Type': 'application/json', ...headers },
+  const post = (url, { json, as, minDelayMs, headers, robots } = {}) => abruf(url, {
+    as, minDelayMs, robots, method: 'POST', body: JSON.stringify(json), headers: { 'Content-Type': 'application/json', ...headers },
   });
 
   return { get, post };

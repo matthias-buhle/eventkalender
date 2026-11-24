@@ -396,3 +396,9 @@ test('dresden: Zugangsdaten kommen lokal aus .env (von Git ausgenommen) und im t
   assert.match(workflow, /DRESDEN_API_KEY: \$\{\{ secrets\.DRESDEN_API_KEY \}\}/);
   assert.match(workflow, /DRESDEN_API_SECRET: \$\{\{ secrets\.DRESDEN_API_SECRET \}\}/);
 });
+
+test('alle Abrufe laufen mit robots: false, denn der Betreiber hat die Schnittstelle ausdrücklich erlaubt', async () => {
+  const http = fakeHttp([seite([termin()])]);
+  await fetchEvents({ http, today: TODAY, config });
+  assert.deepEqual([...http.posts, ...http.gets].map((a) => a.robots), [false, false]);
+});
