@@ -122,6 +122,48 @@ Kontaktangabe. Jede Antwort, auch „kein Treffer“, wird in `orte-cache.json` 
 auf der veröffentlichten Seite, beide Workflows reichen sie weiter), sodass keine Frage zweimal gestellt wird. Im Lauf-Protokoll
 steht eine Zeile „Orte: …“. Einträge, die 120 Tage nicht mehr vorkamen, werden verworfen.
 
+## 7c. Zugangsdaten für den Dresdner Veranstaltungskalender (du)
+
+Die Dresden Marketing GmbH hat die Schnittstelle `veranstaltungen-api.dresden.de` erlaubt und dir per Mail
+(Betreff „API-Zugang“) zwei Werte geschickt: **API-Key** und **API-Secret**. Sie gehören an genau zwei Stellen,
+nie in den Chat, nie in eine Datei, die Git mitnimmt.
+
+**1. Bei GitHub, für den täglichen Lauf.** Jeder Befehl fragt nach dem Wert; füge ihn dort ein:
+
+```bash
+gh secret set DRESDEN_API_KEY
+```
+
+```bash
+gh secret set DRESDEN_API_SECRET
+```
+
+**Erwartet:** zweimal „✓ Set Actions secret …“.
+
+**2. Auf deinem Rechner, für einen Probeabruf.** Lege im Projektordner eine Datei mit dem Namen `.env` an
+(der Punkt gehört dazu), mit genau diesen zwei Zeilen und deinen Werten hinter dem Gleichheitszeichen, ohne Anführungszeichen:
+
+```
+DRESDEN_API_KEY=hier-den-key
+DRESDEN_API_SECRET=hier-das-secret
+```
+
+Die Datei steht in `.gitignore`; Git lädt sie nie hoch. `npm run build` liest sie von selbst, wenn sie da ist.
+**Prüfen:** `git status` darf die Datei `.env` nicht nennen.
+
+**Was die Quelle macht:** Sie meldet sich einmal je Lauf an (der Token gilt 24 Stunden und steht nur im Kopf der Anfrage,
+nie in einer Adresse oder im Protokoll) und holt dann die Termine der nächsten 90 Tage, 500 je Seite. Sie **liest nur**;
+dieselben Zugangsdaten dürften auch Termine anlegen und ändern, dafür gibt es im Programm keinen Code.
+Übernommen werden nur Termine, die der Datensatz als offene Daten kennzeichnet (`open_data`), keine Online-Termine;
+vom Veranstalter nur der Name der Spielstätte und die Webseite, keine Ansprechperson, Mail oder Telefonnummer.
+Fehlen die Zugangsdaten, meldet die Quelle „keine Zugangsdaten“ und der Lauf geht normal weiter.
+
+**Noch ausgeschaltet.** In `sources.json` steht die Quelle `dresden` auf `"enabled": false`. Vor dem Einschalten muss ein
+Probeabruf an einem echten Datensatz zeigen: welche Lizenz die Daten nennen und wie der Urheber genannt wird, ob
+Beschreibung und Kategorie mitkommen, ob die Uhrzeiten stimmen, wie viele Termine es sind und welche Adresse als
+Ausweich-Link (`fallbackUrl`) taugt. Beim Einschalten gehört ein Eintrag in `QUELLEN` und `GRUPPEN` in `site/js/ueber.js`
+dazu, sonst schlägt `npm test` fehl. Die Beschreibung der Schnittstelle: <https://veranstaltungen-api.dresden.de/api/doc/v2>.
+
 ## 8. Ersten Lauf starten
 
 ```bash

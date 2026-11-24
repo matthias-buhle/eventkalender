@@ -1,10 +1,12 @@
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { name, fetchEvents } from '../src/sources/dresden.js';
 import { runAll, einordnen } from '../src/build.js';
 import { dedupe } from '../src/dedupe.js';
 import { makeEvent } from '../src/model.js';
 import { HttpError } from '../src/http.js';
+import { adapters } from '../src/sources/index.js';
 
 // Alle Antworten hier sind erfunden und nach der OpenAPI-Beschreibung der Schnittstelle gebaut
 // (https://veranstaltungen-api.dresden.de/api/doc/v2.json); es gibt keinen echten Abruf und keine echten Zugangsdaten.
@@ -366,4 +368,31 @@ test('dresden: fehlt total_count, liest er weiter, bis eine Seite kürzer als li
   const events = await fetchEvents({ http, today: TODAY, config: { ...config, limit: 2 } });
   assert.equal(http.gets.length, 2);
   assert.equal(events.length, 3);
+});
+
+// ---------- Einbindung ins Projekt ----------
+
+const lies = (pfad) => readFileSync(new URL(pfad, import.meta.url), 'utf8');
+
+test('dresden: steht in der Adapterliste hinter satourn (bei Dubletten bleibt die Lizenzangabe von dort)', () => {
+  const namen = adapters.map((a) => a.name);
+  assert.ok(namen.includes('dresden'));
+  assert.ok(namen.indexOf('dresden') > namen.indexOf('satourn'));
+});
+
+test('dresden: in sources.json eingetragen, bis zum Probeabruf ausgeschaltet, ohne Zugangsdaten in der Datei', () => {
+  const eintrag = JSON.parse(lies('../sources.json')).dresden;
+  assert.equal(eintrag.enabled, false);
+  assert.equal(eintrag.apiUrl, 'https://veranstaltungen-api.dresden.de');
+  assert.equal(eintrag.limit, 500);
+  assert.ok(eintrag.horizonDays > 0 && eintrag.maxPages > 0);
+  assert.ok(Object.keys(eintrag).every((k) => !/key|secret|token/i.test(k)), 'keine Felder für Zugangsdaten');
+});
+
+test('dresden: Zugangsdaten kommen lokal aus .env (von Git ausgenommen) und im täglichen Lauf aus den Secrets', () => {
+  assert.ok(lies('../.gitignore').split(/\r?\n/).includes('.env'), '.env steht in .gitignore');
+  assert.match(JSON.parse(lies('../package.json')).scripts.build, /--env-file-if-exists=\.env/);
+  const workflow = lies('../.github/workflows/daily.yml');
+  assert.match(workflow, /DRESDEN_API_KEY: \$\{\{ secrets\.DRESDEN_API_KEY \}\}/);
+  assert.match(workflow, /DRESDEN_API_SECRET: \$\{\{ secrets\.DRESDEN_API_SECRET \}\}/);
 });

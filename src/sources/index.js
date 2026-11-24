@@ -14,8 +14,10 @@ import * as stolpen from './stolpen.js';
 import * as l2club from './l2club.js';
 import * as steinhaus from './steinhaus.js';
 import * as idecin from './idecin.js';
+import * as dresden from './dresden.js';
 
+// Die Reihenfolge zählt bei Dubletten: der frühere Eintrag behält seine Angaben, der spätere ergänzt nur.
 export const adapters = [
   aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster,
-  gefluegel, neustadthalle, stolpen, l2club, steinhaus, idecin,
+  gefluegel, neustadthalle, stolpen, l2club, steinhaus, idecin, dresden,
 ];

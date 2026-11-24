@@ -124,5 +124,14 @@
     "baseUrl": "https://www.idecin.cz/program",
     "months": 3,
     "ausschluss": ["veřejné bruslení"]
+  },
+  "dresden": {
+    "enabled": false,
+    "note": "Dresden Marketing GmbH hat die Schnittstelle erlaubt (Antworten vom 23. und 24.11.2026). Braucht die Geheimnisse DRESDEN_API_KEY und DRESDEN_API_SECRET. Bleibt aus, bis ein Probeabruf Lizenz, Namensnennung und Ausweichadresse geklärt hat; beim Einschalten gehört ein Eintrag ins Menü (site/js/ueber.js). Siehe docs/SETUP.md, Abschnitt 7c.",
+    "apiUrl": "https://veranstaltungen-api.dresden.de",
+    "horizonDays": 90,
+    "limit": 500,
+    "maxPages": 40,
+    "fallbackUrl": null
   }
 }
