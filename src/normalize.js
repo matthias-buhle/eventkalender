@@ -205,7 +205,7 @@ const SCHAU_REGELN = /** @type {[string, RegExp][]} */ ([
 const PARTY_REGELN = /** @type {[string, RegExp][]} */ ([
   ['fasching', /fasching|karneval|prunksitzung|fastnacht|fasnacht|\bbkc\b|narren/],
   ['silvester', /silvester|jahreswechsel|neujahr|(?<![a-zäöüß])ball\b|(?<!fu[sß]|hand|volley|basket|feder|faust|wasser|korb|tisch|base|soft|street|flunky|beach|schnee)(?<=[a-zäöüß])ball\b/],
-  ['disco', /disco|disko|\d0er|\b[89]0.?s\b|tanz|retro/],
+  ['disco', /disco|disko|(?<!\d)(?:[5-9]0|2000|00)er|\b[89]0.?s\b|tanz|retro/],
   ['club', /\bdj\b|club|legt auf|aftershow|after.?party|techno|elektro|electro|\bhouse\b|takeover|\brave\b/],
 ]);
 

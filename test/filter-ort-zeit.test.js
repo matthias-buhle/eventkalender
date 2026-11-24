@@ -513,3 +513,10 @@ test('zusammenfassung: nennt gewählte Unterarten hinter der Rubrik (bis zwei mi
   assert.equal(z([], nurJazz), 'Wochenende · Alle Rubriken · Sebnitz 75 km', 'ohne Rubrikwahl wirkt kein Unterfilter');
   assert.equal(z(['markt'], nurJazz), 'Wochenende · Märkte · Sebnitz 75 km', 'Unterarten einer anderen Rubrik zählen nicht');
 });
+
+test('loadPrefs: nur genau Stand 2 (Zahl) behält die Unterpunkt-Auswahl', () => {
+  const lade = (stand) => loadPrefs(fakeStorage({ 'eventkalender.prefs': JSON.stringify({ stand, hiddenGenres: ['jazz'] }) })).hiddenGenres;
+  assert.deepEqual(lade('2'), []);
+  assert.deepEqual(lade(3), []);
+  assert.deepEqual(lade(2), ['jazz']);
+});

@@ -34,6 +34,16 @@ export function einordnen(e) {
   return { ...e, genreQuelle: quellHinweis(e), rubrik, genre, advent };
 }
 
+/** Kopie ohne genreQuelle; ein Feld, das sich nicht lesen lässt, wird null (auch wenn es beim Einordnen geworfen hat). */
+function kopieOhneHinweis(e) {
+  const kopie = {};
+  for (const k of Object.keys(e)) {
+    if (k === 'genreQuelle') continue;
+    try { kopie[k] = e[k]; } catch { kopie[k] = null; }
+  }
+  return kopie;
+}
+
 /**
  * Letzter Schritt des Laufs, nach der Übersetzung: aussortieren (nur über aussortierGrund, mit Zählung),
  * neu einordnen, Sprache setzen, Hilfsfeld genreQuelle entfernen. Eingang = Ausgang + Summe der aussortierten.
@@ -51,9 +61,10 @@ export function fertigstellen(events) {
     try {
       const { genreQuelle, ...rest } = einordnen(e);
       fertig.push({ ...rest, sprache: spracheVon(rest) });
-    } catch {
-      const { genreQuelle, ...rest } = e;
-      fertig.push(rest);
+    } catch (fehler) {
+      const rest = kopieOhneHinweis(e);
+      console.warn(`Einordnen fehlgeschlagen (${rest.id ?? '?'}, ${rest.title ?? '?'}): ${fehler?.message ?? fehler}`);
+      fertig.push({ ...rest, sprache: null });
     }
   }
   return { events: fertig, aussortiert };

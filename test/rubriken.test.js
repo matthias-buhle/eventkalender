@@ -483,3 +483,31 @@ test('Korrekturrunde: Marktwort, Altersangaben, Familienwochenende, Festakte, li
   assert.deepEqual(markt('21. Lichterzug auf Bergbaupfaden in Seiffen'), { rubrik: 'fest', genre: 'weihnachten' });
   assert.deepEqual(markt('Mettenschicht im Advent'), { rubrik: 'fest', genre: 'brauchtum' });
 });
+
+test('S2: Menü trifft (ü ist kein Wortzeichen für \\b)', () => {
+  assert.deepEqual(sonst('Weihnachtsmenü im Schlossrestaurant'), { rubrik: 'essen', genre: 'dinner' });
+  assert.notEqual(sonst('Menükarte gestalten – Kalligrafie-Workshop').rubrik, 'essen');
+});
+
+test('S3: Führung trifft nicht Entführung, Einführung, Buchführung', () => {
+  for (const t of ['Die Entführung aus dem Serail', 'Stückeinführung: Faust', 'Buchführung für Einsteiger', 'Amtseinführung des neuen Pfarrers'])
+    assert.notEqual(sonst(t).rubrik, 'fuehrung', t);
+  for (const t of ['Weinführung im Schlosskeller', 'Hausführung im Museum', 'Stadtführung'])
+    assert.equal(sonst(t).rubrik, 'fuehrung', t);
+  assert.notEqual(sonst('Einführung').rubrik, 'fuehrung');
+});
+
+test('S6: Disco-Jahrzehnt nur 50er bis 90er und 2000er; Kirchenraum auch tschechisch und polnisch', () => {
+  assert.notEqual(von({ art: 'party', title: 'Yoga 10er-Karte Abschlussfest' }).genre, 'disco');
+  assert.equal(von({ art: 'party', title: '80er Party' }).genre, 'disco');
+  assert.equal(von({ art: 'party', title: '2000er Party' }).genre, 'disco');
+  assert.deepEqual(von({ art: 'konzert', title: 'Adventní koncert', placeName: 'Kostel sv. Kříže, Děčín', genre: 'klassik' }), { rubrik: 'konzert', genre: 'kirche' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Koncert kolęd', placeName: 'Kościół św. Piotra', genre: 'klassik' }), { rubrik: 'konzert', genre: 'kirche' });
+  assert.deepEqual(von({ art: 'konzert', title: 'Koncert kolęd', placeName: 'Kosciol sw. Piotra', genre: 'klassik' }), { rubrik: 'konzert', genre: 'kirche' });
+});
+
+test('S7: für Erwachsene und Marionettenoper sind keine Kinder-Termine', () => {
+  for (const t of ['Märchen für Erwachsene', 'Puppenspiel für Erwachsene: Faust', 'Don Giovanni – Marionettenoper'])
+    assert.notEqual(sonst(t).rubrik, 'kinder', t);
+  assert.equal(sonst('Puppenspiel „Frau Holle“').rubrik, 'kinder');
+});

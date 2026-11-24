@@ -492,3 +492,24 @@ test('aussortiertText nennt alle drei Gründe', () => {
     'aussortiert: 12 Ladenöffnung, 0 Schulvorstellung, 0 Gruppentreffen',
   );
 });
+
+test('S5: wirft das Einordnen, bleibt der Termin mit sprache null, Warnung, Summe stimmt', () => {
+  const kaputt = { art: 'sonstiges', title: 'Kaputter Termin', id: 'k1' };
+  Object.defineProperty(kaputt, 'genreQuelle', { enumerable: true, get() { throw new Error('kaputt'); } });
+  const warnungen = [];
+  const orig = console.warn;
+  console.warn = (...a) => warnungen.push(a.join(' '));
+  let r;
+  try {
+    r = fertigstellen([{ art: 'sonstiges', title: 'Markt in Sebnitz' }, { art: 'sonstiges', title: 'Trauercafe Bautzen' }, kaputt]);
+  } finally { console.warn = orig; }
+  assert.equal(r.events.length, 2);
+  const k = r.events.find((e) => e.id === 'k1');
+  assert.equal(k.sprache, null);
+  assert.equal(Object.hasOwn(k, 'genreQuelle'), false);
+  assert.equal(warnungen.length, 1);
+  assert.match(warnungen[0], /k1/);
+  assert.match(warnungen[0], /Kaputter Termin/);
+  assert.match(warnungen[0], /kaputt/);
+  assert.equal(r.events.length + Object.values(r.aussortiert).reduce((a, b) => a + b, 0), 3);
+});

@@ -116,3 +116,9 @@ test('Kurse: Näh-Wörter sind kreativ, Nähe, Ernährung und Aufnahmen nicht', 
   pruefe('kurse', 'kreativ', 'Nähcafé im Stadtteilhaus', 'Nähabend für Anfänger');
   pruefe('kurse', 'vortrag', ['Streifzug durch die Sächsische Schweiz', 'Ein interessanter Bild-Ton-Vortrag mit eindrucksvollen Aufnahmen …'], 'Vortrag: Ernährung im Alter', ['Abend im Saal', 'Ein Vortrag in der Nähe des Bahnhofs']);
 });
+
+test('S4: erzähl zählt nur im Titel; Kabarett bleibt Kabarett', () => {
+  pruefe('theater', 'lesung', 'Erzählabend am Kamin');
+  pruefe('theater', 'schauspiel', ['Der Besuch der alten Dame', 'Das Stück erzählt die Geschichte einer Rache']);
+  pruefe('theater', 'kabarett', 'Kabarett: Humor ist, wenn man trotzdem lacht');
+});

@@ -42,9 +42,11 @@ export const UNTERARTEN = {
 
 // Einführung, Vorführung, Aufführung, Durchführung, Ausführung, Verführung sind keine Führungen; Weinführung, Steinführung schon ("aus" und "ein" zählen nur als ganzes Wort: Haus-, Rathaus-, Wein-, Steinführung sind Führungen).
 // Führungskräfte, Führungsstil, Führung auf Distanz sind Kursthemen. Touren und Lichterfahrten sind Führungen (Entscheidung 9).
-const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung(?!skr[aä]ft|sstil|skompetenz| auf distanz)|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter|zwiedzanie|prohl[ií]dk|stadtschleicher|lichterfahrt|(?:stadt|altstadt|kneipen|gl[uü]hwein|laternen|fackel|m[uü]hlen|weihnachts)tour\b/;
+const FUEHRUNG = /(?<!vor|auf|durch|ver|ent|buch|\b(?:aus|ein)|(?<!w|st)(?<=[a-zäöüß])ein)f[uü]hrung(?!skr[aä]ft|sstil|skompetenz| auf distanz)|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter|zwiedzanie|prohl[ií]dk|stadtschleicher|lichterfahrt|(?:stadt|altstadt|kneipen|gl[uü]hwein|laternen|fackel|m[uü]hlen|weihnachts)tour\b/;
 // "märchenhaft" ist ein Beiwort (Adventsshopping, Nacht mit dem Karnevalsclub), kein Märchen.
-const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|ka[sš]p[aá]rek|puppenspiel|puppenb[uü]hne|theater der puppen|marionetten|(?<!sport.{0,8})familienwochenende|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
+const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|ka[sš]p[aá]rek|puppenspiel|puppenb[uü]hne|theater der puppen|marionetten(?!oper)|(?<!sport.{0,8})familienwochenende|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
+// "für Erwachsene" im Titel nimmt dem Kinder-Stichwort die Wirkung (Märchen, Puppenspiel für Erwachsene).
+const KINDER_TITEL = { test: (/** @type {string} */ t) => KINDER.test(t) && !/f[uü]r erwachsene/.test(t) };
 // In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
 // Altersangaben nur im Kinderalter (bis 12): "Einlass ab 18 Jahren" ist kein Kinderprogramm.
 const KINDER_BESCHREIBUNG = /f[uü]r kinder|mit (?:euren|ihren) kindern|f[uü]r unsere kleinen|puppenm[aä]rchen|puppenspiel|\bab (?:drei|vier|f[uü]nf|sechs|sieben|acht|neun|zehn)\b(?! (?:uhr|euro|personen|teilnehmer|wochen|monat|minuten|tage|stunden))|\b(?:[1-9]|1[0-2]) ?(?:bis|[-–]) ?(?:[1-9]|1[0-2]) jahre|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
@@ -53,7 +55,7 @@ const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|l
 const SPORT = /\bsport\b|eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
 const WANDERN = /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/;
 // Essen nur im Titel: "Kaffee und Kuchen" in der Beschreibung macht noch kein Essen (Entscheidung 14).
-const ESSEN = /brunch|dinner|men[uü]\b|verkostung|weinprobe|bierprobe|tasting|whisky|kulinar|fr[uü]hst[uü]ck|schmaus|buffet|kaffeeklatsch|\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|gourmet|ritter|wein|g[aä]nse|enten|schlacht)essen\b|g[aä]nsebraten|martinsgans|baudenabend|h[uü]ttenabend|grill|kochshow/;
+const ESSEN = /brunch|dinner|men[uü](?![a-zäöüß])|men[uü]abend|verkostung|weinprobe|bierprobe|tasting|whisky|kulinar|fr[uü]hst[uü]ck|schmaus|buffet|kaffeeklatsch|\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|gourmet|ritter|wein|g[aä]nse|enten|schlacht)essen\b|g[aä]nsebraten|martinsgans|baudenabend|h[uü]ttenabend|grill|kochshow/;
 const BRAUCHTUM = { test: (/** @type {string} */ t) => detectSorte('fest', t) === 'brauchtum' };
 const PARTY = /party|disco|disko|\bball\b|tanzabend|tanznacht|fasching|karneval|\bbkc\b|legt auf|silvester/;
 const AUSSTELLUNG = /vernissage|finissage|ausstellung|zeichnungen|druckgrafik|malerei|fotografien|skulpturen/;
@@ -66,7 +68,7 @@ const CHRISTNACHT = /christmette|christvesper|christnacht/;
 const TITEL_REGELN = /** @type {[string, {test(t:string):boolean}][]} */ ([
   ['fuehrung', FUEHRUNG],
   ['fuehrung', BAHN],
-  ['kinder', KINDER],
+  ['kinder', KINDER_TITEL],
   ['theater', THEATER],
   ['kurse', KURSE],
   ['sport', SPORT],
@@ -137,7 +139,7 @@ function unterRubrik(rubrik, e) {
 }
 
 // Räume, in denen Klassik zur Kirchenmusik wird ("Dom kultury" ist ein Kulturhaus, kein Dom).
-const KIRCHENRAUM = /kirche|\bdom\b(?! kultury)|kloster|kapelle|m[uü]nster/;
+const KIRCHENRAUM = /kirche|\bdom\b(?! kultury)|kloster|kapelle|m[uü]nster|kostel|ko[sś][cć]i[oó][łl]/;
 
 /**
  * Der Unterpunkt eines Konzerts aus Hinweis der Quelle, Titel, Beschreibung und Spielstätte. Klassik im Kirchenraum
@@ -194,7 +196,7 @@ export function rubrikUndGenre(e) {
   const titel = klein(e?.title);
   // Beschreibungen sind lang und verrauscht ("Kaffee", "Kinder" kommen überall vor): nur der Anfang zählt.
   const beschreibung = klein(e?.description).slice(0, BESCHREIBUNG_ZEICHEN);
-  const sorte = (a) => passendeSorte(a, quellHinweis(e)) ??detectSorte(a, e?.title, e?.description);
+  const sorte = (a) => passendeSorte(a, quellHinweis(e))  ?? detectSorte(a, e?.title, e?.description);
 
   if (art === 'konzert') return konzertRubrik(e, titel, beschreibung);
 

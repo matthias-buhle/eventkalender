@@ -47,7 +47,8 @@ export const KINDER_UNTER = {
 export const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|advents|osterhasen|mondschein)(?:fahrt|express|zug)|schmalspurbahn|talbahn\b|grundbahn\b|museumsbahn|kleinbahn/;
 
 // Je Rubrik die Unterpunkte mit ihren Stichwörtern; Reihenfolge = Vorrang, erster Treffer gewinnt.
-const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
+// Ein dritter Eintrag true heißt: das Stichwort zählt nur im Titel (nicht in der Beschreibung).
+const REGELN = /** @type {Record<string, [string, RegExp, boolean?][]>} */ ({
   fuehrung: [
     ['bahn', BAHN],
     ['kinder', /kinder|familie/],
@@ -60,10 +61,11 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
   ],
   theater: [
     ['kabarett', /kabarett|cabaret|comedy|comedian|stand.?up|satire|kleinkunst|\bhumor/],
-    ['lesung', /lesung|vorlese|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde|erz[aä]hl/],
+    ['lesung', /lesung|vorlese|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde/],
+    ['lesung', /erz[aä]hl/, true],
     ['kino', /kino|\bfilm|kurzfilm|filmfest|filmabend|filmvorf/],
     ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauberer|zauberei|zaubershow|zauberkunst|zauberk[uü]nstler|variet|artistik|akrobat|songtexte|gesangstexte|liedtexte/],
-    ['schauspiel', /theater|schauspiel|oper\b|operette|ballett|kom[oö]die|trag[oö]die|auff[uü]hrung|premiere|inszenierung|puppenspiel|marionett|divadel|b[uü]hne/],
+    ['schauspiel', /theater|schauspiel|\bst[uü]ck|oper\b|operette|ballett|kom[oö]die|trag[oö]die|auff[uü]hrung|premiere|inszenierung|puppenspiel|marionett|divadel|b[uü]hne/],
   ],
   kurse: [
     ['bewegung', /yoga|pilates|\btanz|fitness|gymnastik|qi.?gong|tai.?chi|meditation|entspann|r[uü]cken(?:schule|training|gymnastik)|zumba|klangschal|achtsam/],
@@ -107,9 +109,9 @@ const text = (x) => (typeof x === 'string' ? x.toLowerCase() : '');
 export function unterpunkt(rubrik, titel, beschreibung, ort) {
   const regeln = Object.hasOwn(REGELN, rubrik) ? REGELN[rubrik] : null;
   if (!regeln) return null;
-  for (const t of [text(titel), text(beschreibung).slice(0, BESCHREIBUNG_ZEICHEN)]) {
+  for (const [t, imTitel] of [[text(titel), true], [text(beschreibung).slice(0, BESCHREIBUNG_ZEICHEN), false]]) {
     if (!t) continue;
-    for (const [schluessel, regel] of regeln) if (regel.test(t)) return schluessel;
+    for (const [schluessel, regel, nurTitel] of regeln) if ((imTitel || !nurTitel) && regel.test(t)) return schluessel;
   }
   if (rubrik === 'theater') {
     const haus = text(ort);

@@ -53,3 +53,23 @@ test('aussortierGrund wirft nie', () => {
   assert.equal(aussortierGrund({ title: '' }), null);
   assert.equal(aussortierGrund({ title: null, description: null }), null);
 });
+
+test('S1: echte Veranstaltungen bleiben (Probe, Selbsthilfe, Schulwörter in der Beschreibung, Eisbahn)', () => {
+  for (const t of [
+    'Öffentliche Chorprobe', 'Offene Probe zum Mitsingen', 'Einladung zur öffentlichen Probe', 'Die Probe',
+    'Probe aufs Exempel – Kabarett', 'Wein-Probe im Gewölbekeller', 'Tag der Selbsthilfe', 'Eisbahn hat geöffnet',
+    'Schnupperprobe beim Posaunenchor', 'Probenwochenende der Jugend: Konzert zum Mitsingen',
+  ]) assert.equal(sonst(t), null, t);
+  assert.equal(sonst('Der Räuber Hotzenplotz', 'Familienstück ab 5. Auch als Schulvorstellung buchbar. Öffentliche Vorstellung um 16 Uhr.'), null);
+  assert.equal(sonst('Sonderausstellung Bergbau', 'Führungen für Schulklassen auf Anfrage.'), null);
+});
+
+test('S1: weiterhin aussortiert', () => {
+  assert.equal(sonst('Chorprobe'), 'gruppentreffen');
+  assert.equal(sonst('Selbsthilfegruppe Diabetes'), 'gruppentreffen');
+  assert.equal(sonst('Jugendtrauerkreis'), 'gruppentreffen');
+  assert.equal(sonst('Schulvorstellung: Emil und die Detektive'), 'schulvorstellung');
+  assert.equal(sonst('Emil und die Detektive', 'Vorstellung für Schulklassen der Klassen 3 bis 6'), 'schulvorstellung');
+  assert.equal(sonst('Der Domladen hat geöffnet und lädt Sie herzlich ein!'), 'ladenoeffnung');
+  assert.equal(sonst('Winter Werksverkauf'), 'ladenoeffnung');
+});

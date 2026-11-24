@@ -256,7 +256,7 @@ export function zaehleSorten(events, prefs, nowIso, orte = {}) {
   return zahlen;
 }
 
-const WOCHENTAGE =['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WOCHENTAGE = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
 /** "Sa 28.11." für 2026-11-28. */
 function tagKurz(tag) {
