@@ -11,6 +11,7 @@ import { ergaenzeOrte, erzeugeAbruf } from './ortssuche.js';
 import { schreibeVersion } from './version.js';
 import { aussortierGrund, GRUENDE } from './aussortieren.js';
 import { spracheVon } from './sprache.js';
+import { markiereSerien } from './serien.js';
 
 const MIN_ERGIEBIG = 5;
 
@@ -233,8 +234,11 @@ async function main() {
   });
   console.log(`Übersetzung: ${stats.uebersetzt} neu (${stats.zeichen} Zeichen), ${stats.ausCache} aus dem Zwischenspeicher${stats.fehler ? `, Hinweis: ${stats.fehler}` : ''}`);
   const fertig = fertigstellen(uebersetzt);
-  const events = fertig.events;
+  // Letzter Schritt vor dem Schreiben: danach ändert nichts mehr Titel, Ort, Rubrik oder Unterpunkt.
+  const markiert = markiereSerien(fertig.events);
+  const events = markiert.events;
   console.log(aussortiertText(fertig.aussortiert));
+  console.log(`Serien: ${markiert.serien} mit ${markiert.termine} Terminen`);
   await mkdir(outDir, { recursive: true });
   await writeFile(new URL('uebersetzungen.json', outDir), JSON.stringify(cache));
   await writeFile(new URL('orte-cache.json', outDir), JSON.stringify(orteCache));

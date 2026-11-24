@@ -13,7 +13,8 @@ import { createHash } from 'node:crypto';
  *   sources:{name:string,url:string}[],
  *   contact:Contact, ticketUrl:string|null, ticketStatus:TicketStatus|null,
  *   description:string|null, needsReview:boolean, submittedBy:string|null,
- *   lizenz:{name:string,url:string,urheber:string|null}|null
+ *   lizenz:{name:string,url:string,urheber:string|null}|null,
+ *   serie:string|null
  * }} Event
  */
 
