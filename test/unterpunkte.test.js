@@ -100,3 +100,14 @@ test('Teilwörter treffen nicht: Brauchtum ist keine Brauerei, Zauberflöte kein
   assert.equal(u('theater', 'Zaubershow für die ganze Familie'), 'show');
   assert.equal(u('theater', 'Der große Zauberer'), 'show');
 });
+
+test('Kurse: Bild-Ton-Vortrag ist ein Vortrag, Töpfern mit Ton bleibt kreativ', () => {
+  pruefe('kurse', 'vortrag', ['Streifzug durch die Sächsische Schweiz', 'Ein interessanter Bild-Ton-Vortrag mit eindrucksvollen Aufnahmen …']);
+  pruefe('kurse', 'kreativ', 'Töpfern mit Ton für Anfänger', 'Nähen für Anfänger', ['Kuscheltiere stopfen', 'Das komplett genähte Kuscheltier muss nur noch ausgestopft werden']);
+  pruefe('kurse', 'vortrag', ['Abend im Saal', 'Kurz vor der Nähe des Ziels, Aufnahmen vom Berg – ein Vortrag']);
+});
+
+test('Führung: Stadtrundfahrt im Titel ist Stadt, auch mit Mühle oder Brauerei', () => {
+  pruefe('fuehrung', 'stadt', 'Stadtrundfahrt Bautzen und Besuch der Hammermühle', 'Stadtführung mit Brauereibesuch', 'Stadtrundgang zur Bäckerei');
+  pruefe('fuehrung', 'brauerei', 'Brauereiführung mit Verkostung');
+});

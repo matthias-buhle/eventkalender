@@ -51,6 +51,7 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
   fuehrung: [
     ['bahn', BAHN],
     ['kinder', /kinder|familie/],
+    ['stadt', /stadtrundfahrt|stadtf[uü]hrung|stadtrundgang/],
     ['untertage', /bergwerk|untertage|stollen|h[oö]hle|schacht|bergbau|salz/],
     ['brauerei', /brauerei|braumanufaktur|brauhaus|braumeister|bierbrau|b[aä]cker|m[uü]hle|manufaktur|distill|r[oö]sterei/],
     ['hausfuehrung', /museum|schloss|schlo[sß]|\bburg|kirche|\bdom\b|kloster|\bhaus|rathaus|turm|ausstellung|galerie|gedenkst[aä]tte|sammlung|festung|synagoge|bibliothek|kurator|zeitzeug/],
@@ -60,12 +61,12 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
     ['kabarett', /kabarett|cabaret|comedy|comedian|stand.?up|satire|kleinkunst|\bhumor/],
     ['lesung', /lesung|vorlese|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde|erz[aä]hl/],
     ['kino', /kino|\bfilm|kurzfilm|filmfest|filmabend|filmvorf/],
-    ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauberer|zauberei|zaubershow|zauberkunst|zauberk[uü]nstler|variet|artistik|akrobat/],
+    ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauberer|zauberei|zaubershow|zauberkunst|zauberk[uü]nstler|variet|artistik|akrobat|songtexte|gesangstexte|liedtexte/],
     ['schauspiel', /theater|schauspiel|oper\b|operette|ballett|kom[oö]die|trag[oö]die|auff[uü]hrung|premiere|inszenierung|puppenspiel|marionett|divadel|b[uü]hne/],
   ],
   kurse: [
     ['bewegung', /yoga|pilates|\btanz|fitness|gymnastik|qi.?gong|tai.?chi|meditation|entspann|r[uü]cken(?:schule|training|gymnastik)|zumba|klangschal|achtsam/],
-    ['kreativ', /kreativ|mal(?:en|kurs|treff|nachmittag)|zeichn|t[oö]pfer|keramik|n[aä]h|strick|h[aä]kel|filz|bastel|handwerk|schnitz|kl[oö]ppel|koch|back|floristik|schmied|foto|photowalk|reparatur|stick(?:en|erei)|upcycl|pralin|trommel|verzier|weihnachtskugel/],
+    ['kreativ', /kreativ|mal(?:en|kurs|treff|nachmittag)|zeichn|t[oö]pfer|keramik|\bn[aä]h(?:en|kurs|kreis|treff|maschine|werkstatt|nachmittag)|gen[aä]ht|strick|h[aä]kel|filz|bastel|handwerk|schnitz|kl[oö]ppel|koch|back|floristik|schmied|foto|photowalk|reparatur|stick(?:en|erei)|upcycl|pralin|trommel|verzier|weihnachtskugel/],
     ['lernen', /computer|\bpc\b|smartphone|handy|internet|digital|\bki\b|excel|sprach|englisch|franz[oö]sisch|tschechisch|polnisch|spanisch|italienisch|beruf|bewerb|weiterbildung|schulung|seminar|lehrgang|kommunikation|f[uü]hrungs?\b|f[uü]hrung auf|online/],
     ['vortrag', /vortrag|reisebericht|reportage|multivision|infoabend|gespr[aä]ch|podium|diskussion|sternwarte|ratgeber/],
   ],
@@ -81,7 +82,7 @@ const REGELN = /** @type {Record<string, [string, RegExp][]>} */ ({
   ],
   kinder: [
     ['kinder-buehne', /theater|puppen|kasper|marionett|kino|film|konzert|musik|zirkus|musical|zauber|b[uü]hne|m[aä]rchen|revue/],
-    ['kinder-mitmachen', /bastel|back|pl[aä]tzchen|werkstatt|mitmach|kreativ|malen|t[oö]pfer|experiment|spiel|ferien|krabbel|laterne/],
+    ['kinder-mitmachen', /bastel|b[aä]ck|pl[aä]tzchen|werkstatt|mitmach|kreativ|malen|t[oö]pfer|experiment|spiel|ferien|krabbel|laterne/],
     ['kinder-lernen', /vorlese|lese|bibliothek|lern|kinderuni|forscher|entdecker|geschichten|bilderbuch/],
   ],
 });

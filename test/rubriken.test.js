@@ -395,3 +395,65 @@ test('Spielstätten: eine gemeinsame Liste führt zur Rubrik Theater und zum Rü
     assert.deepEqual(von({ art: 'sonstiges', title: 'Ein Abend', placeName: ort }), { rubrik: 'theater', genre: unter }, ort);
   }
 });
+
+// Task 10, Runde 1: Nachschärfen nach der Stichproben-Bewertung.
+const markt = (title) => von({ art: 'markt', title });
+
+test('Markt ohne Marktwort mit Lichter- oder Adventswort ist ein Fest', () => {
+  for (const t of ['Advent im Miniaturpark "Kleine Sächsische Schweiz"', '21. Lichterzug auf Bergbaupfaden in Seiffen', 'Dresdner Winterlichter', 'Freitaler Schlossadvent']) {
+    assert.deepEqual(markt(t), { rubrik: 'fest', genre: 'weihnachten' }, t);
+  }
+  assert.equal(markt('32. Seiffener Laternenzug in Seiffen').rubrik, 'fest');
+  assert.ok(Object.hasOwn(FEST_SORTEN, markt('32. Seiffener Laternenzug in Seiffen').genre));
+  for (const t of ['Meißner Weihnacht', 'Dresdner Hüttenzauber am Haus der Presse', '34. Seiffener Weihnacht', 'Lichtermarkt Pirna', 'Adventsmarkt am Schloss', 'Weihnachtsmarkt im Advent', 'Adventure Weekend']) {
+    assert.equal(markt(t).rubrik, 'markt', t);
+  }
+});
+
+test('Kinder und Familie: Puppenspiel, Familienwochenende und Wendungen in der Beschreibung', () => {
+  assert.deepEqual(sonst('Theater der Puppen', 'Ein neues Märchen ganz aus Papier für alle ab vier Prinzessin Marie …').rubrik, 'kinder');
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Theater der Puppen', placeName: 'Jugendhaus Wartburg', description: 'Ein neues Märchen ganz aus Papier für alle ab vier Prinzessin Marie …' }), { rubrik: 'kinder', genre: 'kinder-buehne' });
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Sváťos Dividlo – Kašpárek und Honza in der Hölle', placeName: 'Zámek, Děčín', description: 'Originaltitel: Sváťovo dividlo - Kašpárek a Honza v pekle – Puppenmärchen' }), { rubrik: 'kinder', genre: 'kinder-buehne' });
+  assert.equal(von({ art: 'sonstiges', title: 'Das höllische Kreuzworträtsel', placeName: 'Děčín', description: 'Originaltitel: Pekelná Křížovka – Kommt vorbei und erlebt mit euren Kindern jede Menge teuflischen Spaß …' }).rubrik, 'kinder');
+  assert.deepEqual(sonst('Weihnachtsbäckerei - Familienwochenende im Schullandheim Bautzen/Burk'), { rubrik: 'kinder', genre: 'kinder-mitmachen' });
+  assert.equal(sonst('Kasparek Show').rubrik, 'kinder');
+  for (const b of ['für unsere Kleinen: Lieder und Spiele', 'Für die Kleinen gibt es Geschichten', 'Ein Puppenspiel mit Musik', 'Für Kinder von 4 bis 6 Jahre', 'Offen für 6–10 Jahre', 'ab zehn Jahren']) {
+    assert.equal(sonst('Nachmittag am Sonntag', b).rubrik, 'kinder', b);
+  }
+  // Gegenbeispiele
+  assert.equal(sonst('Nachtführung', 'Beginn ab vier Uhr am Markt').rubrik, 'fuehrung');
+  assert.equal(sonst('Sommerkino', 'Einlass ab 16 Jahren').rubrik, 'theater');
+  assert.notEqual(sonst('Lesung im Advent', 'Ein Abend für Erwachsene, 18 bis 99 Jahre').rubrik, 'kinder');
+  assert.notEqual(sonst('Vereinsabend', 'Treffen ab vier Uhr, 30 bis 60 Jahre').rubrik, 'kinder');
+});
+
+test('Party: Zusammensetzungen auf "ball" sind Silvester & Ball, Sportbälle nicht', () => {
+  assert.deepEqual(von({ art: 'party', title: '4. Bautzener Sportlerball' }), { rubrik: 'party', genre: 'silvester' });
+  for (const t of ['Abiball 2026', 'Feuerwehrball', 'Tanzball']) assert.equal(von({ art: 'party', title: t }).genre, 'silvester', t);
+  for (const t of ['Fußball-Party im Vereinsheim', 'Handballparty', 'Wasserball Party']) assert.notEqual(von({ art: 'party', title: t }).genre, 'silvester', t);
+});
+
+test('Theater: Songtexte in der Beschreibung machen ein Musical (Show)', () => {
+  assert.equal(von({ art: 'sonstiges', title: 'The Addams Family', placeName: 'Theater Görlitz', description: 'Buch von Marshall Brickman und Rick Elice - Musik und Songtexte von Andrew Lippa …' }).genre, 'show');
+  assert.equal(von({ art: 'sonstiges', title: 'Der zerbrochne Krug', placeName: 'Theater Görlitz', description: 'Lustspiel von Heinrich von Kleist' }).genre, 'schauspiel');
+});
+
+test('Filmnachmittag am Beschreibungsanfang ist Kino', () => {
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Kaffee um Drei „So war das damals? Einblicke in historisches sorbisches Filmmaterial“', placeName: 'Sorbisches Museum', description: 'Das Sorbische Kulturarchiv widmet der Digitalisierung historischen sorbischen Filmmaterials. In einem kommentierten Filmnachmittag wird …' }), { rubrik: 'theater', genre: 'kino' });
+  assert.notEqual(von({ art: 'sonstiges', title: 'Vereinsabend', description: 'Wir sprechen über Filmförderung im ländlichen Raum' }).rubrik, 'theater');
+});
+
+test('Festakte im Theaterhaus bleiben Sonstiges, Stücke im selben Haus Theater', () => {
+  const ort = 'Theater Görlitz (Gerhart-Hauptmann-Theater Görlitz-Zittau GmbH)';
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Stadt Görlitz verleiht den „Meridian des Ehrenamtes“ 2026', placeName: ort }), { rubrik: 'sonstiges', genre: null });
+  for (const t of ['Ehrung der Sportler', 'Neujahrsempfang', 'Öffentliche Sitzung des Rates', 'Hauptversammlung']) {
+    assert.equal(von({ art: 'sonstiges', title: t, placeName: ort }).rubrik, 'sonstiges', t);
+  }
+  assert.equal(von({ art: 'sonstiges', title: 'Der Besuch der alten Dame', placeName: ort }).rubrik, 'theater');
+});
+
+test('Kammermusik in der Beschreibung ist ein Konzert, der Titel gewinnt', () => {
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Sehnsucht und Verklärung', placeName: 'Evangelische Kirche, Raum Görlitz', description: 'Schon immer bot Musik nicht nur Raum für Fantasien … In seinem zweiten Streichsextett nimmt Brahms Abschied …' }), { rubrik: 'konzert', genre: 'kirche' });
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Abend im Saal', placeName: 'Kulturhaus', description: 'Ein Streichquartett spielt Haydn' }).rubrik, 'konzert');
+  assert.equal(von({ art: 'sonstiges', title: 'Vortrag: Brahms und seine Zeit', description: 'Ein Abend über Kammermusik des 19. Jahrhunderts' }).rubrik, 'kurse');
+});

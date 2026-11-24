@@ -44,11 +44,11 @@ export const UNTERARTEN = {
 // Führungskräfte, Führungsstil, Führung auf Distanz sind Kursthemen. Touren und Lichterfahrten sind Führungen (Entscheidung 9).
 const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung(?!skr[aä]ft|sstil|skompetenz| auf distanz)|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter|zwiedzanie|prohl[ií]dk|stadtschleicher|lichterfahrt|(?:stadt|altstadt|kneipen|gl[uü]hwein|laternen|fackel|m[uü]hlen|weihnachts)tour\b/;
 // "märchenhaft" ist ein Beiwort (Adventsshopping, Nacht mit dem Karnevalsclub), kein Märchen.
-const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
+const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|ka[sš]p[aá]rek|puppenspiel|puppenb[uü]hne|theater der puppen|marionetten|familienwochenende|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
 // In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
 // Altersangaben nur im Kinderalter (bis 12): "Einlass ab 18 Jahren" ist kein Kinderprogramm.
-const KINDER_BESCHREIBUNG = /f[uü]r kinder|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
-const THEATER = /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
+const KINDER_BESCHREIBUNG = /f[uü]r kinder|mit (?:euren|ihren) kindern|f[uü]r (?:unsere|die) kleinen|puppenm[aä]rchen|puppenspiel|\bab (?:drei|vier|f[uü]nf|sechs|sieben|acht|neun|zehn)\b(?! (?:uhr|euro|personen|teilnehmer))|\b(?:[1-9]|1[0-2]) ?(?:bis|[-–]) ?(?:[1-9]|1[0-2]) jahre|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
+const THEATER = /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|filmnachmittag|filmgespr[aä]ch|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
 const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback|bastelei|reportage|podiumsgespr|diskussion|diskutiert|wissensvermittlung/;
 const SPORT = /eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
 const WANDERN = /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/;
@@ -84,6 +84,10 @@ const SPIELSTAETTEN = /** @type {[string, RegExp][]} */ ([
   ['kurse', /volkshochschule|\bk?vhs\b/],
   ['konzert', /hutbergb[uü]hne/],
 ]);
+// Kammermusik und Streicher in der Beschreibung (der Titel nennt sie oft nicht); steht am Ende, damit Vortrag und Co. vorgehen.
+const KAMMERMUSIK = /streichquartett|streichquintett|streichsextett|streichtrio|streichorchester|kammermusik|kammerorchester|sinfoniekonzert/;
+// Festakte im Theaterhaus sind kein Theater: die Spielstätte allein macht dann keine Rubrik.
+const FESTAKT = /verleiht|verleihung|(?<!l|k|ver)ehrung|empfang|sitzung|versammlung/;
 // Stufe 4: der Anfang der Beschreibung, nur für diese Rubriken; er nennt die Gattung und zählt deshalb vor der Jahreszeit.
 const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
   ['fuehrung', FUEHRUNG],
@@ -92,6 +96,7 @@ const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
   ['theater', THEATER],
   ['kurse', KURSE],
   ['wandern', WANDERN],
+  ['konzert', KAMMERMUSIK],
 ]);
 // Stufe 5: die Jahreszeit im Titel ist nur das Thema, ein schwacher Hinweis.
 const JAHRESZEIT = /advent(?!ure|urer)|weihnacht|nikolaus|christkind|pyramide|winterzauber|lichterfest|lichtelfest/;
@@ -166,7 +171,13 @@ function konzertRubrik(e, titel, beschreibung) {
   return { rubrik: 'konzert', genre: konzertUnterpunkt(e) };
 }
 
-const MARKT_FEST = /(?:lichter|lichtel|advents|pyramiden|weihnachts)fest/;
+// Lichter- und Adventstermine ohne Marktwort sind Feste ("Weihnacht" allein bleibt Markt).
+const MARKT_FEST = /lichter|lichtel|advent(?!ure|urer)|laternenzug|laternenumzug|bergparade|pyramidenfest|weihnachtsfest/;
+// Lichter- und Adventszüge sind hier Advents-Termine (nicht Brauchtum); andere Sorten (Laternen: Familie) bleiben.
+function marktFestSorte(titel) {
+  const s = detectSorte('fest', titel);
+  return s && s !== 'brauchtum' ? s : 'weihnachten';
+}
 const FEST_KINO = /filmfest|kurzfilm|kinofest/;
 const FEST_ESSEN = /weinfest|winzerfest|bierfest|street.?food|schlemmerfest|food.?festival/;
 const FEST_SPORT = /turnier|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b/;
@@ -187,7 +198,7 @@ export function rubrikUndGenre(e) {
   if (art === 'konzert') return konzertRubrik(e, titel, beschreibung);
 
   if (art === 'markt') {
-    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkte/.test(titel)) return { rubrik: 'fest', genre: detectSorte('fest', e?.title) ?? 'weihnachten' };
+    if (MARKT_FEST.test(titel) && !/markt|m[aä]rkte/.test(titel)) return { rubrik: 'fest', genre: marktFestSorte(e?.title) };
     return { rubrik: 'markt', genre: sorte('markt') };
   }
 
@@ -220,7 +231,8 @@ function sonstigesRubrik(e, titel, beschreibung) {
   if (CHRISTNACHT.test(titel)) return { rubrik: 'konzert', genre: 'kirche' };
   const ausTitel = ersteRegel(TITEL_REGELN, titel);
   if (ausTitel) return ergebnis(ausTitel, e, titel, beschreibung);
-  const haus = ersteRegel(SPIELSTAETTEN, klein(e?.placeName));
+  let haus = ersteRegel(SPIELSTAETTEN, klein(e?.placeName));
+  if (haus === 'theater' && FESTAKT.test(titel)) haus = null;
   if (haus === 'sternwarte') return { rubrik: 'kurse', genre: 'vortrag' };
   if (haus) return ergebnis(haus, e, titel, beschreibung);
   // Musik-, Essens- und Sportwörter zählen nur im Titel; in Beschreibungen kommen sie bei allem Möglichen vor.
