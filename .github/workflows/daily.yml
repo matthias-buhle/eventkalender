@@ -78,6 +78,8 @@ jobs:
         env:
           TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
           DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          DRESDEN_API_KEY: ${{ secrets.DRESDEN_API_KEY }}
+          DRESDEN_API_SECRET: ${{ secrets.DRESDEN_API_SECRET }}
           EVENTKALENDER_CONTACT: ${{ vars.EVENTKALENDER_CONTACT }}
 
       - name: Seite zusammenstellen
