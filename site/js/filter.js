@@ -130,7 +130,7 @@ function passtZurSuche(e, woerter) {
 
 /**
  * Neue Rubrikwahl nach dem Antippen einer Rubrik: sie kommt dazu oder geht wieder (Reihenfolge wie RUBRIKEN).
- * Leer heißt alle; sind am Ende alle 13 gewählt, heißt das ebenfalls alle (leere Liste). Unbekanntes ändert nichts.
+ * Leer heißt alle; sind am Ende alle 14 gewählt, heißt das ebenfalls alle (leere Liste). Unbekanntes ändert nichts.
  */
 export function rubrikWaehlen(rubriken, key) {
   const jetzt = new Set(rubriken);
@@ -236,7 +236,7 @@ export function applyFilters(events, prefs, nowIso, orte = {}, optionen = {}) {
   });
 }
 
-/** Termine je Rubrik (alle 13 Schlüssel, 0 für leere) unter allen Filtern außer der Rubrikwahl und ihren Unterfiltern. */
+/** Termine je Rubrik (alle 14 Schlüssel, 0 für leere) unter allen Filtern außer der Rubrikwahl und ihren Unterfiltern. */
 export function zaehleRubriken(events, prefs, nowIso, orte = {}) {
   const zahlen = Object.fromEntries(RUBRIK_KEYS.map((k) => [k, 0]));
   for (const e of applyFilters(events, prefs, nowIso, orte, { ohneRubrik: true })) zahlen[rubrikVon(e)] += 1;

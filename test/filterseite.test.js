@@ -60,11 +60,11 @@ const sorte = (c, titel, text) => [...gruppe(c, titel).querySelectorAll('button.
 const gedrueckt = (c, titel) => [...gruppe(c, titel).querySelectorAll('button.chip[aria-pressed="true"]')].map((b) => b.textContent);
 const sichtbareGruppen = (c) => [...c.querySelectorAll('.sorten')].filter((g) => !g.hasAttribute('hidden')).map((g) => g.querySelector('.gruppentitel').textContent);
 
-test('13 Kacheln in Spec-Reihenfolge mit den Zahlen beim Wochenende', () => {
+test('14 Kacheln in Spec-Reihenfolge mit den Zahlen beim Wochenende', () => {
   const { container } = aufbau();
   assert.deepEqual(kacheln(container).map((k) => k.querySelector('.kachel-name').textContent), [
     'Konzerte', 'Märkte', 'Ausstellungen & Museen', 'Schauen', 'Feste', 'Partys', 'Führungen', 'Wandern & Natur',
-    'Kurse & Vorträge', 'Theater & Lesungen', 'Essen & Trinken', 'Kinder & Familie', 'Sonstiges',
+    'Kurse & Vorträge', 'Theater & Lesungen', 'Essen & Trinken', 'Kinder & Familie', 'Sport & Freizeit', 'Sonstiges',
   ]);
   const z = zahlen(container);
   assert.equal(z.Konzerte, 1);
@@ -225,7 +225,7 @@ test('Kachel Konzerte wählt die Rubrik und klappt ihre Unterpunkte direkt unter
   kachel(container, 'Märkte').click();
   assert.deepEqual(ctx.prefs.rubriken, ['konzert', 'markt']);
   assert.deepEqual(sichtbareGruppen(container), ['Konzerte: Genre', 'Märkte: Sorte']);
-  kachel(container, 'Theater & Lesungen').click();
+  kachel(container, 'Sport & Freizeit').click();
   assert.deepEqual(sichtbareGruppen(container), ['Konzerte: Genre', 'Märkte: Sorte'], 'Rubrik ohne Unterpunkte');
   k.click();
   assert.deepEqual(sichtbareGruppen(container), ['Märkte: Sorte']);
@@ -241,7 +241,7 @@ test('Unterpunkte: erst gilt "Alle"; ein Tipp wählt genau diese Unterart, weite
   assert.deepEqual(gedrueckt(container, G), ['Rock & Pop']);
   assert.equal(aufrufe.aenderung, 1);
   assert.ok(!ctx.prefs.hiddenGenres.includes('rock-pop'));
-  assert.equal(ctx.prefs.hiddenGenres.length, 9);
+  assert.equal(ctx.prefs.hiddenGenres.length, 7);
   assert.equal(knopf(container).textContent, '1 Termin anzeigen');
   sorte(container, G, 'Sonstige Konzerte').click();
   assert.deepEqual(gedrueckt(container, G), ['Rock & Pop', 'Sonstige Konzerte']);

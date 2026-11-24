@@ -315,7 +315,7 @@ test('Unterart (genre): Konzerte bekommen ein Genre, Märkte und Schauen ihre So
   assert.equal(von('Pirnaer Weihnachtsmarkt'), 'weihnachtsmarkt');
   assert.equal(von('Kleintierschau Hainewalde'), 'tiere');
   assert.equal(von('Rock-Party'), null);
-  assert.equal(von('Stand-up-Abend'), null, 'Comedy gibt es nur als Konzert-Genre');
+  assert.equal(von('Stand-up-Abend'), null, 'Comedy ist kein Konzert-Genre mehr; ein Hinweis ohne passende Rubrik fällt weg');
   assert.equal(von('Flohmarkt am Ring'), 'troedel', 'ein Konzert-Genre bei einem Markt wird verworfen und neu bestimmt');
   assert.equal(von('Ohne Hinweis'), null);
 });

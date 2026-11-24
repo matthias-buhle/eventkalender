@@ -127,14 +127,10 @@ export const GENRES = {
   jazz: 'Jazz & Blues',
   'schlager-folk': 'Schlager & Folk',
   'hiphop-elektro': 'Hip-Hop & Elektro',
-  comedy: 'Comedy & Kabarett',
-  musical: 'Musical',
 };
 
 // Reihenfolge = Vorrang: das Besondere vor dem Allgemeinen ("Popchor" ist Pop, nicht Chor).
 const GENRE_REGELN = /** @type {[string, RegExp][]} */ ([
-  ['comedy', /comedy|kabarett|cabaret|stand.?up|satire|kleinkunst|\bhumor\b|\bhumorzone/],
-  ['musical', /musical/],
   ['metal-punk', /\bmetal|\bpunk|hardcore|thrash|heavy/],
   ['jazz', /jazz|swing|blues|big.?band|dixie/],
   ['hiphop-elektro', /hip.?hop|\brap\b|rapper|techno|\bhouse\b|electro|elektro|\bedm\b|\bdance\b|trance|drum.?n.?bass/],
@@ -184,7 +180,7 @@ export const FEST_SORTEN = {
   familie: 'Familie & Kinder',
   stadtfest: 'Stadt- & Dorffest',
   weihnachten: 'Weihnachten & Lichter',
-  essen: 'Essen & Trinken',
+  brauchtum: 'Brauchtum',
   festival: 'Festival',
 };
 
@@ -217,8 +213,7 @@ const FEST_REGELN = /** @type {[string, RegExp][]} */ ([
   ['festival', /festival|open.?air/],
   ['weihnachten', /weihnacht|advent|lichterfest|nikolaus|pyramide/],
   ['familie', /familie|kinder|m[aä]rchen|martin|laterne|kasper|puppen|oster/],
-  ['essen', /suppe|\bwein|bier|schlemm|kulinar|gourmet|ernte|kartoffel|k[aä]se|\bbrot|fisch|grill|wurst|genuss|apfel|pilz/],
-  ['stadtfest', /stadt|dorf|festumzug|jubil|kirmes|kirchweih|heimat|volksfest|umzug|sommerfest|herbstfest|schlossfest|burgfest|hoffest|gartenfest|vereinsfest|sch[uü]tzenfest/],
+  ['stadtfest', /suppe|\bwein|bier|schlemm|kulinar|gourmet|ernte|kartoffel|k[aä]se|\bbrot|fisch|grill|wurst|genuss|apfel|pilz|stadt|dorf|festumzug|jubil|kirmes|kirchweih|heimat|volksfest|umzug|sommerfest|herbstfest|schlossfest|burgfest|hoffest|gartenfest|vereinsfest|sch[uü]tzenfest/],
 ]);
 
 function ratenAus(regeln, texte) {

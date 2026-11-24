@@ -1,7 +1,8 @@
 import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN, detectSorte, passendeSorte } from './normalize.js';
+import { FUEHRUNG_UNTER, WANDERN_UNTER, KURSE_UNTER, THEATER_UNTER, ESSEN_UNTER, KINDER_UNTER } from './unterpunkte.js';
 
 /**
- * Die 13 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
+ * Die 14 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
  * art = bestehende Farbfamilie (Feld art der Termine bleibt unverändert).
  */
 export const RUBRIKEN = [
@@ -17,13 +18,12 @@ export const RUBRIKEN = [
   { key: 'theater', name: 'Theater & Lesungen', karte: 'Theater & Lesung', art: 'sonstiges' },
   { key: 'essen', name: 'Essen & Trinken', karte: 'Essen & Trinken', art: 'sonstiges' },
   { key: 'kinder', name: 'Kinder & Familie', karte: 'Kinder & Familie', art: 'sonstiges' },
+  { key: 'sport', name: 'Sport & Freizeit', karte: 'Sport & Freizeit', art: 'sonstiges' },
   { key: 'sonstiges', name: 'Sonstiges', karte: 'Sonstiges', art: 'sonstiges' },
 ];
 
 const SCHAU_UNTER = { tiere: 'Tier- & Zuchtschau', hobby: 'Messe & Hobby' };
 const AUSSTELLUNG_UNTER = { kunst: 'Kunst & Foto', museum: 'Museum & Geschichte' };
-const FUEHRUNG_UNTER = { stadt: 'Stadt & Ort', untertage: 'Untertage & Bergwerk', brauerei: 'Brauerei & Bäckerei', kinder: 'Kinderführung' };
-
 /** Unterfilter je Rubrik (Schlüssel → Anzeigename). Rubriken ohne Eintrag haben keine. */
 export const UNTERARTEN = {
   konzert: GENRES,
@@ -33,6 +33,11 @@ export const UNTERARTEN = {
   schau: SCHAU_UNTER,
   ausstellung: AUSSTELLUNG_UNTER,
   fuehrung: FUEHRUNG_UNTER,
+  wandern: WANDERN_UNTER,
+  kurse: KURSE_UNTER,
+  theater: THEATER_UNTER,
+  essen: ESSEN_UNTER,
+  kinder: KINDER_UNTER,
 };
 
 // Einführung, Vorführung, Aufführung, Durchführung, Ausführung, Verführung sind keine Führungen; Weinführung, Steinführung schon ("aus" und "ein" zählen nur als ganzes Wort: Haus-, Rathaus-, Wein-, Steinführung sind Führungen).

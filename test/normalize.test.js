@@ -77,10 +77,12 @@ test('detectGenre: Genre aus Titel, Kategorie und Beschreibung (deutsch und engl
   assert.equal(g('Swingin‘ Santa Bigbandkonzerte 2026'), 'jazz');
   assert.equal(g('Jazzabend im Keller'), 'jazz');
   assert.equal(g('Bluesnight mit den Dirty Strings'), 'jazz');
-  assert.equal(g('Johann König', 'Heute ein König', 'Comedy'), 'comedy');
-  assert.equal(g('Kabarett: Die Dresdner Spitzen'), 'comedy');
-  assert.equal(g('Stand-up Night'), 'comedy');
-  assert.equal(g('Die Nacht der Musicals'), 'musical');
+  assert.equal(g('Johann König', 'Heute ein König', 'Comedy'), null, 'Comedy ist kein Konzert-Genre mehr');
+  assert.equal(g('Kabarett: Die Dresdner Spitzen'), null);
+  assert.equal(g('Stand-up Night'), null);
+  assert.equal(g('Die Nacht der Musicals'), null, 'Musical ist kein Konzert-Genre mehr');
+  assert.equal(g('Comedy-Abend'), null);
+  assert.equal(g('Musical-Gala'), null);
   assert.equal(g('Heavy Metal Open Air'), 'metal-punk');
   assert.equal(g('Punkrock im Hinterhof'), 'metal-punk');
   assert.equal(g('Rockkonzert mit den Stones Revival'), 'rock-pop');
@@ -116,7 +118,7 @@ test('detectGenre: Bandnamen, Hits-Abende, Matineen, Singen und Humor aus dem Be
   assert.equal(detectGenre('Adventsliedersingen mit Peter Lippert'), 'klassik');
   assert.equal(detectGenre('Konzert: MEDLZ Die 90er – a cappella'), 'klassik');
   assert.equal(detectGenre('Gerhard Schöne und Musikanten'), 'schlager-folk');
-  assert.equal(detectGenre('HUMORZONE - Anna Mateur'), 'comedy');
+  assert.equal(detectGenre('HUMORZONE - Anna Mateur'), null);
   assert.equal(detectGenre('Dixieland Band'), 'jazz');
   assert.equal(detectGenre('Bandcamp-Abend'), null);
 });
@@ -125,7 +127,7 @@ test('detectGenre: Kirchenmusik hat Vorrang vor den breiten Pop-Wörtern; zu bre
   assert.equal(detectGenre('Gospel Worship Band'), 'kirche');
   assert.equal(detectGenre('Kirchenkonzert mit Band'), 'kirche');
   assert.equal(detectGenre('Gospel Revival'), 'kirche');
-  assert.equal(detectGenre('HUMORZONE - Die Gala'), 'comedy');
+  assert.equal(detectGenre('HUMORZONE - Die Gala'), null);
   assert.equal(detectGenre('Ein humorvoller Abend'), null);
   assert.equal(detectGenre('Humoresken für Streicher'), null);
   assert.equal(detectGenre('Flügelhorn-Abend'), null);
@@ -247,8 +249,8 @@ test('detectSorte(fest): Familie & Kinder, Stadt- & Dorffest, Weihnachten & Lich
   assert.equal(f('Pyramidenfest'), 'weihnachten');
   assert.equal(f('Weihnachtszeit: Lichterfest am Sächsischen Haus'), 'weihnachten');
   assert.equal(f('Seniorenweihnachtsfeier Sebnitz'), 'weihnachten');
-  assert.equal(f('8. Lauterbacher Suppenfest'), 'essen');
-  assert.equal(f('Weinfest am Schloss'), 'essen');
+  assert.equal(f('8. Lauterbacher Suppenfest'), 'stadtfest', 'die Umleitung nach Essen & Trinken geschieht in rubrikUndGenre');
+  assert.equal(f('Weinfest am Schloss'), 'stadtfest');
   assert.equal(f('17. Europäisches Filmfestival der Generationen'), 'festival');
   assert.equal(f('Open-Air am See'), 'festival');
   assert.equal(f('Zärtlichkeiten mit Freunden'), null);

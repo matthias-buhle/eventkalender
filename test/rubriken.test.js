@@ -6,11 +6,11 @@ import { GENRES, MARKT_SORTEN, PARTY_SORTEN, FEST_SORTEN } from '../src/normaliz
 const von = (e) => rubrikUndGenre({ description: null, genre: null, ...e });
 const sonst = (title, description = null) => von({ art: 'sonstiges', title, description });
 
-test('RUBRIKEN hat 13 eindeutige Schlüssel in der Reihenfolge der Spec', () => {
+test('RUBRIKEN hat 14 eindeutige Schlüssel in der Reihenfolge der Spec', () => {
   assert.deepEqual(RUBRIKEN.map((r) => r.key), [
-    'konzert', 'markt', 'ausstellung', 'schau', 'fest', 'party', 'fuehrung', 'wandern', 'kurse', 'theater', 'essen', 'kinder', 'sonstiges',
+    'konzert', 'markt', 'ausstellung', 'schau', 'fest', 'party', 'fuehrung', 'wandern', 'kurse', 'theater', 'essen', 'kinder', 'sport', 'sonstiges',
   ]);
-  assert.equal(new Set(RUBRIKEN.map((r) => r.key)).size, 13);
+  assert.equal(new Set(RUBRIKEN.map((r) => r.key)).size, 14);
   for (const r of RUBRIKEN) {
     assert.ok(r.name && r.karte && r.art, r.key);
   }
@@ -30,8 +30,24 @@ test('UNTERARTEN: Unterfilter je Rubrik', () => {
   assert.equal(UNTERARTEN.fest, FEST_SORTEN);
   assert.deepEqual(Object.keys(UNTERARTEN.schau), ['tiere', 'hobby']);
   assert.deepEqual(Object.keys(UNTERARTEN.ausstellung), ['kunst', 'museum']);
-  assert.deepEqual(Object.keys(UNTERARTEN.fuehrung), ['stadt', 'untertage', 'brauerei', 'kinder']);
-  assert.equal(UNTERARTEN.theater, undefined);
+  assert.deepEqual(Object.keys(UNTERARTEN.fuehrung), ['stadt', 'untertage', 'brauerei', 'kinder', 'hausfuehrung', 'bahn']);
+  assert.deepEqual(Object.keys(UNTERARTEN).sort(), [
+    'ausstellung', 'essen', 'fest', 'fuehrung', 'kinder', 'konzert', 'kurse', 'markt', 'party', 'schau', 'theater', 'wandern',
+  ]);
+  assert.equal(UNTERARTEN.sport, undefined);
+  assert.equal(UNTERARTEN.sonstiges, undefined);
+  assert.equal(UNTERARTEN.konzert.comedy, undefined);
+  assert.equal(UNTERARTEN.konzert.musical, undefined);
+  assert.equal(UNTERARTEN.fest.brauchtum, 'Brauchtum');
+  assert.equal(UNTERARTEN.fest.essen, undefined);
+  assert.equal(UNTERARTEN.theater.kabarett, 'Kabarett & Comedy');
+  assert.equal(UNTERARTEN.fuehrung.hausfuehrung, 'Museum & Schloss');
+  assert.equal(UNTERARTEN.fuehrung.bahn, 'Sonderfahrt Bahn');
+  assert.deepEqual(Object.keys(UNTERARTEN.wandern), ['wanderung', 'spaziergang', 'natur']);
+  assert.deepEqual(Object.keys(UNTERARTEN.kurse), ['vortrag', 'kreativ', 'bewegung', 'lernen']);
+  assert.deepEqual(Object.keys(UNTERARTEN.theater), ['schauspiel', 'lesung', 'kabarett', 'kino', 'show']);
+  assert.deepEqual(Object.keys(UNTERARTEN.essen), ['dinner', 'brunch', 'verkostung']);
+  assert.deepEqual(Object.keys(UNTERARTEN.kinder), ['kinder-buehne', 'kinder-mitmachen', 'kinder-lernen']);
 });
 
 test('art konzert/markt/party/fest bleibt gleichnamige Rubrik', () => {

@@ -3,7 +3,7 @@
 // Der Gleichlauf ist in test/normalize.test.js gesichert.
 
 /**
- * Die 13 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
+ * Die 14 Rubriken in Kachelreihenfolge. name = Kachelname, karte = Einzahl für die Karte,
  * farbe = Farbfamilie (die Art in src/rubriken.js; die CSS-Klasse art-<farbe> bleibt).
  */
 export const RUBRIKEN = [
@@ -19,6 +19,7 @@ export const RUBRIKEN = [
   { key: 'theater', name: 'Theater & Lesungen', karte: 'Theater & Lesung', farbe: 'sonstiges' },
   { key: 'essen', name: 'Essen & Trinken', karte: 'Essen & Trinken', farbe: 'sonstiges' },
   { key: 'kinder', name: 'Kinder & Familie', karte: 'Kinder & Familie', farbe: 'sonstiges' },
+  { key: 'sport', name: 'Sport & Freizeit', karte: 'Sport & Freizeit', farbe: 'sonstiges' },
   { key: 'sonstiges', name: 'Sonstiges', karte: 'Sonstiges', farbe: 'sonstiges' },
 ];
 
@@ -50,7 +51,7 @@ export const SORTEN = {
     sonstigeText: 'Sonstige Konzerte',
     liste: {
       'rock-pop': 'Rock & Pop', 'metal-punk': 'Metal & Punk', klassik: 'Klassik & Chor', kirche: 'Kirchenmusik', jazz: 'Jazz & Blues',
-      'schlager-folk': 'Schlager & Folk', 'hiphop-elektro': 'Hip-Hop & Elektro', comedy: 'Comedy & Kabarett', musical: 'Musical',
+      'schlager-folk': 'Schlager & Folk', 'hiphop-elektro': 'Hip-Hop & Elektro',
     },
   },
   party: {
@@ -71,7 +72,7 @@ export const SORTEN = {
     sonstigeText: 'Sonstige Feste',
     liste: {
       familie: 'Familie & Kinder', stadtfest: 'Stadt- & Dorffest', weihnachten: 'Weihnachten & Lichter',
-      essen: 'Essen & Trinken', festival: 'Festival',
+      brauchtum: 'Brauchtum', festival: 'Festival',
     },
   },
   schau: {
@@ -90,7 +91,46 @@ export const SORTEN = {
     titel: 'Führungen: Sorte',
     sonstige: 'sonstige-fuehrung',
     sonstigeText: 'Sonstige Führungen',
-    liste: { stadt: 'Stadt & Ort', untertage: 'Untertage & Bergwerk', brauerei: 'Brauerei & Bäckerei', kinder: 'Kinderführung' },
+    liste: {
+      stadt: 'Stadt & Ort', untertage: 'Untertage & Bergwerk', brauerei: 'Brauerei & Bäckerei', kinder: 'Kinderführung',
+      hausfuehrung: 'Museum & Schloss', bahn: 'Sonderfahrt Bahn',
+    },
+  },
+  wandern: {
+    titel: 'Wandern & Natur: Sorte',
+    sonstige: 'sonstige-wandern',
+    sonstigeText: 'Sonstige Touren',
+    liste: { wanderung: 'Geführte Wanderung', spaziergang: 'Spaziergang & Rundgang', natur: 'Tiere & Natur' },
+  },
+  kurse: {
+    titel: 'Kurse & Vorträge: Sorte',
+    sonstige: 'sonstige-kurse',
+    sonstigeText: 'Sonstige Kurse',
+    liste: {
+      vortrag: 'Vortrag & Reisebericht', kreativ: 'Kreativ, Handwerk & Kochen', bewegung: 'Bewegung & Entspannung',
+      lernen: 'Computer, Sprache & Beruf',
+    },
+  },
+  theater: {
+    titel: 'Theater & Lesungen: Sorte',
+    sonstige: 'sonstige-theater',
+    sonstigeText: 'Sonstiges Theater',
+    liste: {
+      schauspiel: 'Schauspiel & Oper', lesung: 'Lesung & Literatur', kabarett: 'Kabarett & Comedy', kino: 'Kino & Film',
+      show: 'Show, Zirkus & Musical',
+    },
+  },
+  essen: {
+    titel: 'Essen & Trinken: Sorte',
+    sonstige: 'sonstige-essen',
+    sonstigeText: 'Sonstiges Essen',
+    liste: { dinner: 'Dinner & Menü', brunch: 'Brunch', verkostung: 'Verkostung' },
+  },
+  kinder: {
+    titel: 'Kinder & Familie: Sorte',
+    sonstige: 'sonstige-kinder',
+    sonstigeText: 'Sonstiges für Kinder',
+    liste: { 'kinder-buehne': 'Theater, Kino & Musik', 'kinder-mitmachen': 'Basteln, Backen & Mitmachen', 'kinder-lernen': 'Lesen & Lernen' },
   },
 };
 
