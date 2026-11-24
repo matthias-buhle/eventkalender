@@ -87,7 +87,7 @@ test('sonstiges wird nach Stichwörtern zerlegt', () => {
 });
 
 test('Reihenfolge der Regeln', () => {
-  assert.equal(sonst('Kindertheater').rubrik, 'theater');
+  assert.equal(sonst('Kindertheater').rubrik, 'kinder', 'Kinder vor Theater');
   assert.equal(sonst('Theaterdinner').rubrik, 'theater');
 });
 
@@ -115,7 +115,7 @@ test('Nachgeschärft an den echten Daten: Vorführung ist keine Führung, Musik 
   assert.equal(sonst('Schwanensee – Ballett in vier Akten').rubrik, 'theater');
   assert.equal(sonst('Whisky-Tasting im Besucherbergwerk').rubrik, 'essen');
   assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Peer Gynt', placeName: 'Burgtheater Bautzen' }).rubrik, 'theater');
-  assert.equal(sonst('Treffen', 'Musik liegt in der Luft und Kaffee gibt es auch').rubrik, 'essen', 'Musik zählt nur im Titel');
+  assert.equal(sonst('Treffen', 'Musik liegt in der Luft und Kaffee gibt es auch').rubrik, 'sonstiges', 'Musik und Essen zählen nur im Titel');
 });
 
 test('Führung: eine Regel für Art schau und sonstiges; Wein- und Steinführung zählen, Einführung nicht', () => {
@@ -264,4 +264,92 @@ test('Party (Entscheidung 13 und Umleitung)', () => {
   assert.deepEqual(von({ art: 'party', title: 'QUERBEET PARTY mit DJ Basti' }), { rubrik: 'party', genre: 'club' });
   assert.deepEqual(von({ art: 'party', title: 'Tanzturnier um den Stadtpokal' }), { rubrik: 'sport', genre: null });
   assert.deepEqual(von({ art: 'party', title: 'Tanzkurs für Paare' }), { rubrik: 'kurse', genre: 'bewegung' });
+});
+
+test('Führung schlägt Essen (Entscheidung 9), Bahn (11)', () => {
+  for (const t of [
+    'Glühwein, Lichter & Geschichte - die WEIHNACHTSTOUR mit dem Stadtschleicher',
+    'Bautzener Lichterfahrt: Mit Panorama und Glühwein durch den Advent',
+    'Der Nachtwächter zu Bautzen',
+    'Rathausturm - Zwiedzanie Wieży Ratuszowej po polsku',
+    'Kleine Mühlentour mit Besuch der Max Bähr-Mühle',
+    'Adventszauber auf der Weißeritztalbahn',
+    'Nikolausfahrt mit dem Dampfzug',
+  ]) {
+    assert.equal(sonst(t).rubrik, 'fuehrung', t);
+  }
+  assert.equal(von({ art: 'sonstiges', title: 'Kommunikation in hybriden Teams – Führung auf Distanz wirksam gestalten (Onlinekurs)', placeName: 'Kreisvolkshochschule Bautzen - Online' }).rubrik, 'kurse');
+  assert.equal(sonst('Seminar für Führungskräfte').rubrik, 'kurse');
+  assert.equal(sonst('Modellbahnausstellung im Lokschuppen').rubrik, 'ausstellung', 'keine Sonderfahrt');
+});
+
+test('Kinder vor Theater, Kurse, Essen', () => {
+  for (const t of ['Kindertheater: Der Grüffelo', 'Bastelkurs für Kinder', 'Plätzchenbacken für Kinder', 'Laternebasteln im Schuberts e.V.']) {
+    assert.equal(sonst(t).rubrik, 'kinder', t);
+  }
+  assert.equal(sonst('Kinderführung im Schloss').rubrik, 'fuehrung');
+  assert.notEqual(sonst('Familienalbum ‒ aus dem Leben der Görlitzer Juden | Die Familie Alexander').rubrik, 'kinder');
+});
+
+test('Theater (Entscheidung 1 bis 4, 15)', () => {
+  for (const t of ['Kabarett „Der nackte Shakespeare 2“', 'Signierstunde', 'Buchpremiere "Serbska protyka 2027"', 'Kurzfilmtag mit den Senftenberger Videofilmern', 'Theaterdinner "Die Schneekönigin"']) {
+    assert.equal(sonst(t).rubrik, 'theater', t);
+  }
+  assert.equal(von({ art: 'sonstiges', title: 'Eine Woche voller Samstage', placeName: 'Haus Zittau Großer Saal' }).rubrik, 'theater');
+  assert.equal(von({ art: 'sonstiges', title: 'Wunderwahr', placeName: 'Haus Görlitz Apollo' }).rubrik, 'theater');
+  assert.notEqual(sonst('Vorführung der historischen Dampfmaschine').rubrik, 'theater');
+  assert.equal(von({ art: 'sonstiges', title: 'Mark Reeder legt auf', placeName: 'Haus Zittau Großer Saal' }).rubrik, 'party');
+});
+
+test('Kurse', () => {
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Liebesgeschichten am Nachthimmel', placeName: 'Scultetus-Sternwarte, Raum Görlitz' }), { rubrik: 'kurse', genre: 'vortrag' });
+  assert.equal(sonst('Tanzkursreihe 2026 – Kurs „A“').rubrik, 'kurse');
+  assert.equal(sonst('Französisch To Go - Einführungskurs').rubrik, 'kurse');
+});
+
+test('Sport & Freizeit (Entscheidung 12)', () => {
+  for (const t of ['Eislaufen in Görlitz', 'Tischtennisspiel', 'Geselliger Kegelabend', 'Winterskat im Gasthof Hillig', 'Spieleabend im Jugendclub', 'Volleyballturnier']) {
+    assert.deepEqual(sonst(t), { rubrik: 'sport', genre: null }, t);
+  }
+  assert.equal(sonst('Eröffnung des Skateparks').rubrik, 'sonstiges');
+  assert.notEqual(sonst('Krippenspiel in der Stadtkirche').rubrik, 'sport');
+});
+
+test('Essen wird enger (Entscheidung 14)', () => {
+  for (const t of ['Adventsbrunch im Berghotel', 'Whisky-Tasting', 'Gänseessen im Landgasthof', 'Kaffeeklatsch']) {
+    assert.equal(sonst(t).rubrik, 'essen', t);
+  }
+  assert.deepEqual(sonst('Lebendiger Adventskalender in Mulda', 'Täglich vom 1. bis 23. Dezember … mit Kaffee und Kuchen'), { rubrik: 'fest', genre: 'weihnachten' });
+  assert.equal(sonst('Seniorentreff', 'Bei Kaffee und Kuchen …').rubrik, 'sonstiges');
+});
+
+test('Feste, Partys, Ausstellungen, Konzerte aus Sonstiges (Entscheidung 15)', () => {
+  assert.deepEqual(sonst('Weihnachtliche Mettenschicht im Besucherbergwerk'), { rubrik: 'fest', genre: 'brauchtum' });
+  assert.deepEqual(sonst('Bergparade im Fackelschein'), { rubrik: 'fest', genre: 'brauchtum' });
+  assert.deepEqual(sonst('Lebendiger Adventskalender in Frauenstein'), { rubrik: 'fest', genre: 'weihnachten' });
+  assert.deepEqual(sonst('Ball Royale'), { rubrik: 'party', genre: 'silvester' });
+  assert.deepEqual(sonst('BKC Weiberfasching'), { rubrik: 'party', genre: 'fasching' });
+  assert.deepEqual(sonst('»HANS-PETER MENGE. Zeichnungen und Druckgrafik«'), { rubrik: 'ausstellung', genre: 'kunst' });
+  assert.deepEqual(sonst('Weihnachtszeit: Christmette'), { rubrik: 'konzert', genre: 'kirche' });
+  assert.deepEqual(sonst('Christnacht mit Lichterzug in der Kirche'), { rubrik: 'konzert', genre: 'kirche' });
+  assert.equal(sonst('Adventssingen im Rathaus').rubrik, 'konzert', 'Jahreszeit ist schwach');
+  assert.equal(von({ art: 'sonstiges', title: 'FORCED TO MODE', placeName: 'Hutbergbühne Kamenz' }).rubrik, 'konzert');
+});
+
+test('Konzerte aus Sonstiges nehmen denselben Weg wie Art konzert (Kabarett bleibt Theater)', () => {
+  assert.deepEqual(von({ art: 'sonstiges', title: 'Schmutzige Lieder', description: 'Die Kabarettistin hat bereits etliche Komplikationen überlebt' }), { rubrik: 'theater', genre: 'kabarett' });
+  assert.equal(sonst('Kinderkonzert im Saal').rubrik, 'kinder', 'Kinder vor Konzert');
+});
+
+test('Nachgeschärft am Bestand: Gruppen mit gemeinsamem Stichwort', () => {
+  assert.equal(sonst('Uriger Baudenabend').rubrik, 'essen');
+  assert.equal(sonst('Grillvergnügen').rubrik, 'essen');
+  assert.equal(sonst('Sagenhafte Klänge').rubrik, 'konzert');
+  assert.equal(sonst('Guitar Arte Trio – Abrazo').rubrik, 'konzert');
+  assert.equal(sonst('Kids Connect').rubrik, 'kinder');
+  assert.equal(sonst('Freizeitangebot: Holzbasteleien').rubrik, 'kurse');
+  assert.equal(sonst('Podiumsgespräch mit Zeitzeugen').rubrik, 'kurse');
+  assert.equal(sonst('Patagonien', 'Eine Reisereportage von und mit dem Fotografen').rubrik, 'kurse');
+  assert.deepEqual(sonst('Eine märchenhafte Nacht mit dem BKC'), { rubrik: 'party', genre: 'fasching' }, 'märchenhaft ist kein Märchen');
+  assert.equal(sonst('Märchenlesung im Atelier').rubrik, 'kinder');
 });

@@ -41,17 +41,60 @@ export const UNTERARTEN = {
 };
 
 // Einführung, Vorführung, Aufführung, Durchführung, Ausführung, Verführung sind keine Führungen; Weinführung, Steinführung schon ("aus" und "ein" zählen nur als ganzes Wort: Haus-, Rathaus-, Wein-, Steinführung sind Führungen).
-const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter/;
+// Führungskräfte, Führungsstil, Führung auf Distanz sind Kursthemen. Touren und Lichterfahrten sind Führungen (Entscheidung 9).
+const FUEHRUNG = /(?<!vor|auf|durch|ver|\b(?:aus|ein))f[uü]hrung(?!skr[aä]ft|sstil|skompetenz| auf distanz)|rundgang|besichtigung|stadtrundfahrt|nachtw[aä]chter|zwiedzanie|prohl[ií]dk|stadtschleicher|lichterfahrt|(?:stadt|altstadt|kneipen|gl[uü]hwein|laternen|fackel|m[uü]hlen|weihnachts)tour\b/;
+// Sonderfahrten der Bahn zählen zu den Führungen (Entscheidung 11).
+const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|advents|osterhasen|mondschein)(?:fahrt|express|zug)|schmalspurbahn|talbahn\b|grundbahn\b|museumsbahn|kleinbahn/;
+// "märchenhaft" ist ein Beiwort (Adventsshopping, Nacht mit dem Karnevalsclub), kein Märchen.
+const KINDER = /kinder|\bkids?\b|m[aä]rchen(?!haft)|krabbel|ferienprogramm|basteln|puppentheater|kasper|familien(?:tag|nachmittag|sonntag|programm|theater|zeit|kino|vorstellung|konzert|st[uü]ck|musical|angebot)|f[uü]r (?:die ganze )?famili/;
+// In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
+const KINDER_BESCHREIBUNG = /f[uü]r kinder|ab \d+ jahren?|kindertheater|puppentheater|familienprogramm/;
+const THEATER = /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
+const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback|bastelei|reportage|podiumsgespr|diskussion|diskutiert|wissensvermittlung/;
+const SPORT = /eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach|wettkampf|meisterschaft/;
+const WANDERN = /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/;
+// Essen nur im Titel: "Kaffee und Kuchen" in der Beschreibung macht noch kein Essen (Entscheidung 14).
+const ESSEN = /brunch|dinner|men[uü]\b|verkostung|weinprobe|bierprobe|tasting|whisky|kulinar|fr[uü]hst[uü]ck|schmaus|buffet|kaffeeklatsch|\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|gourmet|ritter|wein|g[aä]nse|enten|schlacht)essen\b|g[aä]nsebraten|martinsgans|baudenabend|h[uü]ttenabend|grill|kochshow/;
+const BRAUCHTUM = { test: (/** @type {string} */ t) => detectSorte('fest', t) === 'brauchtum' };
+const PARTY = /party|disco|disko|\bball\b|tanzabend|tanznacht|fasching|karneval|\bbkc\b|legt auf|silvester/;
+const AUSSTELLUNG = /vernissage|finissage|ausstellung|zeichnungen|druckgrafik|malerei|fotografien|skulpturen/;
+const KONZERT = /konzert|musik|requiem|oratori|kantate|matinee|orgel|vesper|singen\b|\bchor\b|klangschal|klangreise|\bgesang|\bband\b|tribute|hosianna|lieder|philharmon|orchester|bl[aä]ser|sinfon|symphon|klavier|streichorch|streichquartett|streicher\b|quartett|saxophon|\bpiano|violin|kl[aä]nge\b|gitarr|guitar|\btrio\b|\balbum/;
 
-// Reihenfolge = Vorrang (erste passende Regel gewinnt): Führung vor Theater vor Kurse ... vor Kinder, zuletzt Konzert. Für alle Termine der Art "sonstiges"; Titel vor Beschreibung.
-const REGELN = /** @type {[string, RegExp][]} */ ([
+// Rangfolge für die Art "sonstiges" (und jede unbekannte Art); erste passende Stufe gewinnt.
+// Stufe 1: die Christnacht ist Kirchenmusik.
+const CHRISTNACHT = /christmette|christvesper|christnacht/;
+// Stufe 2: starke Wörter im Titel, Reihenfolge = Vorrang.
+const TITEL_REGELN = /** @type {[string, {test(t:string):boolean}][]} */ ([
   ['fuehrung', FUEHRUNG],
-  ['theater', /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|vorf[uü]hrung|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer/],
-  ['kurse', /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback/],
-  ['wandern', /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|erdm[aä]nn|\bzoo\b/],
-  ['essen', /\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|fest|gourmet|ritter|wein|g[aä]nse|schlacht)essen\b|kulinar|brunch|dinner|verkostung|\bwein|\bbier|brauerei|backen|k[oö]chen|schlachtfest|g[aä]nse|gans\b|grill|fr[uü]hst[uü]ck|kaffee|kuchen|gl[uü]hwein|tasting|whisky|schmaus|abendbrot|baudenabend/],
-  ['kinder', /kinder|familie|m[aä]rchen|krabbel|ferienprogramm|basteln|d[aä]umling|rumpelkammer|fusselkopf|\bshaun\b|kuscheltier|spielend/],
-  ['konzert', /konzert|musik|requiem|oratori|kantate|matinee|orgel|vesper|singen\b|\bchor\b|klangschal|klangreise|\bgesang|\bband\b|tribute|hosianna|lieder|philharmon|orchester|bl[aä]ser|sinfon|symphon|klavier|streichorch|streichquartett|streicher\b|quartett|saxophon|\bpiano|violin/],
+  ['fuehrung', BAHN],
+  ['kinder', KINDER],
+  ['theater', THEATER],
+  ['kurse', KURSE],
+  ['sport', SPORT],
+  ['wandern', WANDERN],
+  ['essen', ESSEN],
+  ['fest', BRAUCHTUM],
+  ['party', PARTY],
+  ['ausstellung', AUSSTELLUNG],
+  ['konzert', KONZERT],
+]);
+// Stufe 3: die Spielstätte.
+const SPIELSTAETTEN = /** @type {[string, RegExp][]} */ ([
+  ['theater', /theater|kino|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo/],
+  ['sternwarte', /sternwarte|planetarium/],
+  ['kurse', /volkshochschule|\bk?vhs\b/],
+  ['konzert', /hutbergb[uü]hne/],
+]);
+// Stufe 4: die Jahreszeit im Titel ist ein schwacher Hinweis.
+const JAHRESZEIT = /advent(?!ure|urer)|weihnacht|nikolaus|christkind|pyramide|winterzauber|lichterfest|lichtelfest/;
+// Stufe 5: der Anfang der Beschreibung, nur für diese Rubriken.
+const BESCHREIBUNG_REGELN = /** @type {[string, RegExp][]} */ ([
+  ['fuehrung', FUEHRUNG],
+  ['fuehrung', BAHN],
+  ['kinder', KINDER_BESCHREIBUNG],
+  ['theater', THEATER],
+  ['kurse', KURSE],
+  ['wandern', WANDERN],
 ]);
 
 // Führungs-Unterarten, Reihenfolge = Vorrang.
@@ -168,13 +211,33 @@ export function rubrikUndGenre(e) {
     return { rubrik: /ausstellung/.test(titel) || /ausstellung/.test(beschreibung) ? 'ausstellung' : 'schau', genre: null };
   }
 
-  // Musik-Stichwörter zählen nur im Titel; in Beschreibungen kommen sie bei allem Möglichen vor.
-  const rubrik = ersteRegel(REGELN, titel) ?? ersteRegel(REGELN.filter(([k]) => k !== 'konzert'), beschreibung);
+  return sonstigesRubrik(e, titel, beschreibung);
+}
+
+/** Rangfolge für die Art "sonstiges" und jede unbekannte Art (siehe Stufen oben). */
+function sonstigesRubrik(e, titel, beschreibung) {
+  if (CHRISTNACHT.test(titel)) return { rubrik: 'konzert', genre: 'kirche' };
+  const ausTitel = ersteRegel(TITEL_REGELN, titel);
+  if (ausTitel) return ergebnis(ausTitel, e, titel, beschreibung);
+  const haus = ersteRegel(SPIELSTAETTEN, klein(e?.placeName));
+  if (haus === 'sternwarte') return { rubrik: 'kurse', genre: 'vortrag' };
+  if (haus) return ergebnis(haus, e, titel, beschreibung);
+  if (JAHRESZEIT.test(titel)) return { rubrik: 'fest', genre: 'weihnachten' };
+  // Musik-, Essens- und Sportwörter zählen nur im Titel; in Beschreibungen kommen sie bei allem Möglichen vor.
+  return ergebnis(ersteRegel(BESCHREIBUNG_REGELN, beschreibung) ?? 'sonstiges', e, titel, beschreibung);
+}
+
+/** Rubrik und Unterpunkt zu einer Rubrik aus der Rangfolge. Unterpunkte nur für Führung, Konzert, Fest, Party, Ausstellung. */
+function ergebnis(rubrik, e, titel, beschreibung) {
   if (rubrik === 'fuehrung') return fuehrung(titel, beschreibung);
-  if (rubrik === 'konzert') return { rubrik, genre: detectSorte('konzert', e?.title, e?.description) };
-  if (rubrik) return { rubrik, genre: null };
-  // Letzter Anhaltspunkt: das Haus ("Theater Görlitz", "Kunstbauerkino").
-  return { rubrik: /theater|kino/.test(klein(e?.placeName)) ? 'theater' : 'sonstiges', genre: null };
+  if (rubrik === 'konzert') return konzertRubrik(e, titel, beschreibung);
+  if (rubrik === 'fest') return { rubrik, genre: 'brauchtum' };
+  if (rubrik === 'party') return { rubrik, genre: detectSorte('party', e?.title) };
+  if (rubrik === 'ausstellung') {
+    const s = detectSorte('schau', e?.title);
+    return { rubrik, genre: s === 'kunst' || s === 'museum' ? s : null };
+  }
+  return { rubrik, genre: null };
 }
 
 function fuehrung(titel, beschreibung) {
