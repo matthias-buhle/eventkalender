@@ -2,7 +2,7 @@
 // Fremdwerte (Ortsnamen, Rubriknamen, Termindaten) kommen ausschließlich über textContent und setAttribute hinein, nie über innerHTML.
 import { RUBRIKEN, SORTEN } from './arten.js';
 import {
-  DEFAULT_PREFS, UMKREISE, anzeigeText, applyFilters, berlinDay, gewaehlteSorten, rubrikGetippt, sorteWaehlen, zaehleRubriken, zaehleSorten, zeitAbgelaufen,
+  DEFAULT_PREFS, UMKREISE, anzeigeText, applyFilters, berlinDay, gewaehlteSorten, rubrikGetippt, sorteWaehlen, zaehleRubriken, zaehleSorten, zaehleVeranstaltungen, zeitAbgelaufen,
   zeitfenster,
 } from './filter.js';
 import { markierterBereich, monateMitTerminen, monatsName, monatsRaster, tageMitTerminen, tagWaehlen } from './kalender.js';
@@ -327,7 +327,7 @@ export function baueFilterseite(doc, container, ctx) {
     const gewaehlt = prefs.rubriken ?? [];
     for (const [key, { k, zahl, name }] of kacheln) {
       zahl.textContent = String(zahlen[key]);
-      k.setAttribute('aria-label', `${name}, ${zahlen[key] === 1 ? '1 Termin' : `${zahlen[key]} Termine`}`);
+      k.setAttribute('aria-label', `${name}, ${zahlen[key] === 1 ? '1 Veranstaltung' : `${zahlen[key]} Veranstaltungen`}`);
       k.classList.toggle('leer', zahlen[key] === 0);
       k.setAttribute('aria-pressed', String(gewaehlt.includes(key)));
     }
@@ -365,7 +365,7 @@ export function baueFilterseite(doc, container, ctx) {
       anzeigen.textContent = 'Termine konnten nicht geladen werden';
       anzeigen.disabled = false; // führt zur Liste mit der Fehlermeldung
     } else {
-      anzeigen.textContent = anzeigeText(applyFilters(events, prefs, jetzt, orte).length);
+      anzeigen.textContent = anzeigeText(zaehleVeranstaltungen(applyFilters(events, prefs, jetzt, orte)));
       anzeigen.disabled = false;
     }
   }

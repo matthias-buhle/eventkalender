@@ -142,10 +142,25 @@ export function rubrikWaehlen(rubriken, key) {
   return neu.length === RUBRIK_KEYS.length ? [] : neu;
 }
 
-/** Text des Knopfes im Filterfenster: wie viele Termine die Filter gerade zeigen. */
+/** Text des Knopfes im Filterfenster: wie viele Veranstaltungen die Filter gerade zeigen. */
 export function anzeigeText(anzahl) {
-  if (anzahl === 0) return 'Keine Termine gefunden';
-  return anzahl === 1 ? '1 Termin anzeigen' : `${anzahl} Termine anzeigen`;
+  if (anzahl === 0) return 'Keine Veranstaltungen gefunden';
+  return anzahl === 1 ? '1 Veranstaltung anzeigen' : `${anzahl} Veranstaltungen anzeigen`;
+}
+
+/** Schlüssel einer Serie; leer für Einzeltermine und Daten ohne das Feld serie. */
+const serieVon = (e) => (typeof e.serie === 'string' && e.serie !== '' ? e.serie : null);
+
+/** Zahl der Veranstaltungen: jeder Termin ohne Serie zählt 1, jede Serie zusammen 1. */
+export function zaehleVeranstaltungen(events) {
+  const serien = new Set();
+  let einzeln = 0;
+  for (const e of events) {
+    const s = serieVon(e);
+    if (s === null) einzeln += 1;
+    else serien.add(s);
+  }
+  return einzeln + serien.size;
 }
 
 /** Alle Unterart-Schlüssel einer Rubrik in Knopfreihenfolge, am Ende der für "sonstige"; ohne Unterarten leer. */
@@ -236,20 +251,34 @@ export function applyFilters(events, prefs, nowIso, orte = {}, optionen = {}) {
   });
 }
 
-/** Termine je Rubrik (alle 14 Schlüssel, 0 für leere) unter allen Filtern außer der Rubrikwahl und ihren Unterfiltern. */
+/** Veranstaltungen je Rubrik (alle 14 Schlüssel, 0 für leere) unter allen Filtern außer der Rubrikwahl und ihren Unterfiltern; eine Serie zählt einmal. */
 export function zaehleRubriken(events, prefs, nowIso, orte = {}) {
   const zahlen = Object.fromEntries(RUBRIK_KEYS.map((k) => [k, 0]));
-  for (const e of applyFilters(events, prefs, nowIso, orte, { ohneRubrik: true })) zahlen[rubrikVon(e)] += 1;
+  const gesehen = new Set();
+  for (const e of applyFilters(events, prefs, nowIso, orte, { ohneRubrik: true })) {
+    const s = serieVon(e);
+    if (s !== null) {
+      if (gesehen.has(s)) continue;
+      gesehen.add(s);
+    }
+    zahlen[rubrikVon(e)] += 1;
+  }
   return zahlen;
 }
 
 /** Alle Unterpunkt-Schlüssel aller Rubriken, auch die Sammelpunkte. */
 const ALLE_SORTEN = Object.keys(SORTEN).flatMap(sortenSchluessel);
 
-/** Termine je Unterpunkt (alle Schlüssel aller Rubriken, 0 für leere) unter denselben Filtern wie zaehleRubriken. */
+/** Veranstaltungen je Unterpunkt (alle Schlüssel aller Rubriken, 0 für leere) unter denselben Filtern wie zaehleRubriken; eine Serie zählt einmal. */
 export function zaehleSorten(events, prefs, nowIso, orte = {}) {
   const zahlen = Object.fromEntries(ALLE_SORTEN.map((k) => [k, 0]));
+  const gesehen = new Set();
   for (const e of applyFilters(events, prefs, nowIso, orte, { ohneRubrik: true })) {
+    const serie = serieVon(e);
+    if (serie !== null) {
+      if (gesehen.has(serie)) continue;
+      gesehen.add(serie);
+    }
     const s = sorteFilter(e);
     if (s !== null) zahlen[s] += 1;
   }

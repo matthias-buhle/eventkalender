@@ -180,7 +180,8 @@ export function renderUeber(doc, optionen = {}) {
     el(doc, 'p', null, 'Bühnenlicht sammelt Konzerte, Feste, Märkte und Partys aus Ostsachsen und Umgebung an einem Ort. '
       + 'Es ist ein privates Projekt ohne Werbung und ohne Gewinn, gedacht für Familie, Freunde und den Heimatverein. '
       + 'Die Termine werden einmal täglich neu geholt. Bitte den Link nicht weitergeben.'),
-    el(doc, 'p', null, 'Die Filterseite am Anfang grenzt mit Zeitraum, Rubrik, Ort und Umkreis ein, wie viele Termine übrig bleiben, zeigt der Knopf unten. '
+    el(doc, 'p', null, 'Die Filterseite am Anfang grenzt mit Zeitraum, Rubrik, Ort und Umkreis ein, wie viele Veranstaltungen übrig bleiben, zeigt der Knopf unten. '
+      + 'Was mehrmals stattfindet, etwa ein Weihnachtsmarkt an vielen Tagen oder ein Kurs jede Woche, steht als eine Veranstaltung mit ihrem nächsten Termin; Theater und Konzerte zeigen jede Vorstellung einzeln. '
       + 'In der Liste lässt sich mit der Suche weiter eingrenzen, bis nur noch passende Termine übrig sind; „Filter ändern“ führt zurück.'),
     el(doc, 'p', null, 'Ein Klick oder Tipp auf einen Termin öffnet die Einzelheiten mit der ganzen Beschreibung und weiteren Knöpfen: '
       + 'zur Webseite, Tickets bestellen, anrufen, E-Mail schreiben und Navigation zum Veranstaltungsort.'),

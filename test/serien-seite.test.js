@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { tagPlus } from '../site/js/filter.js';
+import { tagPlus, zaehleVeranstaltungen } from '../site/js/filter.js';
 import { kurzTag, zeilenAus, zeilenNachTagen, serienText, istVoll } from '../site/js/serien.js';
 
 const HEUTE = '2026-11-24';
@@ -167,4 +167,10 @@ test('serienText: volle Terminliste nennt keine Anzahl und sagt „mindestens bi
   const lose = anTagen(['2026-12-26', '2026-12-28', '2026-12-31', '2027-01-01', '2027-01-03', '2027-01-05', '2027-01-07', '2027-01-09', '2027-01-11', '2027-01-15']);
   assert.equal(text(voll(lose)), 'Termine mindestens bis Fr, 15. Jan.');
   assert.equal(text(voll(anTagen(['2026-11-28', '2026-11-29']))), 'auch So, 29. Nov.');
+});
+
+test('die Zahl am Knopf ist die Zahl der Zeilen', () => {
+  const alle = [t('2026-11-28', '19:00', { id: 'e', serie: null }), ...tage('2026-11-26', 4), ...tage('2026-11-26', 2).map((e) => ({ ...e, id: `b${e.id}`, serie: 's2' }))];
+  assert.equal(zaehleVeranstaltungen(alle), 3);
+  assert.equal(zeilenAus(alle, alle, HEUTE).length, 3);
 });

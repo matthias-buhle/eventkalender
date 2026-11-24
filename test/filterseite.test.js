@@ -111,12 +111,12 @@ test('Tage vor heute sind gesperrt, heute nicht; heute trägt heute; Tag mit Ter
 
 test('Kacheln tragen einen sprechenden Namen mit Zahl (aria-label), auch nach dem Aktualisieren', () => {
   const { container, ctx, seite } = aufbau();
-  assert.equal(kachel(container, 'Konzerte').getAttribute('aria-label'), 'Konzerte, 1 Termin');
-  assert.equal(kachel(container, 'Partys').getAttribute('aria-label'), 'Partys, 0 Termine');
+  assert.equal(kachel(container, 'Konzerte').getAttribute('aria-label'), 'Konzerte, 1 Veranstaltung');
+  assert.equal(kachel(container, 'Partys').getAttribute('aria-label'), 'Partys, 0 Veranstaltungen');
   ctx.prefs.zeit = 'alle';
   seite.aktualisieren();
-  assert.equal(kachel(container, 'Konzerte').getAttribute('aria-label'), 'Konzerte, 3 Termine');
-  assert.equal(kachel(container, 'Partys').getAttribute('aria-label'), 'Partys, 1 Termin');
+  assert.equal(kachel(container, 'Konzerte').getAttribute('aria-label'), 'Konzerte, 3 Veranstaltungen');
+  assert.equal(kachel(container, 'Partys').getAttribute('aria-label'), 'Partys, 1 Veranstaltung');
 });
 
 test('Tage ohne Termine (ab heute) tragen ohne und bleiben wählbar; Tage mit Termin und vergangene nicht', () => {
@@ -242,19 +242,19 @@ test('Unterpunkte: erst gilt "Alle"; ein Tipp wählt genau diese Unterart, weite
   const G = 'Konzerte: Genre';
   assert.deepEqual([...gruppe(container, G).querySelectorAll('button.chip')].map((b) => b.textContent).slice(0, 3), ['Alle', 'Rock & Pop', 'Metal & Punk']);
   assert.deepEqual(gedrueckt(container, G), ['Alle']);
-  assert.equal(knopf(container).textContent, '3 Termine anzeigen');
+  assert.equal(knopf(container).textContent, '3 Veranstaltungen anzeigen');
   sorte(container, G, 'Rock & Pop').click();
   assert.deepEqual(gedrueckt(container, G), ['Rock & Pop']);
   assert.equal(aufrufe.aenderung, 1);
   assert.ok(!ctx.prefs.hiddenGenres.includes('rock-pop'));
   assert.equal(ctx.prefs.hiddenGenres.length, 7);
-  assert.equal(knopf(container).textContent, '1 Termin anzeigen');
+  assert.equal(knopf(container).textContent, '1 Veranstaltung anzeigen');
   sorte(container, G, 'Sonstige Konzerte').click();
   assert.deepEqual(gedrueckt(container, G), ['Rock & Pop', 'Sonstige Konzerte']);
-  assert.equal(knopf(container).textContent, '3 Termine anzeigen');
+  assert.equal(knopf(container).textContent, '3 Veranstaltungen anzeigen');
   sorte(container, G, 'Rock & Pop').click();
   assert.deepEqual(gedrueckt(container, G), ['Sonstige Konzerte']);
-  assert.equal(knopf(container).textContent, '2 Termine anzeigen');
+  assert.equal(knopf(container).textContent, '2 Veranstaltungen anzeigen');
   sorte(container, G, 'Alle').click();
   assert.deepEqual(gedrueckt(container, G), ['Alle']);
   assert.deepEqual(ctx.prefs.hiddenGenres, []);
@@ -267,7 +267,7 @@ test('Unterpunkte: die letzte abgewählte Unterart führt zurück zu "Alle"; Abw
   sorte(container, 'Märkte: Sorte', 'Weihnachtsmarkt').click();
   assert.deepEqual(gedrueckt(container, 'Konzerte: Genre'), ['Jazz & Blues']);
   assert.deepEqual(gedrueckt(container, 'Märkte: Sorte'), ['Weihnachtsmarkt']);
-  assert.equal(knopf(container).textContent, '1 Termin anzeigen', 'nur der Weihnachtsmarkt; kein Jazz in der Liste');
+  assert.equal(knopf(container).textContent, '1 Veranstaltung anzeigen', 'nur der Weihnachtsmarkt; kein Jazz in der Liste');
   sorte(container, 'Konzerte: Genre', 'Jazz & Blues').click();
   assert.deepEqual(gedrueckt(container, 'Konzerte: Genre'), ['Alle']);
   assert.deepEqual(gedrueckt(container, 'Märkte: Sorte'), ['Weihnachtsmarkt'], 'die andere Rubrik bleibt');
@@ -328,7 +328,7 @@ test('den Advent-Schalter gibt es nicht mehr; ein altes prefs.advent filtert nic
   const { container } = aufbau({ advent: true });
   assert.equal(container.querySelector('.schalter-advent'), null);
   assert.ok(!container.textContent.includes('Advent'));
-  assert.equal(knopf(container).textContent, '2 Termine anzeigen');
+  assert.equal(knopf(container).textContent, '2 Veranstaltungen anzeigen');
 });
 
 test('Kalender: beim Start zugeklappt; der Chip "Kalender" klappt ihn auf und zu, ohne die Auswahl zu ändern', () => {
@@ -402,9 +402,9 @@ test('Umkreis-Chip 25 km setzt maxKm, Ortsauswahl Görlitz setzt prefs.ort, Tsch
 
 test('Knopftext und Klick auf den Knopf', () => {
   const { container, aufrufe } = aufbau();
-  assert.equal(knopf(container).textContent, '2 Termine anzeigen');
+  assert.equal(knopf(container).textContent, '2 Veranstaltungen anzeigen');
   tag(container, '2026-11-25').click();
-  assert.equal(knopf(container).textContent, 'Keine Termine gefunden');
+  assert.equal(knopf(container).textContent, 'Keine Veranstaltungen gefunden');
   knopf(container).click();
   assert.equal(aufrufe.anzeigen, 1);
 });
@@ -413,7 +413,7 @@ test('aktualisieren nach Austausch von ctx.events zählt neu, ohne beiAenderung'
   const { container, ctx, aufrufe, seite } = aufbau();
   ctx.events = [];
   seite.aktualisieren();
-  assert.equal(knopf(container).textContent, 'Keine Termine gefunden');
+  assert.equal(knopf(container).textContent, 'Keine Veranstaltungen gefunden');
   assert.equal(zahlen(container).Konzerte, 0);
   assert.ok(!tag(container, '2026-11-24').classList.contains('punkt'));
   assert.equal(aufrufe.aenderung, 0);
@@ -538,4 +538,14 @@ test('Schnellwahl nach dem Blättern: der Kalender zeigt wieder den Monat des ma
   container.querySelector('.monat-vor').click();
   chip(container, '7 Tage').click();
   assert.equal(name.textContent, 'November 2026');
+});
+
+test('Serien zählen als eine Veranstaltung: Kachel und Knopf', () => {
+  const tage = ['2026-11-25', '2026-11-26', '2026-11-27'].map((tag) => ev({
+    id: tag, title: 'Striezelmarkt', rubrik: 'markt', genre: 'weihnachtsmarkt', serie: 's1', start: `${tag}T10:00:00+01:00`,
+  }));
+  const { container } = aufbau({ zeit: 'alle' }, [...TERMINE, ...tage]);
+  assert.equal(kachel(container, 'Märkte').getAttribute('aria-label'), 'Märkte, 2 Veranstaltungen');
+  assert.equal(kachel(container, 'Märkte').querySelector('.kachel-zahl').textContent, '2');
+  assert.equal(knopf(container).textContent, '6 Veranstaltungen anzeigen');
 });

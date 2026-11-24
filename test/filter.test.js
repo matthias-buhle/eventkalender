@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyFilters, groupByDay, loadPrefs, savePrefs, DEFAULT_PREFS } from '../site/js/filter.js';
+import { applyFilters, groupByDay, zaehleRubriken, zaehleSorten, zaehleVeranstaltungen, loadPrefs, savePrefs, DEFAULT_PREFS } from '../site/js/filter.js';
 
 const NOW = '2026-11-08T19:30:00Z'; // 20:30 Uhr in Berlin
 const ev = (extra = {}) => ({
@@ -121,4 +121,24 @@ test('savePrefs und loadPrefs: Rundlauf; werfender Speicher löst keine Ausnahme
   assert.equal(loadPrefs(speicher).suche, '', 'die Suche wird nicht gemerkt');
   assert.doesNotThrow(() => savePrefs({ setItem() { throw new Error('voll'); } }, eigene));
   assert.doesNotThrow(() => savePrefs(null, eigene));
+});
+
+test('zaehleVeranstaltungen: Einzeltermine je 1, jede Serie 1; ohne Feld serie alles einzeln', () => {
+  const liste = [ev({ id: 'a' }), ev({ id: 'b', serie: null }), ev({ id: 'c', serie: 's1' }), ev({ id: 'd', serie: 's1' }), ev({ id: 'e', serie: 's2' })];
+  assert.equal(zaehleVeranstaltungen(liste), 4);
+  assert.equal(zaehleVeranstaltungen([ev({ id: 'a' }), ev({ id: 'b' })]), 2);
+  assert.equal(zaehleVeranstaltungen([]), 0);
+});
+
+test('zaehleRubriken und zaehleSorten zählen eine Serie einmal, und nur wenn ein Termin im Zeitraum liegt', () => {
+  const markt = (id, tag) => ev({ id, rubrik: 'markt', art: 'markt', genre: 'weihnachtsmarkt', serie: 's1', start: `${tag}T10:00:00+01:00` });
+  const liste = [markt('m1', '2026-11-09'), markt('m2', '2026-11-10'), markt('m3', '2026-11-11'), ev({ id: 'k', rubrik: 'konzert' })];
+  const alle = zaehleRubriken(liste, prefs(), NOW);
+  assert.equal(alle.markt, 1);
+  assert.equal(alle.konzert, 1);
+  assert.equal(zaehleSorten(liste, prefs(), NOW).weihnachtsmarkt, 1);
+  assert.equal(zaehleRubriken(liste, prefs({ zeit: 'heute' }), NOW).markt, 0);
+  // alte Daten ohne Feld serie: wie bisher drei
+  const alt = liste.map(({ serie, ...rest }) => rest);
+  assert.equal(zaehleRubriken(alt, prefs(), NOW).markt, 3);
 });

@@ -60,7 +60,7 @@ test('Navigationslink je Plattform; ohne Koordinaten keiner', () => {
 });
 
 test('Ergebnistext für den Knopf im Filterfenster', () => {
-  assert.equal(anzeigeText(0), 'Keine Termine gefunden');
-  assert.equal(anzeigeText(1), '1 Termin anzeigen');
-  assert.equal(anzeigeText(1595), '1595 Termine anzeigen');
+  assert.equal(anzeigeText(0), 'Keine Veranstaltungen gefunden');
+  assert.equal(anzeigeText(1), '1 Veranstaltung anzeigen');
+  assert.equal(anzeigeText(1595), '1595 Veranstaltungen anzeigen');
 });
