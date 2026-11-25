@@ -75,6 +75,17 @@ gh variable set SITE_CODE_ADMIN --body "<zweiter Code>"
 Wirksam wird er mit dem nächsten Lauf von `daily.yml` oder `programm.yml`. **Sperren:** `gh variable delete SITE_CODE_ADMIN`, danach einen Lauf anstoßen (`gh workflow run daily.yml`); der Ordner fehlt dann auf der Seite.
 Der Code muss mindestens 8 Zeichen aus `A-Z a-z 0-9 _ -` haben und sich von `SITE_CODE` unterscheiden, sonst wird er übersprungen.
 
+### Optional: befristeter Zugang für Datenanbieter
+
+Ein dritter Zugang mit eigenem Code für Anbieter, die sich den Kalender ansehen möchten. Er gilt nur, solange das heutige Datum (Berliner Zeit) **vor** dem Enddatum liegt; der erste Lauf an oder nach dem Enddatum veröffentlicht ihn nicht mehr. Ohne gültiges Enddatum wird er nie veröffentlicht.
+
+```bash
+gh variable set SITE_CODE_PARTNER --body "<dritter Code>"
+gh variable set SITE_CODE_PARTNER_ENDE --body "2026-12-15"
+```
+
+Eingerichtet am 25.11.2026 mit Ende 2026-12-15, wirksam ab dem nächsten Lauf von `daily.yml` oder `programm.yml` nach dem Veröffentlichen der Workflow-Änderung. **Vorzeitig sperren:** `gh variable delete SITE_CODE_PARTNER`, danach `gh workflow run daily.yml`. Der Code gilt wie die anderen: nur eine Verschleierung der Adresse, kein Passwort.
+
 ## 6. Ticketmaster-Schlüssel (du)
 
 1. Auf <https://developer.ticketmaster.com> registrieren und eine App anlegen.

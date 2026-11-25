@@ -20,6 +20,8 @@ jobs:
     env:
       SITE_CODE: ${{ vars.SITE_CODE }}
       SITE_CODE_ADMIN: ${{ vars.SITE_CODE_ADMIN }}
+      SITE_CODE_PARTNER: ${{ vars.SITE_CODE_PARTNER }}
+      SITE_CODE_PARTNER_ENDE: ${{ vars.SITE_CODE_PARTNER_ENDE }}
     steps:
       - uses: actions/checkout@v4
 
@@ -94,6 +96,20 @@ jobs:
               cp -r site/. "_pages/${SITE_CODE_ADMIN}/"
             else
               echo "SITE_CODE_ADMIN ist ungültig (mindestens 8 Zeichen aus A-Z a-z 0-9 _ - und anders als SITE_CODE), der zweite Zugang wird übersprungen." >&2
+            fi
+          fi
+          # Befristeter Zugang für Datenanbieter (eigener Code): gilt, solange das heutige Datum (Berliner Zeit) vor SITE_CODE_PARTNER_ENDE (JJJJ-MM-TT) liegt.
+          # Ohne gültiges Enddatum wird er nie veröffentlicht. Vorzeitig sperren: Variable SITE_CODE_PARTNER löschen und einen Lauf anstoßen.
+          if [ -n "$SITE_CODE_PARTNER" ]; then
+            if ! [[ "$SITE_CODE_PARTNER" =~ ^[A-Za-z0-9_-]{8,}$ ]] || [ "$SITE_CODE_PARTNER" = "$SITE_CODE" ] || [ "$SITE_CODE_PARTNER" = "$SITE_CODE_ADMIN" ]; then
+              echo "SITE_CODE_PARTNER ist ungültig (mindestens 8 Zeichen aus A-Z a-z 0-9 _ - und anders als die anderen Codes), der Partner-Zugang wird übersprungen." >&2
+            elif ! [[ "$SITE_CODE_PARTNER_ENDE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+              echo "SITE_CODE_PARTNER_ENDE fehlt oder ist ungültig (JJJJ-MM-TT), der Partner-Zugang wird übersprungen." >&2
+            elif [[ "$(TZ=Europe/Berlin date +%F)" < "$SITE_CODE_PARTNER_ENDE" ]]; then
+              mkdir -p "_pages/${SITE_CODE_PARTNER}"
+              cp -r site/. "_pages/${SITE_CODE_PARTNER}/"
+            else
+              echo "Der Partner-Zugang ist am $SITE_CODE_PARTNER_ENDE abgelaufen und wird nicht mehr veröffentlicht."
             fi
           fi
           printf 'User-agent: *\nDisallow: /\n' > _pages/robots.txt
