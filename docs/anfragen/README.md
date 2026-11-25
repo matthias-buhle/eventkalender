@@ -40,6 +40,8 @@ L2 Club Görlitz (`l2club`), Steinhaus Bautzen (`steinhaus`) und Děčín (`idec
 sind Termine öffentlich als Schema.org- beziehungsweise Seitendaten ausgeliefert, Nutzungsregeln gegen das Auslesen fanden sich nicht.
 Die Straße E Dresden wurde bewusst nicht eingebaut (Feed veraltet, gemischte Zeichencodierung, wenige künftige Termine).
 
+**Eingebaut am 25.11.2026 ohne Antwort abzuwarten** (Hinweis-Mails ohne Bitte um Erlaubnis; bei einem Nein sofort abschalten): `bluenote` (iCal-Feed), `varnsdorf` (offene Schnittstelle der Stadt), `zgorzelec` (JSON-LD der Listenseite, Titel bleiben polnisch), `krone` (Stadthalle Bautzen, Liste plus Einzelseiten), `evlks` (Kirchenkalender, ein JSON-Abruf je Lauf, nur Konzerte/Kirchenmusik und öffentliche Veranstaltungen im 75-km-Umkreis). Übernommen werden jeweils nur Titel, Datum, Uhrzeit, Ort und Link. Nicht eingebaut: České Švýcarsko o.p.s., Oblastní muzeum Děčín, Krušné hory.
+
 **Eingebaut am 25.11.2026** (alle Zusagen dieses Tages, lokal, noch nicht veröffentlicht): `mvp`, `flohmarkt`, `staatsoperette` (Schnittstelle events.json), `projekttheater`, `herkuleskeule` (nur Titel, Datum, Uhrzeit, Ort, Link, weil die Zusage nur „verweisen“ nennt), `museendresden` (nur verweisen), `slpb`. **Noch nicht eingebaut trotz Zusage:** `dresden` (Zugangsdaten als GitHub-Secrets fehlen, Quelle bleibt aus), Kulturfabrik Hoyerswerda (wartet auf den Administrator), Oberlausitzer Trödelmarkt (Termine 2027 erst im Januar).
 
 Antwortet jemand mit **Nein**: in `sources.json` bei der Quelle `"enabled": false` setzen (siehe `docs/SETUP.md`, „Eine Quelle abschalten“).

@@ -1,0 +1,1351 @@
+[
+ {
+  "Veranstaltung": {
+   "ID": "199063",
+   "START": "2026-12-05 16:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "141992",
+   "_event_TITLE": "Adventsmusik zum Zuhören und Mitsingen",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "St. Martinskirche Weinböhla",
+   "_place_CITY": "Weinböhla",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "214525",
+   "START": "2026-12-12 11:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "153254",
+   "_event_TITLE": "Adventsblasen im Schillergarten:",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "Bläsermusik",
+   "_place_NAME": "Schillergarten",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "135471",
+   "START": "2026-12-08 19:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "88999",
+   "_event_TITLE": "Singekreis",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "wechselnde Orte",
+   "_place_CITY": "N.N.",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "188321",
+   "START": "2026-11-29 17:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "132858",
+   "_event_TITLE": "Chorkonzert zum 1. Advent mit dem Pegasus-Quartett",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Bergkirche Beucha",
+   "_place_CITY": "Beucha",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "122643",
+   "START": "2026-11-28 18:00:00",
+   "END": "0000-00-00 19:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "80768",
+   "_event_TITLE": "Sternaufzug",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Online",
+   "_place_CITY": "Sachsen",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "94367",
+   "START": "2026-11-26 15:00:00",
+   "END": "0000-00-00 15:15:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "61970",
+   "_event_TITLE": "Orgel Punkt Drei",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kreuzkirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0487848",
+   "_place_GLONG": "13.7382917"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "175066",
+   "START": "2026-12-13 16:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "122657",
+   "_event_TITLE": "Musikalischer Gottesdienst am 3. Advent in Sebnitz – »Adventsmusik«",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Ev.-Luth. Stadtkirche Sebnitz",
+   "_place_CITY": "Sebnitz",
+   "_place_GLAT": "50.9716335",
+   "_place_GLONG": "14.2723161"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "175067",
+   "START": "2026-12-25 08:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "122658",
+   "_event_TITLE": "Christmette in Sebnitz",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Ev.-Luth. Stadtkirche Sebnitz",
+   "_place_CITY": "Sebnitz",
+   "_place_GLAT": "50.9716335",
+   "_place_GLONG": "14.2723161"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "195254",
+   "START": "2026-12-24 15:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "138719",
+   "_event_TITLE": "Christvesper mit Krippenspiel der Konfirmanden",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Johanneshaus Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0474804",
+   "_place_GLONG": "13.775245"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "176981",
+   "START": "2026-12-24 17:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "124062",
+   "_event_TITLE": "Musikalische Christvesper mit Posaunenchor",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Seidnitz, Nazarethkirche",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0273893",
+   "_place_GLONG": "13.8032802"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "206507",
+   "START": "2026-11-28 16:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "147687",
+   "_event_TITLE": "Adventskonzert",
+   "_event_EVENTTYPE": "Gottesdienste, Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "ohne Kindergottesdienst",
+   "_place_NAME": "Burkau St. Marien-Kirche",
+   "_place_CITY": "Burkau",
+   "_place_GLAT": "51.175280030721",
+   "_place_GLONG": "14.167744517326"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "215273",
+   "START": "2026-12-05 17:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "123834",
+   "_event_TITLE": "Singen zum 2. Advent mit dem Sängerbund",
+   "_event_EVENTTYPE": "Gottesdienste, Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "ohne Kindergottesdienst",
+   "_place_NAME": "Spitzkunnersdorf Nikolaikirche",
+   "_place_CITY": "Leutersdorf OT Spitzkunnerdorf",
+   "_place_GLAT": "50.937350740296",
+   "_place_GLONG": "14.678699970245"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "209181",
+   "START": "2026-12-05 15:00:00",
+   "END": "0000-00-00 16:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "149979",
+   "_event_TITLE": "Lichter Erinnerungs-Nachmittag für verstorbene Kinder",
+   "_event_EVENTTYPE": "Gottesdienste, Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Friedhof Radebeul Ost",
+   "_place_CITY": "Radebeul",
+   "_place_GLAT": "51.0971419",
+   "_place_GLONG": "13.665828"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "149103",
+   "START": "2026-12-24 16:00:00",
+   "END": "0000-00-00 17:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "100202",
+   "_event_TITLE": "Offene Kapelle zum Guten Hirten",
+   "_event_EVENTTYPE": "Gottesdienste, Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Friedewald",
+   "_place_CITY": "Moritzburg",
+   "_place_GLAT": "51.1329803",
+   "_place_GLONG": "13.6496282"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "130599",
+   "START": "2026-11-29 12:00:00",
+   "END": "0000-00-00 12:30:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "86020",
+   "_event_TITLE": "Adventsorgelmusik",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Petrikirche",
+   "_place_CITY": "Freiberg",
+   "_place_GLAT": "50.9163543",
+   "_place_GLONG": "13.3410885"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "142202",
+   "START": "2026-11-30 17:00:00",
+   "END": "0000-00-00 17:30:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "94566",
+   "_event_TITLE": "Striezelmarktmusik",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kreuzkirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0487848",
+   "_place_GLONG": "13.7382917"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "143232",
+   "START": "2026-12-12 15:00:00",
+   "END": "0000-00-00 16:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "95321",
+   "_event_TITLE": "Weihnachtsoratorium für Kinder",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Hauptkirche St. Marien",
+   "_place_CITY": "Kamenz",
+   "_place_GLAT": "51.26847695",
+   "_place_GLONG": "14.094050727491"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "145329",
+   "START": "2026-12-18 19:30:00",
+   "END": "0000-00-00 21:30:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "97142",
+   "_event_TITLE": "Messias- Die Weihnachtskomödie",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "musikalisch-szenische Angebote",
+   "_place_NAME": "Dreikönigskirche - Haus der Kirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.060727964742",
+   "_place_GLONG": "13.743603227776"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "208972",
+   "START": "2026-12-06 14:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "149775",
+   "_event_TITLE": "Lesung Sabine Ebert, anschließend Autogrammstunde",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Christophoruskirche Wilschdorf",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.1222651",
+   "_place_GLONG": "13.7220144"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "212737",
+   "START": "2026-12-13 18:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "151730",
+   "_event_TITLE": "Tacheles - Der Dokumentarfilmtalk",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kinopolis",
+   "_place_CITY": "Freiberg",
+   "_place_GLAT": "50.9075945",
+   "_place_GLONG": "13.3174993"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "219732",
+   "START": "2026-12-24 23:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "157133",
+   "_event_TITLE": "Spiel zur Nacht",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Gemeindehaus der Auferstehungskirche",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0290891",
+   "_place_GLONG": "13.7052428"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "217581",
+   "START": "2026-11-28 15:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "156013",
+   "_event_TITLE": "Krippenausstellung",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Reichenberg",
+   "_place_CITY": "Moritzburg",
+   "_place_GLAT": "51.1297628",
+   "_place_GLONG": "13.6791911"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "192876",
+   "START": "2026-12-20 16:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "136831",
+   "_event_TITLE": "Weihnachts-Kindermusical \"Willkommen im Stall\"",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Frauenkirche",
+   "_place_CITY": "Meißen",
+   "_place_GLAT": "51.1624701",
+   "_place_GLONG": "13.4699708"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "139916",
+   "START": "2026-12-13 11:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "92795",
+   "_event_TITLE": "Weihnachtsmarkt an der Weinbergkirche",
+   "_event_EVENTTYPE": "Feste/Gemeindefeste",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Weinbergkirche \"Zum Heiligen Geist\" Dresden Pillnitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.01121",
+   "_place_GLONG": "13.87814"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "198574",
+   "START": "2026-12-05 16:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "141614",
+   "_event_TITLE": "Kirchhof-Lichteln",
+   "_event_EVENTTYPE": "Feste/Gemeindefeste",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Mittelherwigsdorf Kirche",
+   "_place_CITY": "Mittelherwigsdorf",
+   "_place_GLAT": "50.91527",
+   "_place_GLONG": "14.76049"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "208470",
+   "START": "2026-12-12 00:00:00",
+   "END": "2026-12-13 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "149326",
+   "_event_TITLE": "Festwochenende „75 Jahre Bethlehemkirche“",
+   "_event_EVENTTYPE": "Feste/Gemeindefeste",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "ohne Kindergottesdienst",
+   "_place_NAME": "Bethlehemkirche Dresden Tolkewitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.03191",
+   "_place_GLONG": "13.82207"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "220015",
+   "START": "2026-11-27 00:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "157297",
+   "_event_TITLE": "\"Geschichten in der Landschaft\" - Martin Kuriš",
+   "_event_EVENTTYPE": "Ausstellungen/Kunst",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kreuzkirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0487848",
+   "_place_GLONG": "13.7382917"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "148516",
+   "START": "2026-12-05 14:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "99626",
+   "_event_TITLE": "Adventliches Konzert und Weihnachtsmarkt (ab 14 Uhr)",
+   "_event_EVENTTYPE": "Ausstellungen/Kunst",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Weinbergkirche \"Zum Heiligen Geist\" Dresden Pillnitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.01121",
+   "_place_GLONG": "13.87814"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "219854",
+   "START": "2026-12-10 00:00:00",
+   "END": "2026-12-13 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "157223",
+   "_event_TITLE": "Kirchenmusik auf dem Weihnachtsmarkt",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Markt Löbau",
+   "_place_CITY": "Löbau",
+   "_place_GLAT": "51.0957277",
+   "_place_GLONG": "14.6654404"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "176772",
+   "START": "2026-11-01 00:00:00",
+   "END": "2026-12-06 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "123855",
+   "_event_TITLE": "Geliebt. Licht- und Klanginstallation",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik, Gebete/Andachten/Friedensgebete",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Leutersdorf Christuskirche",
+   "_place_CITY": "Leutersdorf",
+   "_place_GLAT": "50.959558323938",
+   "_place_GLONG": "14.652445877033"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "125995",
+   "START": "2026-11-26 15:15:00",
+   "END": "0000-00-00 16:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "83331",
+   "_event_TITLE": "Kirchenführung",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kreuzkirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0487848",
+   "_place_GLONG": "13.7382917"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "199195",
+   "START": "2027-01-14 09:00:00",
+   "END": "0000-00-00 16:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "142108",
+   "_event_TITLE": "Tag der offenen Tür",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Hochschule für Kirchenmusik Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0574476",
+   "_place_GLONG": "13.7992737"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "196956",
+   "START": "2026-12-03 19:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "140302",
+   "_event_TITLE": "»Schreibspuren« mit Marcel Beyer",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Landhaus - Stadtmuseum Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.04974",
+   "_place_GLONG": "13.74284"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "176677",
+   "START": "2026-12-10 17:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "123760",
+   "_event_TITLE": "Kunstwerkstatt",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Haus an der Kreuzkirche",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0486887",
+   "_place_GLONG": "13.739075"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "124065",
+   "START": "2026-12-01 09:00:00",
+   "END": "0000-00-00 17:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "81675",
+   "_event_TITLE": "Stiller Tag",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Haus der Stille",
+   "_place_CITY": "Wilsdruff OT Grumbach",
+   "_place_GLAT": "51.0261095",
+   "_place_GLONG": "13.5509092"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "214972",
+   "START": "2026-12-04 09:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "153685",
+   "_event_TITLE": "Krabbelfrühstück",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Johanneshaus Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0474804",
+   "_place_GLONG": "13.775245"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "201573",
+   "START": "2026-12-14 13:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "144136",
+   "_event_TITLE": "Gesprächskreis Blinde und Sehbehinderte",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Johanneshaus Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0474804",
+   "_place_GLONG": "13.775245"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "101421",
+   "START": "2026-12-08 19:30:00",
+   "END": "0000-00-00 21:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "67651",
+   "_event_TITLE": "Pastoralkolleg – ONLINE",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "Vollständig Online Synchron (z.B. Webinar)",
+   "_place_NAME": "Pastoralkolleg Meißen",
+   "_place_CITY": "Meißen",
+   "_place_GLAT": "51.16263",
+   "_place_GLONG": "13.46857"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "103946",
+   "START": "2026-12-09 15:00:00",
+   "END": "0000-00-00 18:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "69338",
+   "_event_TITLE": "Christologie - Jesus heute - Sek II  - Online",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Theologisch-Pädagogisches Institut (TPI)",
+   "_place_CITY": "Moritzburg",
+   "_place_GLAT": "51.15672",
+   "_place_GLONG": "13.68625"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "199141",
+   "START": "2027-01-09 13:00:00",
+   "END": "0000-00-00 18:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "142054",
+   "_event_TITLE": "Impulstag SINGEN",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Ev.  Kirchgemeindehaus Meerane",
+   "_place_CITY": "Meerane",
+   "_place_GLAT": "50.8511449",
+   "_place_GLONG": "12.4641305"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "106587",
+   "START": "2026-12-03 10:00:00",
+   "END": "2026-12-04 17:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "70911",
+   "_event_TITLE": "Grundkurs Kurzgespräche",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Theologisch-Pädagogisches Institut (TPI)",
+   "_place_CITY": "Moritzburg",
+   "_place_GLAT": "51.15672",
+   "_place_GLONG": "13.68625"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "101263",
+   "START": "2026-11-30 18:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "67497",
+   "_event_TITLE": "Posaunenchorprobe Niedersedlitz",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Niedersedlitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "50.9987975",
+   "_place_GLONG": "13.8220561"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "101878",
+   "START": "2026-12-02 19:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "68006",
+   "_event_TITLE": "Kantoreiprobe",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Gruna, Thomaskirche",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0338763",
+   "_place_GLONG": "13.7818245"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "68776",
+   "START": "2026-12-02 19:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "45542",
+   "_event_TITLE": "Chorprobe Laubegast-Zschachwitz",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "GZ Laubegast, Gartensaal",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.027173",
+   "_place_GLONG": "13.8342643"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "185776",
+   "START": "2026-11-26 16:00:00",
+   "END": "0000-00-00 16:45:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "8031",
+   "_event_TITLE": "Kurrende",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Pfarrhaus Pockau",
+   "_place_CITY": "Pockau-Lengefeld OT Pockau",
+   "_place_GLAT": "50.702427498977",
+   "_place_GLONG": "13.228268623352"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "73683",
+   "START": "2026-11-26 19:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "48858",
+   "_event_TITLE": "Posaunenchor Zschachwitz",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Zschachwitz, Paul-Gerhard-Zimmer",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0013735",
+   "_place_GLONG": "13.850522"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "211783",
+   "START": "2026-12-17 16:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "151372",
+   "_event_TITLE": "WEIHNACHTSLIEDERSINGEN der Kurrende Freital",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Lutherkirche Döhlen",
+   "_place_CITY": "Freital",
+   "_place_GLAT": "51.007197",
+   "_place_GLONG": "13.6475478"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "175291",
+   "START": "2026-12-21 20:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "122879",
+   "_event_TITLE": "Adventsliedersingen des Chores der Frauenkirche - intern -",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Frauenkirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.05124",
+   "_place_GLONG": "13.74117"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "201590",
+   "START": "2026-11-27 17:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "144153",
+   "_event_TITLE": "Friedensgebet",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kirche Medingen",
+   "_place_CITY": "Ottendorf-Okrilla",
+   "_place_GLAT": "51.1836159",
+   "_place_GLONG": "13.7903422"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "176990",
+   "START": "2026-12-25 10:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "124064",
+   "_event_TITLE": "Festgottesdienst",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Niedersedlitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "50.9987975",
+   "_place_GLONG": "13.8220561"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "176727",
+   "START": "2026-11-29 10:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "123810",
+   "_event_TITLE": "Gottesdienst mit Einführung des Kirchenvorstandes",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Leuben",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.0113537",
+   "_place_GLONG": "13.8264458"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "197451",
+   "START": "2026-12-04 18:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "140598",
+   "_event_TITLE": "Yoga christlich",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Gemeindezentrum St. Johannis",
+   "_place_CITY": "Freiberg",
+   "_place_GLAT": "50.9112734",
+   "_place_GLONG": "13.3323804"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "190632",
+   "START": "2026-11-26 19:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "134907",
+   "_event_TITLE": "Bibel und Bier (Kopie)",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Lutherhaus",
+   "_place_CITY": "Radebeul",
+   "_place_GLAT": "51.1039707",
+   "_place_GLONG": "13.6339089"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "210692",
+   "START": "2026-12-25 10:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "150367",
+   "_event_TITLE": "Kantatengottesdienst",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Freiberger Dom",
+   "_place_CITY": "Freiberg",
+   "_place_GLAT": "50.9206376",
+   "_place_GLONG": "13.3441094"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "179040",
+   "START": "2026-12-06 16:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "125442",
+   "_event_TITLE": "Musikalische Adventsandacht mit dem Männerchor Liebstadt",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kirche Liebstadt",
+   "_place_CITY": "Liebstadt",
+   "_place_GLAT": "50.863686",
+   "_place_GLONG": "13.8559477"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "208630",
+   "START": "2027-01-01 17:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "149484",
+   "_event_TITLE": "Neujahrsandacht mit Orgelmusik",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "Orgelmusik",
+   "_place_NAME": "Kirche Dresden Loschwitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.05277",
+   "_place_GLONG": "13.8174"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "201570",
+   "START": "2026-11-28 16:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "144133",
+   "_event_TITLE": "Feierstunde zu 90 Jahre Wiedereinweihung der Kreuzkirche",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik, Feste/Gemeindefeste",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Seifhennersdorf Kreuzkirche",
+   "_place_CITY": "Seifhennersdorf",
+   "_place_GLAT": "50.934497515749",
+   "_place_GLONG": "14.609777927399"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "199144",
+   "START": "2026-12-27 17:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "142057",
+   "_event_TITLE": "Jauchzet Frohlocket",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Siehe Beschreibung",
+   "_place_CITY": "Freital",
+   "_place_GLAT": "51.0002571",
+   "_place_GLONG": "13.6401737"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "127311",
+   "START": "2026-12-04 18:00:00",
+   "END": "2026-12-06 14:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "84345",
+   "_event_TITLE": "Alle Jahre wieder",
+   "_event_EVENTTYPE": "Freizeiten/Reisen",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Gästehaus Moritzburg",
+   "_place_CITY": "Moritzburg",
+   "_place_GLAT": "51.1566255",
+   "_place_GLONG": "13.6868453"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "195560",
+   "START": "2027-01-14 00:00:00",
+   "END": "2027-01-29 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "138956",
+   "_event_TITLE": "Motorradfahrerfreizeit in Tansania",
+   "_event_EVENTTYPE": "Freizeiten/Reisen",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Tansania",
+   "_place_CITY": "Tansania",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "118357",
+   "START": "2027-01-18 19:30:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "77868",
+   "_event_TITLE": "vierzigPLUSMINUS Abend für Frauen - \"Ziemlich beste Freunde\"",
+   "_event_EVENTTYPE": "Gruppen/Kreise, Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kirchgemeindehaus Fischbach",
+   "_place_CITY": "Arnsdorf",
+   "_place_GLAT": "51.085851309586",
+   "_place_GLONG": "14.017696380615"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "130232",
+   "START": "2026-11-26 19:30:00",
+   "END": "0000-00-00 21:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "85849",
+   "_event_TITLE": "Kantorei Arnsdorf-Fischbach",
+   "_event_EVENTTYPE": "Gruppen/Kreise, Konzerte/Theater/Musik",
+   "_event_DESTINATION": "intern",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kirchgemeindehaus Arnsdorf",
+   "_place_CITY": "Arnsdorf",
+   "_place_GLAT": "51.097098743913",
+   "_place_GLONG": "13.992649352778"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "130106",
+   "START": "2026-11-30 18:00:00",
+   "END": "0000-00-00 19:30:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "85845",
+   "_event_TITLE": "Instrumentalkreis",
+   "_event_EVENTTYPE": "Gruppen/Kreise, Konzerte/Theater/Musik",
+   "_event_DESTINATION": "intern",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kirchgemeindehaus Arnsdorf",
+   "_place_CITY": "Arnsdorf",
+   "_place_GLAT": "51.097098743913",
+   "_place_GLONG": "13.992649352778"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "127506",
+   "START": "2026-12-24 23:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "84536",
+   "_event_TITLE": "Christnacht",
+   "_event_EVENTTYPE": "Feste/Gemeindefeste",
+   "_event_DESTINATION": "intern",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Heilig-Geist-Kirche Dresden Blasewitz",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.04867",
+   "_place_GLONG": "13.80722"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "196125",
+   "START": "2026-11-28 00:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "139521",
+   "_event_TITLE": "Konzert mit dem Chorlektiv Leipzicals",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "pax Jugendkirche Leipzig",
+   "_place_CITY": "Leipzig",
+   "_place_GLAT": "51.35829",
+   "_place_GLONG": "12.36859"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "219861",
+   "START": "2026-12-19 19:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "jeweils",
+   "allDay": "",
+   "_event_ID": "157230",
+   "_event_TITLE": "J.S. Bach: Weihnachtsoratorium",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "pax Jugendkirche Leipzig",
+   "_place_CITY": "Leipzig",
+   "_place_GLAT": "51.35829",
+   "_place_GLONG": "12.36859"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "196411",
+   "START": "2026-11-01 00:00:00",
+   "END": "2027-02-28 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "1",
+   "_event_ID": "139775",
+   "_event_TITLE": "\"Naturphantasien in Blau und Grün\"",
+   "_event_EVENTTYPE": "Ausstellungen/Kunst",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Ev.-Luth.  Pauluskirche Grünau",
+   "_place_CITY": "Leipzig",
+   "_place_GLAT": "51.31409086518",
+   "_place_GLONG": "12.278552055359"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "179037",
+   "START": "2026-11-28 13:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "jeweils",
+   "allDay": "",
+   "_event_ID": "125439",
+   "_event_TITLE": "Lichterfest Großzschocher",
+   "_event_EVENTTYPE": "Feste/Gemeindefeste",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Apostelkirche Großzschocher",
+   "_place_CITY": "Leipzig",
+   "_place_GLAT": "51.300327952889",
+   "_place_GLONG": "12.328655719757"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "198558",
+   "START": "2027-01-21 18:00:00",
+   "END": "2027-01-24 14:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "141598",
+   "_event_TITLE": "Jahrestagung der Sächsischen Posaunenmission",
+   "_event_EVENTTYPE": "Fortbildungen/Seminare/Vorträge",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "Bitte Menüeintrage im Eingabformular definieren!",
+   "_place_NAME": "Martin-Luther-King-Haus Tagungs- und Freizeitenheim Familienferienstätte e.V.",
+   "_place_CITY": "Dippoldiswalde OT Schmiedeberg",
+   "_place_GLAT": "",
+   "_place_GLONG": ""
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "219696",
+   "START": "2026-12-04 19:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "157097",
+   "_event_TITLE": "Weihnachtskonzert",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Annenkirche Dresden",
+   "_place_CITY": "Dresden",
+   "_place_GLAT": "51.04864",
+   "_place_GLONG": "13.72765"
+  }
+ },
+ {
+  "Veranstaltung": {
+   "ID": "218803",
+   "START": "2026-12-31 22:00:00",
+   "END": "0000-00-00 00:00:00",
+   "MODE": "vonbis",
+   "allDay": "",
+   "_event_ID": "156695",
+   "_event_TITLE": "Silvesterkonzert",
+   "_event_EVENTTYPE": "Konzerte/Theater/Musik",
+   "_event_DESTINATION": "öffentlich",
+   "_event_STATUS": "ok",
+   "_event_MENUE_1": "",
+   "_place_NAME": "Kirche Nossen",
+   "_place_CITY": "Nossen",
+   "_place_GLAT": "51.058498551775",
+   "_place_GLONG": "13.300387859344"
+  }
+ }
+]

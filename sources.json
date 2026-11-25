@@ -180,5 +180,40 @@
     "maxDetailPages": 40,
     "maxListPages": 6,
     "minDelayMs": 5000
+  },
+  "bluenote": {
+    "enabled": true,
+    "note": "Blue Note Dresden: Hinweis-Mail vom 24.11.2026 (keine Erlaubnis erbeten). Nur Titel, Datum, Uhrzeit, Ort und Link zur Veranstaltung; keine Bilder, keine Beschreibungstexte; einmal täglich, ein Abruf des iCal-Feeds. robots.txt sperrt nur /wp-admin/.",
+    "url": "https://bluenote-dresden.de/calendar.ics"
+  },
+  "varnsdorf": {
+    "enabled": true,
+    "note": "Stadt Varnsdorf, Hinweis-Mail vom 24.11.2026 (keine Bitte um Erlaubnis); übernommen werden nur Titel, Datum, Ort, Link. Keine Bilder, keine Beschreibungstexte. Offene Schnittstelle, robots erlaubt.",
+    "url": "https://www.varnsdorf.cz/rest/public/event-calendar/events",
+    "horizonDays": 90,
+    "pageSize": 200,
+    "maxPages": 5
+  },
+  "zgorzelec": {
+    "enabled": true,
+    "url": "https://zgorzelec.eu/wydarzenia-zgorzelec/",
+    "note": "Hinweis-Mail vom 24.11.2026 an die Stadt Zgorzelec (keine Bitte um Erlaubnis); übernommen werden nur Titel, Datum, Ort und Link, keine Bilder und keine Beschreibungstexte",
+    "contact": {
+      "phone": null,
+      "url": "https://zgorzelec.eu/wydarzenia-zgorzelec/",
+      "email": null
+    }
+  },
+  "krone": {
+    "enabled": true,
+    "listUrl": "https://www.stadthalle-bautzen.de/veranstaltungen-in-bautzen/",
+    "maxDetailPages": 40,
+    "minDelayMs": 3000,
+    "note": "Hinweis-Mail an den Betreiber (BWB Bautzen) am 24.11.2026, keine Bitte um Erlaubnis; übernommen werden nur Titel und Datum und Uhrzeit, Ort und Link zur Veranstaltung, keine Bilder und keine Beschreibungstexte."
+  },
+  "evlks": {
+    "enabled": true,
+    "note": "Kirchenkalender der Ev.-Luth. Landeskirche Sachsens (kalender.evlks.de): Hinweis-Mail vom 24.11.2026 (keine Bitte um Erlaubnis, keine robots.txt). Übernommen werden nur Titel, Datum, Uhrzeit, Ort und Link zur Veranstaltung; keine Bilder, keine Beschreibungen. Ein JSON-Abruf je Lauf (ca. 3,4 MB), Auswahl und Umkreis im Adapter.",
+    "horizonDays": 60
   }
 }

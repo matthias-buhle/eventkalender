@@ -136,7 +136,7 @@ test('jede Quelle steht in genau einer Gruppe, und jede Gruppe nennt nur bekannt
 
 test('Tschechische Quellen stehen in der Gruppe Tschechien, mit dem Übersetzungshinweis darunter', () => {
   const tschechien = GRUPPEN.find((g) => g.titel === 'Tschechien');
-  assert.deepEqual([...tschechien.schluessel].sort(), ['goout', 'idecin']);
+  assert.deepEqual([...tschechien.schluessel].sort(), ['goout', 'idecin', 'varnsdorf']);
 });
 
 test('Gliederung: fünf aufklappbare Abschnitte, nur der erste ist offen', () => {

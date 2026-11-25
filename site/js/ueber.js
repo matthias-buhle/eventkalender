@@ -141,6 +141,36 @@ export const QUELLEN = [
     hinweis: 'Partys, Konzerte, Theater, Tanz, Kino, Lesungen, Kurse und Kinderprogramm der MANET Marketing GmbH; nur Titel, Zeit, Ort und Links.',
     links: [{ text: 'mvp.de', url: 'https://www.mvp.de/dresden/' }],
   },
+  {
+    schluessel: 'bluenote',
+    name: 'Blue Note Dresden',
+    hinweis: 'Konzertprogramm des Jazzclubs; nur Titel, Zeit, Ort und Link.',
+    links: [{ text: 'bluenote-dresden.de', url: 'https://bluenote-dresden.de/' }],
+  },
+  {
+    schluessel: 'krone',
+    name: 'Stadthalle Krone Bautzen',
+    hinweis: 'Programm der Stadthalle (Betreiber BWB Bautzen); nur Titel, Zeit, Ort und Link.',
+    links: [{ text: 'stadthalle-bautzen.de', url: 'https://www.stadthalle-bautzen.de/veranstaltungen-in-bautzen/' }],
+  },
+  {
+    schluessel: 'varnsdorf',
+    name: 'Varnsdorf (Stadt)',
+    hinweis: 'Veranstaltungskalender der Stadt Varnsdorf; nur Titel, Zeit, Ort und Link.',
+    links: [{ text: 'varnsdorf.cz', url: 'https://www.varnsdorf.cz/cz/volny-cas/kalendar-akci/' }],
+  },
+  {
+    schluessel: 'zgorzelec',
+    name: 'Zgorzelec (Stadt)',
+    hinweis: 'Veranstaltungen in Zgorzelec und dem Görlitzer Umfeld; die Titel bleiben polnisch; nur Titel, Zeit, Ort und Link.',
+    links: [{ text: 'zgorzelec.eu', url: 'https://zgorzelec.eu/wydarzenia-zgorzelec/' }],
+  },
+  {
+    schluessel: 'evlks',
+    name: 'Ev.-Luth. Landeskirche Sachsens',
+    hinweis: 'Kirchenkalender: Konzerte, Kirchenmusik und öffentliche Veranstaltungen der Gemeinden im Umkreis; nur Titel, Zeit, Ort und Link.',
+    links: [{ text: 'kalender.evlks.de', url: 'https://kalender.evlks.de/' }],
+  },
 ];
 
 /**
@@ -149,11 +179,13 @@ export const QUELLEN = [
  */
 export const GRUPPEN = [
   { titel: 'Städte und Tourismus', schluessel: ['satourn', 'bischofswerda', 'kamenz', 'stolpen', 'goerlitz', 'augusto'] },
-  { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel'] },
+  { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel', 'bluenote', 'krone'] },
   { titel: 'Theater, Museen und Bildung (Dresden und Sachsen)', schluessel: ['staatsoperette', 'projekttheater', 'herkuleskeule', 'museendresden', 'slpb'] },
+  { titel: 'Kirchen', schluessel: ['evlks'] },
   { titel: 'Märkte und Veranstaltungsportale', schluessel: ['flohmarkt', 'mvp'] },
   { titel: 'Ticketverkauf', schluessel: ['ticketmaster'] },
-  { titel: 'Tschechien', schluessel: ['idecin', 'goout'] },
+  { titel: 'Tschechien', schluessel: ['idecin', 'goout', 'varnsdorf'] },
+  { titel: 'Polen', schluessel: ['zgorzelec'] },
 ];
 
 function el(doc, tag, klasse, text) {

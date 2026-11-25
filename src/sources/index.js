@@ -22,10 +22,16 @@ import * as museendresden from './museendresden.js';
 import * as slpb from './slpb.js';
 import * as flohmarkt from './flohmarkt.js';
 import * as mvp from './mvp.js';
+import * as bluenote from './bluenote.js';
+import * as varnsdorf from './varnsdorf.js';
+import * as zgorzelec from './zgorzelec.js';
+import * as krone from './krone.js';
+import * as evlks from './evlks.js';
 
 // Die Reihenfolge zählt bei Dubletten: der frühere Eintrag behält seine Angaben, der spätere ergänzt nur.
 export const adapters = [
   aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster,
   gefluegel, neustadthalle, stolpen, l2club, steinhaus, idecin, dresden,
   staatsoperette, projekttheater, herkuleskeule, museendresden, slpb, flohmarkt, mvp,
+  bluenote, varnsdorf, zgorzelec, krone, evlks,
 ];
