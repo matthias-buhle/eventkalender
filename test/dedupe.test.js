@@ -139,3 +139,34 @@ test('terminlisteVoll bleibt beim Zusammenführen erhalten, egal von welcher Sei
   assert.equal(dedupe([b, a])[0].terminlisteVoll, true);
   assert.equal(dedupe([a, ev({ sourceName: 'B', sourceId: '3', sourceUrl: 'https://b.example/3' })])[0].terminlisteVoll, false);
 });
+
+const sky = (over) => ev({ sourceName: 'A', sourceId: 's1', sourceUrl: 'https://a.example/s1', start: '2026-11-29T15:00:00+01:00', title: 'Sky du Mont liest vergnügliche Weihnachtsgeschichten', placeName: 'Jagdschloss Graupa, Pirna', ...over });
+const sky2 = (over) => sky({ sourceName: 'B', sourceId: 's2', sourceUrl: 'https://b.example/s2', title: 'Lesung - vergnügliche Weihnachtsgeschichten mit Sky du Mont', placeName: 'Richard-Wagner-Stätten Graupa, Jagdschloss, Pirna', start: '2026-11-29T00:00:00+01:00', hasTime: false, ...over });
+
+test('ähnliche Titel und verschieden geschriebener Ort aus zwei Quellen, einmal ohne Uhrzeit, werden zusammengeführt', () => {
+  const out = dedupe([sky2(), sky()]);
+  assert.equal(out.length, 1);
+  assert.deepEqual(out[0].sources.map((s) => s.name).sort(), ['A', 'B']);
+  assert.equal(out[0].start, '2026-11-29T15:00:00+01:00');
+  assert.equal(out[0].hasTime, true);
+});
+
+test('ein unscharfer Ort ("Pirna") passt zum genauen Ort derselben Stadt', () => {
+  assert.equal(dedupe([sky(), sky2({ placeName: 'Pirna' })]).length, 1);
+});
+
+test('ähnliche Titel, aber verschiedene Uhrzeiten (beide bekannt) bleiben getrennt', () => {
+  assert.equal(dedupe([sky(), sky2({ start: '2026-11-29T19:30:00+01:00', hasTime: true })]).length, 2);
+});
+
+test('ähnliche Titel am selben Tag, aber an verschiedenen Orten bleiben getrennt', () => {
+  assert.equal(dedupe([sky(), sky2({ placeName: 'Kulturpalast, Dresden' })]).length, 2);
+});
+
+test('Einträge derselben Quelle werden nicht über ähnliche Titel zusammengeführt', () => {
+  assert.equal(dedupe([sky(), sky2({ sourceName: 'A', sourceId: 's3', sourceUrl: 'https://a.example/s3' })]).length, 2);
+});
+
+test('Titel mit nur einem gemeinsamen Wort bleiben getrennt', () => {
+  assert.equal(dedupe([sky(), sky2({ title: 'Weihnachtsgeschichten für Kinder' })]).length, 2);
+});

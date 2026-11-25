@@ -364,3 +364,9 @@ test('mvp: gleicher Termin in zwei Kategorielisten wird nur einmal gelesen', asy
   const details = detailAdressen(http);
   assert.equal(new Set(details).size, details.length);
 });
+
+test('mvp: dasselbe Konzert unter mehreren Seiten (Vivaldi, fünf Karten mit gleichem Zeitraum) ergibt je Tag einen Eintrag', async () => {
+  const events = await fetchEvents({ http: fakeHttp(), today: TODAY, config });
+  const vivaldi = events.filter((e) => e.title === 'Vivaldi - Die vier Jahreszeiten' && e.start.startsWith('2026-11-27'));
+  assert.equal(vivaldi.length, 1);
+});

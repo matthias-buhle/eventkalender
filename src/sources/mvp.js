@@ -269,6 +269,25 @@ function termineVon(karte, einzelseite, heute, letzterTag) {
 }
 
 /**
+ * mvp.de führt dasselbe Konzert oft unter mehreren Seiten mit gleichem Titel, Ort und Zeitraum ("Vivaldi" fünfmal).
+ * Ohne Einzelseite ergibt jede dieser Karten einen Eintrag am Reihenbeginn ohne Uhrzeit. Hier bleibt je Titel, Ort und
+ * Tag nur ein Eintrag je Beginn: Einträge ohne Uhrzeit entfallen, sobald derselbe Tag mit Uhrzeit vorkommt.
+ */
+function ohneDoppelte(events) {
+  const tagKey = (e) => `${e.title.toLowerCase()}|${(e.placeName ?? '').toLowerCase()}|${e.start.slice(0, 10)}`;
+  const mitZeit = new Set(events.filter((e) => e.hasTime).map(tagKey));
+  const behalten = new Map();
+  for (const e of events) {
+    if (!e.hasTime && mitZeit.has(tagKey(e))) continue;
+    const k = `${tagKey(e)}|${e.start}`;
+    const da = behalten.get(k);
+    if (!da) behalten.set(k, e);
+    else if (!da.ticketUrl && e.ticketUrl) { da.ticketUrl = e.ticketUrl; da.ticketStatus ??= e.ticketStatus; }
+  }
+  return [...behalten.values()];
+}
+
+/**
  * Veranstaltungslisten von mvp.de für Dresden und Umgebung: je zugesagter Kategorie die Listenseiten (40 Karten je Seite,
  * nach Datum sortiert, bis der Horizont erreicht ist), danach für die nächstliegenden Veranstaltungen die Einzelseite
  * (Uhrzeit, alle Termine, Ticketlink). Mindestens `minDelayMs` Abstand; bei 403 oder 429 endet der Lauf sofort.
@@ -331,5 +350,5 @@ export async function fetchEvents({ http, today, config }) {
     }
   }
   if (!events.length && ersterFehler) throw ersterFehler;
-  return events;
+  return ohneDoppelte(events);
 }
