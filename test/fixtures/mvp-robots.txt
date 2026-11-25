@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /api/meat
+# Utility URLs: noindex pages and per-date calendar files, no search value, only crawl budget.
+# Anchored on whole path segments: /entdecken/buchenwald-…/ must stay crawlable.
+Disallow: /*/kalender.ics
+Disallow: /*/anfrage/
+Disallow: /*/buchen/
+Disallow: /*/redirect/
+Disallow: /suche/
+Disallow: /suche?
+
+Sitemap: https://www.mvp.de/sitemap.xml

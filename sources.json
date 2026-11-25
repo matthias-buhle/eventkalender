@@ -123,7 +123,9 @@
     "enabled": true,
     "baseUrl": "https://www.idecin.cz/program",
     "months": 3,
-    "ausschluss": ["veřejné bruslení"]
+    "ausschluss": [
+      "veřejné bruslení"
+    ]
   },
   "dresden": {
     "enabled": false,
@@ -133,5 +135,50 @@
     "limit": 500,
     "maxPages": 40,
     "fallbackUrl": null
+  },
+  "staatsoperette": {
+    "enabled": true,
+    "note": "Schnittstelle von der Staatsoperette Dresden am 25.11.2026 ausdrücklich zugesagt und selbst genannt; ein Abruf liefert den ganzen Spielplan (Produktionen mit Terminliste). Keine Lizenzangabe in den Daten, Quelle wird namentlich genannt.",
+    "url": "https://www.staatsoperette.de/data-exports/events.json"
+  },
+  "projekttheater": {
+    "enabled": true,
+    "note": "projekttheater dresden: Spielplan je Monat (Zusage vom 25.11.2026), Einzelseite je Inszenierung für den Text",
+    "listUrl": "https://projekttheater.de/spielplan/",
+    "maxMonths": 12,
+    "maxDetailPages": 40,
+    "minDelayMs": 5000
+  },
+  "herkuleskeule": {
+    "enabled": true,
+    "note": "Herkuleskeule Dresden: Geschäftsführer hat am 25.11.2026 das Verweisen auf die Angebote ausdrücklich erlaubt. Deshalb nur verweisen: Titel, Datum, Uhrzeit, Ort, Link zur Veranstaltung und Ticketlink; keine Beschreibungen, keine Bilder, keine Pressetexte.",
+    "url": "https://www.herkuleskeule.de/spielplan-und-tickets",
+    "horizonDays": 120
+  },
+  "museendresden": {
+    "enabled": true,
+    "note": "Museen der Stadt Dresden: Verweis auf die Originalseiten ausdrücklich begrüßt (25.11.2026). Nur verweisen: Titel, Datum, Ort, Link, eine Zeile unter dem Titel.",
+    "url": "https://museen-dresden.de/?ajax=events&limit=300"
+  },
+  "slpb": {
+    "enabled": true,
+    "note": "Sächsische Landeszentrale für politische Bildung: Informationen öffentlich, Weitergabe erlaubt (25.11.2026)",
+    "url": "https://www.slpb.de/veranstaltungen",
+    "maxPages": 8,
+    "horizonDays": 90,
+    "minDelayMs": 2000
+  },
+  "flohmarkt": {
+    "enabled": true,
+    "note": "Flohmarkt-Sachsen (DDV Sachsen GmbH): „Sie können Termine veröffentlichen“ (25.11.2026). Der Sammel-Kalender endet nach 50 Terminen; ob mehr gelesen werden darf, ist offen.",
+    "url": "https://flohmarkt-sachsen.de/markttermine/ical/"
+  },
+  "mvp": {
+    "enabled": true,
+    "note": "Zusage der MANET Marketing GmbH (mvp.de) vom 09./25.11.2026: privater, nicht kommerzieller, nicht öffentlicher Kalender (höchstens 35 Personen), Dresden und Umgebung, einmal täglich mit Pausen. Übernommen werden nur Titel, Datum, Uhrzeit, Ort und Link (plus Ticketlink); keine Beschreibungstexte, keine Fotos. Bei spürbarer Last behält sich mvp eine Sperre vor.",
+    "horizonDays": 45,
+    "maxDetailPages": 40,
+    "maxListPages": 6,
+    "minDelayMs": 5000
   }
 }

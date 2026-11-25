@@ -1,0 +1,881 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//wp-events-plugin.com//7.7.1//EN
+TZID:Europe/Berlin
+X-WR-TIMEZONE:Europe/Berlin
+BEGIN:VEVENT
+UID:183@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261128T090000
+DTEND;TZID=Europe/Berlin:20261128T150000
+DTSTAMP:20251111T140824Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-copy-2026-11-2
+ 8/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1&ndash;2m &ndash; 20&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30
+ m\n 	Neu ab 2026: Standpl&auml;tze direkt an der Steinmauer im Schatten!\n\nWi
+ chtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehrsmi
+ ttel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen ange
+ leint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:260@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261128T090000
+DTEND;TZID=Europe/Berlin:20261128T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2026-11-28/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:285@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261129T110000
+DTEND;TZID=Europe/Berlin:20261129T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-11-29/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:261@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261205T090000
+DTEND;TZID=Europe/Berlin:20261205T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2026-12-05/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:262@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261212T090000
+DTEND;TZID=Europe/Berlin:20261212T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2026-12-12/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:286@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261213T110000
+DTEND;TZID=Europe/Berlin:20261213T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-11-29-2026-12-13/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:263@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261219T090000
+DTEND;TZID=Europe/Berlin:20261219T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2026-12-19/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:290@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261228T100000
+DTEND;TZID=Europe/Berlin:20261228T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-12-28/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:291@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20261229T100000
+DTEND;TZID=Europe/Berlin:20261229T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-12-28-2026-12-29/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:264@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270102T090000
+DTEND;TZID=Europe/Berlin:20270102T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-01-02/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:287@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270103T110000
+DTEND;TZID=Europe/Berlin:20270103T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-11-29-2026-12-13-2027-01-03/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:265@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270109T090000
+DTEND;TZID=Europe/Berlin:20270109T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-01-09/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:266@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270116T090000
+DTEND;TZID=Europe/Berlin:20270116T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-01-16/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:267@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270123T090000
+DTEND;TZID=Europe/Berlin:20270123T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-01-23/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:268@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270130T090000
+DTEND;TZID=Europe/Berlin:20270130T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-01-30/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:294@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270206T090000
+DTEND;TZID=Europe/Berlin:20270206T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-02-06/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:269@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270206T090000
+DTEND;TZID=Europe/Berlin:20270206T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-02-06/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:288@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270207T110000
+DTEND;TZID=Europe/Berlin:20270207T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-11-29-2026-12-13-2027-01-03-2027-02-07/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:295@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270213T090000
+DTEND;TZID=Europe/Berlin:20270213T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-02-13/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:270@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270213T090000
+DTEND;TZID=Europe/Berlin:20270213T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-02-13/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:296@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270220T090000
+DTEND;TZID=Europe/Berlin:20270220T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-02-20/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:271@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270220T090000
+DTEND;TZID=Europe/Berlin:20270220T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-02-20/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:272@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270227T090000
+DTEND;TZID=Europe/Berlin:20270227T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-02-27/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:297@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270227T090000
+DTEND;TZID=Europe/Berlin:20270227T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-02-27/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:273@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270306T090000
+DTEND;TZID=Europe/Berlin:20270306T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-03-06/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:298@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270306T090000
+DTEND;TZID=Europe/Berlin:20270306T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-03-06/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:289@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270307T110000
+DTEND;TZID=Europe/Berlin:20270307T170000
+DTSTAMP:20260902T142058Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-3-2026-11-29-2026-12-13-2027-01-03-2027-02-07-2027-03-07/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:274@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270313T090000
+DTEND;TZID=Europe/Berlin:20270313T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-03-13/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:299@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270313T090000
+DTEND;TZID=Europe/Berlin:20270313T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-03-13/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:363@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270314T100000
+DTEND;TZID=Europe/Berlin:20270314T160000
+DTSTAMP:20261120T150949Z
+URL:https://flohmarkt-sachsen.de/markttermine/riesentroedelmarkt-an-der-ga
+ lopprennbahn-3-2027-03-14/
+SUMMARY:Riesentr&ouml;delmarkt an der Galopprennbahn
+DESCRIPTION:Organisation\n\n 	Standaufbau ab 7:00 Uhr\n 	Marktbeginn 10:00\
+ n 	Marktende 16:00 Uhr\n 	Standabbau bis sp&auml;testens 18:00\n 	Standgeb&uuml;hr
+ : ab 3m &ndash; 25.00&euro;\n 	Auto am Stand. Wenn Sie mit einem Transporter komm
+ en\, sind mindestens 5 m Standfl&auml;che notwendig.\n 	St&auml;nde mit Neuware za
+ hlen zus&auml;tzlich 20&euro; Standgeb&uuml;hr\n 	&Uuml;berdachte Leihst&auml;nde mit Tischfl
+ &auml;che f&uuml;r zus&auml;tzlich 25&euro; sind bei der Firma Stefan Seike buchbar &ndash; T
+ elefon 0172-6833633 (bitte trotzdem online anmelden)\n\nExtras\n\n 	Rennba
+ hn-F&uuml;hrung\, Livemusik und Biergarten!\n\nAnmeldung\n\n 	F&uuml;r diesen und 
+ viele weitere M&auml;rkte k&ouml;nnen Sie sich&nbsp;hier anmelden\n
+LOCATION:Pferderennbahn Dresden Seidnitz\, Oskar-R&ouml;der Stra&szlig;e 1\, Dresden
+ \, Sachsen\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Oskar-R&ouml;der Stra&szlig;e 1\, Dr
+ esden\, Sachsen\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Pferderennbahn Dr
+ esden Seidnitz:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:300@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270320T090000
+DTEND;TZID=Europe/Berlin:20270320T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-03-20/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:275@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270320T090000
+DTEND;TZID=Europe/Berlin:20270320T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-03-20/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:374@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270321T100000
+DTEND;TZID=Europe/Berlin:20270321T160000
+DTSTAMP:20261106T174328Z
+URL:https://flohmarkt-sachsen.de/markttermine/riesentroedelmarkt-im-elbepa
+ rk-2-2027-03-21/
+SUMMARY:Riesentr&ouml;delmarkt im Elbepark
+DESCRIPTION:
+LOCATION:Elbepark\, gro&szlig;er Parkplatz\, Peschelstra&szlig;e 33\, Dresden\, Sachs
+ en\, 01139\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Peschelstra&szlig;e 33\, Dresden
+ \, Sachsen\, 01139\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Elbepark\, gro
+ &szlig;er Parkplatz:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:301@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270327T090000
+DTEND;TZID=Europe/Berlin:20270327T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-03-27/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:276@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270327T090000
+DTEND;TZID=Europe/Berlin:20270327T160000
+DTSTAMP:20260902T142115Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-neustaedter-mar
+ kthalle-2-2027-03-27/
+SUMMARY:Tr&ouml;delmarkt Neust&auml;dter Markthalle
+DESCRIPTION:
+LOCATION:Neust&auml;dter Markthalle\, Metzer Str. 1\, Dresden\, Sachsen\, 01097
+ \, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Metzer Str. 1\, Dresden\, S
+ achsen\, 01097\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Neust&auml;dter Markth
+ alle:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:384@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270328T100000
+DTEND;TZID=Europe/Berlin:20270328T160000
+DTSTAMP:20261106T174852Z
+URL:https://flohmarkt-sachsen.de/markttermine/nickerner-troedelmarkt-vorm-
+ kaufpark-dresden-2-2027-03-28/
+SUMMARY:Nickerner Tr&ouml;delmarkt vorm Kaufpark Dresden
+DESCRIPTION:
+LOCATION:Kaufpark Dresden Nickern\, Parkplatz vorm Haupteingang\, Dohnaer S
+ tr. 246 (B172)\, Dresden\, Dachsen\, 01239\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Dohnaer Str. 246 (B172)\, D
+ resden\, Dachsen\, 01239\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Kaufpark
+  Dresden Nickern\, Parkplatz vorm Haupteingang:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:302@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270403T090000
+DTEND;TZID=Europe/Berlin:20270403T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-04-03/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:356@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270403T100000
+DTEND;TZID=Europe/Berlin:20270403T160000
+DTSTAMP:20261123T134733Z
+URL:https://flohmarkt-sachsen.de/markttermine/japanfestival-kreativmarkt-2
+ -2027-04-03/
+SUMMARY:Japanfestival &amp; Kreativmarkt
+DESCRIPTION:
+LOCATION:am und im Haus der Presse\, Ostra-Allee 20\, Dresden\, Sachsen\, 0
+ 1067\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Ostra-Allee 20\, Dresden\, 
+ Sachsen\, 01067\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=am und im Haus de
+ r Presse:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:414@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270403T100000
+DTEND;TZID=Europe/Berlin:20270403T160000
+DTSTAMP:20261123T142510Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-am-haus-der-pre
+ sse-3-2027-04-03/
+SUMMARY:Tr&ouml;delmarkt am Haus der Presse
+DESCRIPTION:
+LOCATION:Parkplatz hinter Haus der Presse\, Devrientstra&szlig;e 9\, Dresden\, S
+ achsen\, 01067\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Devrientstra&szlig;e 9\, Dresden
+ \, Sachsen\, 01067\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Parkplatz hint
+ er Haus der Presse:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:357@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270404T100000
+DTEND;TZID=Europe/Berlin:20270404T160000
+DTSTAMP:20261123T134733Z
+URL:https://flohmarkt-sachsen.de/markttermine/japanfestival-kreativmarkt-2
+ -2027-04-04/
+SUMMARY:Japanfestival &amp; Kreativmarkt
+DESCRIPTION:
+LOCATION:am und im Haus der Presse\, Ostra-Allee 20\, Dresden\, Sachsen\, 0
+ 1067\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Ostra-Allee 20\, Dresden\, 
+ Sachsen\, 01067\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=am und im Haus de
+ r Presse:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:406@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270404T100000
+DTEND;TZID=Europe/Berlin:20270404T160000
+DTSTAMP:20261120T152528Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-am-haus-der-pre
+ sse-4-2027-04-04/
+SUMMARY:Tr&ouml;delmarkt am Haus der Presse
+DESCRIPTION:
+LOCATION:Parkplatz hinter Haus der Presse\, Devrientstra&szlig;e 9\, Dresden\, S
+ achsen\, 01067\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Devrientstra&szlig;e 9\, Dresden
+ \, Sachsen\, 01067\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Parkplatz hint
+ er Haus der Presse:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:303@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270410T090000
+DTEND;TZID=Europe/Berlin:20270410T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-04-10/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:364@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270411T100000
+DTEND;TZID=Europe/Berlin:20270411T160000
+DTSTAMP:20261120T150949Z
+URL:https://flohmarkt-sachsen.de/markttermine/riesentroedelmarkt-an-der-ga
+ lopprennbahn-3-2027-04-11/
+SUMMARY:Riesentr&ouml;delmarkt an der Galopprennbahn
+DESCRIPTION:Organisation\n\n 	Standaufbau ab 7:00 Uhr\n 	Marktbeginn 10:00\
+ n 	Marktende 16:00 Uhr\n 	Standabbau bis sp&auml;testens 18:00\n 	Standgeb&uuml;hr
+ : ab 3m &ndash; 25.00&euro;\n 	Auto am Stand. Wenn Sie mit einem Transporter komm
+ en\, sind mindestens 5 m Standfl&auml;che notwendig.\n 	St&auml;nde mit Neuware za
+ hlen zus&auml;tzlich 20&euro; Standgeb&uuml;hr\n 	&Uuml;berdachte Leihst&auml;nde mit Tischfl
+ &auml;che f&uuml;r zus&auml;tzlich 25&euro; sind bei der Firma Stefan Seike buchbar &ndash; T
+ elefon 0172-6833633 (bitte trotzdem online anmelden)\n\nExtras\n\n 	Rennba
+ hn-F&uuml;hrung\, Livemusik und Biergarten!\n\nAnmeldung\n\n 	F&uuml;r diesen und 
+ viele weitere M&auml;rkte k&ouml;nnen Sie sich&nbsp;hier anmelden\n
+LOCATION:Pferderennbahn Dresden Seidnitz\, Oskar-R&ouml;der Stra&szlig;e 1\, Dresden
+ \, Sachsen\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Oskar-R&ouml;der Stra&szlig;e 1\, Dr
+ esden\, Sachsen\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Pferderennbahn Dr
+ esden Seidnitz:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:304@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270417T090000
+DTEND;TZID=Europe/Berlin:20270417T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-04-17/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:375@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270418T100000
+DTEND;TZID=Europe/Berlin:20270418T160000
+DTSTAMP:20261106T174328Z
+URL:https://flohmarkt-sachsen.de/markttermine/riesentroedelmarkt-im-elbepa
+ rk-2-2027-04-18/
+SUMMARY:Riesentr&ouml;delmarkt im Elbepark
+DESCRIPTION:
+LOCATION:Elbepark\, gro&szlig;er Parkplatz\, Peschelstra&szlig;e 33\, Dresden\, Sachs
+ en\, 01139\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Peschelstra&szlig;e 33\, Dresden
+ \, Sachsen\, 01139\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Elbepark\, gro
+ &szlig;er Parkplatz:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:305@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270424T090000
+DTEND;TZID=Europe/Berlin:20270424T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-04-24/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:385@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270425T100000
+DTEND;TZID=Europe/Berlin:20270425T160000
+DTSTAMP:20261106T174852Z
+URL:https://flohmarkt-sachsen.de/markttermine/nickerner-troedelmarkt-vorm-
+ kaufpark-dresden-2-2027-04-25/
+SUMMARY:Nickerner Tr&ouml;delmarkt vorm Kaufpark Dresden
+DESCRIPTION:
+LOCATION:Kaufpark Dresden Nickern\, Parkplatz vorm Haupteingang\, Dohnaer S
+ tr. 246 (B172)\, Dresden\, Dachsen\, 01239\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Dohnaer Str. 246 (B172)\, D
+ resden\, Dachsen\, 01239\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Kaufpark
+  Dresden Nickern\, Parkplatz vorm Haupteingang:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:306@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270501T090000
+DTEND;TZID=Europe/Berlin:20270501T150000
+DTSTAMP:20261106T172007Z
+URL:https://flohmarkt-sachsen.de/markttermine/elbeflohmarkt-2-2027-05-01/
+SUMMARY:Elbeflohmarkt
+DESCRIPTION:Marktzeit: 9 bis 15 Uhr\nAufbau: ab 7 Uhr bis 8.30 Uhr\n\nParke
+ n:\n\n 	kostenfreier Parkplatz gleich auf der anderen Elbseite an der Wiga
+ rdstra&szlig;e (neben Staatskanzlei &ndash; Einfahrtsh&ouml;he max. 2.20 Meter)\n 	Auto
+ s d&uuml;rfen zum Be- und Entladen auf den Platz fahren\n\nStandgeb&uuml;hr:\n\n 	
+ 1m &ndash; 10&euro;\n 	jeder weitere Meter + 10&euro;\n 	maximale Standl&auml;nge 30m\n\
+ nWichtige Hinweise:\n\n 	Besucher benutzen bitte die &ouml;ffentlichen Verkehr
+ smittel\n 	TOI&reg;-Toilettenkabinen stehen zur Verf&uuml;gung\n 	Hunde m&uuml;ssen a
+ ngeleint bleiben\n
+LOCATION:Elbufer unterhalb Albertbr&uuml;cke\, unterhalb der Albertbr&uuml;cke\, Zu
+ fahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=unterhalb der Albertbr&uuml;cke
+ \, Zufahrt &uuml;ber Terassenufer\, Dresden\, Sachsen\, 01307\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Elbufer unterhalb Albertbr&uuml;cke:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:415@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270501T100000
+DTEND;TZID=Europe/Berlin:20270501T160000
+DTSTAMP:20261123T142510Z
+URL:https://flohmarkt-sachsen.de/markttermine/troedelmarkt-am-haus-der-pre
+ sse-3-2027-05-01/
+SUMMARY:Tr&ouml;delmarkt am Haus der Presse
+DESCRIPTION:
+LOCATION:Parkplatz hinter Haus der Presse\, Devrientstra&szlig;e 9\, Dresden\, S
+ achsen\, 01067\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Devrientstra&szlig;e 9\, Dresden
+ \, Sachsen\, 01067\, Deutschland;X-APPLE-RADIUS=100;X-TITLE=Parkplatz hint
+ er Haus der Presse:geo:0,0
+END:VEVENT
+BEGIN:VEVENT
+UID:401@flohmarkt-sachsen.de
+DTSTART;TZID=Europe/Berlin:20270501T110000
+DTEND;TZID=Europe/Berlin:20270501T180000
+DTSTAMP:20261120T144435Z
+URL:https://flohmarkt-sachsen.de/markttermine/familienfest-am-goldenen-rei
+ ter-mit-kreativ-antik-und-troedelmarkt-2027-05-01/
+SUMMARY:Familienfest am Goldenen Reiter mit Kreativ-\, Antik- und Tr&ouml;delma
+ rkt
+DESCRIPTION:Organisation:\n\n 	Standgeb&uuml;hr:\n\n 	ab 1 m (Standtiefe 1 m) 1
+ 5 &euro;\n 	Leihstand ab 3 m (Standtiefe 2 m) 75 &euro;\n\n\n\nAdresse:\n\n 	010
+ 97 Dresden\, Hauptstra&szlig;e\n 	ab Metzer Stra&szlig;e mit Jorge-Gomodai-Platz\n(Z
+ ufahrt &uuml;ber Metzer Stra&szlig;e\, Auto bleibt nicht am Stand!)\n\nTeilnahmebed
+ ingungen:\n\n 	Marktordnung\n
+LOCATION:Hauptstra&szlig;e ab Metzer Stra&szlig;e mit Jorge-Gomodai-Platz\, Hauptstra
+ &szlig;e\, ab Metzer Stra&szlig;e mit Jorge-Gomodai-Platz\, Dresden\, Sachsen\, 0109
+ 7\, Deutschland
+X-APPLE-STRUCTURED-LOCATION;VALUE=URI;X-ADDRESS=Hauptstra&szlig;e\, ab Metzer St
+ ra&szlig;e mit Jorge-Gomodai-Platz\, Dresden\, Sachsen\, 01097\, Deutschland;X-
+ APPLE-RADIUS=100;X-TITLE=Hauptstra&szlig;e ab Metzer Stra&szlig;e mit Jorge-Gomodai-
+ Platz:geo:0,0
+END:VEVENT
+BEGIN:VTIMEZONE
+TZID:Europe/Berlin
+X-LIC-LOCATION:Europe/Berlin
+BEGIN:STANDARD
+DTSTART:20261025T020000
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+TZNAME:CET
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20270328T030000
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+TZNAME:CEST
+END:DAYLIGHT
+END:VTIMEZONE
+END:VCALENDAR

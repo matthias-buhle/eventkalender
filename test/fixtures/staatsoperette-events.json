@@ -1,0 +1,1427 @@
+[
+ {
+  "id": 112,
+  "title": "Alice im Wunderland",
+  "description": "Alice, das mutige kleine Mädchen aus dem viktorianischen England, das neugierig einem weißen Kaninchen mit Taschenuhr und Westentasche in seinen Bau folgt und tief unter die Erde gefallen mal winzig klein und mal riesengroß allerlei paradoxe Abenteuer besteht, zählt zu den meistgeliebten Kinderbuchheldinnen aller Zeiten. Seit 1865, als Lewis Carrolls Klassiker Alice im Wunderland erstmals in Buchform erschien, beschäftigen ihre bizarren Erlebnisse im Wunderland und Jenseits des Spiegels – so der Titel des zweiten Alice-Buchs – die Fantasie von Kindern wie Erwachsenen. Dabei erfindet jede Generation ihre Begegnungen mit der Grinsekatze, dem verrückten Hutmacher, der Herzkönigin und den vielen anderen auf einzigartige Weise neu.\r\n\r\nLassen Sie sich von Ballettdirektor Radek Stopka und seinem fantasievollen Tanzmärchen für die ganze Familie auf den Spuren heißgeliebter Figuren ins Wunderland entführen! Die Musik dazu liefert der Dresdner Komponist Sven Helbig: Sinnlich kraftvolle Akkordfolgen wirken hypnotisch wie die geheimnisvolle Raupe mit ihrer Wasserpfeife; vorwärtsdrängende Rhythmen treiben Alice immer tiefer in ihre Geschichte hinein und uns im Publikum mit ihr.\r\n\r\n\r\nVielen Dank!\r\nAuch in der Spielzeit 2026/27 leiht uns der Handpan-Salon aus Dresden/Langebrück eine Handpan für alle Vorstellungen von Alice. Wir bedanken uns herzlich für die Unterstützung!",
+  "event_dates": [
+   {
+    "start_date": "2026-11-28T19:30:00",
+    "end_date": "2026-11-28T21:45:00"
+   },
+   {
+    "start_date": "2026-11-29T15:00:00",
+    "end_date": "2026-11-29T17:15:00"
+   },
+   {
+    "start_date": "2026-12-01T11:00:00",
+    "end_date": "2026-12-01T13:15:00"
+   },
+   {
+    "start_date": "2026-12-02T18:00:00",
+    "end_date": "2026-12-02T20:15:00"
+   },
+   {
+    "start_date": "2026-12-12T18:00:00",
+    "end_date": "2026-12-12T20:15:00"
+   },
+   {
+    "start_date": "2026-12-13T15:00:00",
+    "end_date": "2026-12-13T17:15:00"
+   },
+   {
+    "start_date": "2026-12-17T18:00:00",
+    "end_date": "2026-12-17T20:15:00"
+   },
+   {
+    "start_date": "2026-12-18T11:00:00",
+    "end_date": "2026-12-18T13:15:00"
+   },
+   {
+    "start_date": "2026-12-22T18:00:00",
+    "end_date": "2026-12-22T20:15:00"
+   },
+   {
+    "start_date": "2026-12-23T18:00:00",
+    "end_date": "2026-12-23T20:15:00"
+   },
+   {
+    "start_date": "2027-01-09T18:00:00",
+    "end_date": "2027-01-09T20:15:00"
+   },
+   {
+    "start_date": "2027-01-10T15:00:00",
+    "end_date": "2027-01-10T17:15:00"
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 21
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 55
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Saal",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Tanz",
+  "updates_at": "2026-11-25T07:18:04",
+  "event_link": [
+   {
+    "title": "Alice im Wunderland",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/alice-im-wunderland/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Alice im Wunderland",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/alice-im-wunderland/"
+  },
+  "medialist": [
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Kleine Alice, Mandy Coleman (Alice’ Mutter) und Gerd Wiemer (Alice’ Vater)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/6855ae8760188f5cc8c0fcf3dea2a4cf/7473/1_img_4497photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Vladislav Vlasov (Mathematiklehrerin) und Kinderballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/81b3078c6e50c2fb959592c9f1ad9a7b/7451/2023_11_21_sos_595393.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Eliton Da Silva de Barros (Weißes Kaninchen) und Melania Mazzaferro (Alice)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/e6d98276fdc79381314a792ef9e83aa0/7474/3_img_4491photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Nina Kemptner (Artistik) und Melania Mazzaferro (Alice)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/661b83e115c988028a6b59935269a2ae/7475/4_img_4503photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Andrea De Marzo, Till Geier, Izabela Tonevitsk (Marionetten) und Melania Mazzaferro (Alice)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/2f15ff6f929941834247e38280cbd5dc/7476/5_img_4504photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Melania Mazzaferro (Alice), Zwiddeldum (Philip Lehmann) und Zwiddeldei (Felix Roßberg)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/f7450131c9b62cad1c0bca5cc4bf9d82/7477/6_img_4505photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Melania Mazzaferro (Alice) und Domenica Herrero Gimeno (Grinsekatze)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/4d0440f33bf62e8b4b9417033402addb/7496/7_img_4510photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Elizabeth Iwasko (Märzhase), Jarod Rödel (Haselmaus) und Sergiy Tonevitskyy (Verrückter Hutmacher)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/57edf7802e70f71039e62ee5d2a10eb4/7478/8_img_4514photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Vladislav Vlasov (Herzkönigin) und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/7c35b044f93edde15e77b367883c8437/7479/9_2023_12_01_sos_601864.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Kseniya Pogorilyak (Herzkönig) und Vladislav Vlasov (Herzkönigin)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/cba62bdecbf552b913a9e9dde3a65d2a/7480/10_img_4489photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Melania Mazzaferro (Alice), Mandy Coleman (Froschmutter), Sergiy Tonevitskyy (Verrückter Hutmacher) und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/d0daff0a7c294af8b6d8948f11373418/7455/2023_11_21_sos_599135.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Eliton Da Silva de Barros (Weißes Kaninchen) und Melania Mazzaferro (Alice)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/d781987c61750c6f4bc572904aa9482e/7431/2023_11_21_sos_599152.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Melania Mazzaferro (Alice) und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/a7bde7cce70c36f2fdfa2b12c3f05e62/7481/13_img_4492photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Nina Kemptner (Weiße Königin)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/e49ab87872d53401b3794c8bb503da5a/7482/14_img_4529photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Vladislav Vlasov (Herzkönigin) und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/936e76b5c787382240b41517e0cb9764/7444/alice_06.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Melania Mazzaferro (Alice) und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/a708dd44e1e05d75479e39e2bdb4b1e4/7483/16_img_4533photo.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "ALICE IM WUNDERLAND<br />Tanzmärchen von Radek Stopka | Musik von Sven Helbig<br /><br />Eliton Da Silva de Barros (Weißes Kaninchen)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/7b02a0317897b2d8b3f42c3653fda65e/7457/2023_11_21_sos_599727.jpg"
+   }
+  ]
+ },
+ {
+  "id": 90,
+  "title": "Green-Box-Kammerkonzert",
+  "description": "Nicht nur vom Klima- und Naturschutz reden, sondern auch aktiv etwas dafür tun. Genau das machen Musiker*innen der Staatsoperette und zwar mit dem, was sie am besten können: mit Musik! Mehrmals pro Spielzeit laden sie zu ihren Green- Box-Kammerkonzerten ein, bei denen sie Spenden für Umwelt- und Nachhaltigkeitsprojekte sammeln. In unterschiedlichsten Formationen präsentieren die Musiker*innen hier klassische und moderne Kammermusik, während wissenschaftliche Vorträge zu ausgewählten Nachhaltigkeitsthemen, Gesprächsrunden oder künstlerische Beiträge das exklusive Konzertformat abrunden.\r\n\r\nBereits seit Frühjahr 2021 ist das Orchester der Staatsoperette Mitglied in dem Verein „Orchester des Wandels“, der zahlreiche deutsche Berufsorchester unter seinem Dach vereint. Gemeinsam treten sie aktiv für Klima- und Naturschutz ein und möchten mit ihren Projekten nachhaltiges Denken im Kulturbereich fördern.\r\n\r\nMehr zur Initiative \"Orchester des Wandels\": www.orchester-des-wandels.de 30.11.26 Jüdische Klänge & neue Perspektiven Im ersten Green-Box-Kammerkonzert der Spielzeit treffen mitreißende Klezmer-Klänge auf Lesungen aus der aktuellen klimapolitischen Belletristik. Zum Abschluss von TACHELES, dem Festjahr jüdischer Kultur in Sachsen, bringen Mitglieder des Orchesters der Staatsoperette Werke aus der Klezmer-Tradition sowie Kompositionen jüdischer Komponisten zu Gehör.\r\n\r\nBabett Kuschel aus dem Schauspielensemble des tjg. und Andreas Sauerzapf, Tenor der Staatsoperette, führen durch einen Abend, der zum Nachdenken anregt und zugleich musikalisch begeistert.\r\n\r\nMUSIK\r\nVioline: Maria Berge | Klavier: Minsang Cho | \r\nKlarinette: Billy Schmidt | Kontrabass: Daniel Huber\r\n\r\nLESUNG\r\nBabett Kuschel, Andreas Sauerzapf\r\n\r\n 22.02.27 Im Einklang mit der Zukunft Wie kann der Kulturbetrieb nachhaltiger werden und seinen Beitrag zu einer klimagerechten Zukunft leisten? Das Deutsche Hygiene-Museum ist Mitunterzeichner der Dresdner Charta für Nachhaltigkeit im Kultursektor, hat mit der gesamten Belegschaft einen 100-Punkte-Plan für Nachhaltigkeit erarbeitet und bereits umgesetzt sowie zudem in jeder Abteilung Green Delegates benannt, die sich regelmäßig austauschen.\r\n\r\nAnja Sommer, die die Umsetzung der Nachhaltigkeitsstrategie des Hygiene-Museums koordiniert, gibt im Gespräch Einblicke in weitere Maßnahmen zu Klimaschutz und Klimaanpassung. Der Austausch wird musikalisch umrahmt von einem Streichquartett mit Posaune, das u.a. die Suite des noch lebenden italienischen Komponisten Corrado Maria Saglietti zum Klingen bringt.\r\n\r\nMUSIK\r\nVioline: Maria Preißler, Ayaka Omura | Viola: Kateřina Czeslik Tajovská | Cello: Martin Borck | Posaune: Christoph Schnaithmann\r\n\r\nGESPRÄCH \r\nAnja Sommer (Deutsches Hygiene-Museum Dresden)\r\n\r\n 07.06.27 Viele Stimmen, eine Zukunft Die ökologischen Herausforderungen unserer Zeit lassen sich nur gemeinsam bewältigen. Diesem Gedanken widmet sich das dritte Green-Box-Kammerkonzert der Spielzeit 2026 / 27 mit einem sechsstimmigen A-cappella-Ensemble aus Mitgliedern des Orchesters und Chors der Staatsoperette sowie Gesangsgästen.\r\n\r\nWerke von Heinrich Schütz, Felix Mendelssohn, Max Reger und Knut Nystedt entfalten die verbindende Kraft der menschlichen Stimme. Ergänzt wird das musikalische Programm durch einen Vortrag von Prof. Dr. Jakob Zscheischler, Erdsystemwissenschaftler und Leiter der Abteilung Compound Environmental Risks am Helmholtz-Zentrum für Umweltforschung (UFZ) in Leipzig. Er gibt Einblicke in seine Forschung zu kombinierten Wetter- und Klimaereignissen und zeigt auf, wie diese ökologische und gesellschaftliche Risiken verstärken können.\r\n\r\nMUSIK\r\nA-Cappella-Ensemble der Staatsoperette\r\n\r\nVORTRAG\r\nProf. Dr. Jakob Zscheischler (Helmholtz-Zentrum für Umweltforschung Leipzig)",
+  "event_dates": [
+   {
+    "start_date": "2026-11-30T19:00:00",
+    "end_date": "2026-11-30T20:30:00"
+   },
+   {
+    "start_date": "2027-02-22T19:00:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-06-07T19:00:00",
+    "end_date": null
+   }
+  ],
+  "prices": [],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Kranfoyer",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Special",
+  "updates_at": "2026-11-25T07:23:42",
+  "event_link": [
+   {
+    "title": "Green-Box-Kammerkonzert",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/green-box-konzert/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Green-Box-Kammerkonzert",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/green-box-konzert/"
+  },
+  "medialist": [
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/5b4f73b291acc39f175f2cd41162dc2f/8438/img_20240514_wa0009.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/704969cfac3f4796dc712b51735e9639/4950/_dsc3354.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/5f7ed6df7fb4331b087cddeac4377176/8437/img_20240514_wa0003.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/a2ab860c80805b586c96926c9f9bed28/4951/_dsc3244.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/af4141db5bd1ea7b83c373dcedc76490/4952/_dsc3372.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/6aa86daa74bb8736802e6b76430a23c7/4953/_dsc3373.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/df1ff69344c6c600b0139f223452a1e5/4954/_dsc3292.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "GREEN-BOX-KAMMERKONZERT vom 14. März",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/7933c49d1b64d656d29f4f4a3974b138/5559/_dsc5058.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "GREEN-BOX-KAMMERKONZERT vom 14. März",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/eed26fc3bc881bc0eab437657d2f6193/5560/_dsc5120.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "GREEN-BOX-KAMMERKONZERT vom 14. März",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/1fe010b8bd2187ad622c9eda90aac335/5561/_dsc5110.jpg"
+   }
+  ]
+ },
+ {
+  "id": 140,
+  "title": "Kinostar!",
+  "description": "Gloria Mills ist ein Star. Ach was, sie ist DER Star! Umringt von den besten Makeup-Artists der Branche und verfolgt von einer Traube von Klatschreportern strahlt sie als unangefochtene Nummer Eins Hollywoods auf jedem roten Teppich. Doch ist Gloria Mills auch glücklich? Nein! Leider aber will niemand dieses „Nein“ hören: weder ihr Produzent, der seine Diseuse lediglich an ihren Vertrag erinnert, und schon gar nicht ihre Fangemeinde, welche ununterbrochen nach dem neuesten Streifen der Diva lechzt. Einzig Axel Swift, verzweifelter Journalist auf der Suche nach einer reißerischen Story, gelingt es, hinter die Fassade des Stars zu blicken und den Wert Gloria Mills auch jenseits eines Zeitungsinterviews zu erkennen.\r\n\r\n1936 legte Zarah Leander in der Rolle der Gloria Mills den Grundstein ihrer fulminanten Theater- und Filmkarriere. Mit ihrer hochgewachsenen Erscheinung und tiefen Stimme verlieh sie der Rolle die nötige Tragik – nicht nur im größten Hit der Partitur, „Gebundene Hände“, der eine ihrer signifikantesten Nummern werden sollte. In der rasanten Neufassung von Peter Lund und Kai Tietje, in der das Stück unter seinem originalen Titel Axel an der Himmelstür 2016 einen Überraschungserfolg an seinem Uraufführungsort Wien feierte, wird das Werk nun erstmals in Dresden präsentiert. Ein Ritt durch die glitzernde Welt Hollywoods, zu der Ralph Benatzky – der Schöpfer des Weißen Rössl – einen mitreißenden Soundtrack liefert!",
+  "event_dates": [
+   {
+    "start_date": "2026-12-03T19:30:00",
+    "end_date": "2026-12-03T21:00:00"
+   },
+   {
+    "start_date": "2027-01-23T19:30:00",
+    "end_date": "2027-01-23T21:00:00"
+   },
+   {
+    "start_date": "2027-01-24T15:00:00",
+    "end_date": "2027-01-24T16:30:00"
+   },
+   {
+    "start_date": "2027-02-27T19:30:00",
+    "end_date": "2027-02-27T21:00:00"
+   },
+   {
+    "start_date": "2027-02-28T15:00:00",
+    "end_date": "2027-02-28T16:30:00"
+   },
+   {
+    "start_date": "2027-03-12T19:30:00",
+    "end_date": "2027-03-12T21:00:00"
+   },
+   {
+    "start_date": "2027-04-01T19:30:00",
+    "end_date": "2027-04-01T21:00:00"
+   },
+   {
+    "start_date": "2027-04-08T19:30:00",
+    "end_date": "2027-04-08T21:00:00"
+   },
+   {
+    "start_date": "2027-04-09T19:30:00",
+    "end_date": "2027-04-09T21:00:00"
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 15.5
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 49
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Saal",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Operette",
+  "updates_at": "2026-11-25T07:14:38",
+  "event_link": [
+   {
+    "title": "Kinostar!",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/kinostar/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Kinostar!",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/kinostar/"
+  },
+  "medialist": [
+   {
+    "type": "image",
+    "name": null,
+    "context": "KINOSTAR!<br />Operette von Ralph Benatzky<br />Dimitra Kalaitzi (Gloria Mills)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/bdb25ca39869001b744f73eb5f5194b4/9674/lutzmichen_250910194759.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "KINOSTAR!<br />Operette von Ralph Benatzky<br />Christina Maria Fercher (Jessie Leyland)<br />Gero Wendorff (Axel Swift)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/31c47eef8ffd5e2cd84c1e0b4311ff74/9673/lutzmichen_250902122747.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "KINOSTAR!<br />Operette von Ralph Benatzky<br />Dimitra Kalaitzi (Gloria Mills)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/e571ee6fbbae52f525e2b9606c3f79e0/9684/seite_5_lutzmichen_250902123410.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "KINOSTAR!<br />Operette von Ralph Benatzky<br />Andreas Sauerzapf (Theodor Herlinger)<br />Gero Wendorff (Axel Swift)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/a09da0b4c05d7a12f56d3283237c4b6e/9678/lutzmichen_250910200952_1.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/a5588e412c71e70c305bd63993009049/9687/1_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/ce33ab8fd0f519ae5889b1e1a3d32b4b/9688/3_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/2a8fdf633f6130320a5784ab1f5b5ba7/9689/4_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/c98003c1063d4457693593723d810d01/9690/5_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/e411114cf2c44727970eb33bf645443c/9691/7_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/7c5edb29e222e6b46b19366338433947/9692/10_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/8923a23db21b140ab93d66203a8be750/9693/11_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/685b63e4f28f8d1746afad4fd49a1787/9694/12_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/cc7db40fc6190a5bc4c21c0e9dea9485/9695/13_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/7a81f8688c530deeefcf4b7f0f8430a7/9696/14_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/4ebb8588e422764dd87be5d3c006e4d3/9697/15_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/fb1f69a17a450c543b9d06f7e20a0e1c/9698/17_lm-gal.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": null,
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/2e4435cfedbfba3ae8f00a58bc5cdaf9/9686/18_lm-gal.jpg"
+   }
+  ]
+ },
+ {
+  "id": 141,
+  "title": "Evita",
+  "description": "„Was für ein Zirkus!“, wundert sich der arme Schlucker Che über die Trauer, mit der Argentinien den Tod seiner First Lady, Eva Duarte de Perón, beweint, die 1952 mit nur 33 Jahren an Krebs stirbt. Doch warum so ein Aufruhr? War Evita nicht nur ein einfaches Mädchen aus der Vorstadt? Anderseits hat sie es bis ganz nach oben geschafft, auch wenn einige sagen, dass nicht nur Talent ihr dabei geholfen habe. War sie eine beliebte Radiosprecherin oder doch eine Demagogin, deren Popularität ihrem Mann die Präsidentschaft gesichert hat? Viele verehren Evita bis heute als Heilige, die ihr Leben den Armen gewidmet hat. Für andere ist sie eine korrupte Diktatoren-Gattin. \r\n\r\nIhre streitbare Faszination hält bis heute an. Dazu trägt auch Andrew Lloyd Webbers Musical-Hit bei, in dem er kunstvoll Rock, Pop, Tango und ganz große Oper miteinander verbindet. 1996 mit Madonna in der Hauptrolle verfilmt, macht das Musical die argentinische First Lady auch international zur Ikone. Und nicht zuletzt gehört Evita wie kaum ein anderes Musical an die Staatsoperette. Hier fand 1987 die umjubelte DDR-Erstaufführung statt, die Kultstatus genießt. Der packende Politkrimi wird nun von Regisseur und Choreograf Simon Eichenberger neu inszeniert, der mit der Erfolgsproduktion Pippin – Die Kunst des Lebens die Herzen von Publikum und Presse gleichermaßen eroberte.",
+  "event_dates": [
+   {
+    "start_date": "2026-12-04T19:30:00",
+    "end_date": "2026-12-04T22:00:00"
+   },
+   {
+    "start_date": "2026-12-08T19:30:00",
+    "end_date": "2026-12-08T22:00:00"
+   },
+   {
+    "start_date": "2026-12-09T19:30:00",
+    "end_date": "2026-12-09T22:00:00"
+   },
+   {
+    "start_date": "2026-12-15T19:30:00",
+    "end_date": "2026-12-15T22:00:00"
+   },
+   {
+    "start_date": "2026-12-16T19:30:00",
+    "end_date": "2026-12-16T22:00:00"
+   },
+   {
+    "start_date": "2027-01-16T19:30:00",
+    "end_date": "2027-01-16T22:00:00"
+   },
+   {
+    "start_date": "2027-01-17T15:00:00",
+    "end_date": "2027-01-17T17:30:00"
+   },
+   {
+    "start_date": "2027-04-06T19:30:00",
+    "end_date": "2027-04-06T22:00:00"
+   },
+   {
+    "start_date": "2027-04-07T19:30:00",
+    "end_date": "2027-04-07T22:00:00"
+   },
+   {
+    "start_date": "2027-05-29T19:30:00",
+    "end_date": "2027-05-29T22:00:00"
+   },
+   {
+    "start_date": "2027-05-30T15:00:00",
+    "end_date": "2027-05-30T17:30:00"
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 21
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 55
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Saal",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Musical",
+  "updates_at": "2026-11-25T07:19:50",
+  "event_link": [
+   {
+    "title": "Evita",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/evita/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Evita",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/evita/"
+  },
+  "medialist": [
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita), Gero Wendorf (Che) und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/fabe1d153193c0da93fc4258a95070b0/9871/01_lutzmichen_251028133638.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Gero Wendorff (Che), Chor und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/34375905dbce7195c10ce88c953d5bbc/9872/02_lutzmichen_251028160541.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita), Marcus Günzel (Perón) und Charlotte Watzlawik (Peróns Geliebte)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/33e36ceffc41c2474daafeadf4045af8/9873/03_lutzmichen_251028140850.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita) und Ensemble (Offiziere)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/d5900462e869cabad28830d7271ad905/9874/04_lutzmichen_251028135854_1.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita), Václav Vallon (Agustin Magaldi), Gero Wendorff (Che) sowie Chor und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/3fcafa8bfe3d5eaf54c6c0c1466a02aa/9875/05_lutzmichen_251028125603.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita), Gero Wendorff (Che), Chor und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/1635515e492c22d8cd1a6c978c474c10/9876/06_lutzmichen_251028142856.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita) und Gero Wendorff (Che)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/788983cee7245c46fa041814068d2ed0/9877/07_lutzmichen_251028160203_1.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita), Marcus Günzel (Perón), Vasily Arkhipov (Offizier) und Ensemble",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/f5fc9faf95a7ac48b95c15190fa76d68/9878/08_lutzmichen_251028152703.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Sybille Lambrich (Evita), Chor und Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/8488f4c8fc78f0e9d2a46b63df39764d/9879/09_lutzmichen_251028133558_1.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "EVITA<br />Musical von Andrew Lloyd Webber und Tim Rice<br />Johanna Kuhfuß (Evita als Kind)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/52e4504251022d229260be23f50b43bb/9881/10_lutzmichen_251028124330.jpg"
+   }
+  ]
+ },
+ {
+  "id": 159,
+  "title": "Hänsel und Gretel",
+  "description": "Es ist ein echter Klassiker der Weihnachtszeit: Engelbert Humperdincks Hänsel und Gretel hat mit seinen poetischen Orchesterklängen Generationen berührt – nicht nur „Ein Männlein steht im Walde“ oder „Brüderchen, komm tanz mit mir“ kann beinahe jeder mitsingen. Als bürgerliches Lehrstück über Hunger und Not, Gemeinschaft und Liebe geschrieben, erzählt die Oper davon, dass sich den dunklen Geheimnissen und Gefahren des Märchenwalds nur gemeinsam begegnen lässt. \r\n\r\nAn der Staatsoperette holt Intendantin und Regisseurin Kathrin Kondaurow die Geschichte behutsam ins Heute: Was passiert, wenn aus Armut Überfluss und soziale Kälte wird? Inspiriert von japanischen Animes und Gaming-Hits wie Final Fantasy, verlieren sich Hänsel und Gretel im eigenen Videospiel und landen in einer Welt voller fantastischer Wesen: mit einer guten Hexe und einem bösen Hexendämon.\r\n\r\nEntdecken Sie ein altes Märchen neu und freuen Sie sich auf einen magischen Theaterabend mit den bekannten Melodien und dem Original-Libretto von Adelheid Wette.",
+  "event_dates": [
+   {
+    "start_date": "2026-12-05T18:00:00",
+    "end_date": "2026-12-05T20:15:00"
+   },
+   {
+    "start_date": "2026-12-06T15:00:00",
+    "end_date": "2026-12-06T17:15:00"
+   },
+   {
+    "start_date": "2026-12-10T18:00:00",
+    "end_date": "2026-12-10T20:15:00"
+   },
+   {
+    "start_date": "2026-12-11T11:00:00",
+    "end_date": "2026-12-11T13:15:00"
+   },
+   {
+    "start_date": "2026-12-19T18:00:00",
+    "end_date": "2026-12-19T20:15:00"
+   },
+   {
+    "start_date": "2026-12-20T15:00:00",
+    "end_date": "2026-12-20T17:15:00"
+   },
+   {
+    "start_date": "2026-12-25T18:00:00",
+    "end_date": "2026-12-25T20:15:00"
+   },
+   {
+    "start_date": "2026-12-26T15:00:00",
+    "end_date": "2026-12-26T17:15:00"
+   },
+   {
+    "start_date": "2026-12-27T15:00:00",
+    "end_date": "2026-12-27T17:15:00"
+   },
+   {
+    "start_date": "2027-01-15T18:00:00",
+    "end_date": "2027-01-15T20:15:00"
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 8.5
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 55
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Saal",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Oper",
+  "updates_at": "2026-11-25T07:25:13",
+  "event_link": [
+   {
+    "title": "Hänsel und Gretel",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/haensel-und-gretel/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Hänsel und Gretel",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/haensel-und-gretel/"
+  },
+  "medialist": [
+   {
+    "type": "image",
+    "name": null,
+    "context": "Christina Maria Fercher (Gretel) und Dimitra Kalaitzi (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/0908a705cd086ab20f4262400e40fbc8/10461/0010_lutzmichen_261028123451.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Christina Maria Fercher (Gretel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/16838dddaf51e9f064fb48e53dbbd620/10462/0015_lutzmichen_261028123852.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Andreas Mattersberger (Vater) und Steffi Lehmann (Mutter)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/1b2ef23fc948ec36712c1f60946675b5/10463/0030_lutzmichen_261028125303-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Silke Richter (Hexe), Nina Kemptner (Hexendämon), Dimitra Kalaitzi (Hänsel) und Christina Maria Fercher (Gretel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/1c49d8cf480ae7626c38e579a551b788/10464/0040_lutzmichen_261028150757-kopie.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Jeannette Oswald (Mutter) und Hinrich Horn (Vater)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/00001e875168d2d3d3307807800db747/10465/0045_lutzmichen_261106192721-3.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Dimitra Kalaitzi (Hänsel) und Christina Maria Fercher (Gretel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/9d0077ead59b35cb506193534bf18a0c/10466/0050_lutzmichen_261028130540.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Nina Kemptner (Hexendämon), Julie Sekinger (Gretel) und Laila Salome Fischer (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/08c9061e7eaf336a8b9777979fe1d229/10467/0055_lutzmichen_261106190542-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Julie Sekinger (Gretel) und Laila Salome Fischer (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/f6c8d1838613a43121d16c4d03e492e2/10468/0056_lutzmichen_261106194323.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Antje Ligeti (Taumännchen)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/803954b64081915cb175de68d5344538/10469/0060_lutzmichen_261028145222.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Silke Richter (Hexe)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/303430c30a651eb3ff4e79c98b8b8374/10470/0070_lutzmichen_261028125621.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Jeannette Oswald (Mutter)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/60c19386cf3fb820fa2423d7a5c42ca1/10471/0075_lutzmichen_261106202614.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Hinrich Horn (Vater)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/ed9c10a1a08b840b1ab9344a99615e4b/10472/0077_lutzmichen_261106192530-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Julie Sekinger (Gretel) und Laila Salome Fischer (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/aff54f7c9543c9207639e731bad97df1/10473/0078_lutzmichen_261106192005.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Nina Kemptner (Hexendämon) und Silke Richter (Hexe)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/86073176ff7f25221648d90dedc587e7/10474/0080_lutzmichen_261028130035.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Julie Sekinger (Gretel), Nina Kemptner (Hexendämon) und Laila Salome Fischer (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/631d298b41d12d16668acf42aa80854c/10475/0085_lutzmichen_261106205934.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Silke Richter (Hexe)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/55e8914fd671ec6551d192c33e944425/10476/0090_lutzmichen_261028150324-4.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Christina Maria Fercher (Gretel), Dimitra Kalaitzi (Hänsel) und Nina Kemptner (Hexendämon)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/ce25f50850ff00e8adaef28a675b71e9/10477/0100_lutzmichen_261028150118.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Nina Kemptner (Hexendämon)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/e5bbb292d1d8f5a713e6fff5c8bb6d99/10478/0110_lutzmichen_261028150823-3.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Julie Sekinger (Gretel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/9665b64e390a70699568bfcffd29cc80/10479/0115_lutzmichen_261106191435-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Christina Maria Fercher (Gretel) und Dimitra Kalaitzi (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/292db479121a0fd98bd6b1a419d133dc/10480/0120_lutzmichen_261028145738-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Nina Kemptner (Hexendämon) und Andreas Mattersberger (Vater)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/b3eb2dc7688a7421eb9e23450ed7581b/10481/0130_lutzmichen_261028144822-2-kopie.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Nina Kemptner (Hexendämon) und Kinderchor",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/d81a31eb7f94d6883418503e1b2a5c6c/10482/0135_lutzmichen_261028150926-3.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Antje Ligeti (Taumännchen), Catherine Daniel (Hexe) und Soyeon Jung (Sandmännchen)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/231932ed040c0ea102eeab9de64c4e72/10483/0136_lutzmichen_261106195929-3.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Steffi Lehmann (Mutter) und Andreas Mattersberger (Vater)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/30a8572918cb4bb7f88366e952de9cdf/10484/0140_lutzmichen_261028125733-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Dimitra Kalaitzi (Hänsel) und Christina Maria Fercher (Gretel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/d18ce7ed3353b6c408f5de3a9bdfac0a/10485/0150_lutzmichen_261028151900-3.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Catherine Daniel (Hexe) und Nina Kemptner (Hexendämon)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/583acab9169607f018c126c22a8657bc/10486/0155_lutzmichen_261106204645-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Dimitra Kalaitzi (Hänsel), Soyeon Jung (Sandmännchen) und Christina Maria Fercher (Gretel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/b96fc9730717dc1ed86cee7ee64fa3b9/10487/0160_lutzmichen_261028131517.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Christina Maria Fercher (Gretel) und Silke Richter (Hexe)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/5fea1037e268e1d67d9f4289ca127b2f/10488/0165_lutzmichen_261028151351.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Silke Richter (Hexe), Antje Ligeti (Taumännchen), Dimitra Kalaitzi (Hänsel), Soyeon Jung (Sandmännchen) <br />und Kinderchor",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/6ec78698235160682fbccd5bf27c9c83/10489/0180_lutzmichen_261028153000.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Dimitra Kalaitzi (Hänsel)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/fb3002181eaf819b928e22aea88d8e5e/10490/0190_lutzmichen_261028123842-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "Jeannette Oswald (Mutter), Laila Salome Fischer (Hänsel), Julie Sekinger (Gretel) und Hinrich Horn (Vater)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/a8ab29b66f9bcb08d070e60183ee1252/10491/0200_lutzmichen_261106210842-3.jpg"
+   }
+  ]
+ },
+ {
+  "id": 122,
+  "title": "Theaterführung",
+  "description": "Tauchen Sie ein in die faszinierende Welt des Musiktheaters und erleben Sie im Rahmen unserer Führungen einen einzigartigen Blick hinter die Kulissen der Staatsoperette.\r\n\r\nDas Theatergebäude besticht durch die Verbindung aus denkmalgeschützter Industriearchitektur und modernem Zweckbau. Die Führung beginnt im Foyer, in dem Alt- und Neubau verbunden sind. Hier erfahren Sie alles über die Geschichte des ehemaligen Kraftwerks und besuchen anschließend unseren großen Zuschauersaal mit seinen beeindruckenden akustischen Möglichkeiten. Den Höhepunkt der Führung bildet zum Abschluss der Besuch der Bühne: Entdecken Sie unsere Bühnenbilder und die technischen Vorgänge, die hinter den spektakulären Verwandlungen und Effekten stecken. \r\n\r\nUnsere fachkundigen Guides werden Sie mit spannenden Geschichten und interessanten Fakten durch die verschiedenen Bereiche begleiten. Egal, ob Sie Theaterliebhaber*in, Musikfan oder einfach neugierig auf die Welt des Showbusiness sind – unsere Führungen bieten für jede*n etwas.\r\n\r\nTreffpunkt im Foyer",
+  "event_dates": [
+   {
+    "start_date": "2026-12-06T12:00:00",
+    "end_date": "2026-12-06T13:00:00"
+   },
+   {
+    "start_date": "2026-12-20T12:00:00",
+    "end_date": "2026-12-20T13:00:00"
+   },
+   {
+    "start_date": "2027-01-03T12:00:00",
+    "end_date": "2027-01-03T13:00:00"
+   },
+   {
+    "start_date": "2027-01-17T12:00:00",
+    "end_date": "2027-01-17T13:00:00"
+   },
+   {
+    "start_date": "2027-02-07T12:00:00",
+    "end_date": "2027-02-07T13:00:00"
+   },
+   {
+    "start_date": "2027-02-28T12:00:00",
+    "end_date": "2027-02-28T13:00:00"
+   },
+   {
+    "start_date": "2027-03-07T12:00:00",
+    "end_date": "2027-03-07T13:00:00"
+   },
+   {
+    "start_date": "2027-03-21T12:00:00",
+    "end_date": "2027-03-21T13:00:00"
+   },
+   {
+    "start_date": "2027-04-04T15:00:00",
+    "end_date": "2027-04-04T16:00:00"
+   },
+   {
+    "start_date": "2027-04-18T12:00:00",
+    "end_date": "2027-04-18T13:00:00"
+   },
+   {
+    "start_date": "2027-05-02T12:00:00",
+    "end_date": "2027-05-02T13:00:00"
+   },
+   {
+    "start_date": "2027-05-23T12:00:00",
+    "end_date": "2027-05-23T13:00:00"
+   },
+   {
+    "start_date": "2027-06-06T12:00:00",
+    "end_date": "2027-06-06T13:00:00"
+   },
+   {
+    "start_date": "2027-06-20T00:00:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-07-04T15:00:00",
+    "end_date": "2027-07-04T16:00:00"
+   },
+   {
+    "start_date": "2027-07-11T12:00:00",
+    "end_date": "2027-07-11T13:00:00"
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 15
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 15
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Foyer",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Special",
+  "updates_at": "2026-11-25T07:22:02",
+  "event_link": [
+   {
+    "title": "Theaterführung",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/theaterfuehrung/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Theaterführung",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/theaterfuehrung/"
+  },
+  "medialist": []
+ },
+ {
+  "id": 177,
+  "title": "Kulturfrühstück",
+  "description": "Weitere Informationen folgen in Kürze.",
+  "event_dates": [
+   {
+    "start_date": "2026-12-07T10:00:00",
+    "end_date": "2026-12-07T12:00:00"
+   },
+   {
+    "start_date": "2027-01-04T10:00:00",
+    "end_date": "2027-01-04T12:00:00"
+   },
+   {
+    "start_date": "2027-02-01T10:00:00",
+    "end_date": "2027-02-01T12:00:00"
+   },
+   {
+    "start_date": "2027-03-01T10:00:00",
+    "end_date": "2027-03-01T12:00:00"
+   },
+   {
+    "start_date": "2027-04-05T10:00:00",
+    "end_date": "2027-04-05T12:00:00"
+   },
+   {
+    "start_date": "2027-05-03T10:00:00",
+    "end_date": "2027-05-03T12:00:00"
+   },
+   {
+    "start_date": "2027-06-07T10:00:00",
+    "end_date": "2027-06-07T12:00:00"
+   },
+   {
+    "start_date": "2027-07-05T10:00:00",
+    "end_date": "2027-07-05T12:00:00"
+   }
+  ],
+  "prices": [],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Foyer",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "",
+  "updates_at": "2026-11-25T09:35:01",
+  "event_link": [
+   {
+    "title": "Kulturfrühstück",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/kulturfruehstueck-1186/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Kulturfrühstück",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/kulturfruehstueck-1186/"
+  },
+  "medialist": []
+ },
+ {
+  "id": 167,
+  "title": "Karaoke - Ein Mitsingspektakel",
+  "description": "Sie lieben Musik genauso wie wir? Dann singen Sie mit uns! Bei unserer Karaoke im Kranfoyer wird die Staatsoperette zu Ihrer Bühne und Sie sind die Stars! Egal ob Solo, im Duett oder mit der ganzen Crew, hier ist Platz für alle Pop-Fans, Rockröhren, Schlager-Ultras und Musical-Mäuse. Kommen Sie allein oder mit Freund*innen, geschniegelt, glitzernd oder ganz entspannt. Die Bühne gehört Ihnen!",
+  "event_dates": [
+   {
+    "start_date": "2026-12-07T19:30:00",
+    "end_date": "2026-12-07T22:30:00"
+   },
+   {
+    "start_date": "2027-04-30T19:30:00",
+    "end_date": null
+   }
+  ],
+  "prices": [],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Kranfoyer",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Special",
+  "updates_at": "2026-11-25T07:45:45",
+  "event_link": [
+   {
+    "title": "Karaoke - Ein Mitsingspektakel",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/karaoke-ein-mitsingspektakel/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Karaoke - Ein Mitsingspektakel",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/karaoke-ein-mitsingspektakel/"
+  },
+  "medialist": []
+ },
+ {
+  "id": 142,
+  "title": "Die lustige Witwe",
+  "description": "20 Millionen schwer ist diese Witwe – kein Wunder, dass sich die Pontevedrinerin Hanna Glawari vor Verehrern kaum retten kann. Einziger Nachteil: Keiner der Anwärter scheint ein echtes Interesse an ihrer Person zu haben. Auch Zeta, pontevedrinischer Gesandter in Paris, stellt hier keine Ausnahme dar. Auf seinen Schultern ruht die Verantwortung, die Millionen der Glawari dem bankrotten Vaterland zu sichern. Zu dumm nur, dass er ausgerechnet Danilo, einen ewig trunkenen Lebemann ohne jegliche vaterländische Ambition, damit beauftragt, die Witwe zu ehelichen. Und wie ungünstig, dass Danilo gleich zu Beginn Hanna geschworen hat, ihr niemals seine Liebe zu gestehen …\r\n\r\nAls Franz Lehár 1905 am Theater an der Wien seine Lustige Witwe vorlegte, kam dies einem Revolutionsschlag gleich. Vergessen waren alle Stereotypen der bisherigen „goldenen“ Operettenzeit. Hier endlich standen moderne, emanzipierte Figuren auf der Bühne! Sei es die finanziell unabhängige Frau oder der nervös-stolze Mann, unsicher im Umgang mit der weiblichen Selbständigkeit – gerade in Hanna und Danilo konnte sich die Gesellschaft des beginnenden 20. Jahrhunderts wiederfinden. In der Regie von Katja Wolff und zu den berühmten Walzer- und Mazurka-Klängen Franz Lehárs treffen die Protagonist*innen nun in einer neuen Inszenierung an der Staatsoperette aufeinander und stellen unter Beweis, dass sie bis heute nichts von ihrer Aktualität verloren haben.",
+  "event_dates": [
+   {
+    "start_date": "2026-12-30T19:30:00",
+    "end_date": "2026-12-30T21:45:00"
+   },
+   {
+    "start_date": "2026-12-31T14:30:00",
+    "end_date": "2026-12-31T16:45:00"
+   },
+   {
+    "start_date": "2026-12-31T19:30:00",
+    "end_date": "2026-12-31T21:45:00"
+   },
+   {
+    "start_date": "2027-01-30T19:30:00",
+    "end_date": "2027-01-30T21:45:00"
+   },
+   {
+    "start_date": "2027-01-31T15:00:00",
+    "end_date": "2027-01-31T17:15:00"
+   },
+   {
+    "start_date": "2027-02-23T19:30:00",
+    "end_date": "2027-02-23T21:45:00"
+   },
+   {
+    "start_date": "2027-02-24T19:30:00",
+    "end_date": "2027-02-24T21:45:00"
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 19
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 69
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Saal",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Operette",
+  "updates_at": "2026-11-25T07:14:34",
+  "event_link": [
+   {
+    "title": "Die lustige Witwe",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/die-lustige-witwe/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Die lustige Witwe",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/die-lustige-witwe/"
+  },
+  "medialist": [
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Ensemble",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/c9c3fa620f5d67489e41712e91035d59/10033/1_lutzmichen_260225122630-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Julie Sekinger (Valencienne), Timo Schabel (Camille de Rosillon)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/ed3c793a2d810884a00f379586d80bff/10020/2_lutzmichen_260225123017-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Bryan Rothfuss (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/6a96d9e7f1cc2b3ff5100911c1d500f5/10021/3_lutzmichen_260225124844.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Christina Maria Fercher (Hanna Glawari)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/49bf9394d8a0b73f68c081f577db2f7a/10039/lutzmichen_260306191845.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Steffi Lehmann (Hanna Glawari), Bryan Rothfuss (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/fbe7bda46141c54209c1f41b1a7393be/10022/4_lutzmichen_260225125354-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Christina Maria Fercher (Hanna Glawari)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/c025d98d19c5b5c3a3d5777481d61639/10041/lutzmichen_260306191612.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Bettina Weichert ( Praskowia), Bryan Rothfuss (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/0036f9330be3fa2d4398a1ad16d88beb/10026/8_lutzmichen_260225132325-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Hinrich Horn (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/c20f51856224a861f41f1369fee4b7db/10045/lutzmichen_260306194359.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Christina Maria Fercher (Hanna Glawari), Elmar Andree (Zeta)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/78a21b3e3a4db11541228440a7982525/10042/lutzmichen_260306192057.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Hinrich Horn (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/615db494ea4acc4fade762125ee64836/10044/lutzmichen_260306192420-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Jeannette Oswald (Sylviane), Bryan Rothfuss ( Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/319731f99a283618d6e6801435757ff6/10027/9_lutzmichen_260225132230.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Charlotte Watzlawik (Valencienne), Jongwoo Hong (Camille de Rosillon)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/41deca558fd154bec72ca1b36a9928e7/10043/lutzmichen_260306204002-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Ensemble",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/54d3ee5c5f7107f177ee8b0002abc92d/10028/10_lutzmichen_260225131841-4.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Bryan Rothfuss (Danilo), Andreas Sauerzapf (Cascada), Markus Liske (Pritschitsch), Andreas Pester (Bogdanowitsch), Gerd Wiemer (Kromow), Alexander Voigt (Raoul de Saint-Brioche), Elmar Andree (Zeta)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/7f4ffd3fa55e650c7bd2d02bdb42a9d3/10024/6_lutzmichen_260225132614-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/4ba2f634f44ca379f038fa287bc8aa77/10032/14_lutzmichen_260225150144-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Steffi Lehmann (Hanna Glawari)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/20f347b972887696dee2628d9f088cde/10029/11_lutzmichen_260225131558.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Ensemble",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/0a14303e851794d3571497b0d0118c7f/10030/12_lutzmichen_260225132741-3.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Christina Maria Fercher (Hanna Glawari)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/da7b648013b9f28365393ee5ddbfc569/10040/lutzmichen_260306195104-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Silke Richter (Olga), Bryan Rothfuss (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/0b4d574094bd5a19151ef59b2827306d/10025/7_lutzmichen_260225132146-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Steffi Lehmann (Hanna Glawari), Bryan Rothfuss (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/bbca49ab44585c3321e192a86b6c1e42/10031/13_lutzmichen_260225141233-2.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Hinrich Horn (Danilo)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/cf8063b1cadd5cbeda1e9d10eb783547/10049/lutzmichen_260306193317-4.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Hinrich Horn (Danilo) und Christina Maria Fercher (Hannah Glawari)",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/e9b3fafde1d3061441608464eec06708/10050/lutzmichen_260306193915.jpg"
+   },
+   {
+    "type": "image",
+    "name": null,
+    "context": "„Die lustige Witwe“<br />Operette von Franz Lehár<br />Ballett",
+    "url": "https://sodd-6a25.kxcdn.com/content-images/export/777b4080aa4508553b46038419686943/10052/lutzmichen_260306205750-2.jpg"
+   }
+  ]
+ },
+ {
+  "id": 164,
+  "title": "poesie der gegensätze",
+  "description": "Hereinspaziert, hereinspaziert! Bitte treten Sie ein in einen Zauberladen voller Magie und Möglichkeiten: „La boutique fantastique“! Ottorino Respighis gleichnamige Ballettmusik aus dem Jahr 1919, basierend auf Klavierwerken von Gioachino Rossini, bildet den musikalischen Rahmen für ein Theatererlebnis der besonderen Art: Die berühmten Pantomimen Wolfram von Bodecker und Alexander Neander schlüpfen in ihrem Stück La boutique fantastique – der Zauberladen in die Figuren des Bildhauers Ottorino und des Kunden Gioachino, der sich in der magischen Werkstatt eine Statue der Galatea bestellt. Doch als die Statue plötzlich zum Leben erwacht, werden die beiden Männer zu Kontrahenten und die Fantasie zur Realität … \r\n\r\nUnter der Leitung von Chefdirigent Michael Ellis Ingram lässt das Orchester der Staatsoperette nicht nur Teile der Boutique fantastique live zum Pantomimenspiel erklingen, sondern rahmt das szenische Ereignis mit weiteren Orchester- und Gesangswerken zwischen Komödie und Tragödie. So wie Pantomime die Emotion auf die Spitze treibt und diese gut sichtbar in die Mimik der Darstellenden legt, wird auch im weiteren Konzert der Schmerz tragischer Figuren oder die Freude rasanter Verwechslungs- und Unterhaltungskomödien zum Klingen gebracht. Freuen Sie sich auf einen Jahreswechsel voller Emotionen, bei dem die Komik nicht zu kurz kommen wird!",
+  "event_dates": [
+   {
+    "start_date": "2027-01-01T15:00:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-02T19:30:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-03T15:00:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-06T11:00:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-06T19:30:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-07T19:30:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-08T19:30:00",
+    "end_date": null
+   }
+  ],
+  "prices": [
+   {
+    "title": "Normalpreis ab",
+    "amount": 21
+   },
+   {
+    "title": "Normalpreis bis",
+    "amount": 69
+   }
+  ],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Saal",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Konzert",
+  "updates_at": "2026-11-25T07:18:20",
+  "event_link": [
+   {
+    "title": "poesie der gegensätze",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/poesie-der-gegensaetze/"
+   }
+  ],
+  "ticket_link": {
+   "title": "poesie der gegensätze",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/poesie-der-gegensaetze/"
+  },
+  "medialist": []
+ },
+ {
+  "id": 165,
+  "title": "alfred hitchcocks psycho",
+  "description": "Diese schrillen Streicherklänge gehen direkt unter die Haut. Und genau deshalb sind sie weltberühmt. Denn was wäre die legendäre Dusch-Szene in Alfred Hitchcocks meisterhaftem Thriller Psycho ohne die nervenzerreißende Filmmusik von Bernard Herrmann? Er wollte den Schwarzweißfilm aus dem Jahr 1960 mit einer kontrastreichen Schwarzweißmusik ergänzen und lotete allein mit Streichinstrumenten – von hohen, nervösen Violinen bis hin zu tiefen, drohenden Kontrabässen – die seelischen Extremzustände der zerrissenen Figuren aus: Sekretärin Marion braucht ein Versteck, denn sie hat Geld von ihrem Boss unterschlagen. Deshalb steigt sie in einem unscheinbaren Motel ab, das von dem schüchternen Norman betrieben wird, der mit seiner Mutter zurückgezogen in einem alten Haus direkt nebenan lebt. In der Nacht hört Marion die herrschsüchtige und strenge Mutter mit ihrem Sohn streiten, noch nicht ahnend, dass beide ihr zum Verhängnis werden.\r\n\r\nIn einer Kooperation mit HELLERAU – Europäisches Zentrum der Künste zeigt die Staatsoperette Hitchcocks Meisterwerk als außergewöhnliche Filmvorführung mit Live-Musik. Chefdirigent Michael Ellis Ingram sorgt gemeinsam mit dem Orchester der Staatsoperette für Gänsehaut in der Gartenstadt. \r\nÜbrigens: Eigentlich wollte Hitchcock keinen einzigen Ton Musik für die Dusch-Szene. Herrmann konnte den Regisseur am Ende aber doch mit seinem Psycho-Sound überzeugen, wofür seine Gage sogar verdoppelt wurde.",
+  "event_dates": [
+   {
+    "start_date": "2027-01-21T20:00:00",
+    "end_date": null
+   },
+   {
+    "start_date": "2027-01-22T20:00:00",
+    "end_date": null
+   }
+  ],
+  "prices": [],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Großer Saal Hellerau",
+   "address": "Karl-Liebknecht-Straße 56",
+   "zip": "01109",
+   "city": "Dresden",
+   "country": ""
+  },
+  "categories": "Konzert",
+  "updates_at": "2026-11-25T07:25:26",
+  "event_link": [
+   {
+    "title": "alfred hitchcocks psycho",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/alfred-hitchcocks-psycho/"
+   }
+  ],
+  "ticket_link": {
+   "title": "alfred hitchcocks psycho",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/alfred-hitchcocks-psycho/"
+  },
+  "medialist": []
+ },
+ {
+  "id": 96,
+  "title": "Premierenfieber",
+  "description": "In unserem neuen Format Premierenfieber bieten wir Ihnen zu jeder Neuproduktion die Möglichkeit, eine Bühnenprobe mit Orchester zu besuchen. Hier erhalten Sie nicht nur Einblicke in die Musik des jeweiligen Stückes, sondern tauchen auch ein in die gespannte Probenatmosphäre kurz vor einer Premiere. \r\nIm Gespräch mit dem Regieteam werden Sie vorab auf Werk und Inszenierung eingestimmt; eine Diskussion mit der Produktionsdramaturgin bietet im Anschluss die Möglichkeit zum Austausch.",
+  "event_dates": [
+   {
+    "start_date": "2027-02-02T18:00:00",
+    "end_date": "2027-02-02T20:30:00"
+   },
+   {
+    "start_date": "2027-05-19T18:00:00",
+    "end_date": "2027-05-19T20:30:00"
+   },
+   {
+    "start_date": "2027-06-29T18:00:00",
+    "end_date": "2027-06-29T20:30:00"
+   }
+  ],
+  "prices": [],
+  "host": "Staatsoperette",
+  "location": {
+   "title": "Staatsoperette Kranfoyer",
+   "address": "Kraftwerk Mitte 1",
+   "zip": "01067",
+   "city": "Dresden",
+   "country": "Deutschland"
+  },
+  "categories": "Special",
+  "updates_at": "2026-11-25T08:52:43",
+  "event_link": [
+   {
+    "title": "Premierenfieber",
+    "href": "https://www.staatsoperette.de/spielplan/a-z/premierenfieber/"
+   }
+  ],
+  "ticket_link": {
+   "title": "Premierenfieber",
+   "href": "https://www.staatsoperette.de/spielplan/a-z/premierenfieber/"
+  },
+  "medialist": []
+ }
+]

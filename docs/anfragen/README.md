@@ -23,12 +23,12 @@ Alle Mails gehen von Gmail ab, Antworten kommen also dorthin. Die Projektadresse
 | `stadt-stolpen.md` | stadt@stolpen.de (evtl. stadtinfo@stolpen.de) | `stolpen` | Impressum: Vervielfältigung nur mit Zustimmung |
 | `dresden-nightlife.md` | support@dresden-nightlife.de (perto.com UG) | noch nicht eingebaut | keine Regel zum Auslesen, aber AGB § 8 gegen belastende automatisierte Aufrufe; erst nach Antwort bauen |
 | `dresdner-stadtkalender.md` | Betreiber des Dresdner Stadtkalenders | noch nicht eingebaut | erst nach Erlaubnis; Platzhalter noch offen, kein Entwurf angelegt |
-| `mvp.md` | mail@manet-marketing.de (MANET Marketing GmbH; Adresse aus dem Impressum zusammengesetzt, vor dem Senden prüfen) | noch nicht eingebaut | Impressum verlangt ausdrückliche Genehmigung für Texte, Fotos und Gestaltung |
+| `mvp.md` | mail@manet-marketing.de (MANET Marketing GmbH; Adresse aus dem Impressum zusammengesetzt, vor dem Senden prüfen) | `mvp` (**eingebaut am 25.11.2026**, Duldung vom 09.11. und 25.11.2026; nur Titel, Datum, Uhrzeit, Ort, Link) | Impressum verlangt ausdrückliche Genehmigung für Texte, Fotos und Gestaltung |
 | `3mag.md` | kontakt@3mag.eu | noch nicht eingebaut | KI-Crawler auf der Hauptseite ausgeschlossen; sicherheitshalber vorab gefragt |
 | `beatpol.md` | info@beatpol.de | noch nicht eingebaut | Impressum verlangt Zustimmung zur Verwertung der Inhalte |
 | `kufa-hoyerswerda.md` | post@kufa-hoyerswerda.de (unbestätigt, im Impressum verschleiert, vor dem Senden prüfen) | noch nicht eingebaut, wartet auf den Administrator | Impressum erlaubt Kopien nur privat und nicht kommerziell |
 | `tmgs-sachsen-tourismus.md` | info@sachsen-tour.de und info@marketing.dresden.de (eine Mail an beide) | `satourn` (über die Open-Data-Schnittstelle eingebaut) | Impressum verlangt Zustimmung zur Vervielfältigung; Lizenz je Termin (CC BY 4.0, CC0), bei Märkten ohne Lizenz Rückfrage |
-| `flohmarkt-sachsen.md` | info@flohmarkt-sachsen.de (DDV Sachsen GmbH) | noch nicht eingebaut | Impressum verlangt Zustimmung zur Vervielfältigung; iCal-Feed endet nach 50 Terminen |
+| `flohmarkt-sachsen.md` | info@flohmarkt-sachsen.de (DDV Sachsen GmbH) | `flohmarkt` (**eingebaut am 25.11.2026**, Sammel-iCal mit 50 Terminen) | Impressum verlangt Zustimmung zur Vervielfältigung; iCal-Feed endet nach 50 Terminen |
 | `dresden-weihnachtsmaerkte.md` | info@dresden.info (Dresden Information GmbH) | noch nicht eingebaut | Impressum erlaubt Vervielfältigung nur privat, Weitergabe ausgeschlossen; robots.txt mit 5 s Pause |
 | `oberlausitzer-troedelmarkt.md` | kontakt@oberlausitzer-troedelmarkt.de (alternativ info@, vor dem Senden prüfen) | noch nicht eingebaut, **erlaubt**, Termine 2027 erst ab Januar | keine Nutzungsregel auf der Seite, Rückfrage der Höflichkeit halber; Termine nur bis 17.10.2026 |
 | `dresden-presseamt.md` | presse@dresden.de (Presseamt Dresden) | noch nicht eingebaut, **versendet am 13.11.2026, keine Antwort** | Dresden Information verwies am 12.11.2026 an das Presseamt, weil dresden.de offizielle Stadtseiten sind |
@@ -39,6 +39,8 @@ Neustadthalle (keine Bedingungen), Ticketmaster (offizielle Schnittstelle, Aufla
 L2 Club Görlitz (`l2club`), Steinhaus Bautzen (`steinhaus`) und Děčín (`idecin`, Stadtprogramm idecin.cz): dort
 sind Termine öffentlich als Schema.org- beziehungsweise Seitendaten ausgeliefert, Nutzungsregeln gegen das Auslesen fanden sich nicht.
 Die Straße E Dresden wurde bewusst nicht eingebaut (Feed veraltet, gemischte Zeichencodierung, wenige künftige Termine).
+
+**Eingebaut am 25.11.2026** (alle Zusagen dieses Tages, lokal, noch nicht veröffentlicht): `mvp`, `flohmarkt`, `staatsoperette` (Schnittstelle events.json), `projekttheater`, `herkuleskeule` (nur Titel, Datum, Uhrzeit, Ort, Link, weil die Zusage nur „verweisen“ nennt), `museendresden` (nur verweisen), `slpb`. **Noch nicht eingebaut trotz Zusage:** `dresden` (Zugangsdaten als GitHub-Secrets fehlen, Quelle bleibt aus), Kulturfabrik Hoyerswerda (wartet auf den Administrator), Oberlausitzer Trödelmarkt (Termine 2027 erst im Januar).
 
 Antwortet jemand mit **Nein**: in `sources.json` bei der Quelle `"enabled": false` setzen (siehe `docs/SETUP.md`, „Eine Quelle abschalten“).
 Das gilt sofort und ohne Diskussion. Antworten bitte hier unten festhalten.

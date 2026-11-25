@@ -93,7 +93,7 @@ const REGELN = /** @type {Record<string, [string, RegExp, boolean?][]>} */ ({
 const BESCHREIBUNG_ZEICHEN = 200;
 // Die Spielstätten des Theaters: einzige Stelle; rubriken.js baut daraus die Stufe "Spielstätte" der Rangfolge.
 export const KINO_HAUS = /kino/;
-export const THEATER_HAUS = /theater|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo/;
+export const THEATER_HAUS = /theater|divadl|kleinkunst|puppenb[uü]hne|\bhaus (?:zittau|g[oö]rlitz)\b|apollo|staatsoperette|herkuleskeule/;
 const text = (x) => (typeof x === 'string' ? x.toLowerCase() : '');
 
 /**

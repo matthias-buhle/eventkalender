@@ -99,6 +99,48 @@ export const QUELLEN = [
     hinweis: 'Schauen und Termine der Züchter.',
     links: [{ text: 'rassegefluegel-oberlausitz.de', url: 'https://www.rassegefluegel-oberlausitz.de/' }],
   },
+  {
+    schluessel: 'staatsoperette',
+    name: 'Staatsoperette Dresden',
+    hinweis: 'Spielplan des Hauses über die Schnittstelle der Staatsoperette.',
+    links: [{ text: 'staatsoperette.de', url: 'https://www.staatsoperette.de/' }],
+  },
+  {
+    schluessel: 'projekttheater',
+    name: 'projekttheater dresden',
+    hinweis: 'Spielplan der freien Bühne in der Neustadt.',
+    links: [{ text: 'projekttheater.de', url: 'https://projekttheater.de/spielplan/' }],
+  },
+  {
+    schluessel: 'herkuleskeule',
+    name: 'Herkuleskeule Dresden',
+    hinweis: 'Spielplan des Kabaretts; übernommen werden nur Titel, Zeit und Links, Texte und Bilder stehen bei der Herkuleskeule.',
+    links: [{ text: 'herkuleskeule.de', url: 'https://www.herkuleskeule.de/spielplan-und-tickets' }],
+  },
+  {
+    schluessel: 'museendresden',
+    name: 'Museen der Stadt Dresden',
+    hinweis: 'Gemeinsamer Kalender von Stadtmuseum, Technischen Sammlungen und weiteren Häusern; nur Verweise auf die Originalseiten.',
+    links: [{ text: 'museen-dresden.de', url: 'https://museen-dresden.de/programm/kalender' }],
+  },
+  {
+    schluessel: 'slpb',
+    name: 'Sächsische Landeszentrale für politische Bildung',
+    hinweis: 'Vorträge, Lesungen, Filme und Ausstellungen in ganz Sachsen.',
+    links: [{ text: 'slpb.de', url: 'https://www.slpb.de/veranstaltungen' }],
+  },
+  {
+    schluessel: 'flohmarkt',
+    name: 'Flohmarkt-Sachsen',
+    hinweis: 'Markt- und Flohmarkttermine der DDV Sachsen GmbH.',
+    links: [{ text: 'flohmarkt-sachsen.de', url: 'https://flohmarkt-sachsen.de/termine/' }],
+  },
+  {
+    schluessel: 'mvp',
+    name: 'mvp.de (Dresden)',
+    hinweis: 'Partys, Konzerte, Theater, Tanz, Kino, Lesungen, Kurse und Kinderprogramm der MANET Marketing GmbH; nur Titel, Zeit, Ort und Links.',
+    links: [{ text: 'mvp.de', url: 'https://www.mvp.de/dresden/' }],
+  },
 ];
 
 /**
@@ -108,6 +150,8 @@ export const QUELLEN = [
 export const GRUPPEN = [
   { titel: 'Städte und Tourismus', schluessel: ['satourn', 'bischofswerda', 'kamenz', 'stolpen', 'goerlitz', 'augusto'] },
   { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel'] },
+  { titel: 'Theater, Museen und Bildung (Dresden und Sachsen)', schluessel: ['staatsoperette', 'projekttheater', 'herkuleskeule', 'museendresden', 'slpb'] },
+  { titel: 'Märkte und Veranstaltungsportale', schluessel: ['flohmarkt', 'mvp'] },
   { titel: 'Ticketverkauf', schluessel: ['ticketmaster'] },
   { titel: 'Tschechien', schluessel: ['idecin', 'goout'] },
 ];
