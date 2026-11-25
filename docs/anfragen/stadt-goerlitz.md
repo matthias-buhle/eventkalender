@@ -15,4 +15,4 @@ Dafür lese ich die Termine aus dem Veranstaltungskalender auf `goerlitz.de/term
 Sind Sie damit einverstanden? Bei einem **Nein schalten wir diese Quelle sofort ab.** Gern passe ich Abrufhäufigkeit oder Umfang an Ihre Wünsche an.
 
 Mit freundlichen Grüßen
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]

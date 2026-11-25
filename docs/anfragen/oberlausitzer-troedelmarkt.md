@@ -18,4 +18,4 @@ Sind Sie damit einverstanden? Bei einem Nein schalte ich diese Quelle sofort ab.
 
 Mit freundlichen Grüßen
 
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]

@@ -15,4 +15,4 @@ Dafür lese ich die Terminliste auf kamenz.de/veranstaltungskalender.html. In Ih
 Sind Sie damit einverstanden? Bei einem Nein schalte ich diese Quelle sofort ab. Falls eine andere Stelle zuständig ist (zum Beispiel die Tourist-Information), leiten Sie die Nachricht gern weiter oder nennen mir die richtige Adresse.
 
 Mit freundlichen Grüßen
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]

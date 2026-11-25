@@ -15,4 +15,4 @@ Dafür lese ich die öffentliche Veranstaltungsliste Ihrer Seiten alter-schlacht
 Sind Sie damit einverstanden? Bei einem Nein schalte ich diese Quelle sofort ab. Gern passe ich Häufigkeit oder Umfang an Ihre Wünsche an.
 
 Mit freundlichen Grüßen
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]

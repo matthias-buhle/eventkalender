@@ -16,7 +16,7 @@ Dafür lese ich einige öffentliche Kategorieseiten auf `goout.net` aus (die dor
 Sind Sie damit einverstanden? Bei einem **Nein schalten wir diese Quelle sofort ab.**
 
 Mit freundlichen Grüßen
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]
 
 ---
 
@@ -36,4 +36,4 @@ For this I read a few public category pages on goout.net (the event data embedde
 Do you agree? If you say no, I will switch this source off immediately.
 
 Kind regards
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]

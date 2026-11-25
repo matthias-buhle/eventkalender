@@ -15,4 +15,4 @@ Dafür lese ich über die öffentliche Export-Schnittstelle von Augusto (`august
 Sind Sie damit einverstanden? Bei einem **Nein schalten wir diese Quelle sofort ab.** Gern passe ich Abrufhäufigkeit oder Umfang an Ihre Wünsche an.
 
 Mit freundlichen Grüßen
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]

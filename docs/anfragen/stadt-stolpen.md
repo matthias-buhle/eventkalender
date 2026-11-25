@@ -15,4 +15,4 @@ Dafür lese ich die Liste aller Veranstaltungen auf stolpen.de (die Terminliste 
 Sind Sie damit einverstanden? Bei einem Nein schalte ich diese Quelle sofort ab.
 
 Mit freundlichen Grüßen
-[Unterschrift]
+[Unterschrift: Name, Anschrift, Telefon, Mail]
