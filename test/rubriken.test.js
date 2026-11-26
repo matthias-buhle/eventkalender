@@ -507,3 +507,12 @@ test('S7: für Erwachsene und Marionettenoper sind keine Kinder-Termine', () => 
     assert.notEqual(sonst(t).rubrik, 'kinder', t);
   assert.equal(sonst('Puppenspiel „Frau Holle“').rubrik, 'kinder');
 });
+
+test('Herdmanns sind keine Erdmännchen, und eine "Weihnachtsfeier Vesper" im Theater ist kein Kirchenkonzert', () => {
+  const imTheater = (title) => rubrikUndGenre({ art: 'sonstiges', title, placeName: 'Hoftheater Weißig, Dresden' }).rubrik;
+  assert.equal(imTheater('Hilfe, die Herdmanns kommen!'), 'theater');
+  assert.equal(imTheater('Weihnachtsfeier Vesper'), 'theater');
+  assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Erdmännchen füttern' }).rubrik, 'wandern');
+  assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Orgelvesper zum Advent' }).rubrik, 'konzert');
+  assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Vesper in der Kreuzkirche' }).rubrik, 'konzert');
+});

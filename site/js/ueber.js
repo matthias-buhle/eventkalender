@@ -118,6 +118,18 @@ export const QUELLEN = [
     links: [{ text: 'herkuleskeule.de', url: 'https://www.herkuleskeule.de/spielplan-und-tickets' }],
   },
   {
+    schluessel: 'hoftheater',
+    name: 'Hoftheater Dresden-Weißig',
+    hinweis: 'Spielplan des Hauses; nur Titel, Zeit, Ort und Link zum Stück.',
+    links: [{ text: 'hoftheater-dresden.de', url: 'https://hoftheater-dresden.de/spielplan/' }],
+  },
+  {
+    schluessel: 'kufa',
+    name: 'Kulturfabrik Hoyerswerda',
+    hinweis: 'Kulturprogramm der Kulturfabrik mit kurzer Beschreibung, ohne Bilder.',
+    links: [{ text: 'kufa-hoyerswerda.de', url: 'https://kufa-hoyerswerda.de/veranstaltungen/kultur/' }],
+  },
+  {
     schluessel: 'museendresden',
     name: 'Museen der Stadt Dresden',
     hinweis: 'Gemeinsamer Kalender von Stadtmuseum, Technischen Sammlungen und weiteren Häusern; nur Verweise auf die Originalseiten.',
@@ -179,8 +191,8 @@ export const QUELLEN = [
  */
 export const GRUPPEN = [
   { titel: 'Städte und Tourismus', schluessel: ['satourn', 'bischofswerda', 'kamenz', 'stolpen', 'goerlitz', 'augusto'] },
-  { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel', 'bluenote', 'krone'] },
-  { titel: 'Theater, Museen und Bildung (Dresden und Sachsen)', schluessel: ['staatsoperette', 'projekttheater', 'herkuleskeule', 'museendresden', 'slpb'] },
+  { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel', 'bluenote', 'krone', 'kufa'] },
+  { titel: 'Theater, Museen und Bildung (Dresden und Sachsen)', schluessel: ['staatsoperette', 'projekttheater', 'herkuleskeule', 'hoftheater', 'museendresden', 'slpb'] },
   { titel: 'Kirchen', schluessel: ['evlks'] },
   { titel: 'Märkte und Veranstaltungsportale', schluessel: ['flohmarkt', 'mvp'] },
   { titel: 'Ticketverkauf', schluessel: ['ticketmaster'] },

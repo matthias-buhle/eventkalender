@@ -89,6 +89,7 @@
   },
   "gefluegel": {
     "enabled": true,
+    "note": "Oberlausitzer Geflügelzüchterverband: Nutzung der Termine per E-Mail vom 26.11.2026 bestätigt.",
     "listUrl": "https://www.rassegefluegel-oberlausitz.de/veranstaltungen/rubrik.php?nummer=5551",
     "minDelayMs": 10000,
     "horizonDays": 60,
@@ -153,6 +154,21 @@
     "enabled": true,
     "note": "Herkuleskeule Dresden: Geschäftsführer hat am 25.11.2026 das Verweisen auf die Angebote ausdrücklich erlaubt. Deshalb nur verweisen: Titel, Datum, Uhrzeit, Ort, Link zur Veranstaltung und Ticketlink; keine Beschreibungen, keine Bilder, keine Pressetexte.",
     "url": "https://www.herkuleskeule.de/spielplan-und-tickets",
+    "horizonDays": 120
+  },
+  "hoftheater": {
+    "enabled": true,
+    "note": "Hoftheater Dresden-Weißig: Zusage per E-Mail vom 26.11.2026. Übernommen werden nur Titel, Datum, Uhrzeit, Spielstätte und Link zum Stück; keine Beschreibungen, keine Bilder. Ein Abruf je Lauf.",
+    "url": "https://hoftheater-dresden.de/spielplan/",
+    "horizonDays": 120
+  },
+  "kufa": {
+    "enabled": true,
+    "note": "Kulturfabrik Hoyerswerda: Zusage per E-Mail vom 26.11.2026. Übernommen werden Titel, Datum, Uhrzeit, Ort, eine kurze Beschreibung und der Link zur Veranstaltungsseite; keine Bilder. Mindestens 3 Sekunden Abstand je Abruf.",
+    "listUrl": "https://kufa-hoyerswerda.de/veranstaltungen/kultur/",
+    "maxPages": 8,
+    "maxDetailPages": 40,
+    "minDelayMs": 3000,
     "horizonDays": 120
   },
   "museendresden": {
