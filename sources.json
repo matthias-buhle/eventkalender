@@ -171,6 +171,27 @@
     "minDelayMs": 3000,
     "horizonDays": 120
   },
+  "hellerau": {
+    "enabled": true,
+    "note": "HELLERAU – Europäisches Zentrum der Künste: Rückmeldung per E-Mail vom 27.11.2026, nichts dagegen. Übernommen werden nur Titel, Datum, Uhrzeit, Spielstätte und Link zur Veranstaltung; keine Beschreibungen (nicht ausdrücklich erlaubt), keine Bilder. Ein Abruf je Lauf.",
+    "url": "https://hellerau.org/programm/spielplan",
+    "horizonDays": 120
+  },
+  "niesky": {
+    "enabled": true,
+    "note": "Stadt Niesky: Zustimmung per E-Mail vom 27.11.2026. Übernommen werden nur Titel, Datum, Uhrzeit, Veranstaltungsort und Link zur Veranstaltungsseite; keine Bilder, keine Logos, keine weiteren geschützten Inhalte. Ein Abruf je Lauf, mindestens 10 Sekunden Abstand.",
+    "listUrl": "https://www.niesky.de/veranstaltungen/index.php",
+    "minDelayMs": 10000,
+    "horizonDays": 120
+  },
+  "schmalspurbahn": {
+    "enabled": true,
+    "note": "Zittauer Schmalspurbahn (SOEG): Zustimmung per E-Mail vom 27.11.2026; sie melden sich, falls ihr Provider etwas sagt. Übernommen werden Titel, Datum, Abfahrtsort, eine kurze Beschreibung und der Link zur Veranstaltungsseite; keine Bilder. Eine Veranstaltungsseite je Titel, mindestens 5 Sekunden Abstand.",
+    "listUrl": "https://www.zittauer-schmalspurbahn.de/kalender/",
+    "maxDetailPages": 15,
+    "minDelayMs": 5000,
+    "horizonDays": 120
+  },
   "museendresden": {
     "enabled": true,
     "note": "Museen der Stadt Dresden: Verweis auf die Originalseiten ausdrücklich begrüßt (25.11.2026). Nur verweisen: Titel, Datum, Ort, Link, eine Zeile unter dem Titel.",

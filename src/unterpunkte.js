@@ -44,7 +44,7 @@ export const KINDER_UNTER = {
 };
 
 // Sonderfahrten der Bahn zählen zu den Führungen (Entscheidung 11).
-export const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|advents|osterhasen|mondschein)(?:fahrt|express|zug)|schmalspurbahn|talbahn\b|grundbahn\b|museumsbahn|kleinbahn/;
+export const BAHN = /sonderzug|sonderfahrt|dampfzug|dampflok|(?:nikolaus|gl[uü]hwein|advents|osterhasen|mondschein)(?:fahrt|express|zug)|schmalspurbahn|talbahn\b|grundbahn\b|museumsbahn|kleinbahn|(?:reichsbahn|sachsen)zug\b|(?:reichsbahn|sachsen)zuges|weihnachtsmannz(?:ug|[uü]ge)|(?:stadtw[aä]chter|kloster) ?z[uü]ge/;
 
 // Je Rubrik die Unterpunkte mit ihren Stichwörtern; Reihenfolge = Vorrang, erster Treffer gewinnt.
 // Ein dritter Eintrag true heißt: das Stichwort zählt nur im Titel (nicht in der Beschreibung).
@@ -61,7 +61,7 @@ const REGELN = /** @type {Record<string, [string, RegExp, boolean?][]>} */ ({
   ],
   theater: [
     ['kabarett', /kabarett|cabaret|comedy|comedian|stand.?up|satire|kleinkunst|\bhumor/],
-    ['lesung', /lesung|vorlese|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde/],
+    ['lesung', /lesung|vorlese|lesestunde|\bliest\b|buchvorstellung|buchpremiere|autorengespr|literatur|poetry|\bslam\b|signierstunde/],
     ['lesung', /erz[aä]hl/, true],
     ['kino', /kino|\bfilm|kurzfilm|filmfest|filmabend|filmvorf/],
     ['show', /musical|revue|\bshow\b|zirkus|circus|cyrkus|travestie|zauberer|zauberei|zaubershow|zauberkunst|zauberk[uü]nstler|variet|artistik|akrobat|songtexte|gesangstexte|liedtexte/],
@@ -71,7 +71,7 @@ const REGELN = /** @type {Record<string, [string, RegExp, boolean?][]>} */ ({
     ['bewegung', /yoga|pilates|\btanz|fitness|gymnastik|qi.?gong|tai.?chi|meditation|entspann|r[uü]cken(?:schule|training|gymnastik)|zumba|klangschal|achtsam/],
     ['kreativ', /kreativ|mal(?:en|kurs|treff|nachmittag)|zeichn|t[oö]pfer|keramik|\bn[aä]h(?!e\b|er|rung|rboden)|gen[aä]ht|strick|h[aä]kel|filz|bastel|handwerk|schnitz|kl[oö]ppel|koch|back|floristik|schmied|foto|photowalk|reparatur|stick(?:en|erei)|upcycl|pralin|trommel|verzier|weihnachtskugel/],
     ['lernen', /computer|\bpc\b|smartphone|handy|internet|digital|\bki\b|excel|sprach|englisch|franz[oö]sisch|tschechisch|polnisch|spanisch|italienisch|beruf|bewerb|weiterbildung|schulung|seminar|lehrgang|kommunikation|f[uü]hrungs?\b|f[uü]hrung auf|online/],
-    ['vortrag', /vortrag|reisebericht|reportage|multivision|infoabend|gespr[aä]ch|podium|diskussion|sternwarte|ratgeber/],
+    ['vortrag', /vortrag|reisebericht|reiseshow|reportage|multivision|infoabend|gespr[aä]ch|podium|diskussion|sternwarte|ratgeber/],
   ],
   wandern: [
     ['wanderung', /wander|exkursion|radtour|\btour\b/],

@@ -29,11 +29,15 @@ import * as krone from './krone.js';
 import * as evlks from './evlks.js';
 import * as hoftheater from './hoftheater.js';
 import * as kufa from './kufa.js';
+import * as hellerau from './hellerau.js';
+import * as niesky from './niesky.js';
+import * as schmalspurbahn from './schmalspurbahn.js';
 
 // Die Reihenfolge zählt bei Dubletten: der frühere Eintrag behält seine Angaben, der spätere ergänzt nur.
 export const adapters = [
   aust, satourn, kamenz, bischofswerda, goerlitz, augusto, goout, ticketmaster,
   gefluegel, neustadthalle, stolpen, l2club, steinhaus, idecin, dresden,
-  staatsoperette, projekttheater, herkuleskeule, hoftheater, kufa, museendresden, slpb, flohmarkt, mvp,
+  staatsoperette, projekttheater, herkuleskeule, hoftheater, kufa, hellerau, niesky, schmalspurbahn,
+  museendresden, slpb, flohmarkt, mvp,
   bluenote, varnsdorf, zgorzelec, krone, evlks,
 ];

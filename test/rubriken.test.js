@@ -86,6 +86,12 @@ test('sonstiges wird nach Stichwörtern zerlegt', () => {
   assert.equal(sonst('Carmen', 'Oper am Theater').rubrik, 'theater');
 });
 
+test('Lesestunde, Reiseshow und Paarlauf bleiben nicht unter Sonstiges', () => {
+  assert.deepEqual(sonst('Kunterbunte Lesestunde'), { rubrik: 'theater', genre: 'lesung' });
+  assert.deepEqual(sonst('Reiseshow IRLAND'), { rubrik: 'kurse', genre: 'vortrag' });
+  assert.equal(sonst('2. Paarlauf 2026/27').rubrik, 'sport');
+});
+
 test('Reihenfolge der Regeln', () => {
   assert.equal(sonst('Kindertheater').rubrik, 'kinder', 'Kinder vor Theater');
   assert.equal(sonst('Theaterdinner').rubrik, 'theater');
@@ -515,4 +521,10 @@ test('Herdmanns sind keine Erdmännchen, und eine "Weihnachtsfeier Vesper" im Th
   assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Erdmännchen füttern' }).rubrik, 'wandern');
   assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Orgelvesper zum Advent' }).rubrik, 'konzert');
   assert.equal(rubrikUndGenre({ art: 'sonstiges', title: 'Vesper in der Kreuzkirche' }).rubrik, 'konzert');
+});
+
+test('Sonderzüge der Zittauer Bahn zählen zu den Bahnfahrten, auch ohne Wort „Sonderfahrt“', () => {
+  for (const titel of ['Einsatz des Reichsbahnzuges', 'Einsatz des Sachsenzuges', 'Weihnachtsmannzüge nach Oybin und Jonsdorf', 'Zittauer Stadtwächterzüge', 'Oybiner Burg- & Klosterzüge']) {
+    assert.deepEqual(sonst(titel), { rubrik: 'fuehrung', genre: 'bahn' }, titel);
+  }
 });

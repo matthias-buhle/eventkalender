@@ -50,9 +50,9 @@ const KINDER_TITEL = { test: (/** @type {string} */ t) => KINDER.test(t) && !/f[
 // In der Beschreibung zählen nur Wendungen, die das Publikum nennen ("Kinder" allein kommt überall vor).
 // Altersangaben nur im Kinderalter (bis 12): "Einlass ab 18 Jahren" ist kein Kinderprogramm.
 const KINDER_BESCHREIBUNG = /f[uü]r kinder|mit (?:euren|ihren) kindern|f[uü]r unsere kleinen|puppenm[aä]rchen|puppenspiel|\bab (?:drei|vier|f[uü]nf|sechs|sieben|acht|neun|zehn)\b(?! (?:uhr|euro|personen|teilnehmer|wochen|monat|minuten|tage|stunden))|\b(?:[1-9]|1[0-2]) ?(?:bis|[-–]) ?(?:[1-9]|1[0-2]) jahre|\bab (?:[1-9]|1[0-2]) jahren?\b|kindertheater|puppentheater|familienprogramm/;
-const THEATER = /theater|lesung|vorlese|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|filmnachmittag|filmgespr[aä]ch|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
-const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback|bastelei|reportage|podiumsgespr|diskussion|diskutiert|wissensvermittlung/;
-const SPORT = /\bsport\b|eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
+const THEATER = /theater|lesung|vorlese|lesestunde|b[uü]hne|schauspiel|puppenspiel|kabarett|\bkino\b|\bfilm\b|oper\b|autorengespr|auff[uü]hrung|ballett|musical|poetry|\bslam\b|travestie|\bliest\b|buchvorstellung|literatur|revue|\bshow\b|zirkus|circus|cyrkus|divadel|kom[oö]die|marionett|zauberer|filmvorf[uü]hrung|kurzfilm|filmabend|filmnachmittag|filmgespr[aä]ch|sommerkino|comedy|stand.?up|satire|signierstunde|buchpremiere|variet/;
+const KURSE = /\bkurs\b|kurse?n?\b|workshop|vortrag|seminar|schulung|reiseshow|infoabend|lehrgang|sprechstunde|kinderuni|weiterbildung|ratgeber|reisebericht|photowalk|\byoga|meditation|kreativ|stammtisch|reparatur|biografie|maltreff|malnachmittag|h[aä]kel|\bvhs\b|feedback|bastelei|reportage|podiumsgespr|diskussion|diskutiert|wissensvermittlung/;
+const SPORT = /\bsport\b|eislauf|schlittschuh|tischtennis|kegel|bowling|skat\b|skatturnier|spiele(?:abend|nachmittag|tag|treff)|brettspiel|turnier|volleyball|fu[sß]ball|handball|basketball|eishockey|heimspiel|marathon|\blauf\b|paarlauf|(?:stadt|volks|silvester|advents|nikolaus|cross|berg|wald|spenden|benefiz|neujahrs)lauf\b|schwimm|tanzsport|billard|\bdart|schach(?!t)|wettkampf|meisterschaft/;
 const WANDERN = /wander|spaziergang|exkursion|radtour|nachtwanderung|vogelbeobacht|naturf|artenschutz|naturschutz|offenland|vivarium|tierpark|schauf[uü]tter|\berdm[aä]nn|\bzoo\b/;
 // Essen nur im Titel: "Kaffee und Kuchen" in der Beschreibung macht noch kein Essen (Entscheidung 14).
 const ESSEN = /brunch|dinner|men[uü](?![a-zäöüß])|men[uü]abend|verkostung|weinprobe|bierprobe|tasting|whisky|kulinar|fr[uü]hst[uü]ck|schmaus|buffet|kaffeeklatsch|\bessen\b|(?:abend|mittag|sonntags|festtags|weihnachts|gourmet|ritter|wein|g[aä]nse|enten|schlacht)essen\b|g[aä]nsebraten|martinsgans|baudenabend|h[uü]ttenabend|grill|kochshow/;
@@ -82,6 +82,8 @@ const TITEL_REGELN = /** @type {[string, {test(t:string):boolean}][]} */ ([
 // Stufe 3: die Spielstätte.
 const SPIELSTAETTEN = /** @type {[string, RegExp][]} */ ([
   ['theater', new RegExp(`${THEATER_HAUS.source}|${KINO_HAUS.source}`)],
+  // HELLERAU zeigt vor allem Tanz und Performance; ohne Unterpunkt, denn "Schauspiel & Oper" träfe es nicht.
+  ['theater', /^hellerau\b/],
   ['sternwarte', /sternwarte|planetarium/],
   ['kurse', /volkshochschule|\bk?vhs\b/],
   ['konzert', /hutbergb[uü]hne/],

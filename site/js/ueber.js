@@ -130,6 +130,24 @@ export const QUELLEN = [
     links: [{ text: 'kufa-hoyerswerda.de', url: 'https://kufa-hoyerswerda.de/veranstaltungen/kultur/' }],
   },
   {
+    schluessel: 'hellerau',
+    name: 'HELLERAU (Dresden)',
+    hinweis: 'Spielplan des Europäischen Zentrums der Künste; nur Titel, Zeit, Spielstätte und Link.',
+    links: [{ text: 'hellerau.org', url: 'https://hellerau.org/programm/spielplan' }],
+  },
+  {
+    schluessel: 'niesky',
+    name: 'Stadt Niesky',
+    hinweis: 'Veranstaltungsliste der Stadt; nur Titel, Zeit, Ort und Link.',
+    links: [{ text: 'niesky.de', url: 'https://www.niesky.de/veranstaltungen/index.php' }],
+  },
+  {
+    schluessel: 'schmalspurbahn',
+    name: 'Zittauer Schmalspurbahn',
+    hinweis: 'Sonderfahrten und Veranstaltungen der Bahn mit kurzer Beschreibung, ohne Bilder.',
+    links: [{ text: 'zittauer-schmalspurbahn.de', url: 'https://www.zittauer-schmalspurbahn.de/kalender/' }],
+  },
+  {
     schluessel: 'museendresden',
     name: 'Museen der Stadt Dresden',
     hinweis: 'Gemeinsamer Kalender von Stadtmuseum, Technischen Sammlungen und weiteren Häusern; nur Verweise auf die Originalseiten.',
@@ -190,9 +208,9 @@ export const QUELLEN = [
  * der Test test/ueber.test.js stellt das sicher.
  */
 export const GRUPPEN = [
-  { titel: 'Städte und Tourismus', schluessel: ['satourn', 'bischofswerda', 'kamenz', 'stolpen', 'goerlitz', 'augusto'] },
+  { titel: 'Städte und Tourismus', schluessel: ['satourn', 'bischofswerda', 'kamenz', 'stolpen', 'goerlitz', 'augusto', 'niesky', 'schmalspurbahn'] },
   { titel: 'Clubs, Hallen und Vereine', schluessel: ['aust', 'neustadthalle', 'l2club', 'steinhaus', 'gefluegel', 'bluenote', 'krone', 'kufa'] },
-  { titel: 'Theater, Museen und Bildung (Dresden und Sachsen)', schluessel: ['staatsoperette', 'projekttheater', 'herkuleskeule', 'hoftheater', 'museendresden', 'slpb'] },
+  { titel: 'Theater, Museen und Bildung (Dresden und Sachsen)', schluessel: ['staatsoperette', 'projekttheater', 'herkuleskeule', 'hoftheater', 'hellerau', 'museendresden', 'slpb'] },
   { titel: 'Kirchen', schluessel: ['evlks'] },
   { titel: 'Märkte und Veranstaltungsportale', schluessel: ['flohmarkt', 'mvp'] },
   { titel: 'Ticketverkauf', schluessel: ['ticketmaster'] },
